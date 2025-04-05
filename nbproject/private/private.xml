@@ -4,16 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/NetBeans/HarveyHerman/web/index.jsp</file>
-            <file>file:/C:/NetBeans/HarveyHerman/web/item.jsp</file>
-            <file>file:/C:/NetBeans/HarveyHerman/web/itemDetails.jsp</file>
             <file>file:/C:/NetBeans/HarveyHerman/web/ap_index.jsp</file>
             <file>file:/C:/NetBeans/HarveyHerman/web/ap_item.jsp</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/AddItemsServlet.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/model/ItemDAO.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/ItemServlet.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/FilterItemsServlet.java</file>
-            <file>file:/C:/NetBeans/HarveyHerman/src/java/model/Item.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/ItemDetailsServlet.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/WEB-INF/glassfish-web.xml</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/assets/js/ap_item.js</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/DeleteItemServlet.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/item.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/model/Item.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/assets/js/ap_index.js</file>
         </group>
     </open-files>
 </project-private>
