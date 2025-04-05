@@ -8,7 +8,7 @@ import javax.persistence.NoResultException;
 
 import java.util.List;
 
-public class UserDataDAO extends BaseDAO {
+public class UserDataDAO {
 
 	public void create(UserData user) {
         EntityManager em = getEntityManager();

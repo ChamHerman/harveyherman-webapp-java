@@ -3,6 +3,7 @@
   <persistence-unit name="HarveyHermanPU" transaction-type="JTA">
     <jta-data-source>jdbc/harveyhermandb</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+    </properties>
   </persistence-unit>
 </persistence>

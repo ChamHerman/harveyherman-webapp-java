@@ -5,7 +5,7 @@ import model.UserLogin;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
-public class UserLoginDAO extends BaseDAO {
+public class UserLoginDAO {
 
     public void create(UserLogin userLogin) {
         EntityManager em = getEntityManager();

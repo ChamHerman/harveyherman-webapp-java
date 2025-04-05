@@ -6,6 +6,7 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,8 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -75,12 +74,10 @@ public class Item implements Serializable {
     @Size(max = 255)
     @Column(name = "image_url")
     private String imageUrl;
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    @Column(name = "updated_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedDate;
+    @Column(name = "created_date", updatable = false, insertable = false)
+    private Timestamp createdDate;
+    @Column(name = "updated_date", insertable = false)
+    private Timestamp updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<ReviewRating> reviewRatingList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
@@ -162,7 +159,7 @@ public class Item implements Serializable {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -170,7 +167,7 @@ public class Item implements Serializable {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Date updatedDate) {
+    public void setUpdatedDate(Timestamp updatedDate) {
         this.updatedDate = updatedDate;
     }
 
