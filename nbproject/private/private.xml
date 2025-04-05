@@ -3,12 +3,27 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/NetBeans/HarveyHerman/web/index.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/item.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/ap_index.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/ap_item.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/apnavbar.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/apsidebar.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/generatingReport.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/header.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/itemDetails.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/web/managerDashboard.jsp</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/APItemsService.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/AddItemsServlet.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/PromotionDatabaseConnection.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/TopSalesServlet.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/model/ManagerDashboardDAO.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/AddPromotionServlet.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/model/PromotionStatus.java</file>
             <file>file:/C:/NetBeans/HarveyHerman/src/java/model/ItemDAO.java</file>
-            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/APItemsService.java</file>
-            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/CustomIdGenerator.java</file>
-            <file>file:/C:/NetBeans/HarveyHerman/src/java/model/Item.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/UserService.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/controller/ViewItemServlet.java</file>
+            <file>file:/C:/NetBeans/HarveyHerman/src/java/model/PromotionDAO.java</file>
         </group>
     </open-files>
 </project-private>

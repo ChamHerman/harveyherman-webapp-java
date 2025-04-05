@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import javax.ejb.EJB;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,15 +16,18 @@ import model.Item;
 
 @WebServlet("/item")
 public class ItemServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @EJB
+    private ItemDAO itemDAO;
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("search");
         String[] selectedCategories = request.getParameterValues("category");
 
-        ItemDAO itemDAO = new ItemDAO();
         List<Item> filteredItems = itemDAO.getFilteredItems(search, selectedCategories);
-        
+
         List<String> allCategories = itemDAO.getAllCategories();
 
         request.setAttribute("items", filteredItems);
@@ -33,4 +37,3 @@ public class ItemServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 }
-

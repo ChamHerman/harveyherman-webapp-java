@@ -5,7 +5,6 @@
 package model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -55,14 +56,16 @@ public class APLogin implements Serializable {
     @Column(name = "password")
     private String password;
     @Column(name = "last_login")
-    private Timestamp lastLogin;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 7)
     @Column(name = "position")
     private String position;
-    @Column(name = "created_date", updatable = false, insertable = false)
-    private Timestamp createdDate;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
     private StaffData staffId;
@@ -109,7 +112,7 @@ public class APLogin implements Serializable {
         return lastLogin;
     }
 
-    public void setLastLogin(Timestamp lastLogin) {
+    public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
 
@@ -125,7 +128,7 @@ public class APLogin implements Serializable {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 

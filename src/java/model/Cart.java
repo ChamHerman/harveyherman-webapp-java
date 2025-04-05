@@ -6,7 +6,6 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -54,10 +53,12 @@ public class Cart implements Serializable {
     @NotNull
     @Column(name = "total")
     private BigDecimal total;
-    @Column(name = "created_date", updatable = false, insertable = false)
-    private Timestamp createdDate;
-    @Column(name = "updated_date", insertable = false) 
-    private Timestamp updatedDate;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData userId;
@@ -96,7 +97,7 @@ public class Cart implements Serializable {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -104,7 +105,7 @@ public class Cart implements Serializable {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Timestamp updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 
