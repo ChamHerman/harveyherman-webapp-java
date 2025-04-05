@@ -3,6 +3,9 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,6 +26,7 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
         String search = request.getParameter("search");
         String[] selectedCategories = request.getParameterValues("category");
 
@@ -32,7 +36,7 @@ public class ItemServlet extends HttpServlet {
 
         request.setAttribute("items", filteredItems);
         request.setAttribute("categories", allCategories);
-
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
         dispatcher.forward(request, response);
     }

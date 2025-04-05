@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,32 +13,35 @@ import model.Item;
 
 @WebServlet("/details")
 public class ItemDetailsServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String itemId = request.getParameter("itemId");
+    @EJB
+    private ItemDAO itemDAO;
+    private static final long serialVersionUID = 1L;
 
-		if (itemId == null || itemId.trim().isEmpty()) {
-			response.sendRedirect("errorPage.jsp");
-			return;
-		}
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String itemId = request.getParameter("itemId");
 
-		ItemDAO itemDAO = new ItemDAO();
-		Item item = itemDAO.getItemById(itemId);
+        if (itemId == null || itemId.trim().isEmpty()) {
+            response.sendRedirect("errorPage.jsp");
+            return;
+        }
 
-		if (item == null) {
-			request.setAttribute("error", "Item not found.");
-		} else {
-			request.setAttribute("item", item);
+        Item item = itemDAO.getItemById(itemId);
 
-			// Load reviews
-			// ReviewDAO reviewDAO = new ReviewDAO();
-			// List<Object[]> reviews = reviewDAO.getReviewsByItemId(itemId);
-			// request.setAttribute("reviews", reviews);
-		}
+        if (item == null) {
+            request.setAttribute("error", "Item not found.");
+        } else {
+            request.setAttribute("item", item);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("itemDetails.jsp");
-		dispatcher.forward(request, response);
-	}
+            // Load reviews
+            // ReviewDAO reviewDAO = new ReviewDAO();
+            // List<Object[]> reviews = reviewDAO.getReviewsByItemId(itemId);
+            // request.setAttribute("reviews", reviews);
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("itemDetails.jsp");
+        dispatcher.forward(request, response);
+    }
 }

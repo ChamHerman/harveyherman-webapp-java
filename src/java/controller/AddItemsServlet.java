@@ -14,6 +14,7 @@ import javax.servlet.http.Part;
 import java.nio.file.Paths;
 import java.io.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 import javax.ejb.EJB;
 import model.Item;
 import model.ItemDAO;
@@ -24,7 +25,6 @@ public class AddItemsServlet extends HttpServlet {
 
     @EJB
     private ItemDAO itemDAO;
-
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -73,8 +73,8 @@ public class AddItemsServlet extends HttpServlet {
         if (imagePart != null && imagePart.getSize() > 0) {
             try {
                 // Retrieve and sanitize the file name
-                String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
-                String lowerFileName = fileName.toLowerCase();
+                String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+                String lowerFileName = originalFileName.toLowerCase();
 
                 // Validate file extension (allow only jpg, jpeg, and png)
                 if (!lowerFileName.endsWith(".jpg") && !lowerFileName.endsWith(".jpeg")
@@ -82,21 +82,29 @@ public class AddItemsServlet extends HttpServlet {
                     throw new ServletException("Unsupported file type.");
                 }
 
-                // Resolve the absolute path for the upload directory using the servlet context
-                String absolutePath = getServletContext().getRealPath("");
-                if (absolutePath == null) {
-                    throw new ServletException("Could not get the context real path.");
-                }
-                String uploadDir = absolutePath + File.separator + "assets" + File.separator + "images";
+                // Get extension
+                String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 
-                // Create the upload directory if it does not exist
-                File uploadDirFile = new File(uploadDir);
-                if (!uploadDirFile.exists() && !uploadDirFile.mkdirs()) {
-                    throw new ServletException("Failed to create upload directory.");
+                // Generate unique filename using UUID
+                String uniqueFileName = UUID.randomUUID().toString() + extension;
+
+                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
+                String deployedPath = getServletContext().getRealPath("");
+
+                // Go up two directories to reach the project root
+                File deployedDir = new File(deployedPath);
+                File projectRoot = deployedDir.getParentFile().getParentFile(); // Back from build/web to project root
+
+                // Now build path to web/assets/images
+                File targetImageDir = new File(projectRoot, "web/assets/images");
+
+                // Ensure directory exists
+                if (!targetImageDir.exists()) {
+                    targetImageDir.mkdirs();
                 }
 
-                // Create the file path to store the image
-                File fileToSave = new File(uploadDirFile, fileName);
+                // Final file path
+                File fileToSave = new File(targetImageDir, uniqueFileName);
 
                 // Copy file data with a buffered stream
                 try (InputStream input = imagePart.getInputStream(); OutputStream out = new FileOutputStream(fileToSave)) {
@@ -106,9 +114,9 @@ public class AddItemsServlet extends HttpServlet {
                         out.write(buffer, 0, bytesRead);
                     }
                 }
-
+                
                 // Set the relative path for storing in the database
-                imageUrl = "assets/images/" + fileName;
+                imageUrl = "assets/images/" + uniqueFileName;
             } catch (Exception e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

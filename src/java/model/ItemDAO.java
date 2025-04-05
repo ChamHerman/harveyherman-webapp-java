@@ -7,7 +7,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 @Stateless
@@ -16,6 +15,11 @@ public class ItemDAO {
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
 
+    // Setter for manual EntityManager injection
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
+    
     // Create a new item. Generates a ID if none is provided.
     public void create(Item item) {
         if (item.getItemId() == null || item.getItemId().isEmpty()) {
