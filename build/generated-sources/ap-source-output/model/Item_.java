@@ -10,7 +10,7 @@ import model.CartItem;
 import model.OrderDetails;
 import model.ReviewRating;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-04-05T12:58:25")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-04-05T17:13:50")
 @StaticMetamodel(Item.class)
 public class Item_ { 
 
