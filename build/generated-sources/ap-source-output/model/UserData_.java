@@ -10,7 +10,7 @@ import model.Orders;
 import model.ReviewRating;
 import model.UserLogin;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-04-05T12:58:25")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-04-05T17:13:50")
 @StaticMetamodel(UserData.class)
 public class UserData_ { 
 
