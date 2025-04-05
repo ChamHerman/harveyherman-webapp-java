@@ -68,10 +68,10 @@
                     <div class="search-controls">
                         <input type="text" id="searchInput" placeholder="Search item...">
                         <div class="right-controls">
-                            <span>Show Rows: <select id="rowCount" name="rows">
-                                    <option value="10" selected>10</option>
-                                    <option value="20">20</option>
+                            <span>Show Rows: <select id="rowCount" name="rows" class="form-select" style="display:inline-block; width:auto;">
+                                    <option value="15" selected>15</option>
                                     <option value="30">30</option>
+                                    <option value="50">50</option>
                                 </select>
                             </span>
                             <button id="addItemBtn" type="button" class="btn btn-primary" data-bs-toggle="modal"

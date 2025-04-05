@@ -1,6 +1,7 @@
 package model;
 
 import controller.CustomIdGenerator;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ItemDAO {
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }
-    
+
     // Create a new item. Generates a ID if none is provided.
     public void create(Item item) {
         if (item.getItemId() == null || item.getItemId().isEmpty()) {
