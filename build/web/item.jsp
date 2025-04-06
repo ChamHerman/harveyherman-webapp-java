@@ -47,14 +47,10 @@
             String searchQuery = request.getParameter("search");
             String[] selectedCategories = request.getParameterValues("category");
             Set<String> selectedCategoriesSet = new HashSet<String>();
+            
             if (selectedCategories != null) {
                 selectedCategoriesSet.addAll(Arrays.asList(selectedCategories));
             }
-
-            // Fetch categories
-            List<String> categories = Arrays.asList("test", "Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
-                    "Laundry & Cleaning", "Smart Home Devices", "Lighting & Electrical", "Heating & Air Conditioning",
-                    "Bathroom Essentials", "Home Entertainment", "Furniture & Décor");
 
             ItemDAO itemDAO = null;
             try {
@@ -63,6 +59,8 @@
             } catch (NamingException ne) {
                 ne.printStackTrace();
             }
+            // Fetch categories & filtered items
+            List<String> categories = itemDAO.getAllCategories();
             List<Item> items = itemDAO.getFilteredItems(searchQuery, selectedCategories);
         %>
 
