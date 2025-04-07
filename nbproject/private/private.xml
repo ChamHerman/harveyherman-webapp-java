@@ -3,10 +3,27 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/web/WEB-INF/glassfish-web.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/Orders.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/web/index.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/ReviewRating.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/PromotionStatus.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/Item.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/Promotion.java</file>
             <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/controller/AddItemsServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/ManagerDashboardDAO.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/web/salesReport.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/web/managerDashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/controller/AddPromotionServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/controller/PromotionServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/PromotionDAO.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/CartItem.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/web/promotion.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/Payment.java</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/controller/DeletePromotionServlet.java</file>
             <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/conf/MANIFEST.MF</file>
-            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/conf/persistence.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/web/saveReport.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Desktop/harveyherman/src/java/model/Delivery.java</file>
         </group>
     </open-files>
 </project-private>

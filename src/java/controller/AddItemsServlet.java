@@ -110,10 +110,10 @@ public class AddItemsServlet extends HttpServlet {
 			}
 		}
 
-		APItemsService service = new APItemsService();
-		String jsonResponse = service.addItems(itemName, description, price, stockQuantity, category, imageUrl);
+		//APItemsService service = new APItemsService();
+		//String jsonResponse = service.addItems(itemName, description, price, stockQuantity, category, imageUrl);
 
-		response.setContentType("application/json");
-		response.getWriter().write(jsonResponse);
+		//response.setContentType("application/json");
+		//response.getWriter().write(jsonResponse);
 	}
 }
