@@ -1,16 +1,16 @@
+<%-- 
+    Document   : promotion
+    Created on : Apr 6, 2025, 9:44:15 PM
+    Author     : User
+--%>
+
 <%@ page import="java.util.List" %>
-<%@ page import="com.harveyherman.model.Promotion" %>
-<%@ page import="com.harveyherman.dao.PromotionDAO" %>
+<%@ page import="model.Promotion" %>
+<%@ page import="model.PromotionDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Manage Promotions</title>
-    <%-- <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .error { color: red; }
-    </style>--%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -28,19 +28,7 @@
 	<% if (errorMessage != null) { %>
 	    <div class="alert alert-danger"><%= errorMessage %></div>
 	<% } %>
-    
-
-    <%
-        PromotionDAO promotionDAO = new PromotionDAO();
-    	String nextPromotionId = promotionDAO.getNextPromotionId();
-        List<Promotion> promotions = promotionDAO.getAllPromotions();
-        
-        if (promotions == null || promotions.isEmpty()) {
-    %>
-        <p class="error">No promotions available.</p>
-    <%
-        } else {
-    %>
+   
         <table class="table table-striped table-bordered">
         	<thead class="table-dark">
 	            <tr>
@@ -56,6 +44,7 @@
             </thead>
             <tbody>
             <%
+                List<Promotion> promotions = (List<Promotion>) request.getAttribute("promotions");
             	if (promotions != null && !promotions.isEmpty()) {
                 for (Promotion promo : promotions) {
             %>
@@ -63,7 +52,7 @@
                     <td><%= promo.getPromotionId() %></td>
                     <td><%= promo.getPromotionCode() %></td>
                     <td><%= promo.getDiscountValue() %></td>
-                    <td><%= promo.getStatus() != null ? promo.getStatus().name().toLowerCase() : "Unknown" %></td>
+                    <td><%= promo.getStatus()%></td>
                     <td><%= promo.getMinimumPurchase() %></td>
                     <td><%= promo.getDescription() %>
                     <td><%= promo.getStartDate() %></td>
@@ -125,11 +114,16 @@
                     <form action="AddPromotionServlet" method="post">
 	                    <div class="mb-3">
 	                        <label for="promotionId" class="form-label">Promotion ID</label>
-	                        <input type="text" class="form-control" id="promotionId" name="promotionId" value="<%= nextPromotionId %>" readonly>
+	                        <input type="text" class="form-control" id="promotionId" name="promotionId" value="<%=0 %>" readonly>
 	                    </div>
                         <div class="mb-3">
                             <label for="promotionCode" class="form-label">Promotion Code</label>
                             <input type="text" class="form-control" id="promotionCode" name="promotionCode" required>
+                        </div>
+                        <div class="mb-3">
+                            <select name="status">
+                                <option value="active">Active</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="discountValue" class="form-label">Discount Value (%)</label>
