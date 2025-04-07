@@ -1,34 +1,29 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import model.PromotionDAO;
+import javax.ejb.EJB;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import java.io.IOException;
 
-@WebServlet("/DeletePromotionServlet")
+@WebServlet("/DeletePromotion")
 public class DeletePromotionServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @EJB
+    private PromotionDAO promotionDAO;
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String promotionId = request.getParameter("promotionId");
-
-        if (promotionId != null && !promotionId.trim().isEmpty()) {
-            PromotionDAO promotionDAO = new PromotionDAO();
-            boolean deleted = promotionDAO.deletePromotion(promotionId);
-
-            if (deleted) {
-                request.setAttribute("successMessage", "Promotion deleted successfully!");
-            } else {
-                request.setAttribute("errorMessage", "Failed to delete promotion. ID may not exist.");
-            }
-        } else {
-            request.setAttribute("errorMessage", "Promotion ID is required.");
+        if (promotionId != null && !promotionId.isEmpty()) {
+            promotionDAO.deletePromotion(promotionId);
         }
-
-        request.getRequestDispatcher("promotion.jsp").forward(request, response);
+        response.sendRedirect("ManagePromotions");
     }
 }
