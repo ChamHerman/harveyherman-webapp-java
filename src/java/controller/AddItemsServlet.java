@@ -19,7 +19,7 @@ import javax.ejb.EJB;
 import model.Item;
 import model.ItemDAO;
 
-@WebServlet("/AddItemsServlet")
+@WebServlet("/manager/AddItemsServlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class AddItemsServlet extends HttpServlet {
 
@@ -88,12 +88,12 @@ public class AddItemsServlet extends HttpServlet {
                 // Generate unique filename using UUID
                 String uniqueFileName = UUID.randomUUID().toString() + extension;
 
-                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
+                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web\manager)
                 String deployedPath = getServletContext().getRealPath("");
 
                 // Go up two directories to reach the project root
                 File deployedDir = new File(deployedPath);
-                File projectRoot = deployedDir.getParentFile().getParentFile(); // Back from build/web to project root
+                File projectRoot = deployedDir.getParentFile().getParentFile().getParentFile(); // Back from build/web to project root
 
                 // Now build path to web/assets/images
                 File targetImageDir = new File(projectRoot, "web/assets/images");
@@ -116,12 +116,12 @@ public class AddItemsServlet extends HttpServlet {
                 }
                 
                 // Set the relative path for storing in the database
-                imageUrl = "assets/images/" + uniqueFileName;
+                imageUrl = "images/" + uniqueFileName;
             } catch (Exception e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write("{\"success\": false, \"message\": \"Error uploading image.\"}");
-                return;
+                return; 
             }
         }
 

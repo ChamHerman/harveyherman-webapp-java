@@ -5,13 +5,13 @@
 <meta charset="UTF-8">
 <title>Admin Dashboard - HarveyHerman</title>
 <!-- Bootstrap CSS -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
 	rel="stylesheet">
-<link href="assets/css/style.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link rel="stylesheet" href="assets/css/ap_index.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/ap_index.css">
 
 </head>
 <body>
@@ -49,6 +49,6 @@
 </body>
 
 <!-- Scripts -->
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/ap_index.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/ap_index.js"></script>
 </html>

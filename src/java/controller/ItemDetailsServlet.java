@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.ItemDAO;
 import model.Item;
 
-@WebServlet("/details")
+@WebServlet("/user/details")
 public class ItemDetailsServlet extends HttpServlet {
 
     @EJB
@@ -41,7 +41,7 @@ public class ItemDetailsServlet extends HttpServlet {
             // request.setAttribute("reviews", reviews);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("itemDetails.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/itemDetails.jsp");
         dispatcher.forward(request, response);
     }
 }

@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!-- Start Footer Section -->
-<footer class="footer-section">
+<footer class="footer-section" style="margin-top: 5rem;">
     <div class="container relative">
 
         <div class="sofa-img">
-            <img src="assets/images/sofa.png" alt="Image" class="img-fluid">
+            <img src="<%=request.getContextPath()%>/assets/images/sofa.png" alt="Image" class="img-fluid">
         </div>
 
         <div class="row">
@@ -13,7 +13,7 @@
                 <div class="subscription-form">
                     <h3 class="d-flex align-items-center">
                         <span class="me-1">
-                            <img src="assets/images/envelope-outline.svg" alt="Image" class="img-fluid">
+                            <img src="<%=request.getContextPath()%>/assets/images/envelope-outline.svg" alt="Image" class="img-fluid">
                         </span>
                         <span>Subscribe to Newsletter</span>
                     </h3>
@@ -38,7 +38,7 @@
         <div class="row g-5 mb-5">
             <div class="col-lg-4">
                 <div class="mb-4 footer-logo-wrap">
-                    <a href="#" class="footer-logo">Furni<span>.</span></a>
+                    <a href="#" class="footer-logo">HarveyHerman</a>
                 </div>
                 <p class="mb-4">
                     Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. 

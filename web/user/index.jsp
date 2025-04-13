@@ -20,12 +20,12 @@
 <meta name="keywords" content="bootstrap, bootstrap4" />
 
 <!-- Bootstrap CSS -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
 	rel="stylesheet">
-<link href="assets/css/tiny-slider.css" rel="stylesheet">
-<link href="assets/css/style.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
 <title>Furni Free Bootstrap 5 Template for Furniture and
 	Interior Design Websites by Untree.co</title>
 </head>
@@ -55,7 +55,7 @@
 				</div>
 				<div class="col-lg-7">
 					<div class="hero-img-wrap">
-						<img src="assets/images/couch.png" class="img-fluid">
+						<img src="<%=request.getContextPath()%>/assets/images/couch.png" class="img-fluid">
 					</div>
 				</div>
 			</div>
@@ -84,11 +84,11 @@
 				<!-- Start Column 2 -->
 				<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
 					<a class="product-item" href="cart.html"> <img
-						src="assets/images/product-1.png"
+						src="<%=request.getContextPath()%>/assets/images/product-1.png"
 						class="img-fluid product-thumbnail">
 						<h3 class="product-title">Nordic Chair</h3> <strong
 						class="product-price">$50.00</strong> <span class="icon-cross">
-							<img src="assets/images/cross.svg" class="img-fluid">
+							<img src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
 					</span>
 					</a>
 				</div>
@@ -97,11 +97,11 @@
 				<!-- Start Column 3 -->
 				<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
 					<a class="product-item" href="cart.html"> <img
-						src="assets/images/product-2.png"
+						src="<%=request.getContextPath()%>/assets/images/product-2.png"
 						class="img-fluid product-thumbnail">
 						<h3 class="product-title">Kruzo Aero Chair</h3> <strong
 						class="product-price">$78.00</strong> <span class="icon-cross">
-							<img src="assets/images/cross.svg" class="img-fluid">
+							<img src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
 					</span>
 					</a>
 				</div>
@@ -110,11 +110,11 @@
 				<!-- Start Column 4 -->
 				<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
 					<a class="product-item" href="cart.html"> <img
-						src="assets/images/product-3.png"
+						src="<%=request.getContextPath()%>/assets/images/product-3.png"
 						class="img-fluid product-thumbnail">
 						<h3 class="product-title">Ergonomic Chair</h3> <strong
 						class="product-price">$43.00</strong> <span class="icon-cross">
-							<img src="assets/images/cross.svg" class="img-fluid">
+							<img src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
 					</span>
 					</a>
 				</div>
@@ -139,7 +139,7 @@
 						<div class="col-6 col-md-6">
 							<div class="feature">
 								<div class="icon">
-									<img src="assets/images/truck.svg" alt="Image"
+									<img src="<%=request.getContextPath()%>/assets/images/truck.svg" alt="Image"
 										class="imf-fluid">
 								</div>
 								<h3>Fast &amp; Free Shipping</h3>
@@ -151,7 +151,7 @@
 						<div class="col-6 col-md-6">
 							<div class="feature">
 								<div class="icon">
-									<img src="assets/images/bag.svg" alt="Image" class="imf-fluid">
+									<img src="<%=request.getContextPath()%>/assets/images/bag.svg" alt="Image" class="imf-fluid">
 								</div>
 								<h3>Easy to Shop</h3>
 								<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac
@@ -162,7 +162,7 @@
 						<div class="col-6 col-md-6">
 							<div class="feature">
 								<div class="icon">
-									<img src="assets/images/support.svg" alt="Image"
+									<img src="<%=request.getContextPath()%>/assets/images/support.svg" alt="Image"
 										class="imf-fluid">
 								</div>
 								<h3>24/7 Support</h3>
@@ -174,7 +174,7 @@
 						<div class="col-6 col-md-6">
 							<div class="feature">
 								<div class="icon">
-									<img src="assets/images/return.svg" alt="Image"
+									<img src="<%=request.getContextPath()%>/assets/images/return.svg" alt="Image"
 										class="imf-fluid">
 								</div>
 								<h3>Hassle Free Returns</h3>
@@ -188,7 +188,7 @@
 
 				<div class="col-lg-5">
 					<div class="img-wrap">
-						<img src="assets/images/why-choose-us-img.jpg" alt="Image"
+						<img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img.jpg" alt="Image"
 							class="img-fluid">
 					</div>
 				</div>
@@ -205,13 +205,13 @@
 				<div class="col-lg-7 mb-5 mb-lg-0">
 					<div class="imgs-grid">
 						<div class="grid grid-1">
-							<img src="assets/images/img-grid-1.jpg" alt="Untree.co">
+							<img src="<%=request.getContextPath()%>/assets/images/img-grid-1.jpg" alt="Untree.co">
 						</div>
 						<div class="grid grid-2">
-							<img src="assets/images/img-grid-2.jpg" alt="Untree.co">
+							<img src="<%=request.getContextPath()%>/assets/images/img-grid-2.jpg" alt="Untree.co">
 						</div>
 						<div class="grid grid-3">
-							<img src="assets/images/img-grid-3.jpg" alt="Untree.co">
+							<img src="<%=request.getContextPath()%>/assets/images/img-grid-3.jpg" alt="Untree.co">
 						</div>
 					</div>
 				</div>
@@ -246,7 +246,7 @@
 				<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 					<div class="product-item-sm d-flex">
 						<div class="thumbnail">
-							<img src="assets/images/product-1.png" alt="Image"
+							<img src="<%=request.getContextPath()%>/assets/images/product-1.png" alt="Image"
 								class="img-fluid">
 						</div>
 						<div class="pt-3">
@@ -263,7 +263,7 @@
 				<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 					<div class="product-item-sm d-flex">
 						<div class="thumbnail">
-							<img src="assets/images/product-2.png" alt="Image"
+							<img src="<%=request.getContextPath()%>/assets/images/product-2.png" alt="Image"
 								class="img-fluid">
 						</div>
 						<div class="pt-3">
@@ -280,7 +280,7 @@
 				<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 					<div class="product-item-sm d-flex">
 						<div class="thumbnail">
-							<img src="assets/images/product-3.png" alt="Image"
+							<img src="<%=request.getContextPath()%>/assets/images/product-3.png" alt="Image"
 								class="img-fluid">
 						</div>
 						<div class="pt-3">
@@ -336,7 +336,7 @@
 
 											<div class="author-info">
 												<div class="author-pic">
-													<img src="assets/images/person-1.png" alt="Maria Jones"
+													<img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Maria Jones"
 														class="img-fluid">
 												</div>
 												<h3 class="font-weight-bold">Maria Jones</h3>
@@ -366,7 +366,7 @@
 
 											<div class="author-info">
 												<div class="author-pic">
-													<img src="assets/images/person-1.png" alt="Maria Jones"
+													<img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Maria Jones"
 														class="img-fluid">
 												</div>
 												<h3 class="font-weight-bold">Maria Jones</h3>
@@ -396,7 +396,7 @@
 
 											<div class="author-info">
 												<div class="author-pic">
-													<img src="assets/images/person-1.png" alt="Maria Jones"
+													<img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Maria Jones"
 														class="img-fluid">
 												</div>
 												<h3 class="font-weight-bold">Maria Jones</h3>
@@ -436,7 +436,7 @@
 				<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 					<div class="post-entry">
 						<a href="#" class="post-thumbnail"><img
-							src="assets/images/post-1.jpg" alt="Image" class="img-fluid"></a>
+							src="<%=request.getContextPath()%>/assets/images/post-1.jpg" alt="Image" class="img-fluid"></a>
 						<div class="post-content-entry">
 							<h3>
 								<a href="#">First Time Home Owner Ideas</a>
@@ -452,7 +452,7 @@
 				<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 					<div class="post-entry">
 						<a href="#" class="post-thumbnail"><img
-							src="assets/images/post-2.jpg" alt="Image" class="img-fluid"></a>
+							src="<%=request.getContextPath()%>/assets/images/post-2.jpg" alt="Image" class="img-fluid"></a>
 						<div class="post-content-entry">
 							<h3>
 								<a href="#">How To Keep Your Furniture Clean</a>
@@ -468,7 +468,7 @@
 				<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 					<div class="post-entry">
 						<a href="#" class="post-thumbnail"><img
-							src="assets/images/post-3.jpg" alt="Image" class="img-fluid"></a>
+							src="<%=request.getContextPath()%>/assets/images/post-3.jpg" alt="Image" class="img-fluid"></a>
 						<div class="post-content-entry">
 							<h3>
 								<a href="#">Small Space Furniture Apartment Ideas</a>
@@ -490,9 +490,9 @@
         <jsp:include page="footer.jsp" />
 
 
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
-	<script src="assets/js/tiny-slider.js"></script>
-	<script src="assets/js/custom.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
 </body>
 
 </html>

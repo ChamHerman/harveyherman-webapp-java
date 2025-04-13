@@ -4,7 +4,7 @@
 <!-- Start Header/Navigation -->
 <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
     <div class="container">
-        <a class="navbar-brand" href="index.jsp">Furni<span>.</span></a>
+        <a class="navbar-brand" href="index.jsp">HarveyHerman<span>.</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" 
                 aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,8 +22,8 @@
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                <li><a class="nav-link" href="#"><img src="assets/images/user.svg" alt="User"></a></li>
-                <li><a class="nav-link" href="cart.jsp"><img src="assets/images/cart.svg" alt="Cart"></a></li>
+                <li><a class="nav-link" href="#"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a></li>
+                <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
             </ul>
         </div>
     </div>

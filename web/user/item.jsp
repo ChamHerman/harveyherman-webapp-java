@@ -16,11 +16,11 @@
         <title>Item - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
-        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
               rel="stylesheet">
-        <link href="assets/css/tiny-slider.css" rel="stylesheet">
-        <link href="assets/css/style.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
     </head>
     <body>
 
@@ -47,7 +47,7 @@
             String searchQuery = request.getParameter("search");
             String[] selectedCategories = request.getParameterValues("category");
             Set<String> selectedCategoriesSet = new HashSet<String>();
-            
+
             if (selectedCategories != null) {
                 selectedCategoriesSet.addAll(Arrays.asList(selectedCategories));
             }
@@ -112,14 +112,14 @@
                             <div class="col-12 col-md-4 col-lg-3 mb-5">
                                 <a class="product-item border rounded p-3 d-block text-center"
                                    href="#" onclick="postItemDetails('<%=item.getItemId()%>')"> <img
-                                        src="<%=item.getImageUrl()%>" class="img-fluid product-thumbnail" alt="Product Image">
+                                        src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" class="img-fluid product-thumbnail" alt="Product Image">
                                     <h3 class="product-title"><%=item.getName()%></h3> <strong class="product-price">RM
                                         <%=String.format("%.2f", item.getPrice())%></strong> <span class="icon-cross"> <img
-                                            src="assets/images/cross.svg" class="img-fluid">
+                                            src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
                                     </span>
                                 </a>
 
-                                <form id="itemForm" action="details" method="post" style="display: none;">
+                                <form id="itemForm" action="<%=request.getContextPath()%>/user/details" method="post" style="display: none;">
                                     <input type="hidden" name="itemId" id="itemId">
                                 </form>
                             </div>
@@ -144,10 +144,14 @@
         <jsp:include page="footer.jsp" />
 
         <!-- Scripts -->
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/tiny-slider.js"></script>
-        <script src="assets/js/custom.js"></script>
-        <script src="assets/js/itemDetails.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+        <script>
+                function postItemDetails(itemId) {
+                    document.getElementById("itemId").value = itemId;
+                    document.getElementById("itemForm").submit();
+                }
+        </script>
 
     </body>
 </html>

@@ -1,7 +1,6 @@
 package model;
 
 import controller.CustomIdGenerator;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +65,7 @@ public class ItemDAO {
         List<Item> items;
         if (search != null && !search.isEmpty()) {
             TypedQuery<Item> query = em.createNamedQuery("Item.findByName", Item.class);
-            query.setParameter("name", search);
+            query.setParameter("name", "%" + search + "%");
             items = query.getResultList();
         } else {
             items = getAll();
