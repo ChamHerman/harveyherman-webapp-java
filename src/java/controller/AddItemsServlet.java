@@ -93,7 +93,7 @@ public class AddItemsServlet extends HttpServlet {
 
                 // Go up two directories to reach the project root
                 File deployedDir = new File(deployedPath);
-                File projectRoot = deployedDir.getParentFile().getParentFile().getParentFile(); // Back from build/web to project root
+                File projectRoot = deployedDir.getParentFile().getParentFile(); // Back from build/web to project root
 
                 // Now build path to web/assets/images
                 File targetImageDir = new File(projectRoot, "web/assets/images");
