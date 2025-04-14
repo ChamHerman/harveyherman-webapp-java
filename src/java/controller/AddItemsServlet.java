@@ -23,7 +23,7 @@ import javax.ejb.EJB;
 import model.Item;
 import model.ItemDAO;
 
-@WebServlet("/manager/AddItemsServlet")
+@WebServlet(name = "AddItemsServlet", urlPatterns = {"/manager/AddItemsServlet", "/staff/AddItemsServlet"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class AddItemsServlet extends HttpServlet {
 

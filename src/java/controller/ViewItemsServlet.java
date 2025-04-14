@@ -20,7 +20,7 @@ import model.ItemDAO;
  *
  * @author herman
  */
-@WebServlet(name = "ViewItemsServlet", urlPatterns = {"/manager/ViewItemsServlet"})
+@WebServlet(name = "ViewItemsServlet", urlPatterns = {"/manager/ViewItemsServlet, /staff/ViewItemsServlet"})
 public class ViewItemsServlet extends HttpServlet {
     
     @EJB

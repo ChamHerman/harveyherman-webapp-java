@@ -15,7 +15,7 @@
 
 </head>
 <body>
-	<%@ include file="apsidebar.jsp"%>
+	<%@ include file="/staff/ap_sidebar.jsp"%>
 
 	<div class="content">
 		<h2>Admin Dashboard</h2>
