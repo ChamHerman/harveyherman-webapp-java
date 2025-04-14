@@ -23,10 +23,11 @@
     </head>
     <body>
         <%@ include file="apsidebar.jsp" %>
+        <!-- Main Content -->
         <div class="main-content flex-grow-1">
             <%@ include file="ap_item_navbar.jsp" %>
             <div class="container">
-                <!-- Dashboard Overview Section -->
+
                 <%
                     ItemDAO itemDAO = null;
                     try {
@@ -94,12 +95,14 @@
                     // Limit number of rows displayed
                     List<Item> limitedItems = filteredItems.size() > rowCount ? filteredItems.subList(0, rowCount) : filteredItems;
                 %>
+                <!-- Dashboard Overview Section -->
                 <div class="dashboard-summary">
                     <div class="summary-box fs-6" id="totalItems">Total Items: <%= totalItems%></div>
                     <div class="summary-box fs-6" id="inStock">In Stock: <%= inStockCount%></div>
                     <div class="summary-box fs-6" id="outOfStock">Out of Stock: <%= outOfStockCount%></div>
                     <div class="summary-box fs-6" id="categories">Categories: <%= categoriesCount%></div>
                 </div>
+                <!-- /Dashboard Overview Section -->
 
                 <!-- Filter Section -->
                 <form method="GET" action="ap_item.jsp">
@@ -156,6 +159,7 @@
                         </div>
                     </div>
                 </form>
+                <!-- /Filter Section -->
 
                 <!-- Item Table -->
                 <table class="item-table">
@@ -189,7 +193,7 @@
                             <td>RM <%=String.format("%.2f", item.getPrice())%></td>
                             <td>
                                 <button class="btn btn-success btn-sm">Edit</button>
-                                <button class="btn btn-primary btn-sm">View</button>
+                                <button class="btn btn-primary btn-sm" onclick="viewItem('<%=item.getItemId()%>')">View</button>
                                 <button class="btn btn-delete btn-sm" 
                                         data-itemid="<%=item.getItemId()%>" 
                                         data-bs-toggle="modal" 
@@ -203,7 +207,9 @@
                         %>
                     </tbody>
                 </table>
+                <!-- /Item Table -->
             </div>
+            <!-- /Container -->
 
             <!-- Delete Item Modal -->
             <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
@@ -223,6 +229,7 @@
                     </div>
                 </div>
             </div>
+            <!-- /Delete Item Modal -->
 
             <!-- Item Result Message Modal -->
             <div class="modal fade" id="itemResultMessageModal" tabindex="-1" aria-labelledby="itemResultMessageModalLabel" aria-hidden="true">
@@ -241,6 +248,7 @@
                     </div>
                 </div>
             </div>
+            <!-- /Item Result Message Modal -->
 
             <!-- Add Item Modal -->
             <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
@@ -316,13 +324,78 @@
                     </div>
                 </div>
             </div>
-            <!-- /Container -->
+            <!-- /Add Item Modal -->
+
+            <!-- View Item Modal -->
+            <div class="modal fade" id="viewItemModal" tabindex="-1" aria-labelledby="viewItemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewItemModalLabel">View Item</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Large Image -->
+                            <div class="text-center mb-3">
+                                <img id="viewItemImage" src="" alt="Item Image" class="img-fluid rounded border" style="max-height: 300px;">
+                            </div>
+                            <!-- Image URL/Name -->
+                            <div class="text-center mb-3">
+                                <small id="viewItemImageUrl" class="text-muted"></small>
+                            </div>
+                            <!-- Item Details -->
+                            <div class="container">
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Item ID:</div>
+                                    <div class="col-sm-8" id="viewItemId"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Name:</div>
+                                    <div class="col-sm-8" id="viewItemName"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Description:</div>
+                                    <div class="col-sm-8" id="viewItemDescription"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Category:</div>
+                                    <div class="col-sm-8" id="viewItemCategory"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Price:</div>
+                                    <div class="col-sm-8" id="viewItemPrice"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Stock Quantity:</div>
+                                    <div class="col-sm-8" id="viewItemStock"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Created Date:</div>
+                                    <div class="col-sm-8" id="viewItemCreatedDate"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 font-weight-bold">Updated Date:</div>
+                                    <div class="col-sm-8" id="viewItemUpdatedDate"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /View Item Modal -->
+
         </div>
+        <!-- /Main Content -->
+
+        <!-- JavaScript Import -->
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_index.js"></script>
         <!-- Set default context path (manager/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>
-
+        <!-- /JavaScript Import -->
     </body>
 </html>

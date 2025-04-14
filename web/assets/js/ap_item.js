@@ -1,8 +1,10 @@
 /* global bootstrap */
 
+// To show Item Result Message
 window.onload = function () {
     // Define urlParams to retrieve query parameters
     const urlParams = new URLSearchParams(window.location.search);
+    
     const messageParam = urlParams.get('message');
     if (messageParam) {
         try {
@@ -29,8 +31,38 @@ window.onload = function () {
         urlParams.delete('message');
         window.history.replaceState({}, document.title, window.location.pathname);
     }
+    
+    // To show View Item Modal
+    const viewDataParam = urlParams.get('viewData');
+    if (viewDataParam) {
+        try {
+            const viewDataObj = JSON.parse(decodeURIComponent(viewDataParam));
+            console.log("Received viewData:", viewDataObj);
+            if (viewDataObj.success) {
+                document.getElementById('viewItemId').textContent = viewDataObj.itemId;
+                document.getElementById('viewItemName').textContent = viewDataObj.name;
+                document.getElementById('viewItemDescription').textContent = viewDataObj.description;
+                document.getElementById('viewItemPrice').textContent = viewDataObj.price;
+                document.getElementById('viewItemStock').textContent = viewDataObj.stockQuantity;
+                document.getElementById('viewItemCategory').textContent = viewDataObj.category;
+                document.getElementById('viewItemCreatedDate').textContent = viewDataObj.createdDate;
+                document.getElementById('viewItemUpdatedDate').textContent = viewDataObj.updatedDate;
+                if (viewDataObj.imageUrl && viewDataObj.imageUrl !== "") {
+                    var imgPath = contextPath + "/assets/" + viewDataObj.imageUrl;
+                    // console.log("Debug image path: ", imgPath); - use for debug
+                    document.getElementById('viewItemImage').src = imgPath;
+                    document.getElementById('viewItemImageUrl').textContent = viewDataObj.imageUrl;
+                }
+                const modal = new bootstrap.Modal(document.getElementById('viewItemModal'));
+                modal.show();
+            }
+        } catch (e) {
+            console.error("Error parsing viewData JSON:", e);
+        }
+        urlParams.delete('viewData');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 };
-
 
 document.getElementById('clearSearch').addEventListener('click', function () {
     document.getElementById('searchInput').value = '';
@@ -47,6 +79,12 @@ document.getElementById('confirmDelete').addEventListener('click', function () {
     window.location.href = contextPath + '/manager/DeleteItemsServlet?itemId=' + deleteItemId;
 });
 
+function viewItem(itemId) {
+    console.log("viewItem clicked with itemId: " + itemId);
+    console.log("Redirect URL: " + contextPath + "/manager/ViewItemsServlet?itemId=" + itemId);
+    window.location.href = contextPath + "/manager/ViewItemsServlet?itemId=" + itemId;
+}
+
 // Function to toggle the display of custom category field when "Others" is selected
 function toggleCustomCategory() {
     var categorySelect = document.getElementById("category");
@@ -59,7 +97,7 @@ function toggleCustomCategory() {
     }
 }
 
-// Validate the add item form before submission
+// Function to validate add new item form before submission
 function validateAddItemForm() {
     var price = parseFloat(document.getElementById("price").value);
     var stockQuantity = parseInt(document.getElementById("stockQuantity").value, 10);
@@ -101,3 +139,4 @@ function validateAddItemForm() {
     
     return true;
 }
+

@@ -277,3 +277,50 @@ body {
 .file-input::-webkit-file-upload-button {
     margin-top: 1px;
 }
+
+/* Style improvements for the view item modal */
+
+#viewItemModal .modal-title {
+    font-size: 1.5rem;
+    color:
+        #343a40;
+}
+
+/* Modal body styling */
+#viewItemModal .modal-body {
+    padding: 1.5rem;
+}
+
+#viewItemModal img {
+    max-height: 300px;
+    border: 2px solid
+        #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px
+        rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+/* Item details styling */
+#viewItemModal .modal-body .container {
+    margin-top: 1rem;
+}
+
+#viewItemModal .modal-body .row {
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+#viewItemModal .modal-body .col-sm-4 {
+    color: #495057;
+    text-align: right;
+    font-weight: bold;
+}
+
+#viewItemModal .modal-body .col-sm-8 {
+    color: #212529;
+    text-align: left;
+    padding-left: 1rem;
+}
