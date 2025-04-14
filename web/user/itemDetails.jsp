@@ -46,26 +46,22 @@
 
                 <!-- Product Details -->
                 <div class="col-md-7">
-                    <h2><%=item.getName()%></h2>
-                    <p class="text-muted">
-                        Category:
-                        <%=item.getCategory()%></p>
+                    <h2><strong><%=item.getName()%></strong></h2>
+                    <p class="text-muted">Category: <%=item.getCategory()%></p>
                     <p><%=item.getDescription()%></p>
-                    <p>
-                        <strong>Quantity Left:</strong>
-                        <%=item.getStockQuantity()%></p>
-                    <h4 class="text-primary">
-                        RM
-                        <%=String.format("%.2f", item.getPrice())%></h4>
+                    
+                    <h4 class="text-primary">RM <%=String.format("%.2f", item.getPrice())%></h4>
+                    <p><strong>Quantity Left: <%=item.getStockQuantity()%></strong></p>
 
                     <!-- Add to Cart Form -->
                     <form action="AddToCartServlet" method="post">
                         <input type="hidden" name="itemId" value="<%=item.getItemId()%>">
 
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity:</label> <input type="number"
-                                                                                              class="form-control" id="quantity" name="quantity" value="1" min="1"
-                                                                                              max="<%=item.getStockQuantity()%>" required>
+                            <label for="quantity" class="form-label">Quantity:</label> 
+                            <input type="number"
+                                   class="form-control" id="quantity" name="quantity" value="1" min="1"
+                                   max="<%=item.getStockQuantity()%>" required>
                         </div>
 
                         <button type="submit" class="btn btn-success">

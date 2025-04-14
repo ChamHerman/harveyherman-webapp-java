@@ -14,6 +14,7 @@ import javax.servlet.http.Part;
 import java.nio.file.Paths;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.UUID;
 import javax.ejb.EJB;
 import model.Item;
@@ -88,7 +89,7 @@ public class AddItemsServlet extends HttpServlet {
                 // Generate unique filename using UUID
                 String uniqueFileName = UUID.randomUUID().toString() + extension;
 
-                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web\manager)
+                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
                 String deployedPath = getServletContext().getRealPath("");
 
                 // Go up two directories to reach the project root
@@ -114,21 +115,27 @@ public class AddItemsServlet extends HttpServlet {
                         out.write(buffer, 0, bytesRead);
                     }
                 }
-                
+
                 // Set the relative path for storing in the database
                 imageUrl = "images/" + uniqueFileName;
             } catch (Exception e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write("{\"success\": false, \"message\": \"Error uploading image.\"}");
-                return; 
+                return;
             }
         }
 
-        String jsonResponse = addItems(itemName, description, price, stockQuantity, category, imageUrl);
-
-        response.setContentType("application/json");
-        response.getWriter().write(jsonResponse);
+        try {
+            addItems(itemName, description, price, stockQuantity, category, imageUrl);
+            String message = "Item added successfully.";
+            String encodedMessage = URLEncoder.encode(message, "UTF-8");
+            response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+        } catch (IOException e) {
+            String message = "Item failed to add.";
+            String encodedMessage = URLEncoder.encode(message, "UTF-8");
+            response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+        }
     }
 
     public String addItems(String itemName, String description, double price, int stockQuantity, String category,
@@ -147,7 +154,6 @@ public class AddItemsServlet extends HttpServlet {
 
             return "{" + "\"success\": true," + "\"message\": \"Item added successfully.\"" + "}";
         } catch (Exception e) {
-            e.printStackTrace();
             return "{" + "\"success\": false," + "\"message\": \"Error adding item: "
                     + e.getMessage().replace("\"", "\\\"") + "\"" + "}";
         }

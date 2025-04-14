@@ -156,9 +156,14 @@
                         </tr>
                     </thead>
                     <tbody id="itemTableBody">
-                        <% 
+                        <% if (limitedItems == null || limitedItems.isEmpty()) { %>
+                        <tr>
+                            <td colspan="6" class="text-center">No items available.</td>
+                        </tr>
+                        <%
+                        } else {
                             int i = 1;
-                            for (Item item : limitedItems) {                                
+                            for (Item item : limitedItems) {
                         %>
                         <tr>
                             <td><%=i%></td>
@@ -176,7 +181,9 @@
                             </td>
                         </tr>
                         <%
-                          i++;}
+                                    i++;
+                                }
+                            }
                         %>
                     </tbody>
                 </table>
@@ -184,12 +191,12 @@
 
             <!-- Delete Item Modal -->
             <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                                <h5 class="modal-title" id="addItemModalLabel">Delete Item</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
+                            <h5 class="modal-title" id="addItemModalLabel">Delete Item</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
                         <div class="modal-body">
                             Are you sure you want to delete this item?
                         </div>
@@ -201,12 +208,12 @@
                 </div>
             </div>
 
-            <!-- Item Deleted Message Modal -->
+            <!-- Item Result Message Modal -->
             <div class="modal fade" id="deleteSuccessModal" tabindex="-1" aria-labelledby="deleteSuccessModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="deleteSuccessModalLabel">Item Deleted Successfully</h5>
+                            <h5 class="modal-title" id="deleteSuccessModalLabel">Item Result Message</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
