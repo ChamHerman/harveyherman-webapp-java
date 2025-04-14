@@ -18,6 +18,13 @@ public class DeleteItemsServlet extends HttpServlet {
     @EJB
     private ItemDAO itemDAO;
     private static final long serialVersionUID = 1L;
+    
+    private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message)
+            throws IOException {
+        String json = "{\"success\": " + success + ", \"message\": \"" + message.replace("\"", "\\\"") + "\"}";
+        String encodedMessage = URLEncoder.encode(json, "UTF-8");
+        response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,7 +36,11 @@ public class DeleteItemsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String itemId = request.getParameter("itemId");
-        String message;
+        if (itemId == null || itemId.trim().isEmpty()) {
+            sendJsonResponse(request, response, false, "Item ID not provided.");
+            return;
+        }
+        
         try {
             Item item = itemDAO.getItemById(itemId);
             if (item != null && item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
@@ -49,15 +60,9 @@ public class DeleteItemsServlet extends HttpServlet {
                 }
             }
             itemDAO.delete(itemId);
-            message = "Item deleted successfully.";
-            String encodedMessage = URLEncoder.encode(message, "UTF-8");
-            response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+            sendJsonResponse(request, response, true, "Item deleted successfully.");
         } catch (IOException | ServletException ex) {
-            message = "Item failed to delete.";
-            String encodedMessage = URLEncoder.encode(message, "UTF-8");
-            response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
-            //request.setAttribute("errorMessage", "Error deleting item: " + ex.getMessage());
-            //request.getRequestDispatcher(request.getContextPath() + "/manager/error.jsp").forward(request, response);
+            sendJsonResponse(request, response, false, "Error deleting item: " + ex.getMessage());
         }
     }
 }

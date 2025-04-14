@@ -1,4 +1,7 @@
-
+<%@ page import="java.util.Comparator"%>
+<%@ page import="java.util.Collections"%>
+<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.ItemDAO" %>
 <%@ page import="model.Item" %>
@@ -76,9 +79,20 @@
                             }
                         }
                     }
+
+                    if (filteredItems != null) {
+                        Collections.sort(filteredItems, new Comparator<Item>() {
+                            @Override
+                            public int compare(Item i1, Item i2) {
+                                if (i1.getCreatedDate() == null || i2.getCreatedDate() == null) {
+                                    return 0;
+                                }
+                                return i2.getCreatedDate().compareTo(i1.getCreatedDate());
+                            }
+                        });
+                    }
                     // Limit number of rows displayed
-                    List<Item> limitedItems = filteredItems.size() > rowCount
-                            ? filteredItems.subList(0, rowCount) : filteredItems;
+                    List<Item> limitedItems = filteredItems.size() > rowCount ? filteredItems.subList(0, rowCount) : filteredItems;
                 %>
                 <div class="dashboard-summary">
                     <div class="summary-box fs-6" id="totalItems">Total Items: <%= totalItems%></div>
@@ -148,6 +162,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>ID</th>
                             <th>Item Name</th>
                             <th>Category</th>
                             <th>Stock Quantity</th>
@@ -167,14 +182,15 @@
                         %>
                         <tr>
                             <td><%=i%></td>
+                            <td><%=item.getItemId()%></td>
                             <td><%=item.getName()%></td>
                             <td><%=item.getCategory()%></td>
                             <td><%=item.getStockQuantity()%></td>
-                            <td>RM <%=item.getPrice()%></td>
+                            <td>RM <%=String.format("%.2f", item.getPrice())%></td>
                             <td>
                                 <button class="btn btn-success btn-sm">Edit</button>
                                 <button class="btn btn-primary btn-sm">View</button>
-                                <button class="btn btn-danger btn-sm" 
+                                <button class="btn btn-delete btn-sm" 
                                         data-itemid="<%=item.getItemId()%>" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#deleteItemModal">Delete</button>
@@ -209,15 +225,15 @@
             </div>
 
             <!-- Item Result Message Modal -->
-            <div class="modal fade" id="deleteSuccessModal" tabindex="-1" aria-labelledby="deleteSuccessModalLabel" aria-hidden="true">
+            <div class="modal fade" id="itemResultMessageModal" tabindex="-1" aria-labelledby="itemResultMessageModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="deleteSuccessModalLabel">Item Result Message</h5>
+                            <h5 class="modal-title" id="itemResultMessageModalLabel">Item Result Message</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p id="deleteSuccessMessage"></p>
+                            <p id="itemResultMessage"></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -259,12 +275,26 @@
                                 </div>
                                 <!-- Category -->
                                 <div class="mb-3">
+                                    <%
+                                        // Define the default categories
+                                        List<String> defaultCategories = new ArrayList<String>(Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
+                                                "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning", "Bathroom Essentials", "Furniture & Décor"));
+                                        List<String> mergedCategories = new ArrayList<String>(defaultCategories);
+                                        // Merge the two lists, excluding duplicates and "Others"
+                                        if (allCategories != null) {
+                                            for (String cat : allCategories) {
+                                                if (cat != null && !cat.trim().isEmpty() && !mergedCategories.contains(cat) && !"Others".equals(cat)) {
+                                                    mergedCategories.add(cat);
+                                                }
+                                            }
+                                        }
+                                    %>
                                     <label class="form-label">Category</label> <select class="form-control" name="category"
                                                                                        id="category" onchange="toggleCustomCategory();" required>
                                         <option value="">Select category...</option>
-                                        <option value="Electronics">Electronics</option>
-                                        <option value="Clothing">Clothing</option>
-                                        <option value="Books">Books</option>
+                                        <% for (String cat : mergedCategories) {%>
+                                        <option value="<%=cat%>"><%=cat%></option>
+                                        <% }%>
                                         <option value="Others">Others</option>
                                     </select>
                                 </div>
@@ -274,8 +304,8 @@
                                 </div>
                                 <!-- Image Upload -->
                                 <div class="mb-3">
-                                    <label class="form-label">Image</label> <input type="file" class="form-control" name="image"
-                                                                                   accept="image/*">
+                                    <label class="form-label">Image</label>
+                                    <input type="file" class="form-control text-center file-input" name="image" accept=".jpg, .jpeg, .png, .webp, .svg" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -290,6 +320,7 @@
         </div>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_index.js"></script>
+        <!-- Set default context path (manager/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>
 

@@ -102,12 +102,12 @@ body {
 
 .item-table td:first-child,
 .item-table td:last-child {
-  text-align: center;
+    text-align: center;
 }
 
 .item-table th:first-child,
 .item-table th:last-child {
-  text-align: center;
+    text-align: center;
 }
 
 /* Modal Customization */
@@ -139,91 +139,141 @@ body {
     padding: 15px;
 }
 
+/* Cancel button of modals in light mode */
+.modal .btn-secondary {
+    background-color: #808080;  /* Grey */
+    border-color: #808080;
+    color: #fff;
+}
+.modal .btn-secondary:hover {
+    background-color: #696969;
+    border-color: #696969;
+}
+
+/* Cancel button of modals in dark mode */
+.dark-mode .modal .btn-secondary {
+    background-color: #808080;  /* Grey */
+    border-color: #808080;
+    color: #fff;
+}
+.dark-mode .modal .btn-secondary:hover {
+    background-color: #696969;
+    border-color: #696969;
+}
 
 /* Dark mode overrides for navbar */
 .dark-mode .navbar {
-  background-color: var(--sidebar-bg) !important;
-  border-color: var(--sidebar-bg) !important;
+    background-color: var(--sidebar-bg) !important;
+    border-color: var(--sidebar-bg) !important;
 }
 .dark-mode .navbar .navbar-nav .nav-link {
-  color: var(--text-color) !important;
+    color: var(--text-color) !important;
 }
 
 /* Dark mode overrides for select elements (category, stock, row count) */
 .dark-mode select {
-  background-color: var(--card-bg) !important;
-  color: var(--text-color) !important;
-  border: 1px solid var(--text-color) !important;
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--text-color) !important;
 }
 
 /* Dark mode overrides for search input fields */
 .dark-mode input[type="text"],
 .dark-mode input[type="search"],
 .dark-mode .form-control {
-  background-color: var(--card-bg) !important;
-  color: var(--text-color) !important;
-  border: 1px solid var(--text-color) !important;
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--text-color) !important;
 }
 
 
 /* Base button styling for buttons within the item table body */
 .item-table #itemTableBody button {
-  display: inline-block;
-  padding: 6px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  margin-right: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-right: 5px;
 }
 
 /* Base button styling for buttons within the item table body */
 .item-table #itemTableBody button {
-  display: inline-block;
-  padding: 6px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  margin-right: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-right: 5px;
 }
 
 /* Light mode styling */
-/* Edit button - assumed as first button */
+/* Edit button in light mode */
 .item-table #itemTableBody button:first-of-type {
-  background-color: #66bb6a;  /* lighter green for light mode */
-  color: #fff;
+    background-color: #5bc0de; /* Light blue */
+    color: #fff;
 }
 .item-table #itemTableBody button:first-of-type:hover {
-  background-color: #57a05a;
+    background-color: #46a3c6;
+}
+/* View button in light mode */
+.item-table #itemTableBody button:nth-of-type(2) {
+    background-color: #90ee90; /* Light green */
+    color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.item-table #itemTableBody button:nth-of-type(2):hover {
+    background-color: #76c976;
 }
 
-/* View button - assumed as last button */
+/* Delete button in light mode */
 .item-table #itemTableBody button:last-of-type {
-  background-color: #4fc3f7;  /* lighter blue for light mode */
-  color: #fff;
+    background-color: #ff7f7f; /* Light red */
+    border-color: #ff7f7f;
+    color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 .item-table #itemTableBody button:last-of-type:hover {
-  background-color: #42a5f5;
+    background-color: #ff4f4f;
+    border-color: #ff4f4f;
 }
 
 /* Dark mode overrides */
 /* Edit button in dark mode */
 .dark-mode .item-table #itemTableBody button:first-of-type {
-  background-color: #388e3c;  /* darker green for dark mode */
-  color: #fff;
+    background-color: #005f9e; /* Dark blue */
+    color: #fff;
 }
 .dark-mode .item-table #itemTableBody button:first-of-type:hover {
-  background-color: #2e7d32;
+    background-color: #004f82;
 }
 
 /* View button in dark mode */
+.dark-mode .item-table #itemTableBody button:nth-of-type(2) {
+    background-color: #006400; /* Dark green */
+    color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.dark-mode .item-table #itemTableBody button:nth-of-type(2):hover {
+    background-color: #005a00;
+}
+
+/* Delete button in dark mode */
 .dark-mode .item-table #itemTableBody button:last-of-type {
-  background-color: #0277bd;  /* darker blue for dark mode */
-  color: #fff;
+    background-color: #8b0000; /* Dark red */
+    border-color: #8b0000;
+    color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 .dark-mode .item-table #itemTableBody button:last-of-type:hover {
-  background-color: #02669a;
+    background-color: #7a0000;
+    border-color: #7a0000;
+}
+
+.file-input::-webkit-file-upload-button {
+    margin-top: 1px;
 }

@@ -1,3 +1,6 @@
+<%@ page import="java.util.Comparator"%>
+<%@ page import="java.util.Collections"%>
+<%@ page import="java.util.Collections"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.Item"%>
@@ -62,6 +65,20 @@
             // Fetch categories & filtered items
             List<String> categories = itemDAO.getAllCategories();
             List<Item> items = itemDAO.getFilteredItems(searchQuery, selectedCategories);
+
+            if (items != null) {
+                Collections.sort(items, new Comparator<Item>() {
+                    @Override
+                    public int compare(Item i1, Item i2) {
+                        // Check for null to avoid NullPointerException
+                        if (i1.getCreatedDate() == null || i2.getCreatedDate() == null) {
+                            return 0;
+                        }
+                        // Newest items come first
+                        return i2.getCreatedDate().compareTo(i1.getCreatedDate());
+                    }
+                });
+            }
         %>
 
         <!-- Main Content -->
@@ -147,10 +164,10 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script>
-                function postItemDetails(itemId) {
-                    document.getElementById("itemId").value = itemId;
-                    document.getElementById("itemForm").submit();
-                }
+                                       function postItemDetails(itemId) {
+                                           document.getElementById("itemId").value = itemId;
+                                           document.getElementById("itemForm").submit();
+                                       }
         </script>
 
     </body>
