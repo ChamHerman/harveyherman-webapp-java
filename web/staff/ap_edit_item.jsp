@@ -14,7 +14,9 @@
     } catch (javax.naming.NamingException ne) {
         ne.printStackTrace();
     }
+    
     List<String> allCategories = itemDAO.getAllCategories();
+    
     if (request.getParameter("itemId") != null && request.getAttribute("item") == null) {
         String itemId = request.getParameter("itemId");
         model.Item itemTemp = itemDAO.getItemById(itemId);
@@ -47,12 +49,18 @@
                 <div class="alert alert-danger mt-4">Item not found.</div>
                 <%
                 } else {
-                    // Default category list for the dropdown
-                    List<String> defaultCategories = new ArrayList<String>(
-                            Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
-                                    "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning",
-                                    "Bathroom Essentials", "Furniture & Décor")
-                    );
+                    // Define the default categories
+                    List<String> defaultCategories = new ArrayList<String>(Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
+                            "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning", "Bathroom Essentials", "Furniture & Décor"));
+                    List<String> mergedCategories = new ArrayList<String>(defaultCategories);
+                    // Merge the two lists, excluding duplicates and "Others"
+                    if (allCategories != null) {
+                        for (String cat : allCategories) {
+                            if (cat != null && !cat.trim().isEmpty() && !mergedCategories.contains(cat) && !"Others".equals(cat)) {
+                                mergedCategories.add(cat);
+                            }
+                        }
+                    }
                 %>
                 <form id="editItemForm" method="post" enctype="multipart/form-data" action="<%= request.getContextPath()%>/staff/EditItemsServlet" onsubmit="return validateEditItemForm();">
                     <input type="hidden" name="itemId" value="<%= item.getItemId()%>">
@@ -114,9 +122,23 @@
                     </div>
                 </form>
                 <%
-                    } // end if item exists
+                    }
                 %>
             </div>
+            
+            <!-- Loading Modal -->
+            <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center" style="background: transparent; border: none; box-shadow: none;">
+                        <div class="modal-body">
+                            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
+                            <div class="mt-3 text-white fs-5">Processing, please wait...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Loading Modal -->
+            
         </div>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>

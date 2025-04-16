@@ -194,7 +194,7 @@
                             <td><%=item.getStockQuantity()%></td>
                             <td>RM <%=String.format("%.2f", item.getPrice())%></td>
                             <td>
-                                <button class="btn btn-edit btn-sm" onclick="location.href='<%= request.getContextPath() %>/staff/ap_edit_item.jsp?itemId=<%=item.getItemId()%>'">Edit</button>
+                                <button class="btn btn-edit btn-sm" onclick="location.href = '<%= request.getContextPath()%>/staff/ap_edit_item.jsp?itemId=<%=item.getItemId()%>'">Edit</button>
                                 <button class="btn btn-view btn-sm" onclick="viewItem('<%=item.getItemId()%>')">View</button>
                             </td>
                         </tr>
@@ -364,7 +364,19 @@
                 </div>
             </div>
             <!-- /View Item Modal -->
-
+            
+            <!-- Loading Modal -->
+            <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center" style="background: transparent; border: none; box-shadow: none;">
+                        <div class="modal-body">
+                            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
+                            <div class="mt-3 text-white fs-5">Processing, please wait...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Loading Modal -->
         </div>
         <!-- /Main Content -->
 

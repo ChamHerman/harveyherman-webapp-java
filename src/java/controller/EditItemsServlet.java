@@ -189,7 +189,7 @@ public class EditItemsServlet extends HttpServlet {
 
         try {
             itemDAO.update(item);
-            
+
             request.getSession().invalidate();
             sendJsonResponse(request, response, true, "Item updated successfully.");
         } catch (IOException ex) {

@@ -14,13 +14,13 @@
     } catch (javax.naming.NamingException ne) {
         ne.printStackTrace();
     }
+    
     List<String> allCategories = itemDAO.getAllCategories();
+    
     if (request.getParameter("itemId") != null && request.getAttribute("item") == null) {
-
         String itemId = request.getParameter("itemId");
         model.Item itemTemp = itemDAO.getItemById(itemId);
         request.setAttribute("item", itemTemp);
-
     }
 %>
 
@@ -125,6 +125,20 @@
                     }
                 %>
             </div>
+            
+            <!-- Loading Modal -->
+            <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center" style="background: transparent; border: none; box-shadow: none;">
+                        <div class="modal-body">
+                            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
+                            <div class="mt-3 text-white fs-5">Processing, please wait...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Loading Modal -->
+            
         </div>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>

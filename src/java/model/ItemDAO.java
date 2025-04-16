@@ -55,7 +55,9 @@ public class ItemDAO {
         TypedQuery<Item> query = em.createNamedQuery("Item.findByItemId", Item.class);
         query.setParameter("itemId", itemId);
         try {
-            return query.getSingleResult();
+            Item item = query.getSingleResult();
+            em.refresh(item);
+            return item;
         } catch (NoResultException nre) {
             return null;
         }

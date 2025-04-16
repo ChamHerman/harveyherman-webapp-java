@@ -7,29 +7,37 @@ window.onload = function () {
 
     const messageParam = urlParams.get('message');
     if (messageParam) {
-        try {
-            const messageObj = JSON.parse(decodeURIComponent(messageParam));
-            let formattedMessage = messageObj.message;
-            // Optionally add a prefix based on success flag
-            if (messageObj.success) {
-                formattedMessage = "Success: " + formattedMessage;
-            } else {
-                formattedMessage = "Error: " + formattedMessage;
+        // Show loading modal first
+        const loadingModalElement = document.getElementById('loadingModal');
+        const loadingModal = new bootstrap.Modal(loadingModalElement);
+        loadingModal.show();
+
+        setTimeout(function () {
+            // Hide loading modal
+            loadingModal.hide();
+
+            // Prepare and show the result message modal
+            try {
+                const messageObj = JSON.parse(decodeURIComponent(messageParam));
+                let formattedMessage = messageObj.message;
+                if (messageObj.success) {
+                    formattedMessage = "Success: " + formattedMessage;
+                } else {
+                    formattedMessage = "Error: " + formattedMessage;
+                }
+                document.getElementById('itemResultMessage').textContent = formattedMessage;
+            } catch (e) {
+                document.getElementById('itemResultMessage').textContent = decodeURIComponent(messageParam);
             }
-            document.getElementById('itemResultMessage').textContent = formattedMessage;
-        } catch (e) {
-            // Fallback: show plain text if JSON parsing fails
-            document.getElementById('itemResultMessage').textContent = decodeURIComponent(messageParam);
-        }
 
-        // Show the message modal
-        const modalElement = document.getElementById('itemResultMessageModal');
-        const messageModal = new bootstrap.Modal(modalElement);
-        messageModal.show();
+            const modalElement = document.getElementById('itemResultMessageModal');
+            const messageModal = new bootstrap.Modal(modalElement);
+            messageModal.show();
 
-        // Clean the URL without the message parameter
-        urlParams.delete('message');
-        window.history.replaceState({}, document.title, window.location.pathname);
+            // Clean the URL without the message parameter
+            urlParams.delete('message');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 2000); // 2 seconds delay
     }
 
     // To show View Item Modal
@@ -84,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
             imageInput.click();
         });
     }
-    
-    // New change listener to update the preview image
+
+    // To update the preview image
     if (imageInput) {
         imageInput.addEventListener("change", function () {
             if (this.files && this.files[0]) {
@@ -113,7 +121,7 @@ document.getElementById('confirmDelete').addEventListener('click', function () {
 function viewItem(itemId) {
     var currentPath = window.location.pathname;
     console.log("viewItem clicked with itemId: " + itemId);
-    
+
     if (currentPath.indexOf('/manager/') !== -1) {
         window.location.href = contextPath + "/manager/ViewItemsServlet?itemId=" + itemId;
         console.log("Redirect URL: " + contextPath + "/manager/ViewItemsServlet?itemId=" + itemId);

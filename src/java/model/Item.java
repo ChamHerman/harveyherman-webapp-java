@@ -84,13 +84,8 @@ public class Item implements Serializable {
     @Column(name = "created_date", updatable = false, insertable = false)
     private Timestamp createdDate;
     
-    @Column(name = "updated_date", insertable = false)
+    @Column(name = "updated_date", updatable = false, insertable = false)
     private Timestamp updatedDate;
-    
-    // Optimistic locking.
-//    @Version
-//    @Column(name = "version")
-//    private int version;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<ReviewRating> reviewRatingList;
@@ -114,14 +109,6 @@ public class Item implements Serializable {
         this.price = price;
         this.stockQuantity = stockQuantity;
     }
-    
-//    public int getVersion() {
-//        return version;
-//    }
-//
-//    public void setVersion(int version) {
-//        this.version = version;
-//    }
 
     public String getItemId() {
         return itemId;
