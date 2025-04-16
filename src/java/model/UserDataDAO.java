@@ -1,42 +1,56 @@
 package model;
 
-import model.UserData;
-
+import controller.CustomIdGenerator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 
 import java.util.List;
+import javax.persistence.PersistenceContext;
 
 public class UserDataDAO {
 
-	public void create(UserData user) {
-        EntityManager em = getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            em.close();
+    @PersistenceContext(unitName = "HarveyHermanPU")
+    private EntityManager em;
+
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
+    
+    public void create(UserData user) {
+        if (user.getUserId() == null || user.getUserId().isEmpty()) {
+            String generatedId = CustomIdGenerator.generateNextId(em, "UserData", "U", 3, "userId");
+            user.setUserId(generatedId);
         }
+        em.persist(user);
+        em.flush();
+        em.refresh(user);
     }
 
+//    public void create(UserData user) {
+//        try {
+//            em.getTransaction().begin();
+//            em.persist(user);
+//            em.getTransaction().commit();
+//        } catch (Exception e) {
+//            if (em.getTransaction().isActive()) {
+//                em.getTransaction().rollback();
+//            }
+//            e.printStackTrace();
+//        } finally {
+//            em.close();
+//        }
+//    }
+
     public UserData findById(String userId) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(UserData.class, userId);
         } finally {
             em.close();
         }
     }
-    
+
     public UserData findByEmail(String email) {
-        EntityManager em = getEntityManager();
         try {
             return em.createQuery("SELECT u FROM UserData u WHERE LOWER(u.email) = LOWER(:email)", UserData.class)
                     .setParameter("email", email)
@@ -49,7 +63,6 @@ public class UserDataDAO {
     }
 
     public List<UserData> findAll() {
-        EntityManager em = getEntityManager();
         try {
             return em.createQuery("SELECT u FROM UserData u", UserData.class).getResultList();
         } finally {
@@ -58,7 +71,6 @@ public class UserDataDAO {
     }
 
     public void update(UserData userData) {
-        EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -75,7 +87,6 @@ public class UserDataDAO {
     }
 
     public void delete(String userId) {
-        EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();

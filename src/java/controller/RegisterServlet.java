@@ -1,38 +1,115 @@
 package controller;
 
-import controller.UserService;
-
+import model.UserDataDAO;
+import model.UserLoginDAO;
+import model.UserData;
+import model.UserLogin;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.ejb.EJB;
 
+@WebServlet("/user/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private UserService userService;
-
-    @Override
-    public void init() {
-        userService = new UserService();
-    }
+    
+    @EJB
+    private UserDataDAO userDataDAO;
+    @EJB
+    private UserLoginDAO userLoginDAO;
+    private static final long serialVersionUID = 1L;
+    private String errorMsg = "";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Collect form inputs
+System.out.println("RegisterServlet: doPost method called"); 
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String contactNumber = request.getParameter("contact_number");
         String address = request.getParameter("address");
         String username = request.getParameter("username");
-        String birthdate = request.getParameter("birthdate");
+        String birthdateStr = request.getParameter("birthdate");
         String password = request.getParameter("password");
+        String challengeQuestion = request.getParameter("challenge_question");
+        String answer = request.getParameter("answer");
 
-        // Register user
-        boolean registered = userService.registerUser(fullName, email, contactNumber, address, username, birthdate, password);
+        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, password, challengeQuestion, answer);
 
-        if (registered) {
-            response.sendRedirect("success.jsp"); // Redirect to success page
+        if (success) {
+            response.sendRedirect(request.getContextPath() + "/user/success.jsp");
         } else {
-            response.getWriter().println("Registration failed: Duplicate email or username.");
+            request.setAttribute("errorMessage",errorMsg);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/user/register.jsp");
+            dispatcher.forward(request, response);
         }
+    }
+
+    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String password, String challengeQuestion, String answer) {
+        try {
+            // Check for duplicate email
+            if (userDataDAO.findByEmail(email) != null) {
+                errorMsg = "Registration failed: Duplicate Email Used!";
+                return false;
+            }
+
+            // Check for duplicate username
+            if (userLoginDAO.findByUsername(username) != null) {
+                errorMsg = "Registration failed: Duplicate Username!";
+                return false;
+            }
+
+            Date birthdate = parseBirthdate(birthdateStr);
+            if (birthdate == null) {
+                return false;
+            }
+
+            UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate);
+            UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);
+
+            userDataDAO.create(user);
+            userLoginDAO.create(userLogin);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private Date parseBirthdate(String birthdateStr) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.parse(birthdateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private UserData createUserData(String userId, String fullName, String email, String contactNumber, String address, Date birthdate) {
+        UserData user = new UserData();
+        user.setUserId(userId);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setContactNumber(contactNumber);
+        user.setAddress(address);
+        user.setBirthDate(birthdate);
+        user.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        return user;
+    }
+
+    private UserLogin createUserLogin(String loginId, String username, String password, UserData user, String challengeQuestion, String answer) {
+        UserLogin userLogin = new UserLogin();
+        userLogin.setLoginId(loginId);
+        userLogin.setUsername(username);
+        userLogin.setPassword(password);
+        userLogin.setUserId(user);
+        userLogin.setChallengeQuestion(challengeQuestion);
+        userLogin.setAnswer(answer);
+        return userLogin;
     }
 }

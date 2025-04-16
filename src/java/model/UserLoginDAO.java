@@ -1,36 +1,36 @@
 package model;
 
-import model.UserLogin;
-
+import controller.CustomIdGenerator;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
 public class UserLoginDAO {
 
-    public void create(UserLogin userLogin) {
-        EntityManager em = getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(userLogin);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
+    @PersistenceContext(unitName = "HarveyHermanPU")
+    private EntityManager em;
+
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
     }
-    
+
+    public void create(UserLogin userLogin) {
+        if (userLogin.getLoginId() == null || userLogin.getLoginId().isEmpty()) {
+            String generatedId = CustomIdGenerator.generateNextId(em, "UserLogin", "L", 3, "loginId");
+            userLogin.setLoginId(generatedId);
+        }
+        em.persist(userLogin);
+        em.flush();
+        em.refresh(userLogin);
+    }
+
     public UserLogin findByUsername(String username) {
-        EntityManager em = getEntityManager();
         try {
             return em.createQuery("SELECT u FROM UserLogin u WHERE LOWER(u.username) = LOWER(:username)", UserLogin.class)
                     .setParameter("username", username)
                     .getSingleResult();
         } catch (NoResultException e) {
-            return null; // Return null if no matching username
+            return null;
         } finally {
             em.close();
         }

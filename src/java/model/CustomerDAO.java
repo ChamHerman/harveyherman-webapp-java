@@ -21,7 +21,7 @@ public class CustomerDAO{
         	while(rs.next()) {
         		UserData ud = new UserData();
         		ud.setUserId(rs.getString("user_id"));
-        		ud.setFullname(rs.getString("fullname"));
+        		ud.setFullName(rs.getString("fullname"));
         		ud.setEmail(rs.getString("email"));
         		ud.setContactNumber(rs.getString("contact_number"));
         		ud.setAddress(rs.getString("address"));
