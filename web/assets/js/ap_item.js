@@ -37,7 +37,7 @@ window.onload = function () {
             // Clean the URL without the message parameter
             urlParams.delete('message');
             window.history.replaceState({}, document.title, window.location.pathname);
-        }, 2000); // 2 seconds delay
+        }, 500); // 0.5 second delay
     }
 
     // To show View Item Modal
@@ -73,7 +73,6 @@ window.onload = function () {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Only add clearSearch listener if element exists
     var clearSearch = document.getElementById('clearSearch');
     if (clearSearch) {
         clearSearch.addEventListener('click', function () {
@@ -83,28 +82,71 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    
+    var addImageUploadArea = document.getElementById("addImageUploadArea");
+    var addImageInput = document.getElementById("addImageInput");
+    var addItemImagePreview = document.getElementById("addItemImagePreview");
+    var addUploadOverlay = document.getElementById("addUploadOverlay");
 
-    // Add click event for image selection if both elements exist
-    var imageContainer = document.getElementById("imageContainer");
-    var imageInput = document.getElementById("imageInput");
-    if (imageContainer && imageInput) {
-        imageContainer.addEventListener("click", function () {
-            imageInput.click();
+    if (addImageUploadArea && addImageInput && addItemImagePreview && addUploadOverlay) {
+        // Click area triggers file input
+        addImageUploadArea.addEventListener("click", function () {
+            addImageInput.click();
         });
-    }
 
-    // To update the preview image
-    if (imageInput) {
-        imageInput.addEventListener("change", function () {
+        // Hover overlay
+        addImageUploadArea.addEventListener("mouseenter", function () {
+            addUploadOverlay.style.opacity = "1";
+        });
+        addImageUploadArea.addEventListener("mouseleave", function () {
+            addUploadOverlay.style.opacity = "0";
+        });
+
+        // Preview new image
+        addImageInput.addEventListener("change", function () {
             if (this.files && this.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    document.getElementById("itemImagePreview").src = e.target.result;
+                    addItemImagePreview.src = e.target.result;
                 };
                 reader.readAsDataURL(this.files[0]);
             }
         });
     }
+
+    var imageUploadArea = document.getElementById("imageUploadArea");
+    var imageInput = document.getElementById("imageInput");
+    var newImagePreview = document.getElementById("newItemImagePreview");
+    var uploadHint = document.getElementById("uploadHint");
+
+    if (imageUploadArea && imageInput && newImagePreview) {
+        // Click area triggers file input
+        imageUploadArea.addEventListener("click", function () {
+            imageInput.click();
+        });
+
+        // Hover effect for hint
+        imageUploadArea.addEventListener("mouseenter", function () {
+            uploadHint.textContent = "Click to select a new image";
+        });
+        imageUploadArea.addEventListener("mouseleave", function () {
+            uploadHint.textContent = "Click here to upload new image";
+        });
+
+        // Preview new image
+        imageInput.addEventListener("change", function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    newImagePreview.src = e.target.result;
+                    newImagePreview.style.opacity = "1";
+                    uploadHint.textContent = "New image selected";
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+    
 });
 
 var deleteItemId;
@@ -177,8 +219,8 @@ function validateAddItemForm() {
     }
 
     // Validate that an image is uploaded
-    var imageInput = document.getElementById("image");
-    if (imageInput.files.length === 0) {
+    var imageInput = document.getElementById("addImageInput");
+    if (!imageInput || imageInput.files.length === 0) {
         alert("Please upload an image.");
         return false;
     }

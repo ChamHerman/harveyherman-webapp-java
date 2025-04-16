@@ -282,8 +282,7 @@ body {
 
 #viewItemModal .modal-title {
     font-size: 1.5rem;
-    color:
-        #343a40;
+    color: var(--btn-text)
 }
 
 /* Modal body styling */
@@ -323,4 +322,208 @@ body {
     color: #212529;
     text-align: left;
     padding-left: 1rem;
+}
+
+/* --- Unified Image Upload Area Styling --- */
+
+/* Container for image upload (add & edit) */
+.image-upload-area {
+    position: relative;
+    cursor: pointer;
+    max-width: 220px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Preview image styling */
+.image-upload-area img {
+    max-height: 200px;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #fff;
+    transition: opacity 0.2s;
+}
+
+/* Overlay for hover effect */
+.image-upload-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 2;
+}
+
+.image-upload-area:hover .image-upload-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* For edit: comparison layout */
+.image-compare-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 1rem;
+}
+
+.image-compare-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-compare-label {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #888;
+}
+
+.image-compare-arrow {
+    font-size: 2rem;
+    color: #888;
+    margin: 0 12px;
+}
+
+#itemResultMessage .item-result-message {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin: 1.5rem 0;
+    letter-spacing: 0.5px;
+}
+
+/* --- Pagination Styling --- */
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.25rem;
+}
+.pagination .page-item {
+    margin: 0 2px;
+}
+.pagination .page-link {
+    color: var(--btn-text);
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 6px 14px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+}
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+    text-decoration: none;
+}
+.pagination .page-item.active .page-link {
+    background-color: #90ee90; /* Light green */
+    color: black;
+    border-color: #90ee90;
+}
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* Dark mode for pagination */
+.dark-mode .pagination .page-link {
+    color: var(--btn-text);
+    background-color: #222b36;
+    border: 1px solid #374151;
+}
+.dark-mode .pagination .page-link:hover {
+    background-color: #374151;
+    color: #fff;
+}
+.dark-mode .pagination .page-item.active .page-link {
+    background-color: #006400; /* Dark green */
+    color: #fff;
+    border-color: #006400;
+}
+.dark-mode .pagination .page-item.disabled .page-link {
+    color: #888;
+    background-color: #222b36;
+    border-color: #374151;
+}
+
+/* --- View Item Modal Dark Mode --- */
+.dark-mode #viewItemModal .modal-content {
+    color: #e0e0e0;
+}
+.dark-mode #viewItemModal .modal-header {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+}
+.dark-mode #viewItemModal .modal-title {
+    color: var(--btn-text)
+}
+.dark-mode #viewItemModal .modal-body .col-sm-4 {
+    color: #b0b0b0;
+}
+.dark-mode #viewItemModal .modal-body .col-sm-8 {
+    color: #e0e0e0;
+}
+.dark-mode #viewItemModal img {
+    border-color: #374151;
+}
+
+/* --- Item Result Message Modal Styling --- */
+#itemResultMessageModal .modal-content {
+    background-color: var(--bg-color);
+    color: var(--btn-text);
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+#itemResultMessageModal .modal-header {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+#itemResultMessageModal .modal-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+#itemResultMessageModal .modal-body {
+    padding: 2rem 1.5rem;
+}
+#itemResultMessageModal .item-result-message {
+    font-size: 1.0rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--btn-text);
+    margin: 1.5rem 0;
+    letter-spacing: 0.5px;
+}
+
+/* Dark mode for Item Result Message Modal */
+.dark-mode #itemResultMessageModal .modal-content {
+    color: var(--btn-text);
+}
+.dark-mode #itemResultMessageModal .modal-header {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+}
+.dark-mode #itemResultMessageModal .modal-title {
+    color: var(--btn-text);
+}
+.dark-mode #itemResultMessageModal .item-result-message {
+    color: var(--btn-text);
 }

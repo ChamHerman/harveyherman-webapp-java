@@ -44,33 +44,74 @@
                     long categoriesCount = itemDAO.getCategoryCount();
                     List<String> allCategories = itemDAO.getAllCategories();
 
-                    // Retrieve filter parameters from request
+                    // Clear filters if requested
+                    if ("1".equals(request.getParameter("clearFilter"))) {
+                        session.removeAttribute("categoryFilter");
+                        session.removeAttribute("stockFilter");
+                        session.removeAttribute("rowsFilter");
+                        session.removeAttribute("pageFilter");
+                        session.removeAttribute("sortFilter");
+                        session.removeAttribute("orderFilter");
+                    }
+
+                    String paramSort = request.getParameter("sort");
+                    String paramOrder = request.getParameter("order");
+
+                    if (paramSort != null) {
+                        session.setAttribute("sortFilter", paramSort);
+                    }
+                    if (paramOrder != null) {
+                        session.setAttribute("orderFilter", paramOrder);
+                    }
+
+                    String sessionSort = (String) session.getAttribute("sortFilter");
+                    String sessionOrder = (String) session.getAttribute("orderFilter");
+
+                    if (sessionSort == null) {
+                        sessionSort = "createdDate"; // default sort
+                    }
+                    if (sessionOrder == null) {
+                        sessionOrder = "desc";      // default order
+                    }
+                    // Get or set session filter values
                     String paramCategory = request.getParameter("category");
                     String paramStock = request.getParameter("stock");
-                    String paramSearch = request.getParameter("search");
                     String paramRows = request.getParameter("rows");
 
-                    // Set default values on first load
-                    if (paramCategory == null) {
-                        paramCategory = "All";
+                    // Only update session if user changed filter (i.e., form submitted)
+                    if (paramCategory != null) {
+                        session.setAttribute("categoryFilter", paramCategory);
                     }
-                    if (paramStock == null) {
-                        paramStock = "All";
+                    if (paramStock != null) {
+                        session.setAttribute("stockFilter", paramStock);
                     }
+                    if (paramRows != null) {
+                        session.setAttribute("rowsFilter", paramRows);
+                    }
+
+                    // Use session value if available, else default
+                    String sessionCategory = (String) session.getAttribute("categoryFilter");
+                    String sessionStock = (String) session.getAttribute("stockFilter");
+                    String sessionRows = (String) session.getAttribute("rowsFilter");
+
+                    if (sessionCategory == null) {
+                        sessionCategory = "All";
+                    }
+                    if (sessionStock == null) {
+                        sessionStock = "All";
+                    }
+                    if (sessionRows == null) {
+                        sessionRows = "15";
+                    }
+
+                    // For search, do not persist
+                    String paramSearch = request.getParameter("search");
                     if (paramSearch == null) {
                         paramSearch = "";
                     }
-                    if (paramRows == null) {
-                        paramRows = "15";
-                    }
-                    int rowCount = 15;
-                    try {
-                        rowCount = Integer.parseInt(paramRows);
-                    } catch (Exception e) {
-                    }
 
                     // Retrieve filtered items from DAO using category and stock
-                    List<Item> filteredItems = itemDAO.getFilteredItemsByCategoryAndStock(paramCategory, paramStock);
+                    List<Item> filteredItems = itemDAO.getFilteredItemsByCategoryAndStock(sessionCategory, sessionStock);
                     // Apply search filter if provided
                     if (paramSearch != null && !paramSearch.trim().isEmpty()) {
                         String searchLower = paramSearch.toLowerCase();
@@ -84,18 +125,66 @@
                     }
 
                     if (filteredItems != null) {
+                        final String sortField = sessionSort;
+                        final String sortOrder = sessionOrder;
+
                         Collections.sort(filteredItems, new Comparator<Item>() {
                             @Override
                             public int compare(Item i1, Item i2) {
-                                if (i1.getCreatedDate() == null || i2.getCreatedDate() == null) {
-                                    return 0;
+                                int result = 0;
+                                if ("name".equals(sortField)) {
+                                    result = i1.getName().compareToIgnoreCase(i2.getName());
+                                } else if ("price".equals(sortField)) {
+                                    result = i1.getPrice().compareTo(i2.getPrice());
+                                } else if ("stock".equals(sortField)) {
+                                    result = Integer.compare(i1.getStockQuantity(), i2.getStockQuantity());
+                                } else { // "createdDate" or default
+                                    if (i1.getCreatedDate() == null || i2.getCreatedDate() == null) {
+                                        return 0;
+                                    }
+                                    result = i1.getCreatedDate().compareTo(i2.getCreatedDate());
                                 }
-                                return i2.getCreatedDate().compareTo(i1.getCreatedDate());
+                                return "desc".equals(sortOrder) ? -result : result;
                             }
                         });
                     }
-                    // Limit number of rows displayed
-                    List<Item> limitedItems = filteredItems.size() > rowCount ? filteredItems.subList(0, rowCount) : filteredItems;
+
+                    String paramPage = request.getParameter("page");
+                    if (paramPage != null) {
+                        session.setAttribute("pageFilter", paramPage);
+                    }
+                    String sessionPage = (String) session.getAttribute("pageFilter");
+                    int currentPage = 1;
+                    try {
+                        if (sessionPage != null) {
+                            currentPage = Integer.parseInt(sessionPage);
+                        }
+                    } catch (Exception e) {
+                        currentPage = 1;
+                    }
+
+                    int rowCount = Integer.parseInt(sessionRows);
+                    int totalItemsCount = filteredItems.size();
+                    int totalPages = (int) Math.ceil((double) totalItemsCount / rowCount);
+
+                    // Clamp currentPage
+                    if (currentPage < 1) {
+                        currentPage = 1;
+                    }
+                    if (currentPage > totalPages && totalPages > 0) {
+                        currentPage = totalPages;
+                    }
+                    if (totalPages == 0) {
+                        currentPage = 1; // If no items, stay on page 1
+                    }
+                    int startIdx = (currentPage - 1) * rowCount;
+                    if (startIdx < 0) {
+                        startIdx = 0;
+                    }
+                    int endIdx = Math.min(startIdx + rowCount, totalItemsCount);
+
+                    // Avoid subList errors if no items
+                    List<Item> limitedItems = (startIdx < endIdx) ? filteredItems.subList(startIdx, endIdx) : new ArrayList<Item>();
                 %>
                 <!-- Dashboard Overview Section -->
                 <div class="dashboard-summary">
@@ -112,35 +201,36 @@
                         <!-- Row 1 -->
                         <div class="row mb-3">
                             <div class="col-md-3">
+                                <!-- Category Filter -->
                                 <label>Category:</label>
                                 <select id="categoryFilter" name="category" class="form-select">
-                                    <option value="All" <%= "All".equals(paramCategory) ? "selected" : ""%>>All</option>
+                                    <option value="All" <%= "All".equals(sessionCategory) ? "selected" : ""%>>All</option>
                                     <% for (String category : allCategories) {%>
-                                    <option value="<%= category%>" <%= category.equals(paramCategory) ? "selected" : ""%>>
-                                        <%= category%>
-                                    </option>
+                                    <option value="<%= category%>" <%= category.equals(sessionCategory) ? "selected" : ""%>><%= category%></option>
                                     <% }%>
                                 </select>
                             </div>
                             <div class="col-md-3">
+                                <!-- Stock Filter -->
                                 <label>Stock:</label>
                                 <select id="stockFilter" name="stock" class="form-select">
-                                    <option value="All" <%= "All".equals(paramStock) ? "selected" : ""%>>All</option>
-                                    <option value="InStock" <%= "InStock".equals(paramStock) ? "selected" : ""%>>In Stock</option>
-                                    <option value="OutOfStock" <%= "OutOfStock".equals(paramStock) ? "selected" : ""%>>Out of Stock</option>
+                                    <option value="All" <%= "All".equals(sessionStock) ? "selected" : ""%>>All</option>
+                                    <option value="InStock" <%= "InStock".equals(sessionStock) ? "selected" : ""%>>In Stock</option>
+                                    <option value="OutOfStock" <%= "OutOfStock".equals(sessionStock) ? "selected" : ""%>>Out of Stock</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
+                                <!-- Rows Filter -->
                                 <label>Show Rows:</label>
                                 <select id="rowCount" name="rows" class="form-select">
-                                    <option value="15" <%= "15".equals(paramRows) ? "selected" : ""%>>15</option>
-                                    <option value="30" <%= "30".equals(paramRows) ? "selected" : ""%>>30</option>
-                                    <option value="50" <%= "50".equals(paramRows) ? "selected" : ""%>>50</option>
+                                    <option value="15" <%= "15".equals(sessionRows) ? "selected" : ""%>>15</option>
+                                    <option value="30" <%= "30".equals(sessionRows) ? "selected" : ""%>>30</option>
+                                    <option value="50" <%= "50".equals(sessionRows) ? "selected" : ""%>>50</option>
                                 </select>
                             </div>
                             <div class="col-md-3 d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary me-2">Apply Filter</button>
-                                <a href="ap_item.jsp" class="btn btn-outline-secondary">Clear Filter</a>
+                                <a href="ap_item.jsp?clearFilter=1" class="btn btn-outline-secondary">Clear Filter</a>
                             </div>
                         </div>
                         <!-- Row 2 -->
@@ -169,7 +259,14 @@
                         <tr>
                             <th>No</th>
                             <th>ID</th>
-                            <th>Item Name</th>
+                            <th>
+                                <a href="ap_item.jsp?sort=name&order=<%= "name".equals(sessionSort) && "asc".equals(sessionOrder) ? "desc" : "asc"%>">
+                                    Item Name
+                                    <% if ("name".equals(sessionSort)) {%>
+                                    <%= "asc".equals(sessionOrder) ? "↑" : "↓"%>
+                                    <% } %>
+                                </a>
+                            </th>
                             <th>Category</th>
                             <th>Stock Quantity</th>
                             <th>Price</th>
@@ -206,6 +303,25 @@
                     </tbody>
                 </table>
                 <!-- /Item Table -->
+                <% if (totalPages > 1) {%>
+                <div class="d-flex justify-content-end align-items-center mt-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
+                                <a class="page-link" href="ap_item.jsp?page=<%= currentPage - 1%>" tabindex="-1">&laquo; Prev</a>
+                            </li>
+                            <% for (int i = 1; i <= totalPages; i++) {%>
+                            <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
+                                <a class="page-link" href="ap_item.jsp?page=<%= i%>"><%= i%></a>
+                            </li>
+                            <% }%>
+                            <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
+                                <a class="page-link" href="ap_item.jsp?page=<%= currentPage + 1%>">Next &raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <% }%>
             </div>
             <!-- /Container -->
 
@@ -233,16 +349,24 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <form id="addItemForm" method="post" enctype="multipart/form-data" action="AddItemsServlet"
-                              onsubmit="return validateAddItemForm();">
+                              onsubmit="return validateAddItemForm();" autocomplete="off">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                <!-- Image Upload -->
+                                <div class="mb-3 text-center" id="addImageUploadArea" style="position:relative; cursor:pointer; max-width:220px; margin:auto;">
+                                    <img id="addItemImagePreview" src="<%= request.getContextPath()%>/assets/images/default.svg" alt="Item Image" class="img-fluid rounded border" style="max-height:200px;">
+                                    <div id="addUploadOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); color:#fff; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s;">
+                                        <span>Click to upload image</span>
+                                    </div>
+                                    <input type="file" class="form-control d-none" name="image" id="addImageInput" accept=".jpg, .jpeg, .png, .webp, .svg">
+                                </div>
                                 <!-- Item Name -->
                                 <div class="mb-3">
                                     <label class="form-label">Item Name</label> <input type="text" class="form-control"
-                                                                                       name="itemName" placeholder="Type item name..." required>
+                                                                                       name="itemName" placeholder="Type item name..." autocomplete="off" required>
                                 </div>
                                 <!-- Description -->
                                 <div class="mb-3">
@@ -251,13 +375,13 @@
                                 </div>
                                 <!-- Price -->
                                 <div class="mb-3">
-                                    <label class="form-label">Price</label> <input type="number" step="0.01" class="form-control"
-                                                                                   name="price" id="price" placeholder="1 - ?" required>
+                                    <label class="form-label">Price <span class="text-muted">(Min: 1.00, Max: 9999999.00)</span></label>
+                                    <input type="number" step="0.01" min="1" max="9999999" class="form-control" name="price" id="price" placeholder="Enter price (1.00 - 9999999.00)" required>
                                 </div>
                                 <!-- Stock Quantity -->
                                 <div class="mb-3">
-                                    <label class="form-label">Stock Quantity</label> <input type="number" class="form-control"
-                                                                                            name="stockQuantity" id="stockQuantity" placeholder="1 - ?" required>
+                                    <label class="form-label">Stock Quantity <span class="text-muted">(Min: 1, Max: 9999999)</span></label>
+                                    <input type="number" step="1" min="1" max="9999999" class="form-control" name="stockQuantity" id="stockQuantity" placeholder="Enter stock (1 - 9999999)" required>
                                 </div>
                                 <!-- Category -->
                                 <div class="mb-3">
@@ -284,14 +408,10 @@
                                         <option value="Others">Others</option>
                                     </select>
                                 </div>
+                                <!-- Custom Category -->
                                 <div class="mb-3" id="customCategoryDiv" style="display: none;">
-                                    <label class="form-label">Custom Category</label> <input type="text" class="form-control"
-                                                                                             id="customCategory" name="customCategory" placeholder="Type custom category...">
-                                </div>
-                                <!-- Image Upload -->
-                                <div class="mb-3">
-                                    <label class="form-label">Image</label>
-                                    <input type="file" class="form-control text-center file-input" name="image" accept=".jpg, .jpeg, .png, .webp, .svg" required>
+                                    <label class="form-label">Custom Category</label>
+                                    <input type="text" class="form-control" id="customCategory" name="customCategory" placeholder="Type custom category..." autocomplete="off">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -364,7 +484,7 @@
                 </div>
             </div>
             <!-- /View Item Modal -->
-            
+
             <!-- Loading Modal -->
             <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered">

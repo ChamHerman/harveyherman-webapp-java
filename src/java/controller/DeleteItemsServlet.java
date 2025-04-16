@@ -71,8 +71,7 @@ public class DeleteItemsServlet extends HttpServlet {
                 }
             }
             itemDAO.delete(itemId);
-            
-            request.getSession().invalidate();
+           
             sendJsonResponse(request, response, true, "Item deleted successfully.");
         } catch (IOException | ServletException ex) {
             sendJsonResponse(request, response, false, "Item failed to delete: " + ex.getMessage());

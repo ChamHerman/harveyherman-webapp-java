@@ -14,9 +14,9 @@
     } catch (javax.naming.NamingException ne) {
         ne.printStackTrace();
     }
-    
+
     List<String> allCategories = itemDAO.getAllCategories();
-    
+
     if (request.getParameter("itemId") != null && request.getAttribute("item") == null) {
         String itemId = request.getParameter("itemId");
         model.Item itemTemp = itemDAO.getItemById(itemId);
@@ -64,10 +64,30 @@
                 %>
                 <form id="editItemForm" method="post" enctype="multipart/form-data" action="<%= request.getContextPath()%>/manager/EditItemsServlet" onsubmit="return validateEditItemForm();">
                     <input type="hidden" name="itemId" value="<%= item.getItemId()%>">
+                    <!-- Show Item ID above the form -->
+                    <div class="mb-3">
+                        <label class="form-label">Editing Item ID: <strong><%= item.getItemId()%></strong></label>
+                    </div>
+                    <!-- Image Upload & Comparison -->
+                    <div class="mb-3 d-flex align-items-center justify-content-center" id="imageUploadCompare">
+                        <!-- Original Image -->
+                        <div class="text-center me-3">
+                            <img id="originalItemImage" src="<%= request.getContextPath()%>/assets/<%= item.getImageUrl() != null ? item.getImageUrl() : "images/default.svg"%>" alt="Original Image" class="img-fluid rounded border" style="max-height:200px;">
+                            <div class="small text-muted mt-2">Current Image</div>
+                        </div>
+                        <!-- Arrow -->
+                        <div class="mx-3" style="font-size:2rem;">&#8594;</div>
+                        <!-- New Image Upload -->
+                        <div class="text-center ms-3" id="imageUploadArea" style="cursor:pointer;">
+                            <img id="newItemImagePreview" src="<%= request.getContextPath()%>/assets/<%= item.getImageUrl() != null ? item.getImageUrl() : "images/default.svg"%>" alt="New Image" class="img-fluid rounded border" style="max-height:200px; opacity:0.7;">
+                            <div class="small text-primary mt-2" id="uploadHint">Click here to upload new image</div>
+                            <input type="file" class="form-control d-none" name="image" id="imageInput" accept=".jpg, .jpeg, .png, .webp, .svg">
+                        </div>
+                    </div>
                     <!-- Item Name -->
                     <div class="mb-3">
                         <label class="form-label">Item Name</label>
-                        <input type="text" class="form-control" name="itemName" value="<%= item.getName()%>" required>
+                        <input type="text" class="form-control" name="itemName" value="<%= item.getName()%>" autocomplete="off" required>
                     </div>
                     <!-- Description -->
                     <div class="mb-3">
@@ -76,13 +96,13 @@
                     </div>
                     <!-- Price -->
                     <div class="mb-3">
-                        <label class="form-label">Price</label>
-                        <input type="number" step="0.01" class="form-control" id="price" name="price" value=<%= item.getPrice()%> required>
+                        <label class="form-label">Price <span class="text-muted">(Min: 1.00, Max: 9999999.00)</span></label>
+                        <input type="number" step="0.01" min="1" max="9999999" class="form-control" id="price" name="price" value="<%= item.getPrice()%>" placeholder="Enter price (1.00 - 9999999.00)" required>
                     </div>
                     <!-- Stock Quantity -->
                     <div class="mb-3">
-                        <label class="form-label">Stock Quantity</label>
-                        <input type="number" step="1" class="form-control" id="stockQuantity" name="stockQuantity" value=<%= item.getStockQuantity()%> required>
+                        <label class="form-label">Stock Quantity <span class="text-muted">(Min: 1, Max: 9999999)</span></label>
+                        <input type="number" step="1" min="1" max="9999999" class="form-control" id="stockQuantity" name="stockQuantity" value="<%= item.getStockQuantity()%>" placeholder="Enter stock (1 - 9999999)" required>
                     </div>
                     <!-- Category -->
                     <div class="mb-3">
@@ -104,16 +124,7 @@
                     <!-- Custom Category -->
                     <div class="mb-3" id="customCategoryDiv" style="display: <%= othersSelected.equals("selected") ? "block" : "none"%>;">
                         <label class="form-label">Custom Category</label>
-                        <input type="text" class="form-control" id="customCategory" name="customCategory" value="<%= othersSelected.equals("selected") ? item.getCategory() : ""%>">
-                    </div>
-                    <!-- Picture -->
-                    <div class="mb-3">
-                        <label class="form-label">Picture</label>
-                        <div class="mb-2" id="imageContainer" style="cursor:pointer;">
-                            <img id="itemImagePreview" src="<%= request.getContextPath()%>/assets/<%= item.getImageUrl() != null ? item.getImageUrl() : "images/default.png"%>" alt="Item Image" class="img-fluid rounded border" style="max-height:200px;">
-                            <small class="form-text text-muted">Click image to select a new one.</small>
-                        </div>
-                        <input type="file" class="form-control d-none" name="image" id="imageInput" accept=".jpg, .jpeg, .png, .webp, .svg">
+                        <input type="text" class="form-control" id="customCategory" name="customCategory" value="<%= othersSelected.equals("selected") ? item.getCategory() : ""%>" autocomplete="off">
                     </div>
                     <!-- Buttons -->
                     <div class="mb-3">
@@ -125,20 +136,7 @@
                     }
                 %>
             </div>
-            
-            <!-- Loading Modal -->
-            <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content text-center" style="background: transparent; border: none; box-shadow: none;">
-                        <div class="modal-body">
-                            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
-                            <div class="mt-3 text-white fs-5">Processing, please wait...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Loading Modal -->
-            
+
         </div>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>

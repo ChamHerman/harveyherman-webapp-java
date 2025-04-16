@@ -181,7 +181,6 @@ public class AddItemsServlet extends HttpServlet {
 
             itemDAO.create(item);
             
-            request.getSession().invalidate();
             sendJsonResponse(request, response, true, "Item added successfully.");
         } catch (IOException e) {
             sendJsonResponse(request, response, false, "Item failed to add.");
