@@ -1,4 +1,4 @@
-<!-- For Staff -->
+<!-- For Manager -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.ArrayList" %>
@@ -16,9 +16,11 @@
     }
     List<String> allCategories = itemDAO.getAllCategories();
     if (request.getParameter("itemId") != null && request.getAttribute("item") == null) {
+
         String itemId = request.getParameter("itemId");
         model.Item itemTemp = itemDAO.getItemById(itemId);
         request.setAttribute("item", itemTemp);
+
     }
 %>
 
@@ -47,14 +49,20 @@
                 <div class="alert alert-danger mt-4">Item not found.</div>
                 <%
                 } else {
-                    // Default category list for the dropdown
-                    List<String> defaultCategories = new ArrayList<String>(
-                            Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
-                                    "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning",
-                                    "Bathroom Essentials", "Furniture & Décor")
-                    );
+                    // Define the default categories
+                    List<String> defaultCategories = new ArrayList<String>(Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
+                            "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning", "Bathroom Essentials", "Furniture & Décor"));
+                    List<String> mergedCategories = new ArrayList<String>(defaultCategories);
+                    // Merge the two lists, excluding duplicates and "Others"
+                    if (allCategories != null) {
+                        for (String cat : allCategories) {
+                            if (cat != null && !cat.trim().isEmpty() && !mergedCategories.contains(cat) && !"Others".equals(cat)) {
+                                mergedCategories.add(cat);
+                            }
+                        }
+                    }
                 %>
-                <form id="editItemForm" method="post" enctype="multipart/form-data" action="<%= request.getContextPath()%>/staff/EditItemsServlet" onsubmit="return validateEditItemForm();">
+                <form id="editItemForm" method="post" enctype="multipart/form-data" action="<%= request.getContextPath()%>/manager/EditItemsServlet" onsubmit="return validateEditItemForm();">
                     <input type="hidden" name="itemId" value="<%= item.getItemId()%>">
                     <!-- Item Name -->
                     <div class="mb-3">
@@ -110,11 +118,11 @@
                     <!-- Buttons -->
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <a href="<%= request.getContextPath()%>/staff/ap_item.jsp" class="btn btn-secondary ms-2">Cancel</a>
+                        <a href="<%= request.getContextPath()%>/manager/ap_item.jsp" class="btn btn-secondary ms-2">Cancel</a>
                     </div>
                 </form>
                 <%
-                    } // end if item exists
+                    }
                 %>
             </div>
         </div>

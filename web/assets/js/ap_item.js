@@ -4,7 +4,7 @@
 window.onload = function () {
     // Define urlParams to retrieve query parameters
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     const messageParam = urlParams.get('message');
     if (messageParam) {
         try {
@@ -21,7 +21,7 @@ window.onload = function () {
             // Fallback: show plain text if JSON parsing fails
             document.getElementById('itemResultMessage').textContent = decodeURIComponent(messageParam);
         }
-        
+
         // Show the message modal
         const modalElement = document.getElementById('itemResultMessageModal');
         const messageModal = new bootstrap.Modal(modalElement);
@@ -31,7 +31,7 @@ window.onload = function () {
         urlParams.delete('message');
         window.history.replaceState({}, document.title, window.location.pathname);
     }
-    
+
     // To show View Item Modal
     const viewDataParam = urlParams.get('viewData');
     if (viewDataParam) {
@@ -64,8 +64,39 @@ window.onload = function () {
     }
 };
 
-document.getElementById('clearSearch').addEventListener('click', function () {
-    document.getElementById('searchInput').value = '';
+document.addEventListener('DOMContentLoaded', function () {
+    // Only add clearSearch listener if element exists
+    var clearSearch = document.getElementById('clearSearch');
+    if (clearSearch) {
+        clearSearch.addEventListener('click', function () {
+            var searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+        });
+    }
+
+    // Add click event for image selection if both elements exist
+    var imageContainer = document.getElementById("imageContainer");
+    var imageInput = document.getElementById("imageInput");
+    if (imageContainer && imageInput) {
+        imageContainer.addEventListener("click", function () {
+            imageInput.click();
+        });
+    }
+    
+    // New change listener to update the preview image
+    if (imageInput) {
+        imageInput.addEventListener("change", function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("itemImagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
 });
 
 var deleteItemId;
@@ -80,9 +111,16 @@ document.getElementById('confirmDelete').addEventListener('click', function () {
 });
 
 function viewItem(itemId) {
+    var currentPath = window.location.pathname;
     console.log("viewItem clicked with itemId: " + itemId);
-    console.log("Redirect URL: " + contextPath + "/manager/ViewItemsServlet?itemId=" + itemId);
-    window.location.href = contextPath + "/manager/ViewItemsServlet?itemId=" + itemId;
+    
+    if (currentPath.indexOf('/manager/') !== -1) {
+        window.location.href = contextPath + "/manager/ViewItemsServlet?itemId=" + itemId;
+        console.log("Redirect URL: " + contextPath + "/manager/ViewItemsServlet?itemId=" + itemId);
+    } else {
+        window.location.href = contextPath + "/staff/ViewItemsServlet?itemId=" + itemId;
+        console.log("Redirect URL: " + contextPath + "/staff/ViewItemsServlet?itemId=" + itemId);
+    }
 }
 
 // Function to toggle the display of custom category field when "Others" is selected
@@ -103,7 +141,7 @@ function validateAddItemForm() {
     var stockQuantity = parseInt(document.getElementById("stockQuantity").value, 10);
     var maxPrice = 9999999.00;
     var maxStock = 9999999;
-    
+
     if (isNaN(price) || price < 1) {
         alert("Price must be 1 or above.");
         return false;
@@ -129,14 +167,52 @@ function validateAddItemForm() {
         alert("Please select a category or enter a custom category if 'Others' is selected.");
         return false;
     }
-    
+
     // Validate that an image is uploaded
     var imageInput = document.getElementById("image");
     if (imageInput.files.length === 0) {
         alert("Please upload an image.");
         return false;
     }
-    
+
     return true;
 }
 
+// Function to validate edit existing item form before submission
+function validateEditItemForm() {
+    var priceElem = document.getElementById("price");
+    var stockElem = document.getElementById("stockQuantity");
+    var price = parseFloat(priceElem.value);
+    var stockQuantity = parseInt(stockElem.value, 10);
+    var maxPrice = 9999999.00;
+    var maxStock = 9999999;
+
+    if (isNaN(price) || price < 1) {
+        alert("Price must be 1 or above.");
+        return false;
+    }
+
+    if (price > maxPrice) {
+        alert("Price must not exceed " + maxPrice + ".");
+        return false;
+    }
+
+    if (isNaN(stockQuantity) || stockQuantity < 1) {
+        alert("Stock Quantity must be 1 or above.");
+        return false;
+    }
+
+    if (stockQuantity > maxStock) {
+        alert("Stock Quantity must not exceed " + maxStock + ".");
+        return false;
+    }
+
+    var categorySelect = document.getElementById("category");
+    if (categorySelect.value === "" || (categorySelect.value === "Others" && document.getElementById("customCategory").value.trim() === "")) {
+        alert("Please select a category or enter a custom category if 'Others' is selected.");
+        return false;
+    }
+
+    // In edit form, image is optional.
+    return true;
+}

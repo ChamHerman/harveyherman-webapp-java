@@ -1,4 +1,7 @@
-
+/**
+ *
+ * @author herman
+ */
 package controller;
 
 import java.io.File;
@@ -33,9 +36,21 @@ public class EditItemsServlet extends HttpServlet {
 
     private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message)
             throws IOException {
-        String json = "{\"success\": " + success + ", \"message\": \"" + message.replace("\"", "\\\"") + "\"}";
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        // Determine which URL pattern was used
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
+
+        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+        if (servletPath.contains("/manager/")) {
+            response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
+        } else if (servletPath.contains("/staff/")) {
+            response.sendRedirect(contextPath + "/staff/ap_item.jsp?message=" + encodedMessage);
+        }
     }
 
     @Override
@@ -113,6 +128,26 @@ public class EditItemsServlet extends HttpServlet {
         // Process new image upload if provided
         Part imagePart = request.getPart("image");
         if (imagePart != null && imagePart.getSize() > 0) {
+
+            // Delete old image if exists
+            if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
+                // Extract filename from stored imageUrl (assumes format: images/filename)
+                String oldFileName = item.getImageUrl().substring("images/".length());
+                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
+                String deployedPath = getServletContext().getRealPath("");
+                // Navigate back two directories to reach the project root (e.g., C:\NetBeans\HarveyHerman)
+                File deployedDir = new File(deployedPath);
+                File projectRoot = deployedDir.getParentFile().getParentFile();
+                // Build the path to web/assets/images
+                File targetImageDir = new File(projectRoot, "web/assets/images");
+                // Construct file reference for deletion
+                File oldImageFile = new File(targetImageDir, oldFileName);
+                if (oldImageFile.exists() && !oldImageFile.delete()) {
+                    sendJsonResponse(request, response, false, "Failed to delete previous image file.");
+                    return;
+                }
+            }
+
             Set<String> allowedExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".webp", ".svg"));
             Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList(
                     "image/jpeg",
@@ -154,6 +189,8 @@ public class EditItemsServlet extends HttpServlet {
 
         try {
             itemDAO.update(item);
+            
+            request.getSession().invalidate();
             sendJsonResponse(request, response, true, "Item updated successfully.");
         } catch (IOException ex) {
             sendJsonResponse(request, response, true, "Item failed to update.");

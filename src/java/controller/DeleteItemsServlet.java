@@ -1,3 +1,8 @@
+/**
+ *
+ * @author herman
+ */
+
 package controller;
 
 import java.io.File;
@@ -18,12 +23,18 @@ public class DeleteItemsServlet extends HttpServlet {
     @EJB
     private ItemDAO itemDAO;
     private static final long serialVersionUID = 1L;
-    
+
     private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message)
             throws IOException {
-        String json = "{\"success\": " + success + ", \"message\": \"" + message.replace("\"", "\\\"") + "\"}";
+        // Disable caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        
+        String contextPath = request.getContextPath();
+        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+        response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
     }
 
     @Override
@@ -40,7 +51,7 @@ public class DeleteItemsServlet extends HttpServlet {
             sendJsonResponse(request, response, false, "Item ID not provided.");
             return;
         }
-        
+
         try {
             Item item = itemDAO.getItemById(itemId);
             if (item != null && item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
@@ -60,9 +71,11 @@ public class DeleteItemsServlet extends HttpServlet {
                 }
             }
             itemDAO.delete(itemId);
+            
+            request.getSession().invalidate();
             sendJsonResponse(request, response, true, "Item deleted successfully.");
         } catch (IOException | ServletException ex) {
-            sendJsonResponse(request, response, false, "Error deleting item: " + ex.getMessage());
+            sendJsonResponse(request, response, false, "Item failed to delete: " + ex.getMessage());
         }
     }
 }

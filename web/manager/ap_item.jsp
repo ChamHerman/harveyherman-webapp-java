@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<!-- For Manager -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Comparator"%>
 <%@ page import="java.util.Collections"%>
 <%@ page import="java.util.Arrays"%>
@@ -13,7 +14,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Item Management - HarveyHerman</title>
+        <title>Item Management - Manager</title>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -23,10 +24,10 @@
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_item.css">
     </head>
     <body>
-        <%@ include file="/staff/ap_sidebar.jsp" %>
+        <%@ include file="ap_sidebar.jsp" %>
         <!-- Main Content -->
         <div class="main-content flex-grow-1">
-            <%@ include file="ap_item_navbar.jsp" %>
+            <%@ include file="/staff/ap_item_navbar.jsp" %>
             <div class="container">
 
                 <%
@@ -193,8 +194,8 @@
                             <td><%=item.getStockQuantity()%></td>
                             <td>RM <%=String.format("%.2f", item.getPrice())%></td>
                             <td>
-                                <button class="btn btn-success btn-sm" onclick="location.href='<%= request.getContextPath() %>/staff/ap_edit_item.jsp?itemId=<%=item.getItemId()%>'">Edit</button>
-                                <button class="btn btn-primary btn-sm" onclick="viewItem('<%=item.getItemId()%>')">View</button>
+                                <button class="btn btn-edit btn-sm" onclick="location.href='<%= request.getContextPath() %>/manager/ap_edit_item.jsp?itemId=<%=item.getItemId()%>'">Edit</button>
+                                <button class="btn btn-view btn-sm" onclick="viewItem('<%=item.getItemId()%>')">View</button>
                                 <button class="btn btn-delete btn-sm" 
                                         data-itemid="<%=item.getItemId()%>" 
                                         data-bs-toggle="modal" 

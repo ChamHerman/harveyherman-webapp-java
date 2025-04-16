@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ItemDAO {
 
     @PersistenceContext(unitName = "HarveyHermanPU")
@@ -20,17 +24,21 @@ public class ItemDAO {
         this.em = em;
     }
 
-    // Create a new item. Generates a ID if none is provided.
+    // Create a new item. Generates a ID if it is provided.
     public void create(Item item) {
         if (item.getItemId() == null || item.getItemId().isEmpty()) {
             String generatedId = CustomIdGenerator.generateNextId(em, "Item", "I", 2, "itemId");
             item.setItemId(generatedId);
         }
         em.persist(item);
+        em.flush();
+        em.refresh(item);
     }
 
     public void update(Item item) {
-        em.merge(item);
+        item = em.merge(item);
+        em.flush();
+        em.refresh(item);
     }
 
     // Delete an item by its ID. Uses the named query within getItemById.
@@ -38,6 +46,7 @@ public class ItemDAO {
         Item item = getItemById(itemId);
         if (item != null) {
             em.remove(item);
+            em.flush();
         }
     }
 
@@ -45,10 +54,13 @@ public class ItemDAO {
     public Item getItemById(String itemId) {
         TypedQuery<Item> query = em.createNamedQuery("Item.findByItemId", Item.class);
         query.setParameter("itemId", itemId);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
 
-    // Retrieve all items using the named query "Item.findAll".
     public List<Item> getAll() {
         try {
             return em.createNamedQuery("Item.findAll", Item.class).getResultList();
@@ -59,8 +71,6 @@ public class ItemDAO {
     }
 
     // Filter items by search (name) and/or categories.
-    // If search is provided, it uses "Item.findByName" named query.
-    // Then, if a categories filter is needed, filtering is applied in Java.
     public List<Item> getFilteredItems(String search, String[] categories) {
         List<Item> items;
         if (search != null && !search.isEmpty()) {
@@ -84,8 +94,6 @@ public class ItemDAO {
     }
 
     // Filter items by category and stock condition.
-    // Uses the named query "Item.findByCategory" if a specific category is chosen.
-    // Then, additional stock filtering is applied in Java.
     public List<Item> getFilteredItemsByCategoryAndStock(String category, String stock) {
         List<Item> items;
         if (category != null && !category.equals("All")) {
@@ -115,7 +123,7 @@ public class ItemDAO {
         return items;
     }
 
-    // Get all distinct item categories using a dynamic query.
+    // Get all distinct item categories.
     public List<String> getAllCategories() {
         TypedQuery<String> query = em.createQuery("SELECT DISTINCT i.category FROM Item i", String.class);
         return query.getResultList();

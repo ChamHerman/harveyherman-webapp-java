@@ -5,8 +5,8 @@
 		<button id="theme-toggle" class="btn btn-outline-primary">🌙</button>
 	</div>
 	<ul class="nav flex-column">
-		<li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/staff/ap_index.jsp" id="dashboard-link">Dashboard</a></li>
-		<li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/staff/ap_item.jsp" id="item-management-link">Item
+		<li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_index.jsp" id="dashboard-link">Dashboard</a></li>
+		<li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_item.jsp" id="item-management-link">Item
 				Management</a></li>
 		<li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="collapse"
 			data-bs-target="#ordersMenu" aria-expanded="false"> Order ▾ </a>

@@ -50,38 +50,54 @@ public class Item implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "item_id")
     private String itemId;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
+    
     @Lob
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
     private BigDecimal price;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "stock_quantity")
     private int stockQuantity;
+    
     @Size(max = 50)
     @Column(name = "category")
     private String category;
+    
     @Size(max = 255)
     @Column(name = "image_url")
     private String imageUrl;
+    
     @Column(name = "created_date", updatable = false, insertable = false)
     private Timestamp createdDate;
+    
     @Column(name = "updated_date", insertable = false)
     private Timestamp updatedDate;
+    
+    // Optimistic locking.
+//    @Version
+//    @Column(name = "version")
+//    private int version;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<ReviewRating> reviewRatingList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<OrderDetails> orderDetailsList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<CartItem> cartItemList;
 
@@ -98,6 +114,14 @@ public class Item implements Serializable {
         this.price = price;
         this.stockQuantity = stockQuantity;
     }
+    
+//    public int getVersion() {
+//        return version;
+//    }
+//
+//    public void setVersion(int version) {
+//        this.version = version;
+//    }
 
     public String getItemId() {
         return itemId;

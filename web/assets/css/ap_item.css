@@ -213,63 +213,63 @@ body {
 
 /* Light mode styling */
 /* Edit button in light mode */
-.item-table #itemTableBody button:first-of-type {
+.item-table #itemTableBody button.btn.btn-edit {
     background-color: #5bc0de; /* Light blue */
     color: #fff;
 }
-.item-table #itemTableBody button:first-of-type:hover {
+.item-table #itemTableBody button.btn.btn-edit:hover {
     background-color: #46a3c6;
 }
 /* View button in light mode */
-.item-table #itemTableBody button:nth-of-type(2) {
+.item-table #itemTableBody button.btn.btn-view {
     background-color: #90ee90; /* Light green */
     color: #fff;
     transition: background-color 0.3s, border-color 0.3s;
 }
-.item-table #itemTableBody button:nth-of-type(2):hover {
+.item-table #itemTableBody button.btn.btn-view:hover {
     background-color: #76c976;
 }
 
 /* Delete button in light mode */
-.item-table #itemTableBody button:last-of-type {
+.item-table #itemTableBody button.btn.btn-delete {
     background-color: #ff7f7f; /* Light red */
     border-color: #ff7f7f;
     color: #fff;
     transition: background-color 0.3s, border-color 0.3s;
 }
-.item-table #itemTableBody button:last-of-type:hover {
+.item-table #itemTableBody button.btn.btn-delete:hover {
     background-color: #ff4f4f;
     border-color: #ff4f4f;
 }
 
 /* Dark mode overrides */
 /* Edit button in dark mode */
-.dark-mode .item-table #itemTableBody button:first-of-type {
+.dark-mode .item-table #itemTableBody button.btn.btn-edit {
     background-color: #005f9e; /* Dark blue */
     color: #fff;
 }
-.dark-mode .item-table #itemTableBody button:first-of-type:hover {
+.dark-mode .item-table #itemTableBody button.btn.btn-edit:hover {
     background-color: #004f82;
 }
 
 /* View button in dark mode */
-.dark-mode .item-table #itemTableBody button:nth-of-type(2) {
+.dark-mode .item-table #itemTableBody button.btn.btn-view {
     background-color: #006400; /* Dark green */
     color: #fff;
     transition: background-color 0.3s, border-color 0.3s;
 }
-.dark-mode .item-table #itemTableBody button:nth-of-type(2):hover {
+.dark-mode .item-table #itemTableBody button.btn.btn-view:hover {
     background-color: #005a00;
 }
 
 /* Delete button in dark mode */
-.dark-mode .item-table #itemTableBody button:last-of-type {
+.dark-mode .item-table #itemTableBody button.btn.btn-delete {
     background-color: #8b0000; /* Dark red */
     border-color: #8b0000;
     color: #fff;
     transition: background-color 0.3s, border-color 0.3s;
 }
-.dark-mode .item-table #itemTableBody button:last-of-type:hover {
+.dark-mode .item-table #itemTableBody button.btn.btn-delete:hover {
     background-color: #7a0000;
     border-color: #7a0000;
 }

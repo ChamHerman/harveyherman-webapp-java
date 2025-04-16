@@ -1,12 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author herman
  */
 package controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,29 +17,36 @@ import javax.servlet.http.HttpServletResponse;
 import model.Item;
 import model.ItemDAO;
 
-/**
- *
- * @author herman
- */
-@WebServlet(name = "ViewItemsServlet", urlPatterns = {"/manager/ViewItemsServlet, /staff/ViewItemsServlet"})
+@WebServlet(name = "ViewItemsServlet", urlPatterns = {"/manager/ViewItemsServlet", "/staff/ViewItemsServlet"})
 public class ViewItemsServlet extends HttpServlet {
-    
+
     @EJB
     private ItemDAO itemDAO;
-    // Helper method to send JSON response via redirect
-    
+    private static final long serialVersionUID = 1L;
+
     private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message, String viewData)
             throws IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        // Determine which URL pattern was used
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
         String json;
         if (success && viewData != null) {
             json = viewData;
         } else {
-            json = "{\"success\": " + success + ", \"message\": \"" + message.replace("\"", "\\\"") + "\"}";
+            json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
         }
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?viewData=" + encodedMessage);
+        if (servletPath.contains("/manager/")) {
+            response.sendRedirect(contextPath + "/manager/ap_item.jsp?viewData=" + encodedMessage);
+        } else if (servletPath.contains("/staff/")) {
+            response.sendRedirect(contextPath + "/staff/ap_item.jsp?viewData=" + encodedMessage);
+        }
     }
-   
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,6 +70,7 @@ public class ViewItemsServlet extends HttpServlet {
             }
             // Format dates
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             String createdDate = (item.getCreatedDate() != null) ? sdf.format(item.getCreatedDate()) : "";
             String updatedDate = (item.getUpdatedDate() != null) ? sdf.format(item.getUpdatedDate()) : "";
             // Build a JSON string with necessary fields.

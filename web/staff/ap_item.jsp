@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<!-- For Staff -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Comparator"%>
 <%@ page import="java.util.Collections"%>
 <%@ page import="java.util.Arrays"%>
@@ -13,7 +14,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Item Management - HarveyHerman</title>
+        <title>Item Management - Staff</title>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -23,10 +24,10 @@
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_item.css">
     </head>
     <body>
-        <%@ include file="/staff/ap_sidebar.jsp" %>
+        <%@ include file="ap_sidebar.jsp" %>
         <!-- Main Content -->
         <div class="main-content flex-grow-1">
-            <%@ include file="ap_item_navbar.jsp" %>
+            <%@ include file="/staff/ap_item_navbar.jsp" %>
             <div class="container">
 
                 <%
@@ -106,7 +107,7 @@
                 <!-- /Dashboard Overview Section -->
 
                 <!-- Filter Section -->
-                <form method="GET" action="ap_item.jsp">
+                <form method="POST" action="<%= request.getContextPath()%>/staff/ap_item.jsp">
                     <div class="filter-section">
                         <!-- Row 1 -->
                         <div class="row mb-3">
@@ -193,12 +194,8 @@
                             <td><%=item.getStockQuantity()%></td>
                             <td>RM <%=String.format("%.2f", item.getPrice())%></td>
                             <td>
-                                <button class="btn btn-success btn-sm" onclick="location.href='<%= request.getContextPath() %>/staff/ap_edit_item.jsp?itemId=<%=item.getItemId()%>'">Edit</button>
-                                <button class="btn btn-primary btn-sm" onclick="viewItem('<%=item.getItemId()%>')">View</button>
-                                <button class="btn btn-delete btn-sm" 
-                                        data-itemid="<%=item.getItemId()%>" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#deleteItemModal">Delete</button>
+                                <button class="btn btn-edit btn-sm" onclick="location.href='<%= request.getContextPath() %>/staff/ap_edit_item.jsp?itemId=<%=item.getItemId()%>'">Edit</button>
+                                <button class="btn btn-view btn-sm" onclick="viewItem('<%=item.getItemId()%>')">View</button>
                             </td>
                         </tr>
                         <%
@@ -211,26 +208,6 @@
                 <!-- /Item Table -->
             </div>
             <!-- /Container -->
-
-            <!-- Delete Item Modal -->
-            <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addItemModalLabel">Delete Item</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this item?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="confirmDelete">Delete</button>             
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Delete Item Modal -->
 
             <!-- Item Result Message Modal -->
             <div class="modal fade" id="itemResultMessageModal" tabindex="-1" aria-labelledby="itemResultMessageModalLabel" aria-hidden="true">
@@ -394,7 +371,7 @@
         <!-- JavaScript Import -->
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_index.js"></script>
-        <!-- Set default context path (manager/) -->
+        <!-- Set default context path (staff/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>
         <!-- /JavaScript Import -->

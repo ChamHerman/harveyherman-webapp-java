@@ -1,7 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author herman
  */
+
 package controller;
 
 import javax.servlet.ServletException;
@@ -34,9 +35,23 @@ public class AddItemsServlet extends HttpServlet {
     // Helper method to send JSON-formatted response via redirect.
     private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message)
             throws IOException {
-        String json = "{\"success\": " + success + ", \"message\": \"" + message.replace("\"", "\\\"") + "\"}";
+        // Disable caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
+
+        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        response.sendRedirect(request.getContextPath() + "/manager/ap_item.jsp?message=" + encodedMessage);
+
+        if (servletPath.contains("/manager/")) {
+            response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
+        } else if (servletPath.contains("/staff/")) {
+            response.sendRedirect(contextPath + "/staff/ap_item.jsp?message=" + encodedMessage);
+        }
+
     }
 
     @Override
@@ -50,6 +65,7 @@ public class AddItemsServlet extends HttpServlet {
             sendJsonResponse(request, response, false, "Item name is required.");
             return;
         }
+
         if (itemName.length() > 100) {
             sendJsonResponse(request, response, false, "Item name must be less than 100 characters.");
             return;
@@ -88,12 +104,7 @@ public class AddItemsServlet extends HttpServlet {
         Part imagePart = request.getPart("image");
         String imageUrl = null;
         Set<String> allowedExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".webp", ".svg"));
-        Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList(
-                "image/jpeg",
-                "image/png",
-                "image/webp",
-                "image/svg+xml"
-        ));
+        Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList("image/jpeg", "image/png", "image/webp", "image/svg+xml"));
 
         if (imagePart != null && imagePart.getSize() > 0) {
             try {
@@ -104,7 +115,7 @@ public class AddItemsServlet extends HttpServlet {
 
                 // Validate file type using allowed MIME types and extensions
                 if (!allowedMimeTypes.contains(mimeType)) {
-                    sendJsonResponse(request, response, false, "Unsupported MIME type: " + mimeType);
+                    sendJsonResponse(request, response, false, "Unsupported MIME Type: " + mimeType + ". Only supported image/jpeg, image/png, image/webp, image/svg+xml");
                     return;
                 }
 
@@ -112,7 +123,7 @@ public class AddItemsServlet extends HttpServlet {
                         .anyMatch(lowerFileName::endsWith);
 
                 if (!validExtension) {
-                    sendJsonResponse(request, response, false, "Unsupported file extension for file: " + originalFileName);
+                    sendJsonResponse(request, response, false, "Unsupported file extension for file: " + originalFileName + ". Only supported .jpg, .jpeg, .png, .webp, .svg");
                     return;
                 }
 
@@ -153,20 +164,11 @@ public class AddItemsServlet extends HttpServlet {
                 // Set the relative path for storing in the database
                 imageUrl = "images/" + uniqueFileName;
             } catch (IOException e) {
-                sendJsonResponse(request, response, false, "Error: Item failed to add.");
+                sendJsonResponse(request, response, false, "Item's image failed to upload.");
                 return;
             }
         }
-
-        String addItemResult = addItems(itemName, description, price, stockQuantity, category, imageUrl);
-        if (addItemResult.contains("\"success\": false")) {
-            sendJsonResponse(request, response, false, "Item failed to add.");
-        } else {
-            sendJsonResponse(request, response, true, "Item added successfully.");
-        }
-    }
-
-    public String addItems(String itemName, String description, double price, int stockQuantity, String category, String imageUrl) {
+        
         try {
             Item item = new Item();
             item.setItemId(null);
@@ -178,11 +180,12 @@ public class AddItemsServlet extends HttpServlet {
             item.setImageUrl(imageUrl);
 
             itemDAO.create(item);
-
-            return "{" + "\"success\": true," + "\"message\": \"Item added successfully.\"" + "}";
-        } catch (Exception e) {
-            return "{" + "\"success\": false," + "\"message\": \"Error adding item: "
-                    + e.getMessage().replace("\"", "\\\"") + "\"" + "}";
+            
+            request.getSession().invalidate();
+            sendJsonResponse(request, response, true, "Item added successfully.");
+        } catch (IOException e) {
+            sendJsonResponse(request, response, false, "Item failed to add.");
         }
     }
+
 }

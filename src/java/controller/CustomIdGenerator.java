@@ -1,4 +1,8 @@
-// File: src/main/java/com/harveyherman/util/CustomIdGenerator.java
+/**
+ *
+ * @author herman
+ */
+
 package controller;
 
 import javax.persistence.EntityManager;
@@ -17,7 +21,7 @@ public class CustomIdGenerator {
      * @param idField    The Java field name (e.g., "itemId").
      * @return The next generated ID (e.g., "I01", "I11").
      */
-    public static String generateNextId(EntityManager em, String entityName, String prefix, int length, String idField) {
+    public static String generateNextId(EntityManager em, String entityName, String prefix, int length, String idField) throws NumberFormatException {
         try {
             // Order by the length of the id first, then by id descending
             String jpql = "SELECT u." + idField + " FROM " + entityName + " u WHERE u." + idField + " LIKE :prefix " +
@@ -37,7 +41,7 @@ public class CustomIdGenerator {
             }
             String format = "%0" + length + "d";
             return prefix + String.format(format, nextNumber);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             throw new RuntimeException("Error generating custom ID for " + entityName, e);
         }
     }
