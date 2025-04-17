@@ -1,0 +1,78 @@
+package controller;
+
+import model.OrderDetails;
+import model.Item;
+import model.Orders;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.persistence.TypedQuery;
+
+@WebServlet("/GeneratingReportServlet")
+public class GeneratingReportServlet extends HttpServlet {
+    
+    @PersistenceContext(unitName = "HarveyHermanPU")
+    private EntityManager em;
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String startDateStr = request.getParameter("startDateR");
+        String endDateStr = request.getParameter("endDateR");
+        String reportType= request.getParameter("reportType");
+        
+        if(reportType.equals("day")){
+            reportType="Daily Sales";
+        }else if(reportType.equals("month")){
+            reportType="Monthly Sales";
+        }else if(reportType.equals("year")){
+            reportType="Yearly Sales";
+        }
+        
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            request.setAttribute("errorReportSaleFormDate", "Please enter both start and end dates.");
+            request.getRequestDispatcher(request.getContextPath() + "/manager/generatingReport.jsp").forward(request, response);
+            return;
+        }
+        
+        LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr).plusDays(1);
+        
+        Date startDateConverted = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        
+        List<Object[]> query = em.createQuery(
+                "SELECT i.itemId, i.name, i.price, SUM(od.quantity), SUM(od.quantity * i.price) " +
+                "FROM OrderDetails od " +
+                "JOIN od.itemId i " +
+                "JOIN od.orderId o " +
+                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR " +
+                "GROUP BY i.itemId, i.name, i.price " +
+                "ORDER BY i.itemId", Object[].class)
+                .setParameter("startDateR", startDateConverted)
+                .setParameter("endDateR", endDateConverted)
+                .getResultList();
+        List<Object[]> reportResults = new ArrayList<>();
+        int no = 1;
+        for (Object[] row : query) {
+            // Add rank as the first element in each array
+            reportResults.add(new Object[]{no++, row[0], row[1], row[2],row[3],row[4]});
+        }
+        
+        request.setAttribute("reportSales",reportResults);
+        request.setAttribute("reportType",reportType);
+        request.setAttribute("selectedStartDateR", startDateStr);
+        request.setAttribute("selectedEndDateR", endDateStr);
+        request.getRequestDispatcher("generatingReport.jsp").forward(request, response);
+    }
+}

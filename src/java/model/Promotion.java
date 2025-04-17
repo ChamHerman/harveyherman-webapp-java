@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -155,6 +156,16 @@ public class Promotion implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+    
+    @Transient // This makes sure it's not treated as a DB column
+    public String getDisplayStatus() {
+        Date today = new Date();
+        if (endDate != null && endDate.before(today)) {
+            return "expired";
+        } else {
+            return "active";
+        }
     }
 
     @XmlTransient

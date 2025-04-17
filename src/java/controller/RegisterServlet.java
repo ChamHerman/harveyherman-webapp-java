@@ -1,4 +1,4 @@
-package controller;
+/*package controller;
 
 import controller.UserService;
 
@@ -35,4 +35,4 @@ public class RegisterServlet extends HttpServlet {
             response.getWriter().println("Registration failed: Duplicate email or username.");
         }
     }
-}
+}*/

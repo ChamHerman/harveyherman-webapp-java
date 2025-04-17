@@ -1,4 +1,4 @@
-package model;
+/*package model;
 
 import model.UserData;
 
@@ -93,4 +93,4 @@ public class UserDataDAO {
             em.close();
         }
     }
-}
+}*/

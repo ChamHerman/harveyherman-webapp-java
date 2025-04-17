@@ -10,20 +10,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 
-@WebServlet("/DeletePromotion")
+@WebServlet("/DeletePromotionServlet")
 public class DeletePromotionServlet extends HttpServlet {
-
     @EJB
     private PromotionDAO promotionDAO;
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String promotionId = request.getParameter("promotionId");
-        if (promotionId != null && !promotionId.isEmpty()) {
-            promotionDAO.deletePromotion(promotionId);
-        }
-        response.sendRedirect("ManagePromotions");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("promotionId");
+        promotionDAO.deletePromotion(id);
+        response.sendRedirect("promotion.jsp"); // or show success message
     }
 }

@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<%List<Object[]> topSales = (List<Object[]>) request.getAttribute("topSales");%>
 <head>
     <title>Top 10 Sales Report</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -48,7 +49,7 @@
     </thead>
     <tbody>
         <%
-            List<Object[]> topSales = (List<Object[]>) request.getAttribute("topSales");
+            //List<Object[]> topSales = (List<Object[]>) request.getAttribute("topSales");
             if (topSales != null && !topSales.isEmpty()) {
                 for (Object[] row : topSales) {
         %>
@@ -67,12 +68,27 @@
         %>
     </tbody>
 </table>
-	<% if(topSales !=null && !topSales.isEmpty()){%>
-        	<div class="mt-4">
-		        <h4 class="text-center text-secondary">Sales Performance Chart</h4>
-		        <canvas id="salesChart"></canvas>
-		    </div>
-     <% }%>
+	<% 
+            StringBuilder chartData = new StringBuilder("[");
+            if(topSales !=null && !topSales.isEmpty()){
+        	for (int i = 0; i < topSales.size(); i++) {
+                    Object[] row = topSales.get(i);
+                    chartData.append("{ name: '").append(row[2]).append("', quantity: ").append(row[3]).append(" }");
+                    if (i < topSales.size() - 1) {
+                        chartData.append(",");
+                    }
+                }
+            }
+            chartData.append("]");
+        %>
+        <%if (topSales != null && !topSales.isEmpty()) {%>
+        <div class="mt-5">
+            <h4 class="text-center">Top 10 Products Chart</h4>
+            <div class="d-flex justify-content-center">
+                <canvas id="salesChart" width="800" height="400"></canvas>
+            </div>
+        </div>
+        <%}%>
 
     <a href="managerDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
 
@@ -106,9 +122,7 @@
         }
     });
     
-    let topSalesData = <%= (topSales != null) ? "[" + topSales.stream()
-            .map(row -> "{ name: '" + row[2] + "', quantity: " + row[3] + " }")
-            .reduce((a, b) -> a + "," + b).orElse("") + "]" : "[]" %>;
+    let topSalesData = <%= chartData.toString() %>;
 
         if (topSalesData.length > 0) {
             let labels = topSalesData.map(item => item.name);

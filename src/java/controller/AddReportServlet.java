@@ -1,0 +1,55 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.Promotion;
+import model.Report;
+import model.ReportDAO;
+
+@WebServlet("/AddReportServlet")
+public class AddReportServlet extends HttpServlet {
+    @EJB
+    private ReportDAO reportDAO;
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            String id=request.getParameter("reportID");
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date reportDate = request.getParameter("reportDate").isEmpty() ? null : sdf.parse(request.getParameter("reportDate"));
+            
+            String reportType = request.getParameter("reportType");
+            BigDecimal sales = new BigDecimal(request.getParameter("totalSalesDisplay"));
+            String desc = request.getParameter("description");
+
+            Report report = new Report();
+            report.setReportId(id);
+            report.setReportDate(reportDate);
+            report.setReportType(reportType);
+            report.setTotalSales(sales);
+            report.setDescription(desc);
+
+            reportDAO.addReport(report);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        response.sendRedirect("generatingReport.jsp");
+    }
+}

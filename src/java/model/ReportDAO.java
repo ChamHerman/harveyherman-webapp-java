@@ -5,43 +5,31 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.PersistenceContext;
 
+@Stateless
 public class ReportDAO {
     
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("harveyhermanPU");
+    @PersistenceContext(unitName = "HarveyHermanPU")
+    private EntityManager em;
     
-    public List<Object[]> getTopSales(String startDate, String endDate) {
-        EntityManager em = emf.createEntityManager();
-        List<Object[]> results = null;
-
-        try {
-            em.getTransaction().begin();
-
-            // Corrected JPQL query with proper field names
-            TypedQuery<Object[]> query = em.createQuery(
-                "SELECT i.id, i.name, SUM(od.quantity), SUM(od.quantity * od.pricePerItem) " +
-                "FROM OrderDetails od " +
-                "JOIN od.order o " +
-                "JOIN od.item i " +
-                "WHERE o.createdDate BETWEEN :startDate AND :endDate " +
-                "GROUP BY i.id, i.name " +
-                "ORDER BY SUM(od.quantity) DESC",
-                Object[].class
-            );
-
-            query.setParameter("startDate", java.sql.Date.valueOf(startDate));
-            query.setParameter("endDate", java.sql.Date.valueOf(endDate));
-            query.setMaxResults(10);  // Limit to Top 10 results
-
-            results = query.getResultList();
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
-        }
+    public String getNextReportId() {
+        String lastId = em.createQuery("SELECT MAX(r.reportId) FROM Report r", String.class)
+                          .getSingleResult();
         
-        return results;
+    
+        // Extract numeric part
+        int num = Integer.parseInt(lastId.replaceAll("\\D+", ""));
+        num++; // Increment
+        
+        // Format back with prefix and leading zeros
+        return String.format("R%03d", num);
+    }
+
+    //@Transactional
+    public void addReport(Report report) {
+        report.setReportId(getNextReportId());
+        em.persist(report);
     }
 }

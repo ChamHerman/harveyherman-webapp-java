@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.Promotion;
 
-@WebServlet("/AddPromotion")
+@WebServlet("/AddPromotionServlet")
 public class AddPromotionServlet extends HttpServlet {
 
     @EJB
@@ -26,16 +26,19 @@ public class AddPromotionServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            String id=request.getParameter("promotionId");
             String code = request.getParameter("promotionCode");
             BigDecimal discount = new BigDecimal(request.getParameter("discountValue"));
-            String status = request.getParameter("status");
+            String status = request.getParameter("promotionActive");
             BigDecimal minPurchase = request.getParameter("minimumPurchase").isEmpty() ? null : new BigDecimal(request.getParameter("minimumPurchase"));
             String desc = request.getParameter("description");
+            
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date startDate = request.getParameter("startDate").isEmpty() ? null : sdf.parse(request.getParameter("startDate"));
             Date endDate = request.getParameter("endDate").isEmpty() ? null : sdf.parse(request.getParameter("endDate"));
 
             Promotion promo = new Promotion();
+            promo.setPromotionId(id);
             promo.setPromotionCode(code);
             promo.setDiscountValue(discount);
             promo.setStatus(status);
@@ -49,6 +52,13 @@ public class AddPromotionServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        response.sendRedirect("ManagePromotions");
+        response.sendRedirect("promotion.jsp");
     }
+    
+    /*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PromotionDAO dao=new PromotionDAO();
+        String nextId = dao.getNextPromotionId();
+        request.setAttribute("nextId", nextId);
+        request.getRequestDispatcher("promotion.jsp").forward(request, response);
+    }*/
 }

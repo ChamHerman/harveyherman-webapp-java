@@ -1,4 +1,4 @@
-package model;
+/*package model;
 
 import model.UserLogin;
 
@@ -35,4 +35,4 @@ public class UserLoginDAO {
             em.close();
         }
     }
-}
+}*/

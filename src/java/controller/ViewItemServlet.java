@@ -1,4 +1,4 @@
-package controller;
+/*package controller;
 
 import model.ItemDAO;
 import model.PromotionDAO;
@@ -27,4 +27,4 @@ public class ViewItemServlet extends HttpServlet {
         request.setAttribute("item", item);
         request.getRequestDispatcher("viewItem.jsp").forward(request, response);
     }
-}
+}*/

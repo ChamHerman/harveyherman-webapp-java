@@ -1,77 +1,75 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import model.OrderDetails;
+import model.Item;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @WebServlet("/topSales")
 public class TopSalesServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
-        
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
 
-            Connection conn = ManagerDashboardUtil.getConnection();
-        } catch (ClassNotFoundException e) {
-            System.out.println("MySQL JDBC Driver not found. Add MySQL Connector/J to your project.");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Database connection failed: " + e.getMessage());
-            e.printStackTrace();
-        }
+    @PersistenceContext(unitName = "HarveyHermanPU")
+    private EntityManager em;
 
-        
-        if (startDate == null || endDate == null || startDate.isEmpty() || endDate.isEmpty()) {
-            request.setAttribute("error", "Please enter both start and end dates.");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String startDateStr = request.getParameter("startDate");
+        String endDateStr = request.getParameter("endDate");
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            request.setAttribute("errorReportSaleFormDate", "Please enter both start and end dates.");
             request.getRequestDispatcher("salesReport.jsp").forward(request, response);
             return;
         }
 
-        List<Object[]> topSales = new ArrayList<>();
+        // Parse the input strings into LocalDate
+        LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr);
 
-        String sql = "SELECT " +
-                     "    RANK() OVER (ORDER BY SUM(od.quantity) DESC) AS No, " +
-                     "    i.item_id, " +
-                     "    i.name AS item_name, " +
-                     "    SUM(od.quantity) AS total_quantity_sold " +
-                     "FROM orderdetails od " +
-                     "JOIN orders o ON od.order_id = o.order_id " +
-                     "JOIN item i ON od.item_id = i.item_id " +
-                     "WHERE o.created_date BETWEEN ? AND ? " +
-                     "GROUP BY i.item_id, i.name " +
-                     "ORDER BY total_quantity_sold DESC " +
-                     "LIMIT 10";
+        // Convert LocalDate to Date
+        Date startDateConverted = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        try (Connection conn = ManagerDashboardUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        // JPA query to get top 10 selling items by quantity in the date range
+        List<Object[]> topSales = em.createQuery(
+                "SELECT i.itemId, i.name, SUM(od.quantity) " +
+                "FROM OrderDetails od " +
+                "JOIN od.itemId i " +
+                "JOIN od.orderId o " +
+                "WHERE o.createdDate BETWEEN :startDate AND :endDate " +
+                "GROUP BY i.itemId, i.name " +
+                "ORDER BY SUM(od.quantity) DESC", Object[].class)
+            .setParameter("startDate", startDateConverted)
+            .setParameter("endDate", endDateConverted)
+            .setMaxResults(10)
+            .getResultList();
 
-            stmt.setString(1, startDate);
-            stmt.setString(2, endDate);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    topSales.add(new Object[]{
-                        rs.getInt("No"),
-                        rs.getString("item_id"),
-                        rs.getString("item_name"),
-                        rs.getInt("total_quantity_sold")
-                    });
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Database error: " + e.getMessage());
+        // Add ranking numbers
+        List<Object[]> rankedResults = new ArrayList<>();
+        int rank = 1;
+        for (Object[] row : topSales) {
+            // Add rank as the first element in each array
+            rankedResults.add(new Object[]{rank++, row[0], row[1], row[2]});
         }
 
-        request.setAttribute("topSales", topSales);
+        // Set the results to be forwarded to the JSP
+        request.setAttribute("topSales", rankedResults);
+        request.setAttribute("selectedStartDate", startDateStr);
+        request.setAttribute("selectedEndDate", endDateStr);
         request.getRequestDispatcher("salesReport.jsp").forward(request, response);
     }
 }
+

@@ -3,11 +3,37 @@
     Created on : Apr 6, 2025, 9:44:15 PM
     Author     : User
 --%>
-
+<%@page import="javax.persistence.Persistence"%>
+<%@page import="javax.persistence.EntityTransaction"%>
+<%@page import="javax.persistence.EntityManager"%>
+<%@page import="javax.persistence.EntityManagerFactory"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Promotion" %>
 <%@ page import="model.PromotionDAO" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.Set"%>
+<%@ page import="java.util.HashSet"%>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.NamingException" %>
+
+<%  
+    String promoActive="active";
+    //String searchQuery = request.getParameter("search");
+    PromotionDAO promotionDAO = null;
+    try {
+        InitialContext context = new InitialContext();
+        promotionDAO = (PromotionDAO) context.lookup("java:global/HarveyHerman/PromotionDAO");
+    } catch (NamingException ne) {
+        ne.printStackTrace();
+    }
+    //PromotionDAO dao = new PromotionDAO();
+    String nextID = promotionDAO.getNextPromotionId();
+    List<Promotion> promotions = promotionDAO.getAllPromotions();//
+   //List<Promotion> promotions = (List<Promotion>) request.getAttribute("promotions");
+    //List<Promotion> promotions = (List<Promotion>) request.getAttribute("promotions");
+    //String nextID = (String) request.getAttribute("nextID");
+%>
 <html>
 <head>
     <title>Manage Promotions</title>
@@ -28,9 +54,9 @@
 	<% if (errorMessage != null) { %>
 	    <div class="alert alert-danger"><%= errorMessage %></div>
 	<% } %>
-   
+
         <table class="table table-striped table-bordered">
-        	<thead class="table-dark">
+            <thead class="table-dark">
 	            <tr>
 	                <th>ID</th>
 	                <th>Code</th>
@@ -43,16 +69,16 @@
 	            </tr>
             </thead>
             <tbody>
-            <%
-                List<Promotion> promotions = (List<Promotion>) request.getAttribute("promotions");
+            <%  
             	if (promotions != null && !promotions.isEmpty()) {
                 for (Promotion promo : promotions) {
             %>
+            
                 <tr>
                     <td><%= promo.getPromotionId() %></td>
                     <td><%= promo.getPromotionCode() %></td>
                     <td><%= promo.getDiscountValue() %></td>
-                    <td><%= promo.getStatus()%></td>
+                    <td><%= promo.getDisplayStatus()%></td>
                     <td><%= promo.getMinimumPurchase() %></td>
                     <td><%= promo.getDescription() %>
                     <td><%= promo.getStartDate() %></td>
@@ -62,14 +88,11 @@
                 }
             	} else {
             %>
-            <tr><td colspan="7" class="text-center text-danger">No promotions available.</td></tr>
+            <tr><td colspan="8" class="text-center text-danger">No promotions available.</td></tr>
             <% } %>
             
             </tbody>
         </table>
-    <%
-        }
-    %>
     <div class="d-flex justify-content-center gap-3 mt-3">
 	    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
 	        Add Promotion
@@ -80,7 +103,7 @@
 	    <a href="dashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
 	</div>
     
-    <!-- Delete Promotion Modal -->
+    <!-- Delete Promotion -->
 	<div class="modal fade" id="deletePromotionModal" tabindex="-1" aria-labelledby="deletePromotionModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
@@ -95,14 +118,14 @@
 	                        <input type="text" class="form-control" id="deletePromotionId" name="promotionId" required>
 	                        <small class="text-danger" id="deleteError" style="display: none;">Promotion ID is required.</small>
 	                    </div>
-	                    <button type="submit" id="deletePromotionBtn" class="btn btn-danger w-100">Delete Promotion</button>
+	                    <button type="submit" name="deletePromotionBtn" id="deletePromotionBtn" class="btn btn-danger w-100">Delete Promotion</button>
 	                </form>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 	
-    <!-- Add Promotion Modal -->
+    <!-- Add Promotion-->
     <div class="modal fade" id="addPromotionModal" tabindex="-1" aria-labelledby="addPromotionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -111,19 +134,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="AddPromotionServlet" method="post">
+                    <form action="<%=request.getContextPath()%>/staff/AddPromotionServlet" method="post">
 	                    <div class="mb-3">
 	                        <label for="promotionId" class="form-label">Promotion ID</label>
-	                        <input type="text" class="form-control" id="promotionId" name="promotionId" value="<%=0 %>" readonly>
+	                        <input type="text" class="form-control" id="promotionId" name="promotionId" value="<%= nextID%>" readonly>
 	                    </div>
                         <div class="mb-3">
                             <label for="promotionCode" class="form-label">Promotion Code</label>
                             <input type="text" class="form-control" id="promotionCode" name="promotionCode" required>
                         </div>
                         <div class="mb-3">
-                            <select name="status">
-                                <option value="active">Active</option>
-                            </select>
+                            <label for="promotionActive" class="form-label">Promotion States</label>
+                            <input type="text" class="form-control" id="promotionActive" name="promotionActive" value="<%= promoActive%>"readonly>
                         </div>
                         <div class="mb-3">
                             <label for="discountValue" class="form-label">Discount Value (%)</label>
