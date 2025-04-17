@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import java.io.IOException;
@@ -35,11 +31,11 @@ public class UserLoginServlet extends HttpServlet {
         if (userData != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loggedInUser", userData);
-            response.sendRedirect("user/index.jsp");
+            response.sendRedirect(request.getContextPath() + "/user/index.jsp");
         } else {
-            request.setAttribute("loginError", true);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
-            dispatcher.forward(request, response);
+            HttpSession session = request.getSession();
+            session.setAttribute("loginError", true);
+            response.sendRedirect(request.getContextPath() + "/user/login.jsp");
         }
     }
 
@@ -48,17 +44,51 @@ public class UserLoginServlet extends HttpServlet {
             UserLogin userLogin = userLoginDAO.findByUsername(username);
 
             if (userLogin != null && userLogin.getPassword().equals(password)) {
-                updateLastLoginTime(userLogin);
-                return userLogin.getUserId();
+                UserData userData = userLogin.getUserId();
+                if (userData != null) {
+                    try {
+                        updateLastLoginTime(userLogin);
+                    } catch (Exception e) {
+                        System.out.println("Warning: Failed to update last login time: " + e.getMessage());
+                    }
+                    return userData;
+                }
             }
         } catch (Exception e) {
+            System.out.println("Authentication error: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     private void updateLastLoginTime(UserLogin userLogin) {
-        userLogin.setLastLogin(new java.sql.Timestamp(System.currentTimeMillis()));
-        userLoginDAO.update(userLogin);
+        try {
+            UserLogin managedUserLogin = userLoginDAO.findByLoginId(userLogin.getLoginId());
+
+            if (managedUserLogin != null) {
+                java.sql.Timestamp dbTimestamp = null;
+
+                try {
+                    dbTimestamp = userLoginDAO.getCurrentDatabaseTimestamp();
+                    System.out.println("Retrieved database timestamp: " + dbTimestamp);
+                } catch (Exception e) {
+                    // Fallback to system timestamp if database timestamp fails
+                    dbTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
+                    System.out.println("Using system timestamp as fallback: " + dbTimestamp);
+                }
+
+                // Set the last login time
+                managedUserLogin.setLastLogin(dbTimestamp);
+
+                // Update without refresh
+                userLoginDAO.update(managedUserLogin);
+                System.out.println("Last login time updated successfully: " + dbTimestamp);
+            } else {
+                System.out.println("Error: Could not find managed UserLogin entity with ID: " + userLogin.getLoginId());
+            }
+        } catch (Exception e) {
+            System.out.println("Error updating last login time: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

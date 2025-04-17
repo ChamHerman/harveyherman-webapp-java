@@ -1,6 +1,7 @@
 package model;
 
 import controller.CustomIdGenerator;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -9,6 +10,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 @Stateless
@@ -35,7 +37,27 @@ public class UserLoginDAO {
     public void update(UserLogin userLogin) {
         em.merge(userLogin);
         em.flush();
-        em.refresh(userLogin);
+    }
+
+    public Timestamp getCurrentDatabaseTimestamp() {
+        try {
+            Query query = em.createNativeQuery("SELECT CURRENT_TIMESTAMP");
+            Object result = query.getSingleResult();
+
+            if (result instanceof Timestamp) {
+                return (Timestamp) result;
+            } else if (result instanceof java.time.LocalDateTime) {
+                java.time.LocalDateTime localDateTime = (java.time.LocalDateTime) result;
+                return Timestamp.valueOf(localDateTime);
+            } else {
+                System.out.println("Unexpected timestamp type: " + (result != null ? result.getClass().getName() : "null"));
+                return new Timestamp(System.currentTimeMillis());
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting database timestamp: " + e.getMessage());
+            e.printStackTrace();
+            return new Timestamp(System.currentTimeMillis());
+        }
     }
 
     public List<UserLogin> findAllLogins() {
