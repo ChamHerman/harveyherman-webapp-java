@@ -78,6 +78,7 @@ public class Orders implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<Payment> paymentList;
 
+    
     public Orders() {
     }
 
@@ -198,5 +199,11 @@ public class Orders implements Serializable {
     public String toString() {
         return "model.Orders[ orderId=" + orderId + " ]";
     }
+
+    public void setPromotionId(String promotionId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
     
 }

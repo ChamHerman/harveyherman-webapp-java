@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "ap_item.jsp": "item-management-link",
         "apaddproduct.jsp": "add-product-link",
         "apcategorylist.jsp": "category-list-link",
-        "aporderlist.jsp": "order-list-link",
+        "ap_order.jsp": "order-list-link",
         "aporderhistory.jsp": "order-history-link",
         "apmanagereviews.jsp": "manage-reviews-link"
     };

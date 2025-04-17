@@ -1,188 +1,143 @@
 package model;
 
 import controller.CustomIdGenerator;
-import controller.ManagerDashboardUtil;
-import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.sql.*;
-import java.util.ArrayList;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
-public class ItemDAO extends BaseDAO {
+@Stateless
+public class ItemDAO {
 
-	public void create(Item item) {
-		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		try {
-			transaction.begin();
+    @PersistenceContext(unitName = "HarveyHermanPU")
+    private EntityManager em;
 
-			// Generate custom ID if it's null
-			if (item.getItemId() == null || item.getItemId().isEmpty()) {
-				String generatedId = CustomIdGenerator.generateNextId(em, "Item", "I", 2, "itemId");
-				item.setItemId(generatedId);
-			}
+    // Setter for manual EntityManager injection
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
 
-			em.persist(item);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction.isActive()) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-	}
-	
-	public void update(Item item) {
-		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		try {
-			transaction.begin();
-			em.merge(item);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction.isActive()) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-	}
+    // Create a new item. Generates a ID if none is provided.
+    public void create(Item item) {
+        if (item.getItemId() == null || item.getItemId().isEmpty()) {
+            String generatedId = CustomIdGenerator.generateNextId(em, "Item", "I", 2, "itemId");
+            item.setItemId(generatedId);
+        }
+        em.persist(item);
+    }
 
-	public void delete(String itemId) {
-		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		try {
-			transaction.begin();
-			Item item = em.find(Item.class, itemId);
-			if (item != null) {
-				em.remove(item);
-			}
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction.isActive()) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-	}
+    public void update(Item item) {
+        em.merge(item);
+    }
 
-	public Item getItemById(String itemId) {
-		EntityManager em = getEntityManager();
-		try {
-			return em.find(Item.class, itemId);
-		} finally {
-			em.close();
-		}
-	}
+    // Delete an item by its ID. Uses the named query within getItemById.
+    public void delete(String itemId) {
+        Item item = getItemById(itemId);
+        if (item != null) {
+            em.remove(item);
+        }
+    }
 
-	public List<Item> getFilteredItems(String search, String[] categories) {
-		EntityManager em = getEntityManager();
-		List<Item> itemList = null;
-		StringBuilder queryStr = new StringBuilder("SELECT i FROM Item i WHERE 1=1");
+    // Get an item by ID using the named query "Item.findByItemId".
+    public Item getItemById(String itemId) {
+        TypedQuery<Item> query = em.createNamedQuery("Item.findByItemId", Item.class);
+        query.setParameter("itemId", itemId);
+        return query.getSingleResult();
+    }
 
-		if (search != null && !search.isEmpty()) {
-			queryStr.append(" AND LOWER(i.name) LIKE LOWER(:search)");
-		}
-		if (categories != null && categories.length > 0) {
-			queryStr.append(" AND i.category IN :categories");
-		}
+    // Retrieve all items using the named query "Item.findAll".
+    public List<Item> getAll() {
+        try {
+            return em.createNamedQuery("Item.findAll", Item.class).getResultList();
+        } catch (Exception ex) {
+            ex.getMessage();
+            return null;
+        }
+    }
 
-		TypedQuery<Item> query = em.createQuery(queryStr.toString(), Item.class);
+    // Filter items by search (name) and/or categories.
+    // If search is provided, it uses "Item.findByName" named query.
+    // Then, if a categories filter is needed, filtering is applied in Java.
+    public List<Item> getFilteredItems(String search, String[] categories) {
+        List<Item> items;
+        if (search != null && !search.isEmpty()) {
+            TypedQuery<Item> query = em.createNamedQuery("Item.findByName", Item.class);
+            query.setParameter("name", search);
+            items = query.getResultList();
+        } else {
+            items = getAll();
+        }
+        if (categories != null && categories.length > 0) {
+            List<String> categoryList = Arrays.asList(categories);
+            List<Item> filtered = new ArrayList<>();
+            for (Item i : items) {
+                if (categoryList.contains(i.getCategory())) {
+                    filtered.add(i);
+                }
+            }
+            items = filtered;
+        }
+        return items;
+    }
 
-		if (search != null && !search.isEmpty()) {
-			query.setParameter("search", "%" + search + "%");
-		}
-		if (categories != null && categories.length > 0) {
-			query.setParameter("categories", Arrays.asList(categories));
-		}
-		itemList = query.getResultList();
+    // Filter items by category and stock condition.
+    // Uses the named query "Item.findByCategory" if a specific category is chosen.
+    // Then, additional stock filtering is applied in Java.
+    public List<Item> getFilteredItemsByCategoryAndStock(String category, String stock) {
+        List<Item> items;
+        if (category != null && !category.equals("All")) {
+            TypedQuery<Item> query = em.createNamedQuery("Item.findByCategory", Item.class);
+            query.setParameter("category", category);
+            items = query.getResultList();
+        } else {
+            items = getAll();
+        }
+        if (stock != null && !stock.equals("All")) {
+            List<Item> filtered = new ArrayList<>();
+            if (stock.equals("InStock")) {
+                for (Item i : items) {
+                    if (i.getStockQuantity() > 0) {
+                        filtered.add(i);
+                    }
+                }
+            } else if (stock.equals("OutOfStock")) {
+                for (Item i : items) {
+                    if (i.getStockQuantity() == 0) {
+                        filtered.add(i);
+                    }
+                }
+            }
+            items = filtered;
+        }
+        return items;
+    }
 
-		return itemList;
-	}
+    // Get all distinct item categories using a dynamic query.
+    public List<String> getAllCategories() {
+        TypedQuery<String> query = em.createQuery("SELECT DISTINCT i.category FROM Item i", String.class);
+        return query.getResultList();
+    }
 
-	public List<Item> getFilteredItemsByCategoryAndStock(String category, String stock) {
-		EntityManager em = getEntityManager();
-		List<Item> itemList = null;
+    // Get total item count.
+    public long getTotalItemCount() {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(i) FROM Item i", Long.class);
+        return query.getSingleResult();
+    }
 
-		try {
-			StringBuilder queryStr = new StringBuilder("SELECT i FROM Item i WHERE 1=1");
+    // Get the count of items that are in stock.
+    public long getInStockItemCount() {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(i) FROM Item i WHERE i.stockQuantity > 0", Long.class);
+        return query.getSingleResult();
+    }
+ 
+    // Get distinct category count.
+    public long getCategoryCount() {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(DISTINCT i.category) FROM Item i", Long.class);
+        return query.getSingleResult();
+    }
 
-			if (category != null && !category.equals("All")) {
-				queryStr.append(" AND i.category = :category");
-			}
-			if (stock != null && !stock.equals("All")) {
-				if (stock.equals("InStock")) {
-					queryStr.append(" AND i.stockQuantity > 0");
-				} else if (stock.equals("OutOfStock")) {
-					queryStr.append(" AND i.stockQuantity = 0");
-				}
-			}
-
-			TypedQuery<Item> query = em.createQuery(queryStr.toString(), Item.class);
-
-			if (category != null && !category.equals("All")) {
-				query.setParameter("category", category);
-			}
-
-			itemList = query.getResultList();
-		} finally {
-			em.close();
-		}
-
-		return itemList;
-	}
-
-	public List<String> getAllCategories() {
-		EntityManager em = getEntityManager();
-		List<String> categories = null;
-		try {
-			TypedQuery<String> query = em.createQuery("SELECT DISTINCT i.category FROM Item i", String.class);
-			categories = query.getResultList();
-		} finally {
-			em.close();
-		}
-		return categories;
-	}
-
-	public List<Item> getAll() {
-		EntityManager em = getEntityManager();
-		try {
-			return em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
-		} finally {
-			em.close();
-		}
-	}
-	
-	public long getTotalItemCount() {
-	    EntityManager em = getEntityManager();
-	    try {
-	        return em.createQuery("SELECT COUNT(i) FROM Item i", Long.class).getSingleResult();
-	    } finally {
-	        em.close();
-	    }
-	}
-
-	public long getInStockItemCount() {
-	    EntityManager em = getEntityManager();
-	    try {
-	        return em.createQuery("SELECT COUNT(i) FROM Item i WHERE i.stockQuantity > 0", Long.class).getSingleResult();
-	    } finally {
-	        em.close();
-	    }
-	}
-
-	public long getCategoryCount() {
-	    EntityManager em = getEntityManager();
-	    try {
-	        return em.createQuery("SELECT COUNT(DISTINCT i.category) FROM Item i", Long.class).getSingleResult();
-	    } finally {
-	        em.close();
-	    }
-	}
-
-}
+} 

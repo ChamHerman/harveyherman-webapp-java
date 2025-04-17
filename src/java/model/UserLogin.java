@@ -167,5 +167,9 @@ public class UserLogin implements Serializable {
     public String toString() {
         return "model.UserLogin[ loginId=" + loginId + " ]";
     }
+
+    public void setUser(UserData user) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
