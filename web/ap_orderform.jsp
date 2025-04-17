@@ -42,7 +42,7 @@
           <label for="status" class="form-label">Status</label>
           <select class="form-select" id="status" name="status" required>
             <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
+            <option value="packaging">Packaging</option>
             <option value="shipping">Shipping</option>
             <option value="delivered">Delivered</option>
           </select>

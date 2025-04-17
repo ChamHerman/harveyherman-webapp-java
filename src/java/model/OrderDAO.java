@@ -26,7 +26,7 @@ public class OrderDAO {
 
     public void create(Orders order) {
         if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
-            String generatedId = CustomIdGenerator.generateNextId(em, "Orders", "O", 2, "orderId");
+            String generatedId = CustomIdGenerator.generateNextId(em, "Orders", "O", 3, "orderId");
             order.setOrderId(generatedId);
         }
         em.persist(order);

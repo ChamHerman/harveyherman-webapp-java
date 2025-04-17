@@ -20,7 +20,7 @@ document.getElementById('searchButton').addEventListener('click', function () {
     const status = document.getElementById('statusSelect').value;
 
     if (status) {
-        fetch(`FilterOrder  Servlet?status=${encodeURIComponent(status)}`)
+        fetch(`FilterOrderServlet?status=${encodeURIComponent(status)}`)
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('statusOrdersTableBody');
@@ -45,17 +45,3 @@ document.getElementById('searchButton').addEventListener('click', function () {
             .catch(error => console.error('Error fetching orders:', error));
     }
 });
-
-function showOrderDetails(orderData) {
-    // Assuming you have modal elements with these IDs
-    document.getElementById('orderId').textContent = orderData.orderId;
-    document.getElementById('user').textContent = orderData.user;
-    document.getElementById('totalAmount').textContent = `RM ${orderData.totalAmount.toFixed(2)}`;
-    document.getElementById('status').textContent = orderData.status;
-    document.getElementById('createdDate').textContent = orderData.createdDate;
-
-    // Show the modal (using Bootstrap's modal API)
-    const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
-    modal.show();
-}
-

@@ -34,7 +34,7 @@ public class OrderServlet extends HttpServlet {
             List<Orders> ordersList = orderDAO.getAllOrders();
             long totalOrders = orderDAO.getTotalOrderCount();
             long pendingCount = orderDAO.countOrdersByStatus("Pending");
-            long processingCount = orderDAO.countOrdersByStatus("Processing");
+            long packagingCount = orderDAO.countOrdersByStatus("Packaging");
             long shippingCount = orderDAO.countOrdersByStatus("Shipping");
             long deliveredCount = orderDAO.countOrdersByStatus("Delivered");
 
@@ -44,7 +44,7 @@ public class OrderServlet extends HttpServlet {
             request.setAttribute("ordersList", ordersList);
             request.setAttribute("totalOrders", totalOrders);
             request.setAttribute("pendingCount", pendingCount);
-            request.setAttribute("processingCount", processingCount);
+            request.setAttribute("packagingCount", packagingCount);
             request.setAttribute("shippingCount", shippingCount);
             request.setAttribute("deliveredCount", deliveredCount);
             request.setAttribute("statusCounts", statusCounts);

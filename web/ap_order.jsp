@@ -61,7 +61,7 @@
                     </div>
                     <%
                         long pendingCount = orderDAO.countOrdersByStatus("pending");
-                        long processingCount = orderDAO.countOrdersByStatus("processing");
+                        long packagingCount = orderDAO.countOrdersByStatus("packaging");
                         long shippingCount = orderDAO.countOrdersByStatus("shipping");
                         long deliveredCount = orderDAO.countOrdersByStatus("delivered");
                     %>
@@ -71,7 +71,7 @@
                             <p>Pending: <%= pendingCount%></p>
                         </div>
                         <div class="summary-box" id="processing">
-                            <p>Processing: <%= processingCount%></p>
+                            <p>Packaging: <%= packagingCount%></p>
                         </div>
                         <div class="summary-box" id="shipping"> 
                             <p>Shipping: <%= shippingCount%></p>
@@ -90,7 +90,7 @@
                             <select name="status" id="statusSelect" class="form-control">
                                 <option value="">All</option>
                                 <option value="Pending">Pending</option>
-                                <option value="Processing">Processing</option>
+                                <option value="Packaging">Packaging</option>
                                 <option value="Shipping">Shipping</option>
                                 <option value="Delivered">Delivered</option>
                             </select>
@@ -118,6 +118,7 @@
                         </div>
                     </div>
 
+                    <!-- Add Order Button -->
                 </div>
                 <div class="right-controls">
                     <br/>
