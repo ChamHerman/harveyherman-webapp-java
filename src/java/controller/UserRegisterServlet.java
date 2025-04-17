@@ -22,10 +22,6 @@ import model.UserDataDAO;
 import model.UserLogin;
 import model.UserLoginDAO;
 
-/**
- *
- * @author herman
- */
 @WebServlet(name = "UserRegisterServlet", urlPatterns = {"/user/UserRegisterServlet"})
 public class UserRegisterServlet extends HttpServlet {
 
@@ -38,7 +34,7 @@ public class UserRegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("RegisterServlet: doPost method called");
+
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String contactNumber = request.getParameter("contact_number");
@@ -55,7 +51,7 @@ public class UserRegisterServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/user/success.jsp");
         } else {
             request.setAttribute("errorMessage", errorMsg);
-            RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/user/register.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/register.jsp");
             dispatcher.forward(request, response);
         }
     }
@@ -65,6 +61,12 @@ public class UserRegisterServlet extends HttpServlet {
             // Check for duplicate email
             if (userDataDAO.findByEmail(email) != null) {
                 errorMsg = "Registration failed: Duplicate Email Used!";
+                return false;
+            }
+
+            // Check for duplicate contact number
+            if (userDataDAO.findByContactNumber(contactNumber) != null) {
+                errorMsg = "Registration failed: Duplicate Contact Number!";
                 return false;
             }
 
@@ -105,7 +107,7 @@ public class UserRegisterServlet extends HttpServlet {
     private UserData createUserData(String userId, String fullName, String email, String contactNumber, String address, Date birthdate) {
         UserData user = new UserData();
         user.setUserId(userId);
-        user.setFullname(fullName);
+        user.setFullName(fullName);
         user.setEmail(email);
         user.setContactNumber(contactNumber);
         user.setAddress(address);

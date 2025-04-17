@@ -70,7 +70,7 @@ public class UserData implements Serializable {
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
-    @Column(name = "created_date")
+    @Column(name = "created_date", updatable = false, insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
@@ -103,11 +103,11 @@ public class UserData implements Serializable {
         this.userId = userId;
     }
 
-    public String getFullname() {
+    public String getFullName() {
         return fullname;
     }
 
-    public void setFullname(String fullname) {
+    public void setFullName(String fullname) {
         this.fullname = fullname;
     }
 

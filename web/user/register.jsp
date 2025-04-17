@@ -29,6 +29,5 @@
             <input type="text" name="answer" placeholder="Your Answer" autocomplete="off" required>
             <button type="submit">Register</button>
         </form>
-            <%= request.getContextPath() %>
     </body>
 </html>
