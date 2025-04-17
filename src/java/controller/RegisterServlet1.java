@@ -1,22 +1,34 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller;
 
-import model.UserDataDAO;
-import model.UserLoginDAO;
-import model.UserData;
-import model.UserLogin;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.UserData;
+import model.UserDataDAO;
+import model.UserLogin;
+import model.UserLoginDAO;
 
-@WebServlet(name = "RegisterServlet", urlPatterns = "/user/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
-    
+/**
+ *
+ * @author weika
+ */
+@WebServlet(name = "RegisterServlet1", urlPatterns = {"/user/RegisterServlet1"})
+public class RegisterServlet1 extends HttpServlet {
+
     @EJB
     private UserDataDAO userDataDAO;
     @EJB
@@ -26,7 +38,7 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-System.out.println("RegisterServlet: doPost method called"); 
+        System.out.println("RegisterServlet: doPost method called");
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String contactNumber = request.getParameter("contact_number");
@@ -42,7 +54,7 @@ System.out.println("RegisterServlet: doPost method called");
         if (success) {
             response.sendRedirect(request.getContextPath() + "/user/success.jsp");
         } else {
-            request.setAttribute("errorMessage",errorMsg);
+            request.setAttribute("errorMessage", errorMsg);
             RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/user/register.jsp");
             dispatcher.forward(request, response);
         }

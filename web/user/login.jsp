@@ -7,12 +7,12 @@
 <title>Login</title>
 </head>
 <body>
-<form action="login" method="post">
+<form action="<%= request.getContextPath()%>/user/LoginServlet" method="post">
 	<% if (request.getAttribute("loginError") != null) { %>
         <div>
-            <h3>Invalid username or wrong password</h3>
+            <h3>Invalid username or wrong password!</h3>
         </div>
-    <% } %>
+        <% }%>
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Login</button>

@@ -1,10 +1,12 @@
 package model;
 
 import controller.CustomIdGenerator;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+@Stateless
 public class UserLoginDAO {
 
     @PersistenceContext(unitName = "HarveyHermanPU")

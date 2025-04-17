@@ -11,7 +11,7 @@
             <%= request.getAttribute("errorMessage")%>
         </div>
         <% }%>
-        <form action="<%= request.getContextPath()%>/user/RegisterServlet" method="post">
+        <form action="<%= request.getContextPath()%>/user/RegisterServlet1" method="get">
             <input type="text" name="fullname" placeholder="Full Name" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="text" name="contact_number" placeholder="Contact Number">
@@ -28,6 +28,6 @@
             <input type="text" name="answer" placeholder="Your Answer" required>
             <button type="submit">Register</button>
         </form>
-            <%= request.getContextPath() %>
+        <%= request.getContextPath()%>
     </body>
 </html>

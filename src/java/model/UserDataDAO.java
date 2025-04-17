@@ -6,8 +6,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.PersistenceContext;
 
+@Stateless
 public class UserDataDAO {
 
     @PersistenceContext(unitName = "HarveyHermanPU")
@@ -16,7 +18,7 @@ public class UserDataDAO {
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }
-    
+
     public void create(UserData user) {
         if (user.getUserId() == null || user.getUserId().isEmpty()) {
             String generatedId = CustomIdGenerator.generateNextId(em, "UserData", "U", 3, "userId");
@@ -41,13 +43,10 @@ public class UserDataDAO {
 //            em.close();
 //        }
 //    }
-
     public UserData findById(String userId) {
-        try {
-            return em.find(UserData.class, userId);
-        } finally {
-            em.close();
-        }
+
+        return em.find(UserData.class, userId);
+
     }
 
     public UserData findByEmail(String email) {
@@ -57,17 +56,13 @@ public class UserDataDAO {
                     .getSingleResult();
         } catch (NoResultException e) {
             return null; // Return null if no matching user is found
-        } finally {
-            em.close();
         }
     }
 
     public List<UserData> findAll() {
-        try {
-            return em.createQuery("SELECT u FROM UserData u", UserData.class).getResultList();
-        } finally {
-            em.close();
-        }
+
+        return em.createQuery("SELECT u FROM UserData u", UserData.class).getResultList();
+
     }
 
     public void update(UserData userData) {
@@ -81,8 +76,6 @@ public class UserDataDAO {
                 transaction.rollback();
             }
             e.printStackTrace();
-        } finally {
-            em.close();
         }
     }
 
@@ -100,8 +93,6 @@ public class UserDataDAO {
                 transaction.rollback();
             }
             e.printStackTrace();
-        } finally {
-            em.close();
         }
     }
 }
