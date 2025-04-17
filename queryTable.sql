@@ -1,166 +1,249 @@
-DROP DATABASE IF EXISTS harveyhermandb;
-CREATE DATABASE harveyhermandb;
-USE harveyhermandb;
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+--
+-- Host: localhost    Database: harveyhermandb
+-- ------------------------------------------------------
+-- Server version	8.4.4
+--
+-- Table structure for table `aplogin`
+--
 
--- UserData: Stores customer information
-CREATE TABLE UserData (
-    user_id VARCHAR(10) PRIMARY KEY,
-    fullname VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    contact_number VARCHAR(20),
-    address TEXT,
-    birth_date DATE,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+DROP TABLE IF EXISTS `aplogin`;
+CREATE TABLE `aplogin` (
+  `ap_id` varchar(255) NOT NULL,
+  `created_date` timestamp DEFAULT NULL,
+  `last_login` timestamp DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `position` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `staff_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ap_id`),
+  KEY `FK_aplogin_staff_id` (`staff_id`),
+  CONSTRAINT `FK_aplogin_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staffdata` (`staff_id`)
 );
 
--- UserLogin: Stores customer login credentials
-CREATE TABLE UserLogin (
-    login_id VARCHAR(10) PRIMARY KEY,
-    user_id VARCHAR(10) UNIQUE,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    last_login TIMESTAMP DEFAULT NULL,
-    FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
+--
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+CREATE TABLE `cart` (
+  `cart_id` varchar(255) NOT NULL,
+  `created_date` timestamp DEFAULT NULL,
+  `total` decimal(38,0) DEFAULT NULL,
+  `updated_date` timestamp DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`cart_id`),
+  KEY `FK_cart_user_id` (`user_id`),
+  CONSTRAINT `FK_cart_user_id` FOREIGN KEY (`user_id`) REFERENCES `userdata` (`user_id`)
 );
 
+--
+-- Table structure for table `cart_item`
+--
 
--- Item: Stores product information
-CREATE TABLE Item (
-    item_id VARCHAR(10) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    stock_quantity INT NOT NULL DEFAULT 0,
-    category VARCHAR(50),
-    image_url VARCHAR(255),
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+DROP TABLE IF EXISTS `cart_item`;
+CREATE TABLE `cart_item` (
+  `cart_item_id` varchar(255) NOT NULL,
+  `quantity` int DEFAULT NULL,
+  `subtotal` decimal(38,0) DEFAULT NULL,
+  `unit_price` decimal(38,0) DEFAULT NULL,
+  `cart_id` varchar(255) DEFAULT NULL,
+  `item_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`cart_item_id`),
+  KEY `FK_cart_item_item_id` (`item_id`),
+  KEY `FK_cart_item_cart_id` (`cart_id`),
+  CONSTRAINT `FK_cart_item_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`),
+  CONSTRAINT `FK_cart_item_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`)
 );
 
--- Promotion: Stores promotional codes and discounts
-CREATE TABLE Promotion (
-    promotion_id VARCHAR(10) PRIMARY KEY,
-    promotion_code VARCHAR(50) NOT NULL UNIQUE,
-    discount_value DECIMAL(10,2) NOT NULL,
-    status ENUM('active', 'expired') NOT NULL,
-    minimum_purchase DECIMAL(10,2),
-    description TEXT,
-    start_date DATE,
-    end_date DATE
+--
+-- Table structure for table `delivery`
+--
+
+DROP TABLE IF EXISTS `delivery`;
+CREATE TABLE `delivery` (
+  `delivery_id` varchar(255) NOT NULL,
+  `created_date` timestamp DEFAULT NULL,
+  `delivered_date` timestamp DEFAULT NULL,
+  `expected_date` date DEFAULT NULL,
+  `shipping_address` longtext,
+  `shipping_status` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`delivery_id`),
+  KEY `FK_delivery_order_id` (`order_id`),
+  CONSTRAINT `FK_delivery_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
 );
 
+--
+-- Table structure for table `item`
+--
 
--- Orders: Tracks customer orders
-CREATE TABLE Orders (
-    order_id VARCHAR(10) PRIMARY KEY,
-    user_id VARCHAR(10) NOT NULL,
-    total_amount DECIMAL(10,2) NOT NULL,
-    payment_method ENUM('cash', 'debit_card', 'credit_card', 'e-wallet') NOT NULL,
-    status ENUM('pending', 'packaging', 'shipping', 'delivered') DEFAULT 'pending',
-    promotion_id VARCHAR(10) DEFAULT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (promotion_id) REFERENCES Promotion(promotion_id) ON DELETE SET NULL
+DROP TABLE IF EXISTS `item`;
+CREATE TABLE `item` (
+  `item_id` varchar(255) NOT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` longtext,
+  `image_url` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `price` decimal(38,0) DEFAULT NULL,
+  `stock_quantity` int DEFAULT NULL,
+  `updated_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item_id`)
 );
 
--- OrderDetails: Tracks items in each order
-CREATE TABLE OrderDetails (
-    detail_id VARCHAR(10) PRIMARY KEY,
-    order_id VARCHAR(10) NOT NULL,
-    item_id VARCHAR(10) NOT NULL,
-    quantity INT NOT NULL,
-    price_per_item DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
+--
+-- Table structure for table `orderdetails`
+--
+
+DROP TABLE IF EXISTS `orderdetails`;
+CREATE TABLE `orderdetails` (
+  `detail_id` varchar(255) NOT NULL,
+  `price_per_item` decimal(38,0) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `item_id` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`detail_id`),
+  KEY `FK_orderdetails_order_id` (`order_id`),
+  KEY `FK_orderdetails_item_id` (`item_id`),
+  CONSTRAINT `FK_orderdetails_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`),
+  CONSTRAINT `FK_orderdetails_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
 );
 
--- Delivery: Stores delivery information for orders
-CREATE TABLE Delivery (
-    delivery_id VARCHAR(10) PRIMARY KEY,
-    order_id VARCHAR(10) NOT NULL,
-    shipping_address TEXT NOT NULL,
-    shipping_status ENUM('pending', 'shipped', 'delivered') DEFAULT 'pending',
-    expected_date DATE,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    delivered_date TIMESTAMP NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
+  `order_id` varchar(255) NOT NULL,
+  `created_date` timestamp DEFAULT NULL,
+  `payment_method` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `total_amount` decimal(38,0) DEFAULT NULL,
+  `promotion_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `FK_orders_user_id` (`user_id`),
+  KEY `FK_orders_promotion_id` (`promotion_id`),
+  CONSTRAINT `FK_orders_promotion_id` FOREIGN KEY (`promotion_id`) REFERENCES `promotion` (`promotion_id`),
+  CONSTRAINT `FK_orders_user_id` FOREIGN KEY (`user_id`) REFERENCES `userdata` (`user_id`)
 );
 
--- Cart: Stores customer cart information
-CREATE TABLE Cart (
-    cart_id VARCHAR(10) PRIMARY KEY,
-    total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    user_id VARCHAR(10) NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
+--
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+CREATE TABLE `payment` (
+  `payment_id` varchar(255) NOT NULL,
+  `payment_date` timestamp DEFAULT NULL,
+  `payment_method` varchar(255) DEFAULT NULL,
+  `payment_status` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`payment_id`),
+  KEY `FK_payment_order_id` (`order_id`),
+  CONSTRAINT `FK_payment_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
 );
 
--- Cart_Item: Tracks items in a cart
-CREATE TABLE Cart_Item (
-    cart_item_id VARCHAR(10) PRIMARY KEY,
-    quantity INT NOT NULL,
-    unit_price DECIMAL(10,2) NOT NULL,
-    subtotal DECIMAL(10,2) NOT NULL,
-    cart_id VARCHAR(10) NOT NULL,
-    item_id VARCHAR(10) NOT NULL,
-    FOREIGN KEY (cart_id) REFERENCES Cart(cart_id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
+--
+-- Table structure for table `promotion`
+--
+
+DROP TABLE IF EXISTS `promotion`;
+CREATE TABLE `promotion` (
+  `promotion_id` varchar(255) NOT NULL,
+  `description` longtext,
+  `discount_value` decimal(38,0) DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `minimum_purchase` decimal(38,0) DEFAULT NULL,
+  `promotion_code` varchar(255) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`promotion_id`)
 );
 
+--
+-- Table structure for table `report`
+--
 
--- Payment: Tracks payment information
-CREATE TABLE Payment (
-    payment_id VARCHAR(10) PRIMARY KEY,
-    payment_status ENUM('pending', 'completed', 'failed') NOT NULL,
-    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    payment_method ENUM('cash', 'debit_card', 'credit_card', 'e-wallet') NOT NULL,
-    order_id VARCHAR(10) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
+DROP TABLE IF EXISTS `report`;
+CREATE TABLE `report` (
+  `report_id` varchar(255) NOT NULL,
+  `description` longtext,
+  `report_date` date DEFAULT NULL,
+  `report_type` varchar(255) DEFAULT NULL,
+  `total_sales` decimal(38,0) DEFAULT NULL,
+  PRIMARY KEY (`report_id`)
 );
 
+--
+-- Table structure for table `review_rating`
+--
 
--- StaffData: Stores staff personal information
-CREATE TABLE StaffData (
-    staff_id VARCHAR(10) PRIMARY KEY,
-    fullname VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    contact_number VARCHAR(20),
-    address TEXT,
-    position ENUM('staff', 'manager') NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+DROP TABLE IF EXISTS `review_rating`;
+CREATE TABLE `review_rating` (
+  `review_id` varchar(255) NOT NULL,
+  `comment` longtext,
+  `review_date` date DEFAULT NULL,
+  `review_grade` int DEFAULT NULL,
+  `item_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`review_id`),
+  KEY `FK_review_rating_item_id` (`item_id`),
+  KEY `FK_review_rating_user_id` (`user_id`),
+  CONSTRAINT `FK_review_rating_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`),
+  CONSTRAINT `FK_review_rating_user_id` FOREIGN KEY (`user_id`) REFERENCES `userdata` (`user_id`)
 );
 
--- APLogin: Stores admin portal login information
-CREATE TABLE APLogin (
-    ap_id VARCHAR(10) PRIMARY KEY,
-    staff_id VARCHAR(10) UNIQUE,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    last_login TIMESTAMP DEFAULT NULL,
-    position ENUM('staff', 'manager') NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (staff_id) REFERENCES StaffData(staff_id) ON DELETE CASCADE
+--
+-- Table structure for table `staffdata`
+--
+
+DROP TABLE IF EXISTS `staffdata`;
+CREATE TABLE `staffdata` (
+  `staff_id` varchar(255) NOT NULL,
+  `address` longtext,
+  `contact_number` varchar(255) DEFAULT NULL,
+  `created_date` timestamp DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `fullname` varchar(255) DEFAULT NULL,
+  `position` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`staff_id`)
 );
 
--- Report: Stores system reports
-CREATE TABLE Report (
-    report_id VARCHAR(10) PRIMARY KEY,
-    report_date DATE NOT NULL,
-    report_type VARCHAR(50) NOT NULL,
-    total_sales DECIMAL(10,2) DEFAULT 0.00,
-    description TEXT
+--
+-- Table structure for table `userdata`
+--
+
+DROP TABLE IF EXISTS `userdata`;
+CREATE TABLE `userdata` (
+  `user_id` varchar(255) NOT NULL,
+  `address` longtext,
+  `birth_date` date DEFAULT NULL,
+  `contact_number` varchar(255) DEFAULT NULL,
+  `created_date` timestamp DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `fullname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
 );
 
--- Review_Rating: Stores product reviews
-CREATE TABLE Review_Rating (
-    review_id VARCHAR(10) PRIMARY KEY,
-    review_date DATE NOT NULL,
-    review_grade INT CHECK (review_grade BETWEEN 1 AND 5),
-    comment TEXT,
-    user_id VARCHAR(10) NOT NULL,
-    item_id VARCHAR(10) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
+--
+-- Table structure for table `userlogin`
+--
+
+DROP TABLE IF EXISTS `userlogin`;
+CREATE TABLE `userlogin` (
+  `login_id` varchar(255) NOT NULL,
+  `answer` varchar(255) DEFAULT NULL,
+  `challenge_question` varchar(255) DEFAULT NULL,
+  `last_login` timestamp DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`login_id`),
+  KEY `FK_userlogin_user_id` (`user_id`),
+  CONSTRAINT `FK_userlogin_user_id` FOREIGN KEY (`user_id`) REFERENCES `userdata` (`user_id`)
 );
 
+-- Dump completed on 2025-04-17 17:06:46
