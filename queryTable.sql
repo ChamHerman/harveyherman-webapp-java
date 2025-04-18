@@ -10,7 +10,7 @@
 DROP TABLE IF EXISTS `aplogin`;
 CREATE TABLE `aplogin` (
   `ap_id` varchar(255) NOT NULL,
-  `created_date` timestamp DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `last_login` timestamp DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `position` varchar(255) DEFAULT NULL,
@@ -28,9 +28,9 @@ CREATE TABLE `aplogin` (
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `cart_id` varchar(255) NOT NULL,
-  `created_date` timestamp DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total` decimal(38,0) DEFAULT NULL,
-  `updated_date` timestamp DEFAULT NULL,
+  `updated_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`cart_id`),
   KEY `FK_cart_user_id` (`user_id`),
@@ -63,7 +63,7 @@ CREATE TABLE `cart_item` (
 DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE `delivery` (
   `delivery_id` varchar(255) NOT NULL,
-  `created_date` timestamp DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `delivered_date` timestamp DEFAULT NULL,
   `expected_date` date DEFAULT NULL,
   `shipping_address` longtext,
@@ -117,7 +117,7 @@ CREATE TABLE `orderdetails` (
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `order_id` varchar(255) NOT NULL,
-  `created_date` timestamp DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `payment_method` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `total_amount` decimal(38,0) DEFAULT NULL,
@@ -205,7 +205,7 @@ CREATE TABLE `staffdata` (
   `staff_id` varchar(255) NOT NULL,
   `address` longtext,
   `contact_number` varchar(255) DEFAULT NULL,
-  `created_date` timestamp DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255) DEFAULT NULL,
   `fullname` varchar(255) DEFAULT NULL,
   `position` varchar(255) DEFAULT NULL,
@@ -222,7 +222,7 @@ CREATE TABLE `userdata` (
   `address` longtext,
   `birth_date` date DEFAULT NULL,
   `contact_number` varchar(255) DEFAULT NULL,
-  `created_date` timestamp DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255) DEFAULT NULL,
   `fullname` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
