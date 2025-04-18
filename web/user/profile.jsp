@@ -74,6 +74,40 @@
                             <div class="profile-actions">
                                 <a href="editProfile.jsp" class="btn btn-primary">Edit Profile</a>
                                 <a href="changePassword.jsp" class="btn btn-secondary">Change Password</a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                    Delete Account
+                                </button>
+                            </div>
+
+                            <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                                            <p>Please enter your password to confirm deletion:</p>
+
+                                            <form action="<%=request.getContextPath()%>/user/UserDeleteAccountServlet" method="post" id="deleteAccountForm">
+                                                <div class="mb-3">
+                                                    <label for="confirmPassword" class="form-label">Password</label>
+                                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                                </div>
+                                                <% if (request.getParameter("error") != null) { %>
+                                                <div class="alert alert-danger">
+                                                    Incorrect password. Account deletion canceled.
+                                                </div>
+                                                <% } %>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" form="deleteAccountForm" class="btn btn-danger">Delete My Account</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <% } else { %>

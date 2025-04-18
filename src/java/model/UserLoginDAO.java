@@ -39,24 +39,12 @@ public class UserLoginDAO {
         em.flush();
     }
 
-    public Timestamp getCurrentDatabaseTimestamp() {
-        try {
-            Query query = em.createNativeQuery("SELECT CURRENT_TIMESTAMP");
-            Object result = query.getSingleResult();
-
-            if (result instanceof Timestamp) {
-                return (Timestamp) result;
-            } else if (result instanceof java.time.LocalDateTime) {
-                java.time.LocalDateTime localDateTime = (java.time.LocalDateTime) result;
-                return Timestamp.valueOf(localDateTime);
-            } else {
-                System.out.println("Unexpected timestamp type: " + (result != null ? result.getClass().getName() : "null"));
-                return new Timestamp(System.currentTimeMillis());
-            }
-        } catch (Exception e) {
-            System.out.println("Error getting database timestamp: " + e.getMessage());
-            e.printStackTrace();
-            return new Timestamp(System.currentTimeMillis());
+    public void delete(String loginId) {
+        UserLogin userLogin = em.find(UserLogin.class, loginId);
+        if (userLogin != null) {
+            userLogin.setDbstatus("deleted");
+            em.merge(userLogin);
+            em.flush();
         }
     }
 
@@ -107,5 +95,17 @@ public class UserLoginDAO {
         TypedQuery<UserLogin> query = em.createNamedQuery("UserLogin.findByAnswer", UserLogin.class);
         query.setParameter("answer", answer);
         return query.getResultList();
+    }
+
+    public UserLogin findByUserId(String userId) {
+        TypedQuery<UserLogin> query = em.createQuery(
+                "SELECT u FROM UserLogin u WHERE u.userId.userId = :userId AND u.dbstatus = 'active'",
+                UserLogin.class);
+        query.setParameter("userId", userId);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

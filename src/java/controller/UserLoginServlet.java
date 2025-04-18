@@ -66,29 +66,12 @@ public class UserLoginServlet extends HttpServlet {
             UserLogin managedUserLogin = userLoginDAO.findByLoginId(userLogin.getLoginId());
 
             if (managedUserLogin != null) {
-                java.sql.Timestamp dbTimestamp = null;
-
-                try {
-                    dbTimestamp = userLoginDAO.getCurrentDatabaseTimestamp();
-                    System.out.println("Retrieved database timestamp: " + dbTimestamp);
-                } catch (Exception e) {
-                    // Fallback to system timestamp if database timestamp fails
-                    dbTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
-                    System.out.println("Using system timestamp as fallback: " + dbTimestamp);
-                }
-
-                // Set the last login time
-                managedUserLogin.setLastLogin(dbTimestamp);
-
-                // Update without refresh
+                java.sql.Timestamp currentTime = new java.sql.Timestamp(System.currentTimeMillis());
+                managedUserLogin.setLastLogin(currentTime);
                 userLoginDAO.update(managedUserLogin);
-                System.out.println("Last login time updated successfully: " + dbTimestamp);
-            } else {
-                System.out.println("Error: Could not find managed UserLogin entity with ID: " + userLogin.getLoginId());
             }
         } catch (Exception e) {
-            System.out.println("Error updating last login time: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Failed to update login time: " + e.getMessage());
         }
     }
 }
