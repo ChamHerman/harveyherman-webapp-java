@@ -40,7 +40,7 @@ public class Payment implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "payment_id")
     private String paymentId;
     @Basic(optional = false)

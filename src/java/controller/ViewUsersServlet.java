@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import model.Item;
 import model.ItemDAO;
 
-@WebServlet(name = "ViewItemsServlet", urlPatterns = {"/manager/ViewItemsServlet", "/staff/ViewItemsServlet"})
-public class ViewItemsServlet extends HttpServlet {
+@WebServlet(name = "ViewUsersServlet", urlPatterns = {"/manager/ViewUsersServlet", "/staff/ViewUsersServlet"})
+public class ViewUsersServlet extends HttpServlet {
 
     @EJB
     private ItemDAO itemDAO;
@@ -70,7 +70,7 @@ public class ViewItemsServlet extends HttpServlet {
             }
             // Format dates
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getDefault());
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             String createdDate = (item.getCreatedDate() != null) ? sdf.format(item.getCreatedDate()) : "";
             String updatedDate = (item.getUpdatedDate() != null) ? sdf.format(item.getUpdatedDate()) : "";
             // Build a JSON string with necessary fields.

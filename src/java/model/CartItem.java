@@ -38,7 +38,7 @@ public class CartItem implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "cart_item_id")
     private String cartItemId;
     @Basic(optional = false)

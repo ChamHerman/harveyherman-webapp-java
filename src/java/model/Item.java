@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
     @NamedQuery(name = "Item.findByItemId", query = "SELECT i FROM Item i WHERE i.itemId = :itemId"),
-    @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name LIKE :name"),
+    @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :name"),
     @NamedQuery(name = "Item.findByPrice", query = "SELECT i FROM Item i WHERE i.price = :price"),
     @NamedQuery(name = "Item.findByStockQuantity", query = "SELECT i FROM Item i WHERE i.stockQuantity = :stockQuantity"),
     @NamedQuery(name = "Item.findByCategory", query = "SELECT i FROM Item i WHERE i.category = :category"),
@@ -47,52 +47,39 @@ public class Item implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "item_id")
     private String itemId;
-    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    
     @Lob
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
-    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
     private BigDecimal price;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "stock_quantity")
     private int stockQuantity;
-    
-    @Size(max = 50)
+    @Size(max = 255)
     @Column(name = "category")
     private String category;
-    
     @Size(max = 255)
     @Column(name = "image_url")
     private String imageUrl;
-    
-    @Column(name = "created_date", updatable = false, insertable = false)
+    @Column(name = "created_date", nullable = false, updatable = false, insertable = false)
     private Timestamp createdDate;
-    
-    @Column(name = "updated_date", updatable = false, insertable = false)
+    @Column(name = "updated_date", insertable = false)
     private Timestamp updatedDate;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
-    private List<ReviewRating> reviewRatingList;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<OrderDetails> orderDetailsList;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<CartItem> cartItemList;
 
@@ -166,7 +153,7 @@ public class Item implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Date getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
@@ -174,21 +161,12 @@ public class Item implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Date getUpdatedDate() {
+    public Timestamp getUpdatedDate() {
         return updatedDate;
     }
 
     public void setUpdatedDate(Timestamp updatedDate) {
         this.updatedDate = updatedDate;
-    }
-
-    @XmlTransient
-    public List<ReviewRating> getReviewRatingList() {
-        return reviewRatingList;
-    }
-
-    public void setReviewRatingList(List<ReviewRating> reviewRatingList) {
-        this.reviewRatingList = reviewRatingList;
     }
 
     @XmlTransient

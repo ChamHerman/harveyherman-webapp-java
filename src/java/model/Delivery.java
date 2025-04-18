@@ -42,7 +42,7 @@ public class Delivery implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "delivery_id")
     private String deliveryId;
     @Basic(optional = false)
