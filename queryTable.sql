@@ -3,6 +3,7 @@
 
 DROP DATABASE IF EXISTS harveyhermandb;
 CREATE DATABASE harveyhermandb;
+
 USE harveyhermandb;
 
 -- UserData: Stores customer information
@@ -10,9 +11,10 @@ CREATE TABLE UserData (
     user_id VARCHAR(255) PRIMARY KEY,
     fullname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    contact_number VARCHAR(255),
+    contact_number VARCHAR(255) NOT NULL,
     address TEXT,
     birth_date DATE,
+	gender VARCHAR(255) NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -111,7 +113,6 @@ CREATE TABLE Cart_Item (
     FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
 );
 
-
 -- Payment: Tracks payment information
 CREATE TABLE Payment (
     payment_id VARCHAR(255) PRIMARY KEY,
@@ -122,7 +123,6 @@ CREATE TABLE Payment (
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
 );
 
-
 -- StaffData: Stores staff personal information
 CREATE TABLE StaffData (
     staff_id VARCHAR(255) PRIMARY KEY,
@@ -130,23 +130,23 @@ CREATE TABLE StaffData (
     email VARCHAR(255) NOT NULL UNIQUE,
     contact_number VARCHAR(255),
     address TEXT,
-    position ENUM('staff', 'manager') NOT NULL,
+    position VARCHAR(255) NOT NULL,
+	gender VARCHAR(255) NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- APLogin: Stores admin portal login information
-CREATE TABLE APLogin (
-    ap_id VARCHAR(255) PRIMARY KEY,
-    staff_id VARCHAR(255) UNIQUE,
+-- StaffLogin: Stores admin portal login information
+CREATE TABLE StaffLogin (
+    login_id VARCHAR(255) PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
-    position ENUM('staff', 'manager') NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    role ENUM('staff', 'manager') NOT NULL,
+	staff_id VARCHAR(255) UNIQUE,
     FOREIGN KEY (staff_id) REFERENCES StaffData(staff_id) ON DELETE CASCADE
 );
 
--- Report: Stores system reports
+-- Report: Stores sales reports
 CREATE TABLE Report (
     report_id VARCHAR(255) PRIMARY KEY,
     report_date DATE NOT NULL,
