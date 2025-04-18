@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,6 +20,12 @@
             <input type="text" name="username" placeholder="Username" autocomplete="off" required>
             <input type="password" name="password" placeholder="Password" autocomplete="off" required>
             <input type="date" name="birthdate" autocomplete="off" required>
+            <select name="gender" autocomplete="off" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
             <select name="challenge_question" autocomplete="off" required>
                 <option value="">Select Security Question</option>
                 <option value="What is your favourite colors?">What is your favorite colors?</option>
@@ -29,5 +35,7 @@
             <input type="text" name="answer" placeholder="Your Answer" autocomplete="off" required>
             <button type="submit">Register</button>
         </form>
+
+        <a href="login.jsp">Login to an account</a>
     </body>
 </html>

@@ -41,7 +41,7 @@
                                 <div class="profile-details">
                                     <div class="profile-item">
                                         <label>Full Name</label>
-                                        <div class="detail-value"><%= user.getFullName()%></div>
+                                        <div class="detail-value"><%= user.getFullname()%></div>
                                     </div>
 
                                     <div class="profile-item">

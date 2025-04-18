@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -52,7 +51,7 @@ public class EditUserServlet extends HttpServlet {
                 throw new Exception("User not found");
             }
 
-            userData.setFullName(fullName);
+            userData.setFullname(fullName);
             userData.setEmail(email);
             userData.setContactNumber(contactNumber);
             userData.setAddress(address);

@@ -28,17 +28,18 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "cart")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cart.findAll", query = "SELECT c FROM Cart c"),
-    @NamedQuery(name = "Cart.findByCartId", query = "SELECT c FROM Cart c WHERE c.cartId = :cartId"),
-    @NamedQuery(name = "Cart.findByTotal", query = "SELECT c FROM Cart c WHERE c.total = :total"),
-    @NamedQuery(name = "Cart.findByCreatedDate", query = "SELECT c FROM Cart c WHERE c.createdDate = :createdDate"),
-    @NamedQuery(name = "Cart.findByUpdatedDate", query = "SELECT c FROM Cart c WHERE c.updatedDate = :updatedDate")})
+    @NamedQuery(name = "Cart.findAll", query = "SELECT c FROM Cart c WHERE c.dbstatus = 'active'"),
+    @NamedQuery(name = "Cart.findByCartId", query = "SELECT c FROM Cart c WHERE c.cartId = :cartId AND c.dbstatus = 'active'"),
+    @NamedQuery(name = "Cart.findByTotal", query = "SELECT c FROM Cart c WHERE c.total = :total AND c.dbstatus = 'active'"),
+    @NamedQuery(name = "Cart.findByCreatedDate", query = "SELECT c FROM Cart c WHERE c.createdDate = :createdDate AND c.dbstatus = 'active'"),
+    @NamedQuery(name = "Cart.findByUpdatedDate", query = "SELECT c FROM Cart c WHERE c.updatedDate = :updatedDate AND c.dbstatus = 'active'"),
+    @NamedQuery(name = "Cart.findByDbstatus", query = "SELECT c FROM Cart c WHERE c.dbstatus = :dbstatus")})
 public class Cart implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +60,9 @@ public class Cart implements Serializable {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData userId;
@@ -107,6 +111,14 @@ public class Cart implements Serializable {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public UserData getUserId() {

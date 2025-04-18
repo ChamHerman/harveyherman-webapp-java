@@ -23,20 +23,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "staffdata")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Staffdata.findAll", query = "SELECT s FROM Staffdata s"),
-    @NamedQuery(name = "Staffdata.findByStaffId", query = "SELECT s FROM Staffdata s WHERE s.staffId = :staffId"),
-    @NamedQuery(name = "Staffdata.findByFullname", query = "SELECT s FROM Staffdata s WHERE s.fullname = :fullname"),
-    @NamedQuery(name = "Staffdata.findByEmail", query = "SELECT s FROM Staffdata s WHERE s.email = :email"),
-    @NamedQuery(name = "Staffdata.findByContactNumber", query = "SELECT s FROM Staffdata s WHERE s.contactNumber = :contactNumber"),
-    @NamedQuery(name = "Staffdata.findByPosition", query = "SELECT s FROM Staffdata s WHERE s.position = :position"),
-    @NamedQuery(name = "Staffdata.findByGender", query = "SELECT s FROM Staffdata s WHERE s.gender = :gender"),
-    @NamedQuery(name = "Staffdata.findByCreatedDate", query = "SELECT s FROM Staffdata s WHERE s.createdDate = :createdDate")})
+    @NamedQuery(name = "Staffdata.findAll", query = "SELECT s FROM Staffdata s WHERE s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByStaffId", query = "SELECT s FROM Staffdata s WHERE s.staffId = :staffId AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByFullname", query = "SELECT s FROM Staffdata s WHERE s.fullname = :fullname AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByEmail", query = "SELECT s FROM Staffdata s WHERE s.email = :email AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByContactNumber", query = "SELECT s FROM Staffdata s WHERE s.contactNumber = :contactNumber AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByPosition", query = "SELECT s FROM Staffdata s WHERE s.position = :position AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByGender", query = "SELECT s FROM Staffdata s WHERE s.gender = :gender AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByCreatedDate", query = "SELECT s FROM Staffdata s WHERE s.createdDate = :createdDate AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Staffdata.findByDbstatus", query = "SELECT s FROM Staffdata s WHERE s.dbstatus = :dbstatus")})
 public class Staffdata implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -77,6 +78,9 @@ public class Staffdata implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @OneToOne(mappedBy = "staffId")
     private Stafflogin stafflogin;
 
@@ -157,6 +161,14 @@ public class Staffdata implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public Stafflogin getStafflogin() {

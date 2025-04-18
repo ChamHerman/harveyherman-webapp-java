@@ -50,7 +50,7 @@
                                     <div class="profile-details">
                                         <div class="profile-item">
                                             <label for="fullName">Full Name</label>
-                                            <input type="text" id="fullName" name="fullName" class="form-control" value="<%= user.getFullName()%>" required>
+                                            <input type="text" id="fullName" name="fullName" class="form-control" value="<%= user.getFullname()%>" required>
                                         </div>
 
                                         <div class="profile-item">

@@ -41,7 +41,8 @@ public class UserDataDAO {
     public void delete(String userId) {
         UserData user = em.find(UserData.class, userId);
         if (user != null) {
-            em.remove(user);
+            user.setDbstatus("deleted");
+            em.merge(user);
             em.flush();
         }
     }

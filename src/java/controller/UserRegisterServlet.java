@@ -5,7 +5,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,11 +40,12 @@ public class UserRegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         String username = request.getParameter("username");
         String birthdateStr = request.getParameter("birthdate");
+        String gender = request.getParameter("gender");
         String password = request.getParameter("password");
         String challengeQuestion = request.getParameter("challenge_question");
         String answer = request.getParameter("answer");
 
-        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, password, challengeQuestion, answer);
+        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, challengeQuestion, answer);
 
         if (success) {
             response.sendRedirect(request.getContextPath() + "/user/success.jsp");
@@ -56,7 +56,7 @@ public class UserRegisterServlet extends HttpServlet {
         }
     }
 
-    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String password, String challengeQuestion, String answer) {
+    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String challengeQuestion, String answer) {
         try {
             // Check for duplicate email
             if (userDataDAO.findByEmail(email) != null) {
@@ -81,7 +81,7 @@ public class UserRegisterServlet extends HttpServlet {
                 return false;
             }
 
-            UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate);
+            UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);
 
             userDataDAO.create(user);
@@ -104,15 +104,17 @@ public class UserRegisterServlet extends HttpServlet {
         }
     }
 
-    private UserData createUserData(String userId, String fullName, String email, String contactNumber, String address, Date birthdate) {
+    private UserData createUserData(String userId, String fullName, String email, String contactNumber, String address, Date birthdate, String gender) {
         UserData user = new UserData();
         user.setUserId(userId);
-        user.setFullName(fullName);
+        user.setFullname(fullName);
         user.setEmail(email);
         user.setContactNumber(contactNumber);
         user.setAddress(address);
         user.setBirthDate(birthdate);
+        user.setGender(gender);
         user.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        user.setDbstatus("active");
         return user;
     }
 
@@ -124,6 +126,7 @@ public class UserRegisterServlet extends HttpServlet {
         userLogin.setUserId(user);
         userLogin.setChallengeQuestion(challengeQuestion);
         userLogin.setAnswer(answer);
+        userLogin.setDbstatus("active");
         return userLogin;
     }
 }

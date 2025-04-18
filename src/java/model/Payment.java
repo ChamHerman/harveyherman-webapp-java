@@ -23,17 +23,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "payment")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
-    @NamedQuery(name = "Payment.findByPaymentId", query = "SELECT p FROM Payment p WHERE p.paymentId = :paymentId"),
-    @NamedQuery(name = "Payment.findByPaymentStatus", query = "SELECT p FROM Payment p WHERE p.paymentStatus = :paymentStatus"),
-    @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
-    @NamedQuery(name = "Payment.findByPaymentMethod", query = "SELECT p FROM Payment p WHERE p.paymentMethod = :paymentMethod")})
+    @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p WHERE p.dbstatus = 'active'"),
+    @NamedQuery(name = "Payment.findByPaymentId", query = "SELECT p FROM Payment p WHERE p.paymentId = :paymentId AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Payment.findByPaymentStatus", query = "SELECT p FROM Payment p WHERE p.paymentStatus = :paymentStatus AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Payment.findByPaymentMethod", query = "SELECT p FROM Payment p WHERE p.paymentMethod = :paymentMethod AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Payment.findByDbstatus", query = "SELECT p FROM Payment p WHERE p.dbstatus = :dbstatus")})
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,6 +57,9 @@ public class Payment implements Serializable {
     @Size(min = 1, max = 11)
     @Column(name = "payment_method")
     private String paymentMethod;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -103,6 +107,14 @@ public class Payment implements Serializable {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public Orders getOrderId() {

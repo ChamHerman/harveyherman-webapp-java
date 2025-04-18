@@ -20,5 +20,8 @@
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+            
+            <h3>Don't have an account?</h3>
+            <a href="register.jsp">Register for a new account</a>
     </body>
 </html>

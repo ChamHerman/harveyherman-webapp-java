@@ -23,19 +23,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "userlogin")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserLogin.findAll", query = "SELECT u FROM UserLogin u"),
-    @NamedQuery(name = "UserLogin.findByLoginId", query = "SELECT u FROM UserLogin u WHERE u.loginId = :loginId"),
-    @NamedQuery(name = "UserLogin.findByAnswer", query = "SELECT u FROM UserLogin u WHERE u.answer = :answer"),
-    @NamedQuery(name = "UserLogin.findByChallengeQuestion", query = "SELECT u FROM UserLogin u WHERE u.challengeQuestion = :challengeQuestion"),
-    @NamedQuery(name = "UserLogin.findByUsername", query = "SELECT u FROM UserLogin u WHERE u.username = :username"),
-    @NamedQuery(name = "UserLogin.findByPassword", query = "SELECT u FROM UserLogin u WHERE u.password = :password"),
-    @NamedQuery(name = "UserLogin.findByLastLogin", query = "SELECT u FROM UserLogin u WHERE u.lastLogin = :lastLogin")})
+    @NamedQuery(name = "UserLogin.findAll", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByLoginId", query = "SELECT u FROM UserLogin u WHERE u.loginId = :loginId AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByAnswer", query = "SELECT u FROM UserLogin u WHERE u.answer = :answer AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByChallengeQuestion", query = "SELECT u FROM UserLogin u WHERE u.challengeQuestion = :challengeQuestion AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByUsername", query = "SELECT u FROM UserLogin u WHERE u.username = :username AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByPassword", query = "SELECT u FROM UserLogin u WHERE u.password = :password AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByLastLogin", query = "SELECT u FROM UserLogin u WHERE u.lastLogin = :lastLogin AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserLogin.findByDbstatus", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = :dbstatus")})
 public class UserLogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,6 +69,9 @@ public class UserLogin implements Serializable {
     @Column(name = "last_login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OneToOne
     private UserData userId;
@@ -133,6 +137,14 @@ public class UserLogin implements Serializable {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public UserData getUserId() {

@@ -27,20 +27,21 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "userdata")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u"),
-    @NamedQuery(name = "UserData.findByUserId", query = "SELECT u FROM UserData u WHERE u.userId = :userId"),
-    @NamedQuery(name = "UserData.findByFullname", query = "SELECT u FROM UserData u WHERE u.fullname = :fullname"),
-    @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email"),
-    @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber"),
-    @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate"),
-    @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender"),
-    @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate")})
+    @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u WHERE u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByUserId", query = "SELECT u FROM UserData u WHERE u.userId = :userId AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByFullname", query = "SELECT u FROM UserData u WHERE u.fullname = :fullname AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus")})
 public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -81,6 +82,9 @@ public class UserData implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Cart> cartList;
     @OneToOne(mappedBy = "userId")
@@ -165,6 +169,14 @@ public class UserData implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @XmlTransient
