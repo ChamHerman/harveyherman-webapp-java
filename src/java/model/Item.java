@@ -74,9 +74,9 @@ public class Item implements Serializable {
     @Size(max = 255)
     @Column(name = "image_url")
     private String imageUrl;
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false, updatable = false, insertable = false)
     private Timestamp createdDate;
-    @Column(name = "updated_date")
+    @Column(name = "updated_date", insertable = false)
     private Timestamp updatedDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<OrderDetails> orderDetailsList;

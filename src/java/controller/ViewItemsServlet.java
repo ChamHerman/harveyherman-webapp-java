@@ -70,7 +70,7 @@ public class ViewItemsServlet extends HttpServlet {
             }
             // Format dates
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            sdf.setTimeZone(TimeZone.getDefault());
             String createdDate = (item.getCreatedDate() != null) ? sdf.format(item.getCreatedDate()) : "";
             String updatedDate = (item.getUpdatedDate() != null) ? sdf.format(item.getUpdatedDate()) : "";
             // Build a JSON string with necessary fields.

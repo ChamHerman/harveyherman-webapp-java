@@ -276,7 +276,7 @@
                     <tbody id="itemTableBody">
                         <% if (limitedItems == null || limitedItems.isEmpty()) { %>
                         <tr>
-                            <td colspan="6" class="text-center">No items available.</td>
+                            <td colspan="7" class="text-center">No items available.</td>
                         </tr>
                         <%
                         } else {

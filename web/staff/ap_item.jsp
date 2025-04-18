@@ -276,7 +276,7 @@
                     <tbody id="itemTableBody">
                         <% if (limitedItems == null || limitedItems.isEmpty()) { %>
                         <tr>
-                            <td colspan="6" class="text-center">No items available.</td>
+                            <td colspan="7" class="text-center">No items available.</td>
                         </tr>
                         <%
                         } else {
@@ -334,7 +334,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p id="itemResultMessage"></p>
+                            <p id="itemResultMessage" class="item-result-message"></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
