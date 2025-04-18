@@ -17,7 +17,7 @@ import java.net.URLEncoder;
 import model.Item;
 import model.ItemDAO;
 
-@WebServlet("/manager/DeleteItemsServlet")
+@WebServlet("/manager/DeleteUsersServlet")
 public class DeleteUsersServlet extends HttpServlet {
 
     @EJB

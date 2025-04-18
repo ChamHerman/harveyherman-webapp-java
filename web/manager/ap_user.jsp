@@ -12,8 +12,9 @@
     <meta charset="UTF-8">
     <title>Customer Management - Manager</title>
     <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%= request.getContextPath()%>/assets/css/ap_index.css" rel="stylesheet">
     <link href="<%= request.getContextPath()%>/assets/css/ap_item.css" rel="stylesheet">
-    <link href="<%= request.getContextPath()%>/assets/css/ap_customer.css" rel="stylesheet">
+    <link href="<%= request.getContextPath()%>/assets/css/ap_user.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="ap_sidebar.jsp" %>

@@ -27,7 +27,7 @@ public class ItemDAO {
     // Create a new item. Generates a ID if it is provided.
     public void create(Item item) {
         if (item.getItemId() == null || item.getItemId().isEmpty()) {
-            String generatedId = CustomIdGenerator.generateNextId(em, "Item", "I", 2, "itemId");
+            String generatedId = CustomIdGenerator.generateNextId(em, "Item", "I", 3, "itemId");
             item.setItemId(generatedId);
         }
         em.persist(item);

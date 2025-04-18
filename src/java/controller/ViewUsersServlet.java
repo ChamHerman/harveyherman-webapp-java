@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Item;
 import model.ItemDAO;
 
-@WebServlet(name = "ViewItemsServlet", urlPatterns = {"/manager/ViewItemsServlet", "/staff/ViewItemsServlet"})
+@WebServlet(name = "ViewUsersServlet", urlPatterns = {"/manager/ViewUsersServlet", "/staff/ViewUsersServlet"})
 public class ViewUsersServlet extends HttpServlet {
 
     @EJB

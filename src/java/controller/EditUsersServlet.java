@@ -26,7 +26,7 @@ import javax.servlet.http.Part;
 import model.Item;
 import model.ItemDAO;
 
-@WebServlet(name = "EditItemsServlet", urlPatterns = {"/manager/EditItemsServlet", "/staff/EditItemsServlet"})
+@WebServlet(name = "EditUsersServlet", urlPatterns = {"/manager/EditUsersServlet", "/staff/EditUsersServlet"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class EditUsersServlet extends HttpServlet {
 
