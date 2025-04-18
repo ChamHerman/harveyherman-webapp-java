@@ -10,7 +10,7 @@ CREATE TABLE UserData (
     user_id VARCHAR(255) PRIMARY KEY,
     fullname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    contact_number VARCHAR(20),
+    contact_number VARCHAR(255),
     address TEXT,
     birth_date DATE,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -20,8 +20,8 @@ CREATE TABLE UserData (
 CREATE TABLE UserLogin (
     login_id VARCHAR(255) PRIMARY KEY,
     user_id VARCHAR(255) UNIQUE,
-	answer varchar(255) NOT NULL,
-	challenge_question varchar(255) NOT NULL,
+	answer VARCHAR(255) NOT NULL,
+	challenge_question VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
@@ -126,9 +126,9 @@ CREATE TABLE Payment (
 -- StaffData: Stores staff personal information
 CREATE TABLE StaffData (
     staff_id VARCHAR(255) PRIMARY KEY,
-    fullname VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    contact_number VARCHAR(20),
+    fullname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    contact_number VARCHAR(255),
     address TEXT,
     position ENUM('staff', 'manager') NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -138,7 +138,7 @@ CREATE TABLE StaffData (
 CREATE TABLE APLogin (
     ap_id VARCHAR(255) PRIMARY KEY,
     staff_id VARCHAR(255) UNIQUE,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
     position ENUM('staff', 'manager') NOT NULL,
@@ -150,7 +150,7 @@ CREATE TABLE APLogin (
 CREATE TABLE Report (
     report_id VARCHAR(255) PRIMARY KEY,
     report_date DATE NOT NULL,
-    report_type VARCHAR(50) NOT NULL,
+    report_type VARCHAR(255) NOT NULL,
     total_sales DECIMAL(25,2) DEFAULT 0.00,
     description TEXT
 );
