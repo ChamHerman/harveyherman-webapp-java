@@ -37,7 +37,7 @@ public class OrderDetails implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "detail_id")
     private String detailId;
     @Basic(optional = false)

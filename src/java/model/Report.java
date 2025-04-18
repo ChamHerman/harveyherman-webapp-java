@@ -40,7 +40,7 @@ public class Report implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "report_id")
     private String reportId;
     @Basic(optional = false)
@@ -50,7 +50,7 @@ public class Report implements Serializable {
     private Date reportDate;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
     @Column(name = "report_type")
     private String reportType;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
