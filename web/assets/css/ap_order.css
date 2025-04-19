@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+/* Basic body styling */
+.body {
+    font-family: Arial, sans-serif;
+    background-color: yellow;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header and footer styling similar to items */
+.header, .footer {
+    background-color:#333;
+    color:#fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.dashboard-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* search section and two button 
+.order-controls {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.order-controls form {
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+.order-controls .form-group {
+    margin-bottom: 0;
+    margin-right: 1rem;
+}
+
+.order-controls #searchButton {
+    margin-right: 0.5rem;
+}
+
+.order-controls #addOrder {
+    white-space: nowrap;
+}
+
+/* Style for the total orders block when it's just one box */
+.dashboard-summary.single-summary {
+    justify-content: center;
+}
+
+/* Each summary box */
+.summary-box {
+    flex: 1;
+    min-width: 200px; /* Prevents shrinking too small on small screens */
+    background-color: #ffffff;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+
+/* Order table styling */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem auto;
+    background-color:
+        #fff;
+}
+
+#pending { border-color: orange; }
+#processing { border-color: blue; }
+#shipping { border-color: purple; }
+#delivered { border-color: green; }
+
+
+.order-table th,
+.order-table td {
+    border: 1px solid
+        #ddd;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.order-table th {
+    background-color:
+        #007bff;
+    color:
+        #fff;
+}
+
+.order-table tr:nth-child(even) {
+    background-color:
+        #f2f2f2;
+}
+
+.order-table tr:hover {
+    background-color:
+        #ddd;
+}
+
+/* Button styles */
+.button {
+    background-color:
+        #28a745;
+    color:
+        #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.25rem;
+    border-radius: 3px;
+}
+
+.button.edit {
+    background-color:
+        #ffc107;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.25rem;
+    border-radius: 3px;
+}

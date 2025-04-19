@@ -29,7 +29,6 @@
         <div class="main-content flex-grow-1">
             <%@ include file="/staff/ap_item_navbar.jsp" %>
             <div class="container">
-
                 <%
                     ItemDAO itemDAO = null;
                     try {

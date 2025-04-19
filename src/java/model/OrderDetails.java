@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
 @Table(name = "orderdetails")
@@ -30,14 +30,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrderDetails.findAll", query = "SELECT o FROM OrderDetails o"),
     @NamedQuery(name = "OrderDetails.findByDetailId", query = "SELECT o FROM OrderDetails o WHERE o.detailId = :detailId"),
     @NamedQuery(name = "OrderDetails.findByQuantity", query = "SELECT o FROM OrderDetails o WHERE o.quantity = :quantity"),
-    @NamedQuery(name = "OrderDetails.findByPricePerItem", query = "SELECT o FROM OrderDetails o WHERE o.pricePerItem = :pricePerItem")})
+    @NamedQuery(name = "OrderDetails.findByPricePerItem", query = "SELECT o FROM OrderDetails o WHERE o.pricePerItem = :pricePerItem"),
+    @NamedQuery(name = "OrderDetails.findByDbstatus", query = "SELECT o FROM OrderDetails o WHERE o.dbstatus = :dbstatus")})
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "detail_id")
     private String detailId;
     @Basic(optional = false)
@@ -49,6 +50,9 @@ public class OrderDetails implements Serializable {
     @NotNull
     @Column(name = "price_per_item")
     private BigDecimal pricePerItem;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     @ManyToOne(optional = false)
     private Item itemId;
@@ -91,6 +95,14 @@ public class OrderDetails implements Serializable {
 
     public void setPricePerItem(BigDecimal pricePerItem) {
         this.pricePerItem = pricePerItem;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public Item getItemId() {
