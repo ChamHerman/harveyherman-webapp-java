@@ -67,7 +67,18 @@
 <body class="container mt-4">
     <h2 class="text-center text-primary">Generate Sales Report</h2>
     <p class="text-center">Select a report type and an end date to generate the report. The start date will be auto-calculated.</p>
-    
+    <%
+	    String successMessage = (String) request.getAttribute("successMessage");
+	    String errorMessage = (String) request.getAttribute("errorMessage");
+	%>
+	
+	<% if (successMessage != null) { %>
+	    <div class="alert alert-success"><%= successMessage %></div>
+	<% } %>
+	
+	<% if (errorMessage != null) { %>
+	    <div class="alert alert-danger"><%= errorMessage %></div>
+	<% } %>
     <!-- print pdf -->
     <div id="printSection" class="d-none text-center">
         <img src="logo.png" alt="Company Logo" style="height: 80px; margin-right: 10px;">
@@ -76,7 +87,7 @@
     </div>
 
     <!-- Form -->
-    <form method="post" action="GeneratingReportServlet" class="mb-4">
+    <form method="post" action="<%=request.getContextPath()%>/manager/GeneratingReportServlet" class="mb-4">
         <fieldset class="border p-3">
             <legend>Select Report Type</legend>
             <div class="mb-3">

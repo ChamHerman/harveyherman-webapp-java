@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-@WebServlet("/topSales")
+@WebServlet(name="TopSalesServlet",urlPatterns={"/manager/TopSalesServlet","/staff/TopSalesServlet"})
 public class TopSalesServlet extends HttpServlet {
 
     @PersistenceContext(unitName = "HarveyHermanPU")
@@ -25,17 +25,22 @@ public class TopSalesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
 
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
-
+        
         if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
             request.setAttribute("errorReportSaleFormDate", "Please enter both start and end dates.");
-            request.getRequestDispatcher("salesReport.jsp").forward(request, response);
+            if (servletPath.contains("/manager/")) {
+                request.getRequestDispatcher("/manager/salesReport.jsp").forward(request, response);//contextPath+"/manager/
+            }else if(servletPath.contains("/staff/")){
+                request.getRequestDispatcher("/staff/salesReport.jsp").forward(request, response);
+            }
             return;
         }
 
-        // Parse the input strings into LocalDate
         LocalDate startDate = LocalDate.parse(startDateStr);
         LocalDate endDate = LocalDate.parse(endDateStr);
 
@@ -43,7 +48,6 @@ public class TopSalesServlet extends HttpServlet {
         Date startDateConverted = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        // JPA query to get top 10 selling items by quantity in the date range
         List<Object[]> topSales = em.createQuery(
                 "SELECT i.itemId, i.name, SUM(od.quantity) " +
                 "FROM OrderDetails od " +
@@ -61,15 +65,19 @@ public class TopSalesServlet extends HttpServlet {
         List<Object[]> rankedResults = new ArrayList<>();
         int rank = 1;
         for (Object[] row : topSales) {
-            // Add rank as the first element in each array
+            
             rankedResults.add(new Object[]{rank++, row[0], row[1], row[2]});
         }
 
-        // Set the results to be forwarded to the JSP
         request.setAttribute("topSales", rankedResults);
         request.setAttribute("selectedStartDate", startDateStr);
         request.setAttribute("selectedEndDate", endDateStr);
-        request.getRequestDispatcher("salesReport.jsp").forward(request, response);
+        
+        if (servletPath.contains("/manager/")) {
+            request.getRequestDispatcher("/manager/salesReport.jsp").forward(request, response);//contextPath+"/manager/
+        }else if(servletPath.contains("/staff/")){
+            request.getRequestDispatcher("/staff/salesReport.jsp").forward(request, response);
+        }
     }
 }
 

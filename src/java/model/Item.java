@@ -6,7 +6,6 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -19,7 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author User
  */
 @Entity
 @Table(name = "item")
@@ -41,19 +41,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Item.findByCategory", query = "SELECT i FROM Item i WHERE i.category = :category"),
     @NamedQuery(name = "Item.findByImageUrl", query = "SELECT i FROM Item i WHERE i.imageUrl = :imageUrl"),
     @NamedQuery(name = "Item.findByCreatedDate", query = "SELECT i FROM Item i WHERE i.createdDate = :createdDate"),
-    @NamedQuery(name = "Item.findByUpdatedDate", query = "SELECT i FROM Item i WHERE i.updatedDate = :updatedDate")})
+    @NamedQuery(name = "Item.findByUpdatedDate", query = "SELECT i FROM Item i WHERE i.updatedDate = :updatedDate"),
+    @NamedQuery(name = "Item.findByDbstatus", query = "SELECT i FROM Item i WHERE i.dbstatus = :dbstatus")})
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "item_id")
     private String itemId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
     @Lob
@@ -69,18 +70,21 @@ public class Item implements Serializable {
     @NotNull
     @Column(name = "stock_quantity")
     private int stockQuantity;
-    @Size(max = 50)
+    @Size(max = 255)
     @Column(name = "category")
     private String category;
     @Size(max = 255)
     @Column(name = "image_url")
     private String imageUrl;
-    @Column(name = "created_date", updatable = false, insertable = false)
-    private Timestamp createdDate;
-    @Column(name = "updated_date", insertable = false)
-    private Timestamp updatedDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
-    private List<ReviewRating> reviewRatingList;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<OrderDetails> orderDetailsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
@@ -160,7 +164,7 @@ public class Item implements Serializable {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -168,17 +172,16 @@ public class Item implements Serializable {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Timestamp updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 
-    @XmlTransient
-    public List<ReviewRating> getReviewRatingList() {
-        return reviewRatingList;
+    public String getDbstatus() {
+        return dbstatus;
     }
 
-    public void setReviewRatingList(List<ReviewRating> reviewRatingList) {
-        this.reviewRatingList = reviewRatingList;
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @XmlTransient
@@ -223,4 +226,5 @@ public class Item implements Serializable {
     public String toString() {
         return "model.Item[ itemId=" + itemId + " ]";
     }
+    
 }

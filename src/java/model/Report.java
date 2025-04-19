@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author User
  */
 @Entity
 @Table(name = "report")
@@ -33,14 +33,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Report.findByReportId", query = "SELECT r FROM Report r WHERE r.reportId = :reportId"),
     @NamedQuery(name = "Report.findByReportDate", query = "SELECT r FROM Report r WHERE r.reportDate = :reportDate"),
     @NamedQuery(name = "Report.findByReportType", query = "SELECT r FROM Report r WHERE r.reportType = :reportType"),
-    @NamedQuery(name = "Report.findByTotalSales", query = "SELECT r FROM Report r WHERE r.totalSales = :totalSales")})
+    @NamedQuery(name = "Report.findByTotalSales", query = "SELECT r FROM Report r WHERE r.totalSales = :totalSales"),
+    @NamedQuery(name = "Report.findByDbstatus", query = "SELECT r FROM Report r WHERE r.dbstatus = :dbstatus")})
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "report_id")
     private String reportId;
     @Basic(optional = false)
@@ -50,7 +51,7 @@ public class Report implements Serializable {
     private Date reportDate;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
     @Column(name = "report_type")
     private String reportType;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -60,6 +61,9 @@ public class Report implements Serializable {
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
 
     public Report() {
     }
@@ -112,6 +116,14 @@ public class Report implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.Promotion;
 
-@WebServlet("/AddPromotionServlet")
+@WebServlet(name="AddPromotionServlet",urlPatterns={"/manager/AddPromotionServlet","/staff/AddPromotionServlet"})
 public class AddPromotionServlet extends HttpServlet {
 
     @EJB
@@ -24,6 +24,8 @@ public class AddPromotionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
 
         try {
             String id=request.getParameter("promotionId");
@@ -36,6 +38,8 @@ public class AddPromotionServlet extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date startDate = request.getParameter("startDate").isEmpty() ? null : sdf.parse(request.getParameter("startDate"));
             Date endDate = request.getParameter("endDate").isEmpty() ? null : sdf.parse(request.getParameter("endDate"));
+            
+            String dbstatus="active";
 
             Promotion promo = new Promotion();
             promo.setPromotionId(id);
@@ -46,19 +50,23 @@ public class AddPromotionServlet extends HttpServlet {
             promo.setDescription(desc);
             promo.setStartDate(startDate);
             promo.setEndDate(endDate);
+            promo.setDbstatus(dbstatus);
 
             promotionDAO.addPromotion(promo);
+            if (!id.equals(null)) {
+                request.setAttribute("successMessage", "Promotion added successfully! ID: "+ id);
+            } else {
+                request.setAttribute("errorMessage", "Failed to add promotion.");
+            }
+       // request.getRequestDispatcher("promotion.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        response.sendRedirect("promotion.jsp");
+        if (servletPath.contains("/manager/")) {
+            request.getRequestDispatcher("/manager/promotion.jsp?message=Promotion has been added").forward(request, response);
+        } else if (servletPath.contains("/staff/")) {
+            request.getRequestDispatcher("/staff/promotion.jsp?message=Promotion has been added").forward(request, response);
+        }
     }
-    
-    /*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PromotionDAO dao=new PromotionDAO();
-        String nextId = dao.getNextPromotionId();
-        request.setAttribute("nextId", nextId);
-        request.getRequestDispatcher("promotion.jsp").forward(request, response);
-    }*/
 }

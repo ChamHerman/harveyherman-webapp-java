@@ -19,7 +19,7 @@ import model.Promotion;
 import model.Report;
 import model.ReportDAO;
 
-@WebServlet("/AddReportServlet")
+@WebServlet(name="AddReportServlet",urlPatterns={"/manager/AddReportServlet"})//,"/staff/AddReportServlet"
 public class AddReportServlet extends HttpServlet {
     @EJB
     private ReportDAO reportDAO;
@@ -27,6 +27,8 @@ public class AddReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
 
         try {
             String id=request.getParameter("reportID");
@@ -37,6 +39,7 @@ public class AddReportServlet extends HttpServlet {
             String reportType = request.getParameter("reportType");
             BigDecimal sales = new BigDecimal(request.getParameter("totalSalesDisplay"));
             String desc = request.getParameter("description");
+            String dbstatus="active";
 
             Report report = new Report();
             report.setReportId(id);
@@ -44,12 +47,24 @@ public class AddReportServlet extends HttpServlet {
             report.setReportType(reportType);
             report.setTotalSales(sales);
             report.setDescription(desc);
+            report.setDbstatus(dbstatus);
 
             reportDAO.addReport(report);
+            
+            if (!id.equals(null)) {
+                request.setAttribute("successMessage", "Report added successfully! ID: "+ id);
+            } else {
+                request.setAttribute("errorMessage", "Failed to add Report.");
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        response.sendRedirect("generatingReport.jsp");
+        if (servletPath.contains("/manager/")) {
+            request.getRequestDispatcher("/manager/generatingReport.jsp?message=Report has been added").forward(request, response);
+        } //else if (servletPath.contains("/staff/")) {
+          //  response.sendRedirect(contextPath + "/staff/generatingReport.jsp?message=Report has been added");
+        //}
     }
 }

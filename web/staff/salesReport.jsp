@@ -12,7 +12,7 @@
     <p class="text-center">Select a date range to view the top 10 best-selling products.</p>
 
     <!-- Date Selection Form -->
-    <form method="post" action="topSales" class="mb-4">
+    <form method="post" action="<%=request.getContextPath()%>/staff/TopSalesServlet" class="mb-4">
         <fieldset class="border p-3">
             <legend>View Sales by Date</legend>
 
@@ -90,7 +90,7 @@
         </div>
         <%}%>
 
-    <a href="managerDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
+    <a href="staffDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

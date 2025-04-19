@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author User
  */
 @Entity
 @Table(name = "userdata")
@@ -39,28 +39,32 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email"),
     @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber"),
     @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate"),
-    @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate")})
+    @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender"),
+    @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate"),
+    @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus")})
 public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "user_id")
     private String userId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "fullname")
     private String fullname;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
-    @Size(max = 20)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "contact_number")
     private String contactNumber;
     @Lob
@@ -70,13 +74,19 @@ public class UserData implements Serializable {
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "gender")
+    private String gender;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Cart> cartList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private List<ReviewRating> reviewRatingList;
     @OneToOne(mappedBy = "userId")
     private UserLogin userLogin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
@@ -89,10 +99,12 @@ public class UserData implements Serializable {
         this.userId = userId;
     }
 
-    public UserData(String userId, String fullname, String email) {
+    public UserData(String userId, String fullname, String email, String contactNumber, String gender) {
         this.userId = userId;
         this.fullname = fullname;
         this.email = email;
+        this.contactNumber = contactNumber;
+        this.gender = gender;
     }
 
     public String getUserId() {
@@ -143,12 +155,28 @@ public class UserData implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @XmlTransient
@@ -158,15 +186,6 @@ public class UserData implements Serializable {
 
     public void setCartList(List<Cart> cartList) {
         this.cartList = cartList;
-    }
-
-    @XmlTransient
-    public List<ReviewRating> getReviewRatingList() {
-        return reviewRatingList;
-    }
-
-    public void setReviewRatingList(List<ReviewRating> reviewRatingList) {
-        this.reviewRatingList = reviewRatingList;
     }
 
     public UserLogin getUserLogin() {

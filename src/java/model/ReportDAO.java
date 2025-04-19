@@ -14,20 +14,24 @@ public class ReportDAO {
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
     
+    public List<Report> getAllReports() {
+        return em.createNamedQuery("Report.findAll", Report.class).getResultList();
+    }
+    
     public String getNextReportId() {
         String lastId = em.createQuery("SELECT MAX(r.reportId) FROM Report r", String.class)
                           .getSingleResult();
         
-    
-        // Extract numeric part
         int num = Integer.parseInt(lastId.replaceAll("\\D+", ""));
-        num++; // Increment
+        num++;
         
-        // Format back with prefix and leading zeros
-        return String.format("R%03d", num);
+        if (lastId==null){
+            return "R001";
+        }else{
+            return String.format("R%03d", num);
+        }
     }
 
-    //@Transactional
     public void addReport(Report report) {
         report.setReportId(getNextReportId());
         em.persist(report);

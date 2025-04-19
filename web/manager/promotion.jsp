@@ -78,7 +78,7 @@
                     <td><%= promo.getPromotionId() %></td>
                     <td><%= promo.getPromotionCode() %></td>
                     <td><%= promo.getDiscountValue() %></td>
-                    <td><%= promo.getDisplayStatus()%></td>
+                    <td><%= promo.getStatus()%></td>
                     <td><%= promo.getMinimumPurchase() %></td>
                     <td><%= promo.getDescription() %>
                     <td><%= promo.getStartDate() %></td>
@@ -100,7 +100,7 @@
 	    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
 	        Delete Promotion
 	    </button>
-	    <a href="dashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
+	    <a href="managerDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
 	</div>
     
     <!-- Delete Promotion -->
@@ -134,7 +134,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<%=request.getContextPath()%>/staff/AddPromotionServlet" method="post">
+                    <form action="AddPromotionServlet" method="post"><%--<%=request.getContextPath()%>/staff/--%>
 	                    <div class="mb-3">
 	                        <label for="promotionId" class="form-label">Promotion ID</label>
 	                        <input type="text" class="form-control" id="promotionId" name="promotionId" value="<%= nextID%>" readonly>

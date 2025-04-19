@@ -18,7 +18,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import javax.persistence.TypedQuery;
 
-@WebServlet("/GeneratingReportServlet")
+@WebServlet(name="GeneratingReportServlet",urlPatterns={"/manager/GeneratingReportServlet"})
 public class GeneratingReportServlet extends HttpServlet {
     
     @PersistenceContext(unitName = "HarveyHermanPU")
@@ -27,6 +27,10 @@ public class GeneratingReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String servletPath = request.getServletPath();
+        String contextPath = request.getContextPath();
+       
         String startDateStr = request.getParameter("startDateR");
         String endDateStr = request.getParameter("endDateR");
         String reportType= request.getParameter("reportType");
@@ -44,10 +48,19 @@ public class GeneratingReportServlet extends HttpServlet {
             request.getRequestDispatcher(request.getContextPath() + "/manager/generatingReport.jsp").forward(request, response);
             return;
         }
-        
+        LocalDate lastDate =LocalDate.parse(endDateStr);
         LocalDate startDate = LocalDate.parse(startDateStr);
         LocalDate endDate = LocalDate.parse(endDateStr).plusDays(1);
         
+        if(reportType.equals("Daily Sales")){
+            lastDate = LocalDate.parse(endDateStr).minusDays(1);
+        }else if(reportType.equals("Monthly Sales")){
+            lastDate = LocalDate.parse(endDateStr).minusMonths(1);
+        }else if(reportType.equals("Yearly Sales")){
+            lastDate = LocalDate.parse(endDateStr).minusYears(1);
+        }
+       
+        Date lastDateConverted = java.util.Date.from(lastDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date startDateConverted = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         
@@ -63,6 +76,7 @@ public class GeneratingReportServlet extends HttpServlet {
                 .setParameter("endDateR", endDateConverted)
                 .getResultList();
         List<Object[]> reportResults = new ArrayList<>();
+        
         int no = 1;
         for (Object[] row : query) {
             // Add rank as the first element in each array
@@ -74,5 +88,9 @@ public class GeneratingReportServlet extends HttpServlet {
         request.setAttribute("selectedStartDateR", startDateStr);
         request.setAttribute("selectedEndDateR", endDateStr);
         request.getRequestDispatcher("generatingReport.jsp").forward(request, response);
+        
+        if (servletPath.contains("/manager/")) {
+            request.getRequestDispatcher("/manager/generatingReport.jsp").forward(request, response);//contextPath+"/manager/
+        }
     }
 }

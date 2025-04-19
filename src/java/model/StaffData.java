@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author User
  */
 @Entity
 @Table(name = "staffdata")
@@ -35,28 +35,30 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "StaffData.findByEmail", query = "SELECT s FROM StaffData s WHERE s.email = :email"),
     @NamedQuery(name = "StaffData.findByContactNumber", query = "SELECT s FROM StaffData s WHERE s.contactNumber = :contactNumber"),
     @NamedQuery(name = "StaffData.findByPosition", query = "SELECT s FROM StaffData s WHERE s.position = :position"),
-    @NamedQuery(name = "StaffData.findByCreatedDate", query = "SELECT s FROM StaffData s WHERE s.createdDate = :createdDate")})
+    @NamedQuery(name = "StaffData.findByGender", query = "SELECT s FROM StaffData s WHERE s.gender = :gender"),
+    @NamedQuery(name = "StaffData.findByCreatedDate", query = "SELECT s FROM StaffData s WHERE s.createdDate = :createdDate"),
+    @NamedQuery(name = "StaffData.findByDbstatus", query = "SELECT s FROM StaffData s WHERE s.dbstatus = :dbstatus")})
 public class StaffData implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "staff_id")
     private String staffId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "fullname")
     private String fullname;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
-    @Size(max = 20)
+    @Size(max = 255)
     @Column(name = "contact_number")
     private String contactNumber;
     @Lob
@@ -65,14 +67,22 @@ public class StaffData implements Serializable {
     private String address;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 7)
+    @Size(min = 1, max = 255)
     @Column(name = "position")
     private String position;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "gender")
+    private String gender;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @OneToOne(mappedBy = "staffId")
-    private APLogin aPLogin;
+    private Stafflogin stafflogin;
 
     public StaffData() {
     }
@@ -81,11 +91,12 @@ public class StaffData implements Serializable {
         this.staffId = staffId;
     }
 
-    public StaffData(String staffId, String fullname, String email, String position) {
+    public StaffData(String staffId, String fullname, String email, String position, String gender) {
         this.staffId = staffId;
         this.fullname = fullname;
         this.email = email;
         this.position = position;
+        this.gender = gender;
     }
 
     public String getStaffId() {
@@ -136,6 +147,14 @@ public class StaffData implements Serializable {
         this.position = position;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -144,12 +163,20 @@ public class StaffData implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public APLogin getAPLogin() {
-        return aPLogin;
+    public String getDbstatus() {
+        return dbstatus;
     }
 
-    public void setAPLogin(APLogin aPLogin) {
-        this.aPLogin = aPLogin;
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
+    public Stafflogin getStafflogin() {
+        return stafflogin;
+    }
+
+    public void setStafflogin(Stafflogin stafflogin) {
+        this.stafflogin = stafflogin;
     }
 
     @Override

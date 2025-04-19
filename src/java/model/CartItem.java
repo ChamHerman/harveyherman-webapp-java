@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author User
  */
 @Entity
 @Table(name = "cart_item")
@@ -31,14 +31,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CartItem.findByCartItemId", query = "SELECT c FROM CartItem c WHERE c.cartItemId = :cartItemId"),
     @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity"),
     @NamedQuery(name = "CartItem.findByUnitPrice", query = "SELECT c FROM CartItem c WHERE c.unitPrice = :unitPrice"),
-    @NamedQuery(name = "CartItem.findBySubtotal", query = "SELECT c FROM CartItem c WHERE c.subtotal = :subtotal")})
+    @NamedQuery(name = "CartItem.findBySubtotal", query = "SELECT c FROM CartItem c WHERE c.subtotal = :subtotal"),
+    @NamedQuery(name = "CartItem.findByDbstatus", query = "SELECT c FROM CartItem c WHERE c.dbstatus = :dbstatus")})
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "cart_item_id")
     private String cartItemId;
     @Basic(optional = false)
@@ -54,6 +55,9 @@ public class CartItem implements Serializable {
     @NotNull
     @Column(name = "subtotal")
     private BigDecimal subtotal;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     @ManyToOne(optional = false)
     private Cart cartId;
@@ -105,6 +109,14 @@ public class CartItem implements Serializable {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public Cart getCartId() {
