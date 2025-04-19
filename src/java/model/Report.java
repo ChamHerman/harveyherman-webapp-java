@@ -37,12 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "report_id")
-    private String reportId;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "report_date")
@@ -53,13 +48,23 @@ public class Report implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "report_type")
     private String reportType;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "total_sales")
-    private BigDecimal totalSales;
     @Lob
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "report_id")
+    private String reportId;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "total_sales")
+    private BigDecimal totalSales;
 
     public Report() {
     }
@@ -106,14 +111,6 @@ public class Report implements Serializable {
         this.totalSales = totalSales;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -138,5 +135,21 @@ public class Report implements Serializable {
     public String toString() {
         return "model.Report[ reportId=" + reportId + " ]";
     }
-    
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
 }

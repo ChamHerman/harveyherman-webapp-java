@@ -155,3 +155,16 @@ CREATE TABLE Report (
     description TEXT
 );
 
+ALTER TABLE UserData ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE UserLogin ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Item ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Promotion ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Orders ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE OrderDetails ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Delivery ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Cart ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Cart_Item ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Payment ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE StaffData ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE StaffLogin ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+ALTER TABLE Report ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';

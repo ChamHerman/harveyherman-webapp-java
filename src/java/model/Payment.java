@@ -37,25 +37,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 9)
+    @Column(name = "payment_status")
+    private String paymentStatus;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 11)
+    @Column(name = "payment_method")
+    private String paymentMethod;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "payment_id")
     private String paymentId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 9)
-    @Column(name = "payment_status")
-    private String paymentStatus;
     @Column(name = "payment_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date paymentDate;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 11)
-    @Column(name = "payment_method")
-    private String paymentMethod;
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -113,6 +118,14 @@ public class Payment implements Serializable {
         this.orderId = orderId;
     }
 
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -137,5 +150,4 @@ public class Payment implements Serializable {
     public String toString() {
         return "model.Payment[ paymentId=" + paymentId + " ]";
     }
-    
 }

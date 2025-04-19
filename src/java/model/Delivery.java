@@ -38,13 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Delivery.findByDeliveredDate", query = "SELECT d FROM Delivery d WHERE d.deliveredDate = :deliveredDate")})
 public class Delivery implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "delivery_id")
-    private String deliveryId;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -54,6 +47,17 @@ public class Delivery implements Serializable {
     @Size(max = 9)
     @Column(name = "shipping_status")
     private String shippingStatus;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "delivery_id")
+    private String deliveryId;
     @Column(name = "expected_date")
     @Temporal(TemporalType.DATE)
     private Date expectedDate;
@@ -134,6 +138,16 @@ public class Delivery implements Serializable {
     public void setOrderId(Orders orderId) {
         this.orderId = orderId;
     }
+    
+    
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+    
 
     @Override
     public int hashCode() {
@@ -159,5 +173,5 @@ public class Delivery implements Serializable {
     public String toString() {
         return "model.Delivery[ deliveryId=" + deliveryId + " ]";
     }
-    
+
 }

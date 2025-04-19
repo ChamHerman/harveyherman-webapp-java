@@ -43,12 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Promotion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "promotion_id")
-    private String promotionId;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -64,12 +59,22 @@ public class Promotion implements Serializable {
     @Size(min = 1, max = 7)
     @Column(name = "status")
     private String status;
-    @Column(name = "minimum_purchase")
-    private BigDecimal minimumPurchase;
     @Lob
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "promotion_id")
+    private String promotionId;
+    @Column(name = "minimum_purchase")
+    private BigDecimal minimumPurchase;
     @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
@@ -117,28 +122,12 @@ public class Promotion implements Serializable {
         this.discountValue = discountValue;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public BigDecimal getMinimumPurchase() {
         return minimumPurchase;
     }
 
     public void setMinimumPurchase(BigDecimal minimumPurchase) {
         this.minimumPurchase = minimumPurchase;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getStartDate() {
@@ -190,5 +179,29 @@ public class Promotion implements Serializable {
     public String toString() {
         return "model.Promotion[ promotionId=" + promotionId + " ]";
     }
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
 }

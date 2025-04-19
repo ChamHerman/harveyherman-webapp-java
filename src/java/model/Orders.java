@@ -42,13 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findByCreatedDate", query = "SELECT o FROM Orders o WHERE o.createdDate = :createdDate")})
 public class Orders implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "order_id")
-    private String orderId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -62,6 +55,17 @@ public class Orders implements Serializable {
     @Size(max = 9)
     @Column(name = "status")
     private String status;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "order_id")
+    private String orderId;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -115,14 +119,6 @@ public class Orders implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -165,6 +161,22 @@ public class Orders implements Serializable {
         this.userId = userId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
     @XmlTransient
     public List<Payment> getPaymentList() {
         return paymentList;
@@ -198,5 +210,5 @@ public class Orders implements Serializable {
     public String toString() {
         return "model.Orders[ orderId=" + orderId + " ]";
     }
-    
+
 }

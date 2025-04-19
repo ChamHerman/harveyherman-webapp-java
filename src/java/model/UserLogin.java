@@ -38,13 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserLogin.findByLastLogin", query = "SELECT u FROM UserLogin u WHERE u.lastLogin = :lastLogin")})
 public class UserLogin implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "login_id")
-    private String loginId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -65,6 +58,17 @@ public class UserLogin implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "login_id")
+    private String loginId;
     @Column(name = "last_login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
@@ -95,13 +99,6 @@ public class UserLogin implements Serializable {
         this.loginId = loginId;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
 
     public String getChallengeQuestion() {
         return challengeQuestion;
@@ -111,21 +108,6 @@ public class UserLogin implements Serializable {
         this.challengeQuestion = challengeQuestion;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Date getLastLogin() {
         return lastLogin;
@@ -166,6 +148,46 @@ public class UserLogin implements Serializable {
     @Override
     public String toString() {
         return "model.UserLogin[ loginId=" + loginId + " ]";
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getChallengeQuestion() {
+        return challengeQuestion;
+    }
+
+    public void setChallengeQuestion(String challengeQuestion) {
+        this.challengeQuestion = challengeQuestion;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
     
 }

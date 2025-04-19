@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
@@ -49,6 +50,9 @@ public class OrderDetails implements Serializable {
     @NotNull
     @Column(name = "price_per_item")
     private BigDecimal pricePerItem;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     @ManyToOne(optional = false)
     private Item itemId;
@@ -75,14 +79,6 @@ public class OrderDetails implements Serializable {
 
     public void setDetailId(String detailId) {
         this.detailId = detailId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public BigDecimal getPricePerItem() {
@@ -133,5 +129,21 @@ public class OrderDetails implements Serializable {
     public String toString() {
         return "model.OrderDetails[ detailId=" + detailId + " ]";
     }
-    
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
 }

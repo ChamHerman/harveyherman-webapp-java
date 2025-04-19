@@ -34,13 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CartItem.findBySubtotal", query = "SELECT c FROM CartItem c WHERE c.subtotal = :subtotal")})
 public class CartItem implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "cart_item_id")
-    private String cartItemId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
@@ -54,6 +47,17 @@ public class CartItem implements Serializable {
     @NotNull
     @Column(name = "subtotal")
     private BigDecimal subtotal;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "cart_item_id")
+    private String cartItemId;
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     @ManyToOne(optional = false)
     private Cart cartId;
@@ -83,28 +87,12 @@ public class CartItem implements Serializable {
         this.cartItemId = cartItemId;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
     }
 
     public Cart getCartId() {
@@ -121,6 +109,30 @@ public class CartItem implements Serializable {
 
     public void setItemId(Item itemId) {
         this.itemId = itemId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @Override
@@ -147,5 +159,4 @@ public class CartItem implements Serializable {
     public String toString() {
         return "model.CartItem[ cartItemId=" + cartItemId + " ]";
     }
-    
 }

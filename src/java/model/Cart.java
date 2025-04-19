@@ -41,6 +41,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cart.findByUpdatedDate", query = "SELECT c FROM Cart c WHERE c.updatedDate = :updatedDate")})
 public class Cart implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total")
+    private BigDecimal total;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -48,11 +57,6 @@ public class Cart implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "cart_id")
     private String cartId;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "total")
-    private BigDecimal total;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -85,13 +89,6 @@ public class Cart implements Serializable {
         this.cartId = cartId;
     }
 
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -149,6 +146,22 @@ public class Cart implements Serializable {
     @Override
     public String toString() {
         return "model.Cart[ cartId=" + cartId + " ]";
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
     
 }

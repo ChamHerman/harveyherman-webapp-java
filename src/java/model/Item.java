@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,12 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "item_id")
-    private String itemId;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -65,9 +62,10 @@ public class Item implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "stock_quantity")
     private int stockQuantity;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Size(max = 255)
     @Column(name = "category")
     private String category;
@@ -78,6 +76,16 @@ public class Item implements Serializable {
     private Timestamp createdDate;
     @Column(name = "updated_date", insertable = false)
     private Timestamp updatedDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "item_id")
+    private String itemId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<OrderDetails> orderDetailsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
@@ -105,44 +113,12 @@ public class Item implements Serializable {
         this.itemId = itemId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public int getStockQuantity() {
         return stockQuantity;
     }
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getImageUrl() {
@@ -169,6 +145,48 @@ public class Item implements Serializable {
         this.updatedDate = updatedDate;
     }
 
+    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+    
     @XmlTransient
     public List<OrderDetails> getOrderDetailsList() {
         return orderDetailsList;
@@ -211,5 +229,5 @@ public class Item implements Serializable {
     public String toString() {
         return "model.Item[ itemId=" + itemId + " ]";
     }
-    
+
 }

@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,12 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Stafflogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "login_id")
-    private String loginId;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -54,14 +50,23 @@ public class Stafflogin implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
-    @Column(name = "last_login")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLogin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 7)
     @Column(name = "role")
     private String role;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "login_id")
+    private String loginId;
+    @Column(name = "last_login")
+    private Timestamp lastLogin;
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
     private Staffdata staffId;
@@ -88,36 +93,12 @@ public class Stafflogin implements Serializable {
         this.loginId = loginId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Date getLastLogin() {
+    public Timestamp getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(Date lastLogin) {
+    public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public Staffdata getStaffId() {
@@ -152,5 +133,37 @@ public class Stafflogin implements Serializable {
     public String toString() {
         return "model.Stafflogin[ loginId=" + loginId + " ]";
     }
-    
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
 }
