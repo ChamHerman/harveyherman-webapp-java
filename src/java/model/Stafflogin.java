@@ -29,14 +29,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "stafflogin")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Stafflogin.findAll", query = "SELECT s FROM Stafflogin s WHERE s.dbstatus = 'active'"),
-    @NamedQuery(name = "Stafflogin.findByLoginId", query = "SELECT s FROM Stafflogin s WHERE s.loginId = :loginId AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Stafflogin.findByUsername", query = "SELECT s FROM Stafflogin s WHERE s.username = :username AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Stafflogin.findByPassword", query = "SELECT s FROM Stafflogin s WHERE s.password = :password AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Stafflogin.findByLastLogin", query = "SELECT s FROM Stafflogin s WHERE s.lastLogin = :lastLogin AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Stafflogin.findByRole", query = "SELECT s FROM Stafflogin s WHERE s.role = :role AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Stafflogin.findByDbstatus", query = "SELECT s FROM Stafflogin s WHERE s.dbstatus = :dbstatus")})
-public class Stafflogin implements Serializable {
+    @NamedQuery(name = "StaffLogin.findAll", query = "SELECT s FROM StaffLogin s WHERE s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffLogin.findByLoginId", query = "SELECT s FROM StaffLogin s WHERE s.loginId = :loginId AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffLogin.findByUsername", query = "SELECT s FROM StaffLogin s WHERE s.username = :username AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffLogin.findByPassword", query = "SELECT s FROM StaffLogin s WHERE s.password = :password AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffLogin.findByLastLogin", query = "SELECT s FROM StaffLogin s WHERE s.lastLogin = :lastLogin AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffLogin.findByRole", query = "SELECT s FROM StaffLogin s WHERE s.role = :role AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffLogin.findByDbstatus", query = "SELECT s FROM StaffLogin s WHERE s.dbstatus = :dbstatus")})
+public class StaffLogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,16 +68,16 @@ public class Stafflogin implements Serializable {
     private String dbstatus;
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
-    private Staffdata staffId;
+    private StaffData staffId;
 
-    public Stafflogin() {
+    public StaffLogin() {
     }
 
-    public Stafflogin(String loginId) {
+    public StaffLogin(String loginId) {
         this.loginId = loginId;
     }
 
-    public Stafflogin(String loginId, String username, String password, String role) {
+    public StaffLogin(String loginId, String username, String password, String role) {
         this.loginId = loginId;
         this.username = username;
         this.password = password;
@@ -132,11 +132,11 @@ public class Stafflogin implements Serializable {
         this.dbstatus = dbstatus;
     }
 
-    public Staffdata getStaffId() {
+    public StaffData getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(Staffdata staffId) {
+    public void setStaffId(StaffData staffId) {
         this.staffId = staffId;
     }
 
@@ -150,10 +150,10 @@ public class Stafflogin implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Stafflogin)) {
+        if (!(object instanceof StaffLogin)) {
             return false;
         }
-        Stafflogin other = (Stafflogin) object;
+        StaffLogin other = (StaffLogin) object;
         if ((this.loginId == null && other.loginId != null) || (this.loginId != null && !this.loginId.equals(other.loginId))) {
             return false;
         }
@@ -162,7 +162,7 @@ public class Stafflogin implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Stafflogin[ loginId=" + loginId + " ]";
+        return "model.StaffLogin[ loginId=" + loginId + " ]";
     }
     
 }

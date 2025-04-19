@@ -29,16 +29,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "staffdata")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Staffdata.findAll", query = "SELECT s FROM Staffdata s WHERE s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByStaffId", query = "SELECT s FROM Staffdata s WHERE s.staffId = :staffId AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByFullname", query = "SELECT s FROM Staffdata s WHERE s.fullname = :fullname AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByEmail", query = "SELECT s FROM Staffdata s WHERE s.email = :email AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByContactNumber", query = "SELECT s FROM Staffdata s WHERE s.contactNumber = :contactNumber AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByPosition", query = "SELECT s FROM Staffdata s WHERE s.position = :position AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByGender", query = "SELECT s FROM Staffdata s WHERE s.gender = :gender AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByCreatedDate", query = "SELECT s FROM Staffdata s WHERE s.createdDate = :createdDate AND s.dbstatus = 'active'"),
-    @NamedQuery(name = "Staffdata.findByDbstatus", query = "SELECT s FROM Staffdata s WHERE s.dbstatus = :dbstatus")})
-public class Staffdata implements Serializable {
+    @NamedQuery(name = "StaffData.findAll", query = "SELECT s FROM StaffData s WHERE s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByStaffId", query = "SELECT s FROM StaffData s WHERE s.staffId = :staffId AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByFullname", query = "SELECT s FROM StaffData s WHERE s.fullname = :fullname AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByEmail", query = "SELECT s FROM StaffData s WHERE s.email = :email AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByContactNumber", query = "SELECT s FROM StaffData s WHERE s.contactNumber = :contactNumber AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByPosition", query = "SELECT s FROM StaffData s WHERE s.position = :position AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByGender", query = "SELECT s FROM StaffData s WHERE s.gender = :gender AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByCreatedDate", query = "SELECT s FROM StaffData s WHERE s.createdDate = :createdDate AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "StaffData.findByDbstatus", query = "SELECT s FROM StaffData s WHERE s.dbstatus = :dbstatus")})
+public class StaffData implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -82,16 +82,16 @@ public class Staffdata implements Serializable {
     @Column(name = "dbstatus")
     private String dbstatus;
     @OneToOne(mappedBy = "staffId")
-    private Stafflogin stafflogin;
+    private StaffLogin stafflogin;
 
-    public Staffdata() {
+    public StaffData() {
     }
 
-    public Staffdata(String staffId) {
+    public StaffData(String staffId) {
         this.staffId = staffId;
     }
 
-    public Staffdata(String staffId, String fullname, String email, String position, String gender) {
+    public StaffData(String staffId, String fullname, String email, String position, String gender) {
         this.staffId = staffId;
         this.fullname = fullname;
         this.email = email;
@@ -171,11 +171,11 @@ public class Staffdata implements Serializable {
         this.dbstatus = dbstatus;
     }
 
-    public Stafflogin getStafflogin() {
+    public StaffLogin getStaffLogin() {
         return stafflogin;
     }
 
-    public void setStafflogin(Stafflogin stafflogin) {
+    public void setStaffLogin(StaffLogin stafflogin) {
         this.stafflogin = stafflogin;
     }
 
@@ -189,10 +189,10 @@ public class Staffdata implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Staffdata)) {
+        if (!(object instanceof StaffData)) {
             return false;
         }
-        Staffdata other = (Staffdata) object;
+        StaffData other = (StaffData) object;
         if ((this.staffId == null && other.staffId != null) || (this.staffId != null && !this.staffId.equals(other.staffId))) {
             return false;
         }
@@ -201,7 +201,7 @@ public class Staffdata implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Staffdata[ staffId=" + staffId + " ]";
+        return "model.StaffData[ staffId=" + staffId + " ]";
     }
     
 }
