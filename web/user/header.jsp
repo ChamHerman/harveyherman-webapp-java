@@ -22,11 +22,23 @@
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                <li><a class="nav-link" href="#"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a></li>
+                <% if (session.getAttribute("loggedInUser") != null) {%>
+                <li class="user-dropdown-container">
+                    <a class="nav-link" href="#"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
+                    <div class="user-dropdown">
+                        <a href="profile.jsp">View User Details</a>
+                        <a href="<%=request.getContextPath()%>/user/UserLogoutServlet">Log Out</a>
+                    </div>
+                </li>
+                <% } else {%>
+                <li>
+                    <a class="nav-link" href="<%=request.getContextPath()%>/user/login.jsp">
+                        <img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="Login">
+                    </a>
+                </li>
+                <% }%>
                 <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
             </ul>
         </div>
     </div>
 </nav>
-<!-- End Header/Navigation -->
-

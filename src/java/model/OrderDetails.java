@@ -21,16 +21,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "orderdetails")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "OrderDetails.findAll", query = "SELECT o FROM OrderDetails o"),
-    @NamedQuery(name = "OrderDetails.findByDetailId", query = "SELECT o FROM OrderDetails o WHERE o.detailId = :detailId"),
-    @NamedQuery(name = "OrderDetails.findByQuantity", query = "SELECT o FROM OrderDetails o WHERE o.quantity = :quantity"),
-    @NamedQuery(name = "OrderDetails.findByPricePerItem", query = "SELECT o FROM OrderDetails o WHERE o.pricePerItem = :pricePerItem")})
+    @NamedQuery(name = "OrderDetails.findAll", query = "SELECT o FROM OrderDetails o WHERE o.dbstatus = 'active'"),
+    @NamedQuery(name = "OrderDetails.findByDetailId", query = "SELECT o FROM OrderDetails o WHERE o.detailId = :detailId AND o.dbstatus = 'active'"),
+    @NamedQuery(name = "OrderDetails.findByQuantity", query = "SELECT o FROM OrderDetails o WHERE o.quantity = :quantity AND o.dbstatus = 'active'"),
+    @NamedQuery(name = "OrderDetails.findByPricePerItem", query = "SELECT o FROM OrderDetails o WHERE o.pricePerItem = :pricePerItem AND o.dbstatus = 'active'"),
+    @NamedQuery(name = "OrderDetails.findByDbstatus", query = "SELECT o FROM OrderDetails o WHERE o.dbstatus = :dbstatus")})
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -87,6 +88,14 @@ public class OrderDetails implements Serializable {
 
     public void setPricePerItem(BigDecimal pricePerItem) {
         this.pricePerItem = pricePerItem;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public Item getItemId() {

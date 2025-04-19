@@ -1033,3 +1033,75 @@ textarea {
     border-radius: 50%;
     background: rgba(59, 93, 80, 0.2);
 }
+
+/* User dropdown styles */
+.user-dropdown-container {
+    position: relative;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 180px;
+    padding: 10px 0;
+    margin: 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Add padding to create space between icon and dropdown */
+.user-dropdown-container:after {
+    content: '';
+    display: block;
+    height: 20px;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 8px 20px;
+    color: #3b5d50 !important;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    opacity: 1 !important;
+}
+
+.user-dropdown a:hover {
+    background-color: #f8f9fa;
+    color: #3b5d50 !important;
+}
+
+.user-dropdown a:hover:before {
+    width: 0 !important;
+}
+
+.user-dropdown-container:hover .user-dropdown {
+    display: block;
+    /* Add animation for smoother appearance */
+    animation: fadeIn 0.3s ease;
+}
+
+/* Keep dropdown visible when hovering over it */
+.user-dropdown:hover {
+    display: block;
+}
+
+.user-dropdown a:not(:last-child) {
+    border-bottom: 1px solid #f1f1f1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

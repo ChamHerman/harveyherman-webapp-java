@@ -5,7 +5,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,10 +21,6 @@ import model.UserDataDAO;
 import model.UserLogin;
 import model.UserLoginDAO;
 
-/**
- *
- * @author herman
- */
 @WebServlet(name = "UserRegisterServlet", urlPatterns = {"/user/UserRegisterServlet"})
 public class UserRegisterServlet extends HttpServlet {
 
@@ -38,33 +33,40 @@ public class UserRegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("RegisterServlet: doPost method called");
+
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String contactNumber = request.getParameter("contact_number");
         String address = request.getParameter("address");
         String username = request.getParameter("username");
         String birthdateStr = request.getParameter("birthdate");
+        String gender = request.getParameter("gender");
         String password = request.getParameter("password");
         String challengeQuestion = request.getParameter("challenge_question");
         String answer = request.getParameter("answer");
 
-        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, password, challengeQuestion, answer);
+        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, challengeQuestion, answer);
 
         if (success) {
             response.sendRedirect(request.getContextPath() + "/user/success.jsp");
         } else {
             request.setAttribute("errorMessage", errorMsg);
-            RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + "/user/register.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/register.jsp");
             dispatcher.forward(request, response);
         }
     }
 
-    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String password, String challengeQuestion, String answer) {
+    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String challengeQuestion, String answer) {
         try {
             // Check for duplicate email
             if (userDataDAO.findByEmail(email) != null) {
                 errorMsg = "Registration failed: Duplicate Email Used!";
+                return false;
+            }
+
+            // Check for duplicate contact number
+            if (userDataDAO.findByContactNumber(contactNumber) != null) {
+                errorMsg = "Registration failed: Duplicate Contact Number!";
                 return false;
             }
 
@@ -79,7 +81,7 @@ public class UserRegisterServlet extends HttpServlet {
                 return false;
             }
 
-            UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate);
+            UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);
 
             userDataDAO.create(user);
@@ -102,7 +104,7 @@ public class UserRegisterServlet extends HttpServlet {
         }
     }
 
-    private UserData createUserData(String userId, String fullName, String email, String contactNumber, String address, Date birthdate) {
+    private UserData createUserData(String userId, String fullName, String email, String contactNumber, String address, Date birthdate, String gender) {
         UserData user = new UserData();
         user.setUserId(userId);
         user.setFullname(fullName);
@@ -110,7 +112,9 @@ public class UserRegisterServlet extends HttpServlet {
         user.setContactNumber(contactNumber);
         user.setAddress(address);
         user.setBirthDate(birthdate);
+        user.setGender(gender);
         user.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        user.setDbstatus("active");
         return user;
     }
 
@@ -122,6 +126,7 @@ public class UserRegisterServlet extends HttpServlet {
         userLogin.setUserId(user);
         userLogin.setChallengeQuestion(challengeQuestion);
         userLogin.setAnswer(answer);
+        userLogin.setDbstatus("active");
         return userLogin;
     }
 }

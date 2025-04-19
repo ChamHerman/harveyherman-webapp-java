@@ -5,6 +5,6 @@
 </head>
 <body>
     <h2>Registration Successful!</h2>
- 	<a href="index.jsp">Go Back</a>
+ 	<a href="login.jsp">Proceed to Login</a>
 </body>
 </html>

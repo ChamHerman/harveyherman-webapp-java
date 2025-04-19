@@ -23,17 +23,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "report")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Report.findAll", query = "SELECT r FROM Report r"),
-    @NamedQuery(name = "Report.findByReportId", query = "SELECT r FROM Report r WHERE r.reportId = :reportId"),
-    @NamedQuery(name = "Report.findByReportDate", query = "SELECT r FROM Report r WHERE r.reportDate = :reportDate"),
-    @NamedQuery(name = "Report.findByReportType", query = "SELECT r FROM Report r WHERE r.reportType = :reportType"),
-    @NamedQuery(name = "Report.findByTotalSales", query = "SELECT r FROM Report r WHERE r.totalSales = :totalSales")})
+    @NamedQuery(name = "Report.findAll", query = "SELECT r FROM Report r WHERE r.dbstatus = 'active'"),
+    @NamedQuery(name = "Report.findByReportId", query = "SELECT r FROM Report r WHERE r.reportId = :reportId AND r.dbstatus = 'active'"),
+    @NamedQuery(name = "Report.findByReportDate", query = "SELECT r FROM Report r WHERE r.reportDate = :reportDate AND r.dbstatus = 'active'"),
+    @NamedQuery(name = "Report.findByReportType", query = "SELECT r FROM Report r WHERE r.reportType = :reportType AND r.dbstatus = 'active'"),
+    @NamedQuery(name = "Report.findByTotalSales", query = "SELECT r FROM Report r WHERE r.totalSales = :totalSales AND r.dbstatus = 'active'"),
+    @NamedQuery(name = "Report.findByDbstatus", query = "SELECT r FROM Report r WHERE r.dbstatus = :dbstatus")})
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;

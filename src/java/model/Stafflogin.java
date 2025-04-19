@@ -24,18 +24,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "stafflogin")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Stafflogin.findAll", query = "SELECT s FROM Stafflogin s"),
-    @NamedQuery(name = "Stafflogin.findByLoginId", query = "SELECT s FROM Stafflogin s WHERE s.loginId = :loginId"),
-    @NamedQuery(name = "Stafflogin.findByUsername", query = "SELECT s FROM Stafflogin s WHERE s.username = :username"),
-    @NamedQuery(name = "Stafflogin.findByPassword", query = "SELECT s FROM Stafflogin s WHERE s.password = :password"),
-    @NamedQuery(name = "Stafflogin.findByLastLogin", query = "SELECT s FROM Stafflogin s WHERE s.lastLogin = :lastLogin"),
-    @NamedQuery(name = "Stafflogin.findByRole", query = "SELECT s FROM Stafflogin s WHERE s.role = :role")})
+    @NamedQuery(name = "Stafflogin.findAll", query = "SELECT s FROM Stafflogin s WHERE s.dbstatus = 'active'"),
+    @NamedQuery(name = "Stafflogin.findByLoginId", query = "SELECT s FROM Stafflogin s WHERE s.loginId = :loginId AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Stafflogin.findByUsername", query = "SELECT s FROM Stafflogin s WHERE s.username = :username AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Stafflogin.findByPassword", query = "SELECT s FROM Stafflogin s WHERE s.password = :password AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Stafflogin.findByLastLogin", query = "SELECT s FROM Stafflogin s WHERE s.lastLogin = :lastLogin AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Stafflogin.findByRole", query = "SELECT s FROM Stafflogin s WHERE s.role = :role AND s.dbstatus = 'active'"),
+    @NamedQuery(name = "Stafflogin.findByDbstatus", query = "SELECT s FROM Stafflogin s WHERE s.dbstatus = :dbstatus")})
 public class Stafflogin implements Serializable {
 
     private static final long serialVersionUID = 1L;

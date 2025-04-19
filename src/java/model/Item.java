@@ -6,7 +6,6 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -28,21 +27,22 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "item")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
-    @NamedQuery(name = "Item.findByItemId", query = "SELECT i FROM Item i WHERE i.itemId = :itemId"),
-    @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :name"),
-    @NamedQuery(name = "Item.findByPrice", query = "SELECT i FROM Item i WHERE i.price = :price"),
-    @NamedQuery(name = "Item.findByStockQuantity", query = "SELECT i FROM Item i WHERE i.stockQuantity = :stockQuantity"),
-    @NamedQuery(name = "Item.findByCategory", query = "SELECT i FROM Item i WHERE i.category = :category"),
-    @NamedQuery(name = "Item.findByImageUrl", query = "SELECT i FROM Item i WHERE i.imageUrl = :imageUrl"),
-    @NamedQuery(name = "Item.findByCreatedDate", query = "SELECT i FROM Item i WHERE i.createdDate = :createdDate"),
-    @NamedQuery(name = "Item.findByUpdatedDate", query = "SELECT i FROM Item i WHERE i.updatedDate = :updatedDate")})
+    @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i WHERE i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByItemId", query = "SELECT i FROM Item i WHERE i.itemId = :itemId AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :name AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByPrice", query = "SELECT i FROM Item i WHERE i.price = :price AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByStockQuantity", query = "SELECT i FROM Item i WHERE i.stockQuantity = :stockQuantity AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByCategory", query = "SELECT i FROM Item i WHERE i.category = :category AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByImageUrl", query = "SELECT i FROM Item i WHERE i.imageUrl = :imageUrl AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByCreatedDate", query = "SELECT i FROM Item i WHERE i.createdDate = :createdDate AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByUpdatedDate", query = "SELECT i FROM Item i WHERE i.updatedDate = :updatedDate AND i.dbstatus = 'active'"),
+    @NamedQuery(name = "Item.findByDbstatus", query = "SELECT i FROM Item i WHERE i.dbstatus = :dbstatus")})
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -129,19 +129,19 @@ public class Item implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Timestamp getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Timestamp getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Timestamp updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 

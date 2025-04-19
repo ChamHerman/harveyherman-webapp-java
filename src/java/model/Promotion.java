@@ -26,20 +26,21 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author weika
  */
 @Entity
 @Table(name = "promotion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Promotion.findAll", query = "SELECT p FROM Promotion p"),
-    @NamedQuery(name = "Promotion.findByPromotionId", query = "SELECT p FROM Promotion p WHERE p.promotionId = :promotionId"),
-    @NamedQuery(name = "Promotion.findByPromotionCode", query = "SELECT p FROM Promotion p WHERE p.promotionCode = :promotionCode"),
-    @NamedQuery(name = "Promotion.findByDiscountValue", query = "SELECT p FROM Promotion p WHERE p.discountValue = :discountValue"),
-    @NamedQuery(name = "Promotion.findByStatus", query = "SELECT p FROM Promotion p WHERE p.status = :status"),
-    @NamedQuery(name = "Promotion.findByMinimumPurchase", query = "SELECT p FROM Promotion p WHERE p.minimumPurchase = :minimumPurchase"),
-    @NamedQuery(name = "Promotion.findByStartDate", query = "SELECT p FROM Promotion p WHERE p.startDate = :startDate"),
-    @NamedQuery(name = "Promotion.findByEndDate", query = "SELECT p FROM Promotion p WHERE p.endDate = :endDate")})
+    @NamedQuery(name = "Promotion.findAll", query = "SELECT p FROM Promotion p WHERE p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByPromotionId", query = "SELECT p FROM Promotion p WHERE p.promotionId = :promotionId AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByPromotionCode", query = "SELECT p FROM Promotion p WHERE p.promotionCode = :promotionCode AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByDiscountValue", query = "SELECT p FROM Promotion p WHERE p.discountValue = :discountValue AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByStatus", query = "SELECT p FROM Promotion p WHERE p.status = :status AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByMinimumPurchase", query = "SELECT p FROM Promotion p WHERE p.minimumPurchase = :minimumPurchase AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByStartDate", query = "SELECT p FROM Promotion p WHERE p.startDate = :startDate AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByEndDate", query = "SELECT p FROM Promotion p WHERE p.endDate = :endDate AND p.dbstatus = 'active'"),
+    @NamedQuery(name = "Promotion.findByDbstatus", query = "SELECT p FROM Promotion p WHERE p.dbstatus = :dbstatus")})
 public class Promotion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -81,6 +82,9 @@ public class Promotion implements Serializable {
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @OneToMany(mappedBy = "promotionId")
     private List<Orders> ordersList;
 
@@ -144,6 +148,14 @@ public class Promotion implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @XmlTransient
