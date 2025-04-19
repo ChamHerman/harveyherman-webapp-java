@@ -1,12 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author weikang
  */
 package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,24 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Stafflogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "username")
-    private String username;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "password")
-    private String password;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 7)
-    @Column(name = "role")
-    private String role;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
 
     @Id
     @Basic(optional = false)
@@ -61,8 +40,32 @@ public class Stafflogin implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "login_id")
     private String loginId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "username")
+    private String username;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "password")
+    private String password;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 7)
+    @Column(name = "role")
+    private String role;
+    
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     @Column(name = "last_login")
     private Timestamp lastLogin;
+    
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
     private Staffdata staffId;

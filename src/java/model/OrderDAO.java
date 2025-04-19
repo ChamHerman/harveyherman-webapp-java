@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author kaibin
  */
 package model;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import javax.persistence.PersistenceContext;

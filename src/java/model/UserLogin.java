@@ -1,3 +1,7 @@
+/**
+ *
+ * @author weikang
+ */
 package model;
 
 import java.io.Serializable;
@@ -105,6 +109,10 @@ public class UserLogin implements Serializable {
         this.challengeQuestion = challengeQuestion;
     }
 
+    public String getChallengeQuestion() {
+        return challengeQuestion;
+    }
+
     public Date getLastLogin() {
         return lastLogin;
     }
@@ -127,6 +135,30 @@ public class UserLogin implements Serializable {
 
     public void setUserId(UserData userId) {
         this.userId = userId;
+    }
+    
+       public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -153,30 +185,6 @@ public class UserLogin implements Serializable {
     @Override
     public String toString() {
         return "model.UserLogin[ loginId=" + loginId + " ]";
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 }

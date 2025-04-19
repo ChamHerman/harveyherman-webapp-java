@@ -1,8 +1,7 @@
 /**
  *
- * @author herman
+ * @author weikang
  */
-
 package controller;
 
 import javax.servlet.ServletException;

@@ -2,7 +2,6 @@
  *
  * @author herman
  */
-
 package controller;
 
 import javax.persistence.EntityManager;

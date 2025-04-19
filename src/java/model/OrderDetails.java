@@ -1,3 +1,7 @@
+/**
+ *
+ * @author kaibin
+ */
 package model;
 
 import java.io.Serializable;
@@ -34,21 +38,25 @@ public class OrderDetails implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "detail_id")
     private String detailId;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
     private int quantity;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "price_per_item")
     private BigDecimal pricePerItem;
+
     @Size(max = 7)
     @Column(name = "dbstatus")
     private String dbstatus;
+
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     @ManyToOne(optional = false)
     private Item itemId;
+
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -82,14 +90,6 @@ public class OrderDetails implements Serializable {
         this.pricePerItem = pricePerItem;
     }
 
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
-
     public Item getItemId() {
         return itemId;
     }
@@ -104,6 +104,22 @@ public class OrderDetails implements Serializable {
 
     public void setOrderId(Orders orderId) {
         this.orderId = orderId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @Override
@@ -129,14 +145,6 @@ public class OrderDetails implements Serializable {
     @Override
     public String toString() {
         return "model.OrderDetails[ detailId=" + detailId + " ]";
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
 }

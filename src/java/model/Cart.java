@@ -1,3 +1,7 @@
+/**
+ *
+ * @author kaibin
+ */
 package model;
 
 import java.io.Serializable;
@@ -35,15 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Cart implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "total")
-    private BigDecimal total;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
-
     
     @Id
     @Basic(optional = false)
@@ -51,15 +46,28 @@ public class Cart implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "cart_id")
     private String cartId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total")
+    private BigDecimal total;
+    
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+    
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData userId;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cartId")
     private List<CartItem> cartItemList;
 

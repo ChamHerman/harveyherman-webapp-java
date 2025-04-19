@@ -1,13 +1,10 @@
+/**
+ *
+ * @author kaisheng
+ */
 package model;
 
-import model.Orders;
-import model.OrderDetails;
-import model.Item;
 import java.math.BigDecimal;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -63,20 +60,6 @@ public class ManagerDashboardDAO {
         int activeUsersInt=(activeUsers != null) ? activeUsers.intValue() : 0;
         return activeUsersInt;
     }
-    
-    /*public double getReviewRating(){
-        Long review;
-        Long reviewCount;
-        
-        reviewCount = em.createQuery("SELECT COUNT(DISTINCT rr.reviewId) FROM ReviewRating rr",Long.class).getSingleResult();
-        review = em.createQuery("SELECT SUM(rr.reviewGrade) FROM ReviewRating rr",Long.class).getSingleResult();
-        
-        double reviewInt=(review != null) ? review.doubleValue() : 0;
-        double reviewCountInt = (reviewCount !=null) ? reviewCount.doubleValue() : 0;
-        double reviewAvg = 0.0;
-        reviewAvg = reviewInt/reviewCountInt;
-        return reviewAvg;
-    }*/
     
     public int getPaymentMethodCash() {
         Long cash;

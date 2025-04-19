@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author weikang
  */
 package model;
 
@@ -29,49 +29,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "userdata")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u WHERE u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByUserId", query = "SELECT u FROM UserData u WHERE u.userId = :userId AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByFullname", query = "SELECT u FROM UserData u WHERE u.fullname = :fullname AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate AND u.dbstatus = 'active'"),
-        @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus") })
+    @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u WHERE u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByUserId", query = "SELECT u FROM UserData u WHERE u.userId = :userId AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByFullname", query = "SELECT u FROM UserData u WHERE u.fullname = :fullname AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate AND u.dbstatus = 'active'"),
+    @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus")})
 public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "fullname")
-    private String fullname;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-    // message="Invalid email")//if the field contains email address consider using
-    // this annotation to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "email")
-    private String email;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "contact_number")
-    private String contactNumber;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "address")
-    private String address;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "gender")
-    private String gender;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
 
     @Id
     @Basic(optional = false)
@@ -79,13 +48,54 @@ public class UserData implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "user_id")
     private String userId;
+
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "fullname")
+    private String fullname;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "email")
+    private String email;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "contact_number")
+    private String contactNumber;
+
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "address")
+    private String address;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "gender")
+    private String gender;
+
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Cart> cartList;
+
     @OneToOne(mappedBy = "userId")
     private UserLogin userLogin;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Orders> ordersList;
 
@@ -152,30 +162,12 @@ public class UserData implements Serializable {
         this.dbstatus = dbstatus;
     }
 
-    @XmlTransient
-    public List<Cart> getCartList() {
-        return cartList;
-    }
-
-    public void setCartList(List<Cart> cartList) {
-        this.cartList = cartList;
-    }
-
     public UserLogin getUserLogin() {
         return userLogin;
     }
 
     public void setUserLogin(UserLogin userLogin) {
         this.userLogin = userLogin;
-    }
-
-    @XmlTransient
-    public List<Orders> getOrdersList() {
-        return ordersList;
-    }
-
-    public void setOrdersList(List<Orders> ordersList) {
-        this.ordersList = ordersList;
     }
 
     public String getFullname() {
@@ -200,6 +192,24 @@ public class UserData implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @XmlTransient
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
+    }
+
+    @XmlTransient
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
     }
 
     @Override

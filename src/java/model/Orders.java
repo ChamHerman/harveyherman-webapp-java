@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author kaibin
  */
 package model;
 
@@ -40,22 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "total_amount")
-    private BigDecimal totalAmount;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 11)
-    @Column(name = "payment_method")
-    private String paymentMethod;
-    @Size(max = 9)
-    @Column(name = "status")
-    private String status;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
 
     @Id
     @Basic(optional = false)
@@ -63,19 +47,44 @@ public class Orders implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "order_id")
     private String orderId;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total_amount")
+    private BigDecimal totalAmount;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 11)
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    @Size(max = 9)
+    @Column(name = "status")
+    private String status;
+
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<Delivery> deliveryList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<OrderDetails> orderDetailsList;
+
     @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
     @ManyToOne
     private Promotion promotionId;
+
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData userId;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<Payment> paymentList;
 
@@ -132,18 +141,8 @@ public class Orders implements Serializable {
         this.dbstatus = dbstatus;
     }
 
-    @XmlTransient
-    public List<Delivery> getDeliveryList() {
-        return deliveryList;
-    }
-
     public void setDeliveryList(List<Delivery> deliveryList) {
         this.deliveryList = deliveryList;
-    }
-
-    @XmlTransient
-    public List<OrderDetails> getOrderDetailsList() {
-        return orderDetailsList;
     }
 
     public void setOrderDetailsList(List<OrderDetails> orderDetailsList) {
@@ -172,6 +171,16 @@ public class Orders implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @XmlTransient
+    public List<Delivery> getDeliveryList() {
+        return deliveryList;
+    }
+
+    @XmlTransient
+    public List<OrderDetails> getOrderDetailsList() {
+        return orderDetailsList;
     }
 
     @XmlTransient

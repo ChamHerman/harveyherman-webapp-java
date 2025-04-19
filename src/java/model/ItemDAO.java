@@ -1,3 +1,7 @@
+/**
+ *
+ * @author herman
+ */
 package model;
 
 import controller.CustomIdGenerator;

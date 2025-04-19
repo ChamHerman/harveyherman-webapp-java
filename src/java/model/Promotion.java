@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author kaisheng
  */
 package model;
 
@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,43 +41,50 @@ public class Promotion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "promotion_code")
-    private String promotionCode;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "discount_value")
-    private BigDecimal discountValue;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 7)
-    @Column(name = "status")
-    private String status;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "description")
-    private String description;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
-
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "promotion_id")
     private String promotionId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "promotion_code")
+    private String promotionCode;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "discount_value")
+    private BigDecimal discountValue;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 7)
+    @Column(name = "status")
+    private String status;
+    
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+    
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+    
     @Column(name = "minimum_purchase")
     private BigDecimal minimumPurchase;
+    
     @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
+    
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
+    
     @OneToMany(mappedBy = "promotionId")
     private List<Orders> ordersList;
 
@@ -151,6 +157,22 @@ public class Promotion implements Serializable {
     public void setDbstatus(String dbstatus) {
         this.dbstatus = dbstatus;
     }
+    
+        public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @XmlTransient
     public List<Orders> getOrdersList() {
@@ -184,22 +206,6 @@ public class Promotion implements Serializable {
     @Override
     public String toString() {
         return "model.Promotion[ promotionId=" + promotionId + " ]";
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 }

@@ -1,3 +1,7 @@
+/**
+ *
+ * @author kaisheng
+ */
 package model;
 
 import java.io.Serializable;
@@ -30,23 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "report_date")
-    @Temporal(TemporalType.DATE)
-    private Date reportDate;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "report_type")
-    private String reportType;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "description")
-    private String description;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
 
     @Id
     @Basic(optional = false)
@@ -54,7 +41,28 @@ public class Report implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "report_id")
     private String reportId;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "report_date")
+    @Temporal(TemporalType.DATE)
+    private Date reportDate;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "report_type")
+    private String reportType;
+
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     @Column(name = "total_sales")
     private BigDecimal totalSales;
 

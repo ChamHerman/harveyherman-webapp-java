@@ -1,4 +1,8 @@
-/*package controller;
+/**
+ *
+ * @author kaisheng
+ */
+package controller;
 
 import model.PromotionDAO;
 import model.Promotion;
@@ -12,11 +16,10 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.RequestDispatcher;
 
 @WebServlet("/PromotionServlet")
 public class PromotionServlet extends HttpServlet {
-    
+
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
     @EJB
@@ -26,33 +29,27 @@ public class PromotionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Promotion> promotions = em.createQuery("Promotion.findAll", Promotion.class).getResultList();
 
-            Date today = new Date(); // Current system date
+        Date today = new Date(); // Current system date
 
-            em.getTransaction().begin();
-            for (Promotion promo : promotions) {
-                String currentStatus = promo.getStatus();
-                if (promo.getEndDate() != null && promo.getEndDate().before(today)) {
-                    if (!"expired".equalsIgnoreCase(currentStatus)) {
-                        promo.setStatus("expired");
-                        em.merge(promo); // Update in DB
-                    }
-                } else {
-                    if (!"active".equalsIgnoreCase(currentStatus)) {
-                        promo.setStatus("active");
-                        em.merge(promo); // Update in DB
-                    }
+        em.getTransaction().begin();
+        for (Promotion promo : promotions) {
+            String currentStatus = promo.getStatus();
+            if (promo.getEndDate() != null && promo.getEndDate().before(today)) {
+                if (!"expired".equalsIgnoreCase(currentStatus)) {
+                    promo.setStatus("expired");
+                    em.merge(promo); // Update in DB
+                }
+            } else {
+                if (!"active".equalsIgnoreCase(currentStatus)) {
+                    promo.setStatus("active");
+                    em.merge(promo); // Update in DB
                 }
             }
-            em.getTransaction().commit();
-
-            request.setAttribute("promotions", promotions);
-            request.getRequestDispatcher("promotion.jsp").forward(request, response);
         }
+        em.getTransaction().commit();
+
+        request.setAttribute("promotions", promotions);
+        request.getRequestDispatcher("promotion.jsp").forward(request, response);
     }
-    
-    //@Override
-    //protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    //        throws ServletException, IOException {
-    //    doPost(request, response); // Reuse same logic
-    //}
-}*/
+
+}

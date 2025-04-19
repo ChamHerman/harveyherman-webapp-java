@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author kaibin
  */
 package model;
 
@@ -31,33 +31,38 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CartItem.findByDbstatus", query = "SELECT c FROM CartItem c WHERE c.dbstatus = :dbstatus")})
 public class CartItem implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "quantity")
-    private int quantity;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "unit_price")
-    private BigDecimal unitPrice;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "subtotal")
-    private BigDecimal subtotal;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
-
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "cart_item_id")
     private String cartItemId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "unit_price")
+    private BigDecimal unitPrice;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "subtotal")
+    private BigDecimal subtotal;
+
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+    
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     @ManyToOne(optional = false)
     private Cart cartId;
+    
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     @ManyToOne(optional = false)
     private Item itemId;

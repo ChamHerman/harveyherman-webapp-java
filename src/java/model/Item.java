@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author herman
  */
 package model;
 
@@ -18,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,47 +41,55 @@ public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "name")
-    private String name;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "description")
-    private String description;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "price")
-    private BigDecimal price;
-    @Basic(optional = false)
-    @NotNull()
-    @Column(name = "stock_quantity")
-    private int stockQuantity;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Size(max = 255)
-    @Column(name = "category")
-    private String category;
-    @Size(max = 255)
-    @Column(name = "image_url")
-    private String imageUrl;
-    @Column(name = "created_date", nullable = false, updatable = false, insertable = false)
-    private Timestamp createdDate;
-    @Column(name = "updated_date", insertable = false)
-    private Timestamp updatedDate;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus = "active";
-
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "item_id")
     private String itemId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "name")
+    private String name;
+    
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "price")
+    private BigDecimal price;
+    
+    @Basic(optional = false)
+    @NotNull()
+    @Column(name = "stock_quantity")
+    private int stockQuantity;
+
+    @Size(max = 255)
+    @Column(name = "category")
+    private String category;
+    
+    @Size(max = 255)
+    @Column(name = "image_url")
+    private String imageUrl;
+    
+    @Column(name = "created_date", nullable = false, updatable = false, insertable = false)
+    private Timestamp createdDate;
+    
+    @Column(name = "updated_date", insertable = false)
+    private Timestamp updatedDate;
+    
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus = "active";
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<OrderDetails> orderDetailsList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemId")
     private List<CartItem> cartItemList;
 
@@ -141,8 +147,6 @@ public class Item implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    
-
     public String getName() {
         return name;
     }
@@ -182,7 +186,7 @@ public class Item implements Serializable {
     public void setDbstatus(String dbstatus) {
         this.dbstatus = dbstatus;
     }
-    
+
     @XmlTransient
     public List<OrderDetails> getOrderDetailsList() {
         return orderDetailsList;
