@@ -88,7 +88,7 @@
 
                     <!-- Side Bar (Filter) -->
                     <div class="col-md-3">
-                        <form action="item.jsp" method="POST">
+                        <form action="item.jsp" method="post">
                             <div class="card p-3">
                                 <h5>Search</h5>
                                 <input type="text" name="search" class="form-control" placeholder="Search item..."
@@ -107,6 +107,35 @@
                                     }
                                 %>
 
+                                <!-- Stock Filter -->
+                                <h5 class="mt-3">Stock</h5>
+                                <select class="form-select" name="stock">
+                                    <option value="All" <%= (request.getParameter("stock") == null || "All".equals(request.getParameter("stock"))) ? "selected" : "" %>>All</option>
+                                    <option value="InStock" <%= "InStock".equals(request.getParameter("stock")) ? "selected" : "" %>>In Stock</option>
+                                    <option value="OutOfStock" <%= "OutOfStock".equals(request.getParameter("stock")) ? "selected" : "" %>>Out of Stock</option>
+                                </select>
+
+                                <!-- Price Range Filter -->
+                                <h5 class="mt-3">Price Range</h5>
+                                <div class="d-flex gap-2">
+                                    <input type="number" class="form-control" name="minPrice" placeholder="Min" min="0" step="0.01" value="<%=request.getParameter("minPrice") != null ? request.getParameter("minPrice") : ""%>">
+                                    <input type="number" class="form-control" name="maxPrice" placeholder="Max" min="0" step="0.01" value="<%=request.getParameter("maxPrice") != null ? request.getParameter("maxPrice") : ""%>">
+                                </div>
+
+                                <!-- Sort By Filter -->
+                                <h5 class="mt-3">Sort By</h5>
+                                <div class="d-flex gap-2">
+                                    <select class="form-select" name="sortBy">
+                                        <option value="createdDate" <%= (request.getParameter("sortBy") == null || "createdDate".equals(request.getParameter("sortBy"))) ? "selected" : "" %>>Date</option>
+                                        <option value="name" <%= "name".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Name</option>
+                                        <option value="price" <%= "price".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Price</option>
+                                    </select>
+                                    <select class="form-select" name="sortOrder">
+                                        <option value="desc" <%= (request.getParameter("sortOrder") == null || "desc".equals(request.getParameter("sortOrder"))) ? "selected" : "" %>>Desc</option>
+                                        <option value="asc" <%= "asc".equals(request.getParameter("sortOrder")) ? "selected" : "" %>>Asc</option>
+                                    </select>
+                                </div>
+
                                 <!-- Buttons: Apply Filter & Clear Filter -->
                                 <div class="d-flex gap-2 mt-3">
                                     <button type="submit" class="btn btn-primary flex-grow-1">Apply Filters</button>
@@ -114,8 +143,8 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
+                    <!-- /Side Bar (Filter) -->
 
                     <!-- Products Section -->
                     <div class="col-md-9">
@@ -131,14 +160,17 @@
                                    href="#" onclick="postItemDetails('<%=item.getItemId()%>')"> <img
                                         src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" class="img-fluid product-thumbnail" alt="Product Image">
                                     <h3 class="product-title"><%=item.getName()%></h3> <strong class="product-price">RM
-                                        <%=String.format("%.2f", item.getPrice())%></strong> <span class="icon-cross"> <img
-                                            src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
+                                        <%=String.format("%.2f", item.getPrice())%></strong>
+                                    <!-- Stock label below price -->
+                                    <% if (item.getStockQuantity() > 0) { %>
+                                        <div class="mt-1"><span class="badge bg-success" style="font-size: 0.95em;">In Stock</span></div>
+                                    <% } else { %>
+                                        <div class="mt-1"><span class="badge bg-danger" style="font-size: 0.95em;">Out of Stock</span></div>
+                                    <% } %>
+                                    <span class="icon-cross"> <img
+                                        src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
                                     </span>
                                 </a>
-
-                                <form id="itemForm" action="details" method="post" style="display: none;">
-                                    <input type="hidden" name="itemId" id="itemId">
-                                </form>
                             </div>
                             <%
                                 }
@@ -152,10 +184,15 @@
                             %>
                         </div>
                     </div>
-
+                    <!-- /Products Section -->
                 </div>
             </div>
         </div>
+        <!-- /Main Content -->
+
+        <form id="itemForm" action="details" method="post" style="display: none;">
+            <input type="hidden" name="itemId" id="itemId">
+        </form>
 
         <!-- Footer -->
         <jsp:include page="footer.jsp" />
@@ -164,10 +201,10 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script>
-            function postItemDetails(itemId) {
-                document.getElementById("itemId").value = itemId;
-                ocument.getElementById("itemForm").submit();
-            }
+                                       function postItemDetails(itemId) {
+                                           document.getElementById("itemId").value = itemId;
+                                           document.getElementById("itemForm").submit();
+                                       }
         </script>
 
     </body>

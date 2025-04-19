@@ -401,13 +401,13 @@
                                 </div>
                                 <!-- Price -->
                                 <div class="mb-3">
-                                    <label class="form-label">Price <span class="text-muted">(Min: 1.00, Max: 9999999.00)</span></label>
-                                    <input type="number" step="0.01" min="1" max="9999999" class="form-control" name="price" id="price" placeholder="Enter price (1.00 - 9999999.00)" required>
+                                    <label class="form-label">Price <span class="text-muted">(Min: 0 | Max: 9999999)</span></label>
+                                    <input type="number" step="0.01" min="0" max="9999999" class="form-control" name="price" id="price" placeholder="Enter price (1.00 - 9999999.00)" required>
                                 </div>
                                 <!-- Stock Quantity -->
                                 <div class="mb-3">
-                                    <label class="form-label">Stock Quantity <span class="text-muted">(Min: 1, Max: 9999999)</span></label>
-                                    <input type="number" step="1" min="1" max="9999999" class="form-control" name="stockQuantity" id="stockQuantity" placeholder="Enter stock (1 - 9999999)" required>
+                                    <label class="form-label">Stock Quantity <span class="text-muted">(Min: 0 | Max: 9999999)</span></label>
+                                    <input type="number" step="1" min="0" max="9999999" class="form-control" name="stockQuantity" id="stockQuantity" placeholder="Enter stock (1 - 9999999)" required>
                                 </div>
                                 <!-- Category -->
                                 <div class="mb-3">

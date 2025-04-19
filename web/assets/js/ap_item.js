@@ -188,8 +188,8 @@ function validateAddItemForm() {
     var maxPrice = 9999999.00;
     var maxStock = 9999999;
 
-    if (isNaN(price) || price < 1) {
-        alert("Price must be 1 or above.");
+    if (isNaN(price) || price < 0) {
+        alert("Price must be 0 or above.");
         return false;
     }
 
@@ -198,8 +198,8 @@ function validateAddItemForm() {
         return false;
     }
 
-    if (isNaN(stockQuantity) || stockQuantity < 1) {
-        alert("Stock Quantity must be 1 or above.");
+    if (isNaN(stockQuantity) || stockQuantity < 0) {
+        alert("Stock Quantity must be 0 or above.");
         return false;
     }
 
@@ -233,8 +233,8 @@ function validateEditItemForm() {
     var maxPrice = 9999999.00;
     var maxStock = 9999999;
 
-    if (isNaN(price) || price < 1) {
-        alert("Price must be 1 or above.");
+    if (isNaN(price) || price < 0) {
+        alert("Price must be 0 or above.");
         return false;
     }
 
@@ -243,8 +243,8 @@ function validateEditItemForm() {
         return false;
     }
 
-    if (isNaN(stockQuantity) || stockQuantity < 1) {
-        alert("Stock Quantity must be 1 or above.");
+    if (isNaN(stockQuantity) || stockQuantity < 0) {
+        alert("Stock Quantity must be 0 or above.");
         return false;
     }
 
@@ -259,6 +259,5 @@ function validateEditItemForm() {
         return false;
     }
 
-    // In edit form, image is optional.
     return true;
 }
