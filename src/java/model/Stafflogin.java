@@ -22,10 +22,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author weika
- */
 @Entity
 @Table(name = "stafflogin")
 @XmlRootElement
@@ -40,7 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Stafflogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -110,31 +105,6 @@ public class Stafflogin implements Serializable {
         this.staffId = staffId;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (loginId != null ? loginId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Stafflogin)) {
-            return false;
-        }
-        Stafflogin other = (Stafflogin) object;
-        if ((this.loginId == null && other.loginId != null) || (this.loginId != null && !this.loginId.equals(other.loginId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.Stafflogin[ loginId=" + loginId + " ]";
-    }
-
     public String getUsername() {
         return username;
     }
@@ -165,6 +135,31 @@ public class Stafflogin implements Serializable {
 
     public void setDbstatus(String dbstatus) {
         this.dbstatus = dbstatus;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (loginId != null ? loginId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Stafflogin)) {
+            return false;
+        }
+        Stafflogin other = (Stafflogin) object;
+        if ((this.loginId == null && other.loginId != null) || (this.loginId != null && !this.loginId.equals(other.loginId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "model.Stafflogin[ loginId=" + loginId + " ]";
     }
 
 }

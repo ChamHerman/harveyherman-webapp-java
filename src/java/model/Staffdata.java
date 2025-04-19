@@ -21,10 +21,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author weika
- */
 @Entity
 @Table(name = "staffdata")
 @XmlRootElement
@@ -110,63 +106,6 @@ public class Staffdata implements Serializable {
         this.staffId = staffId;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
-
-    public Stafflogin getStafflogin() {
-        return stafflogin;
-    }
-
-    public void setStafflogin(Stafflogin stafflogin) {
-        this.stafflogin = stafflogin;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (staffId != null ? staffId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Staffdata)) {
-            return false;
-        }
-        Staffdata other = (Staffdata) object;
-        if ((this.staffId == null && other.staffId != null) || (this.staffId != null && !this.staffId.equals(other.staffId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.Staffdata[ staffId=" + staffId + " ]";
-    }
-
     public String getFullname() {
         return fullname;
     }
@@ -206,5 +145,65 @@ public class Staffdata implements Serializable {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Stafflogin getStafflogin() {
+        return stafflogin;
+    }
+
+    public void setStafflogin(Stafflogin stafflogin) {
+        this.stafflogin = stafflogin;
+    }
+
+    
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (staffId != null ? staffId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Staffdata)) {
+            return false;
+        }
+        Staffdata other = (Staffdata) object;
+        if ((this.staffId == null && other.staffId != null) || (this.staffId != null && !this.staffId.equals(other.staffId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "model.Staffdata[ staffId=" + staffId + " ]";
+    }
+
+    
 
 }

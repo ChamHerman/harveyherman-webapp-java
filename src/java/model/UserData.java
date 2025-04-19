@@ -25,23 +25,19 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author weika
- */
 @Entity
 @Table(name = "userdata")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u WHERE u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByUserId", query = "SELECT u FROM UserData u WHERE u.userId = :userId AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByFullname", query = "SELECT u FROM UserData u WHERE u.fullname = :fullname AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus")})
+        @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u WHERE u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByUserId", query = "SELECT u FROM UserData u WHERE u.userId = :userId AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByFullname", query = "SELECT u FROM UserData u WHERE u.fullname = :fullname AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByEmail", query = "SELECT u FROM UserData u WHERE u.email = :email AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByContactNumber", query = "SELECT u FROM UserData u WHERE u.contactNumber = :contactNumber AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByBirthDate", query = "SELECT u FROM UserData u WHERE u.birthDate = :birthDate AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByCreatedDate", query = "SELECT u FROM UserData u WHERE u.createdDate = :createdDate AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus") })
 public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,7 +47,9 @@ public class UserData implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "fullname")
     private String fullname;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+    // message="Invalid email")//if the field contains email address consider using
+    // this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -84,9 +82,6 @@ public class UserData implements Serializable {
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Cart> cartList;
     @OneToOne(mappedBy = "userId")
@@ -133,6 +128,14 @@ public class UserData implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -175,31 +178,6 @@ public class UserData implements Serializable {
         this.ordersList = ordersList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserData)) {
-            return false;
-        }
-        UserData other = (UserData) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.UserData[ userId=" + userId + " ]";
-    }
-
     public String getFullname() {
         return fullname;
     }
@@ -224,11 +202,29 @@ public class UserData implements Serializable {
         this.address = address;
     }
 
-    public String getGender() {
-        return gender;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (userId != null ? userId.hashCode() : 0);
+        return hash;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof UserData)) {
+            return false;
+        }
+        UserData other = (UserData) object;
+        if ((this.userId == null && other.userId != null)
+                || (this.userId != null && !this.userId.equals(other.userId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "model.UserData[ userId=" + userId + " ]";
     }
 }

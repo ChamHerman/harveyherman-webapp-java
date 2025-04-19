@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.io.Serializable;
@@ -21,10 +17,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author weika
- */
 @Entity
 @Table(name = "report")
 @XmlRootElement
@@ -38,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "report_date")
@@ -112,6 +103,22 @@ public class Report implements Serializable {
         this.totalSales = totalSales;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -135,22 +142,6 @@ public class Report implements Serializable {
     @Override
     public String toString() {
         return "model.Report[ reportId=" + reportId + " ]";
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
     }
 
 }

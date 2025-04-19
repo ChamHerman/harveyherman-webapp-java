@@ -94,14 +94,14 @@
             </tbody>
         </table>
     <div class="d-flex justify-content-center gap-3 mt-3">
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
-	    Add Promotion
-	</button>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
-	    Delete Promotion
-	</button>
-	<a href="staffDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>    
-    </div>
+	    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
+	        Add Promotion
+	    </button>
+	    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
+	        Delete Promotion
+	    </button>
+	    <a href="managerDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
+	</div>
     
     <!-- Delete Promotion -->
 	<div class="modal fade" id="deletePromotionModal" tabindex="-1" aria-labelledby="deletePromotionModalLabel" aria-hidden="true">

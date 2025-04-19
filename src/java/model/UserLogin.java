@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.io.Serializable;
@@ -21,61 +17,66 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author weika
- */
 @Entity
 @Table(name = "userlogin")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserLogin.findAll", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByLoginId", query = "SELECT u FROM UserLogin u WHERE u.loginId = :loginId AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByAnswer", query = "SELECT u FROM UserLogin u WHERE u.answer = :answer AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByChallengeQuestion", query = "SELECT u FROM UserLogin u WHERE u.challengeQuestion = :challengeQuestion AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByUsername", query = "SELECT u FROM UserLogin u WHERE u.username = :username AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByPassword", query = "SELECT u FROM UserLogin u WHERE u.password = :password AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByLastLogin", query = "SELECT u FROM UserLogin u WHERE u.lastLogin = :lastLogin AND u.dbstatus = 'active'"),
-    @NamedQuery(name = "UserLogin.findByDbstatus", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = :dbstatus")})
+        @NamedQuery(name = "UserLogin.findAll", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByLoginId", query = "SELECT u FROM UserLogin u WHERE u.loginId = :loginId AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByAnswer", query = "SELECT u FROM UserLogin u WHERE u.answer = :answer AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByChallengeQuestion", query = "SELECT u FROM UserLogin u WHERE u.challengeQuestion = :challengeQuestion AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByUsername", query = "SELECT u FROM UserLogin u WHERE u.username = :username AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByPassword", query = "SELECT u FROM UserLogin u WHERE u.password = :password AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByLastLogin", query = "SELECT u FROM UserLogin u WHERE u.lastLogin = :lastLogin AND u.dbstatus = 'active'"),
+        @NamedQuery(name = "UserLogin.findByDbstatus", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = :dbstatus") })
 public class UserLogin implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "answer")
-    private String answer;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "challenge_question")
-    private String challengeQuestion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "username")
-    private String username;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "password")
-    private String password;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
-
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "login_id")
     private String loginId;
+
     @Column(name = "last_login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
+
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OneToOne
     private UserData userId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "answer")
+    private String answer;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "challenge_question")
+    private String challengeQuestion;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "username")
+    private String username;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "password")
+    private String password;
+
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
+    
 
     public UserLogin() {
     }
@@ -100,15 +101,9 @@ public class UserLogin implements Serializable {
         this.loginId = loginId;
     }
 
-
-    public String getChallengeQuestion() {
-        return challengeQuestion;
-    }
-
     public void setChallengeQuestion(String challengeQuestion) {
         this.challengeQuestion = challengeQuestion;
     }
-
 
     public Date getLastLogin() {
         return lastLogin;
@@ -148,7 +143,8 @@ public class UserLogin implements Serializable {
             return false;
         }
         UserLogin other = (UserLogin) object;
-        if ((this.loginId == null && other.loginId != null) || (this.loginId != null && !this.loginId.equals(other.loginId))) {
+        if ((this.loginId == null && other.loginId != null)
+                || (this.loginId != null && !this.loginId.equals(other.loginId))) {
             return false;
         }
         return true;
@@ -182,5 +178,5 @@ public class UserLogin implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }

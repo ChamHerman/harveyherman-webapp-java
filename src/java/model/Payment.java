@@ -21,10 +21,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author weika
- */
 @Entity
 @Table(name = "payment")
 @XmlRootElement
@@ -38,7 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 9)
