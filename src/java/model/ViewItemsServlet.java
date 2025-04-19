@@ -2,7 +2,7 @@
  *
  * @author herman
  */
-package controller;
+package model;
 
 import java.io.IOException;
 import java.net.URLEncoder;
