@@ -136,7 +136,7 @@
                                     </span>
                                 </a>
 
-                                <form id="itemForm" action="<%=request.getContextPath()%>/user/details" method="post" style="display: none;">
+                                <form id="itemForm" action="details" method="post" style="display: none;">
                                     <input type="hidden" name="itemId" id="itemId">
                                 </form>
                             </div>
@@ -164,10 +164,10 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script>
-                                       function postItemDetails(itemId) {
-                                           document.getElementById("itemId").value = itemId;
-                                           document.getElementById("itemForm").submit();
-                                       }
+            function postItemDetails(itemId) {
+                document.getElementById("itemId").value = itemId;
+                ocument.getElementById("itemForm").submit();
+            }
         </script>
 
     </body>

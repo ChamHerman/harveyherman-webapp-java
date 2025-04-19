@@ -41,12 +41,14 @@ public class ItemDAO {
         em.refresh(item);
     }
 
-    // Delete an item by its ID. Uses the named query within getItemById.
+    // Soft delete an item by its ID by setting dbstatus to 'deleted'.
     public void delete(String itemId) {
         Item item = getItemById(itemId);
         if (item != null) {
-            em.remove(item);
+            item.setDbstatus("deleted");
+            item = em.merge(item);
             em.flush();
+            em.refresh(item);
         }
     }
 

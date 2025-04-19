@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
     var addImageUploadArea = document.getElementById("addImageUploadArea");
     var addImageInput = document.getElementById("addImageInput");
     var addItemImagePreview = document.getElementById("addItemImagePreview");
@@ -146,18 +146,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
 });
 
-var deleteItemId;
 var deleteItemModal = document.getElementById('deleteItemModal');
 deleteItemModal.addEventListener('show.bs.modal', function (event) {
     var button = event.relatedTarget;
-    deleteItemId = button.getAttribute('data-itemid');
-});
-
-document.getElementById('confirmDelete').addEventListener('click', function () {
-    window.location.href = contextPath + '/manager/DeleteItemsServlet?itemId=' + deleteItemId;
+    var itemId = button.getAttribute('data-itemid');
+    document.getElementById('deleteModalItemId').value = itemId;
 });
 
 function viewItem(itemId) {

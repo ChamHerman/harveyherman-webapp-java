@@ -34,17 +34,25 @@ public class ViewItemsServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
         String json;
+        String encodedMessage;
         if (success && viewData != null) {
             json = viewData;
+            encodedMessage = URLEncoder.encode(json, "UTF-8");
+            if (servletPath.contains("/manager/")) {
+                response.sendRedirect(contextPath + "/manager/ap_item.jsp?viewData=" + encodedMessage);
+            } else if (servletPath.contains("/staff/")) {
+                response.sendRedirect(contextPath + "/staff/ap_item.jsp?viewData=" + encodedMessage);
+            }
         } else {
-            json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
+            json = "ERROR: " + message.replace("\"", "\\\"");
+            encodedMessage = URLEncoder.encode(json, "UTF-8");
+            if (servletPath.contains("/manager/")) {
+                response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
+            } else if (servletPath.contains("/staff/")) {
+                response.sendRedirect(contextPath + "/staff/ap_item.jsp?message=" + encodedMessage);
+            }
         }
-        String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        if (servletPath.contains("/manager/")) {
-            response.sendRedirect(contextPath + "/manager/ap_item.jsp?viewData=" + encodedMessage);
-        } else if (servletPath.contains("/staff/")) {
-            response.sendRedirect(contextPath + "/staff/ap_item.jsp?viewData=" + encodedMessage);
-        }
+
     }
 
     @Override

@@ -195,7 +195,7 @@
                 <!-- /Dashboard Overview Section -->
 
                 <!-- Filter Section -->
-                <form method="GET" action="ap_item.jsp">
+                <form method="post" action="ap_item.jsp">
                     <div class="filter-section">
                         <!-- Row 1 -->
                         <div class="row mb-3">
@@ -329,23 +329,26 @@
             <!-- /Container -->
 
             <!-- Delete Item Modal -->
-            <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addItemModalLabel">Delete Item</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this item?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="confirmDelete">Delete</button>             
+            <form id="deleteItemForm" method="post" action="<%=request.getContextPath()%>/manager/DeleteItemsServlet">
+                <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addItemModalLabel">Delete Item</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this item?
+                                <input type="hidden" name="itemId" id="deleteModalItemId" value="" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="confirmDelete">Delete</button>             
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <!-- /Delete Item Modal -->
 
             <!-- Item Result Message Modal -->

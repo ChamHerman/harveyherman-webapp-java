@@ -43,8 +43,14 @@ public class EditItemsServlet extends HttpServlet {
         // Determine which URL pattern was used
         String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
-
-        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
+        String json;
+        
+        if (success) {
+            json = "MESSAGE: " + message.replace("\"", "\\\"");
+        } else {
+            json = "ERROR: " + message.replace("\"", "\\\"");
+        }
+        
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
         if (servletPath.contains("/manager/")) {
             response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
@@ -86,7 +92,7 @@ public class EditItemsServlet extends HttpServlet {
         double price;
         try {
             price = Double.parseDouble(request.getParameter("price"));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ex) {
             sendJsonResponse(request, response, false, "Price must be a valid number.");
             return;
         }
@@ -99,7 +105,7 @@ public class EditItemsServlet extends HttpServlet {
         int stockQuantity;
         try {
             stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ex) {
             sendJsonResponse(request, response, false, "Stock quantity must be a valid number.");
             return;
         }
@@ -147,7 +153,9 @@ public class EditItemsServlet extends HttpServlet {
                     return;
                 }
             }
-
+            
+            // Do the same thing in AddItemsServlet
+            // Used for saving new item image into the correct folder
             Set<String> allowedExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".webp", ".svg"));
             Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList(
                     "image/jpeg",
@@ -189,7 +197,6 @@ public class EditItemsServlet extends HttpServlet {
 
         try {
             itemDAO.update(item);
-
             sendJsonResponse(request, response, true, "Item updated successfully.");
         } catch (IOException ex) {
             sendJsonResponse(request, response, true, "Item failed to update.");

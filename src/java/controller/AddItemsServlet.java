@@ -2,7 +2,6 @@
  *
  * @author herman
  */
-
 package controller;
 
 import javax.servlet.ServletException;
@@ -39,13 +38,18 @@ public class AddItemsServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-        
+
         String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
-
-        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
+        String json;
+        
+        if (success) {
+            json = "MESSAGE: " + message.replace("\"", "\\\"");
+        } else {
+            json = "ERROR: " + message.replace("\"", "\\\"");
+        }
+        
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-
         if (servletPath.contains("/manager/")) {
             response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
         } else if (servletPath.contains("/staff/")) {
@@ -71,16 +75,18 @@ public class AddItemsServlet extends HttpServlet {
             return;
         }
 
-        String description = request.getParameter("description");
         // Validate description length (if provided)
-        if (description != null && description.length() > 1000) {
-            sendJsonResponse(request, response, false, "Description must be less than 1000 characters.");
+        String description = request.getParameter("description");
+        
+        if (description != null && description.length() > 2888) {
+            sendJsonResponse(request, response, false, "Description must be less than 2888 characters.");
             return;
         }
-
+        
+        // Validate numeric fields
         double price = Double.parseDouble(request.getParameter("price"));
         int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
-        // Validate numeric fields
+        
         if (price < 0) {
             sendJsonResponse(request, response, false, "Price cannot be negative.");
             return;
@@ -90,7 +96,9 @@ public class AddItemsServlet extends HttpServlet {
             return;
         }
 
+        // Validate custom category
         String category = request.getParameter("category");
+        
         if ("Others".equals(category)) {
             String customCategory = request.getParameter("customCategory");
             if (customCategory != null && !customCategory.trim().isEmpty()) {
@@ -100,7 +108,8 @@ public class AddItemsServlet extends HttpServlet {
                 return;
             }
         }
-
+        
+        // Validate image upload
         Part imagePart = request.getPart("image");
         String imageUrl = null;
         Set<String> allowedExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".webp", ".svg"));
@@ -111,35 +120,35 @@ public class AddItemsServlet extends HttpServlet {
                 // Retrieve and sanitize the file name
                 String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
                 String lowerFileName = originalFileName.toLowerCase();
+                
+                // Validate file type using allowed extensions
+                boolean validExtension = allowedExtensions.stream().anyMatch(lowerFileName::endsWith);
+                if (!validExtension) {
+                    sendJsonResponse(request, response, false, "Unsupported file extension for file: " + originalFileName + ". Only supported .jpg, .jpeg, .png, .webp, .svg");
+                    return;
+                }
+                
+                // Validate file type using allowed MIME types
                 String mimeType = imagePart.getContentType();
-
-                // Validate file type using allowed MIME types and extensions
                 if (!allowedMimeTypes.contains(mimeType)) {
                     sendJsonResponse(request, response, false, "Unsupported MIME Type: " + mimeType + ". Only supported image/jpeg, image/png, image/webp, image/svg+xml");
                     return;
                 }
 
-                boolean validExtension = allowedExtensions.stream()
-                        .anyMatch(lowerFileName::endsWith);
-
-                if (!validExtension) {
-                    sendJsonResponse(request, response, false, "Unsupported file extension for file: " + originalFileName + ". Only supported .jpg, .jpeg, .png, .webp, .svg");
-                    return;
-                }
-
-                // Get extension
+                // Get image extension
                 String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 
                 // Generate unique filename using UUID
                 String uniqueFileName = UUID.randomUUID().toString() + extension;
 
-                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
+                // Get the deployed path (e.g C:\NetBeans\HarveyHerman\build\web)
                 String deployedPath = getServletContext().getRealPath("");
 
                 // Go up two directories to reach the project root
                 File deployedDir = new File(deployedPath);
-
-                File projectRoot = deployedDir.getParentFile().getParentFile(); // Back to C:\NetBeans\HarveyHerman
+                
+                // Back to C:\NetBeans\HarveyHerman
+                File projectRoot = deployedDir.getParentFile().getParentFile(); 
 
                 // Now build path to web/assets/images
                 File targetImageDir = new File(projectRoot, "web/assets/images");
@@ -163,12 +172,12 @@ public class AddItemsServlet extends HttpServlet {
 
                 // Set the relative path for storing in the database
                 imageUrl = "images/" + uniqueFileName;
-            } catch (IOException e) {
-                sendJsonResponse(request, response, false, "Item's image failed to upload.");
+            } catch (IOException ex) {
+                sendJsonResponse(request, response, false, "Item image failed to upload.");
                 return;
             }
         }
-        
+
         try {
             Item item = new Item();
             item.setItemId(null);
@@ -180,9 +189,9 @@ public class AddItemsServlet extends HttpServlet {
             item.setImageUrl(imageUrl);
 
             itemDAO.create(item);
-            
+
             sendJsonResponse(request, response, true, "Item added successfully.");
-        } catch (IOException e) {
+        } catch (IOException ex) {
             sendJsonResponse(request, response, false, "Item failed to add.");
         }
     }

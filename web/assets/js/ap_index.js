@@ -7,11 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var pageMap = {
         "ap_index.jsp": "dashboard-link",
         "ap_item.jsp": "item-management-link",
-        "apaddproduct.jsp": "add-product-link",
-        "apcategorylist.jsp": "category-list-link",
-        "aporderlist.jsp": "order-list-link",
-        "aporderhistory.jsp": "order-history-link",
-        "apmanagereviews.jsp": "manage-reviews-link"
+        "ap_order.jsp": "order-management-link",
+        "ap_user.jsp": "user-management-link"
     };
 
     // Highlight the active link if mapping exists.

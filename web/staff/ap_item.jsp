@@ -196,7 +196,7 @@
                 <!-- /Dashboard Overview Section -->
 
                 <!-- Filter Section -->
-                <form method="POST" action="<%= request.getContextPath()%>/staff/ap_item.jsp">
+                <form method="post" action="<%= request.getContextPath()%>/staff/ap_item.jsp">
                     <div class="filter-section">
                         <!-- Row 1 -->
                         <div class="row mb-3">

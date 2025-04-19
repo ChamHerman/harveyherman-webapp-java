@@ -32,17 +32,19 @@ public class DeleteItemsServlet extends HttpServlet {
         response.setDateHeader("Expires", 0);
         
         String contextPath = request.getContextPath();
-        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
+        String json;
+        
+        if (success) {
+            json = "MESSAGE: " + message.replace("\"", "\\\"");
+        } else {
+            json = "ERROR: " + message.replace("\"", "\\\"");
+        }
+        
+        
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
         response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
     }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doPost(request, response);
-    }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -67,14 +69,14 @@ public class DeleteItemsServlet extends HttpServlet {
                 // Construct the file reference
                 File imageFile = new File(targetImageDir, fileName);
                 if (imageFile.exists() && !imageFile.delete()) {
-                    throw new ServletException("Failed to delete image file: " + imageFile.getAbsolutePath());
+                    throw new ServletException("Failed to delete image file. Path: " + imageFile.getAbsolutePath());
                 }
             }
+            // Soft delete item
             itemDAO.delete(itemId);
-           
             sendJsonResponse(request, response, true, "Item deleted successfully.");
         } catch (IOException | ServletException ex) {
-            sendJsonResponse(request, response, false, "Item failed to delete: " + ex.getMessage());
+            sendJsonResponse(request, response, false, "Item failed to delete. Exception: " + ex.getMessage());
         }
     }
 }

@@ -34,11 +34,6 @@ public class ItemDetailsServlet extends HttpServlet {
             request.setAttribute("error", "Item not found.");
         } else {
             request.setAttribute("item", item);
-
-            // Load reviews
-            // ReviewDAO reviewDAO = new ReviewDAO();
-            // List<Object[]> reviews = reviewDAO.getReviewsByItemId(itemId);
-            // request.setAttribute("reviews", reviews);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user/itemDetails.jsp");

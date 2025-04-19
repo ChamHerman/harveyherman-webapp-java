@@ -30,7 +30,7 @@
             } catch (NamingException ne) {
                 ne.printStackTrace();
             }
-            List<UserData> allUsers = userDataDAO.findAll();
+            List<UserData> allUsers = userDataDAO.findAllUsers();
 
             // Filtering, sorting, pagination logic (similar to ap_item.jsp)
             String paramSearch = request.getParameter("search");

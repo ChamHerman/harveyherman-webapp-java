@@ -3,9 +3,6 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.ItemDAO;
 import model.Item;
 
-@WebServlet("/item")
+@WebServlet("/user/item")
 public class ItemServlet extends HttpServlet {
 
     @EJB
@@ -37,7 +34,7 @@ public class ItemServlet extends HttpServlet {
         request.setAttribute("items", filteredItems);
         request.setAttribute("categories", allCategories);
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("item.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/item.jsp");
         dispatcher.forward(request, response);
     }
 }
