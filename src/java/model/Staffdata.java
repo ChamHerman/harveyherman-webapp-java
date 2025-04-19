@@ -84,9 +84,6 @@ public class Staffdata implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
     @OneToOne(mappedBy = "staffId")
     private Stafflogin stafflogin;
 
@@ -208,14 +205,6 @@ public class Staffdata implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
     }
 
 }

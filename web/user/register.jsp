@@ -12,7 +12,7 @@
             <%= request.getAttribute("errorMessage")%>
         </div>
         <% }%>
-        <form action="<%= request.getContextPath()%>/user/UserRegisterServlet" method="post" autocomplete="off">
+        <form action="UserRegisterServlet" method="post" autocomplete="off">
             <input type="text" name="fullname" placeholder="Full Name" autocomplete="off" required>
             <input type="email" name="email" placeholder="Email" autocomplete="off" required>
             <input type="text" name="contact_number" placeholder="Contact Number" autocomplete="off" required>

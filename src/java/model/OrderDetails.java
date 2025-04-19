@@ -147,12 +147,4 @@ public class OrderDetails implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
-
 }

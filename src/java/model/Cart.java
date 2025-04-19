@@ -42,6 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cart.findByDbstatus", query = "SELECT c FROM Cart c WHERE c.dbstatus = :dbstatus")})
 public class Cart implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -51,7 +53,7 @@ public class Cart implements Serializable {
     @Column(name = "dbstatus")
     private String dbstatus;
 
-    private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
@@ -64,9 +66,6 @@ public class Cart implements Serializable {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData userId;
@@ -92,7 +91,6 @@ public class Cart implements Serializable {
     public void setCartId(String cartId) {
         this.cartId = cartId;
     }
-
 
     public Date getCreatedDate() {
         return createdDate;
@@ -168,12 +166,4 @@ public class Cart implements Serializable {
         this.total = total;
     }
 
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
-    
 }

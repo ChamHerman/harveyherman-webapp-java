@@ -43,6 +43,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findByDbstatus", query = "SELECT o FROM Orders o WHERE o.dbstatus = :dbstatus")})
 public class Orders implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -60,7 +62,6 @@ public class Orders implements Serializable {
     @Column(name = "dbstatus")
     private String dbstatus;
 
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -70,9 +71,6 @@ public class Orders implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<Delivery> deliveryList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
@@ -179,14 +177,6 @@ public class Orders implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
     }
 
     @XmlTransient

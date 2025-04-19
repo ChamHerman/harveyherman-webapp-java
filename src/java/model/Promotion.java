@@ -82,9 +82,6 @@ public class Promotion implements Serializable {
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
     @OneToMany(mappedBy = "promotionId")
     private List<Orders> ordersList;
 
@@ -206,14 +203,6 @@ public class Promotion implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
     }
 
 }

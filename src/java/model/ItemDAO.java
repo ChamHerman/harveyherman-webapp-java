@@ -127,25 +127,25 @@ public class ItemDAO {
 
     // Get all distinct item categories.
     public List<String> getAllCategories() {
-        TypedQuery<String> query = em.createQuery("SELECT DISTINCT i.category FROM Item i", String.class);
+        TypedQuery<String> query = em.createQuery("SELECT DISTINCT i.category FROM Item i WHERE i.dbstatus = 'active'", String.class);
         return query.getResultList();
     }
 
     // Get total item count.
     public long getTotalItemCount() {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(i) FROM Item i", Long.class);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(i) FROM Item i WHERE i.dbstatus = 'active'", Long.class);
         return query.getSingleResult();
     }
 
     // Get the count of items that are in stock.
     public long getInStockItemCount() {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(i) FROM Item i WHERE i.stockQuantity > 0", Long.class);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(i) FROM Item i WHERE i.stockQuantity > 0 AND i.dbstatus = 'active'", Long.class);
         return query.getSingleResult();
     }
 
     // Get distinct category count.
     public long getCategoryCount() {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(DISTINCT i.category) FROM Item i", Long.class);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(DISTINCT i.category) FROM Item i WHERE i.dbstatus = 'active'", Long.class);
         return query.getSingleResult();
     }
 

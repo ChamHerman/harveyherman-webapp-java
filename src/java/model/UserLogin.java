@@ -73,9 +73,6 @@ public class UserLogin implements Serializable {
     @Column(name = "last_login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OneToOne
     private UserData userId;
@@ -170,14 +167,6 @@ public class UserLogin implements Serializable {
         this.answer = answer;
     }
 
-    public String getChallengeQuestion() {
-        return challengeQuestion;
-    }
-
-    public void setChallengeQuestion(String challengeQuestion) {
-        this.challengeQuestion = challengeQuestion;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -192,14 +181,6 @@ public class UserLogin implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
     }
     
 }

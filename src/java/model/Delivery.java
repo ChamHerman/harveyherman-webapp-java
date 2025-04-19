@@ -68,9 +68,6 @@ public class Delivery implements Serializable {
     @Column(name = "delivered_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredDate;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -133,14 +130,6 @@ public class Delivery implements Serializable {
 
     public void setDeliveredDate(Date deliveredDate) {
         this.deliveredDate = deliveredDate;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
     }
 
     public Orders getOrderId() {
