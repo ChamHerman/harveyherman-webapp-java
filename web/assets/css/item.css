@@ -184,20 +184,33 @@
 }
 .shop-hero .shop-hero-anim {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 220px;
-    opacity: 0.18;
+    right: 40px;
+    width: 60%;
+    max-width: 300px;
+    min-width: 300px;
+    height: auto;
+    opacity: 0.20;
     z-index: 1;
     animation: shopFloat 4s ease-in-out infinite alternate;
+    pointer-events: none;
 }
 @keyframes shopFadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
 @keyframes shopFloat {
-    from { transform: translateY(0); }
-    to { transform: translateY(-18px); }
+    from { transform: translateY(-80px); }
+    to { transform: translateY(-100px); }
+}
+@media (max-width: 991px) {
+    .shop-hero .shop-hero-anim {
+        right: 10px;
+        top: 60%;
+        width: 55%;
+        max-width: 180px;
+        min-width: 90px;
+        opacity: 0.13;
+    }
 }
 
 /* SIDEBAR FILTER */
