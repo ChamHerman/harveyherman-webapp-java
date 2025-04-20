@@ -29,31 +29,30 @@ public class DeleteItemsServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-        
+
         String contextPath = request.getContextPath();
         String json;
-        
+
         if (success) {
             json = "MESSAGE: " + message.replace("\"", "\\\"");
         } else {
             json = "ERROR: " + message.replace("\"", "\\\"");
         }
-        
-        
+
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
         response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String itemId = request.getParameter("itemId");
-        if (itemId == null || itemId.trim().isEmpty()) {
-            sendJsonResponse(request, response, false, "Item ID not provided.");
-            return;
-        }
-
         try {
+            String itemId = request.getParameter("itemId");
+            if (itemId == null || itemId.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Item ID not provided.");
+                return;
+            }
+
             Item item = itemDAO.getItemById(itemId);
             if (item != null && item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
                 // Extract filename from the stored imageUrl (assumes format: images/filename)
@@ -74,7 +73,8 @@ public class DeleteItemsServlet extends HttpServlet {
             // Soft delete item
             itemDAO.delete(itemId);
             sendJsonResponse(request, response, true, "Item deleted successfully.");
-        } catch (IOException | ServletException ex) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             sendJsonResponse(request, response, false, "Item failed to delete. Exception: " + ex.getMessage());
         }
     }

@@ -42,13 +42,13 @@ public class AddItemsServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
         String json;
-        
+
         if (success) {
             json = "MESSAGE: " + message.replace("\"", "\\\"");
         } else {
             json = "ERROR: " + message.replace("\"", "\\\"");
         }
-        
+
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
         if (servletPath.contains("/manager/")) {
             response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
@@ -61,124 +61,144 @@ public class AddItemsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-
-        String itemName = request.getParameter("itemName");
-        // Validate item name
-        if (itemName == null || itemName.trim().isEmpty()) {
-            sendJsonResponse(request, response, false, "Item name is required.");
-            return;
-        }
-
-        if (itemName.length() > 100) {
-            sendJsonResponse(request, response, false, "Item name must be less than 100 characters.");
-            return;
-        }
-
-        // Validate description length (if provided)
-        String description = request.getParameter("description");
-        
-        if (description != null && description.length() > 2888) {
-            sendJsonResponse(request, response, false, "Description must be less than 2888 characters.");
-            return;
-        }
-        
-        // Validate numeric fields
-        double price = Double.parseDouble(request.getParameter("price"));
-        int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
-        
-        if (price < 0) {
-            sendJsonResponse(request, response, false, "Price cannot be negative.");
-            return;
-        }
-        if (stockQuantity < 0) {
-            sendJsonResponse(request, response, false, "Stock quantity cannot be negative.");
-            return;
-        }
-
-        // Validate custom category
-        String category = request.getParameter("category");
-        
-        if ("Others".equals(category)) {
-            String customCategory = request.getParameter("customCategory");
-            if (customCategory != null && !customCategory.trim().isEmpty()) {
-                category = customCategory.trim();
-            } else {
-                sendJsonResponse(request, response, false, "Custom category not provided.");
-                return;
-            }
-        }
-        
-        // Validate image upload
-        Part imagePart = request.getPart("image");
-        String imageUrl = null;
-        Set<String> allowedExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".webp", ".svg"));
-        Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList("image/jpeg", "image/png", "image/webp", "image/svg+xml"));
-
-        if (imagePart != null && imagePart.getSize() > 0) {
-            try {
-                // Retrieve and sanitize the file name
-                String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
-                String lowerFileName = originalFileName.toLowerCase();
-                
-                // Validate file type using allowed extensions
-                boolean validExtension = allowedExtensions.stream().anyMatch(lowerFileName::endsWith);
-                if (!validExtension) {
-                    sendJsonResponse(request, response, false, "Unsupported file extension for file: " + originalFileName + ". Only supported .jpg, .jpeg, .png, .webp, .svg");
-                    return;
-                }
-                
-                // Validate file type using allowed MIME types
-                String mimeType = imagePart.getContentType();
-                if (!allowedMimeTypes.contains(mimeType)) {
-                    sendJsonResponse(request, response, false, "Unsupported MIME Type: " + mimeType + ". Only supported image/jpeg, image/png, image/webp, image/svg+xml");
-                    return;
-                }
-
-                // Get image extension
-                String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-
-                // Generate unique filename using UUID
-                String uniqueFileName = UUID.randomUUID().toString() + extension;
-
-                // Get the deployed path (e.g C:\NetBeans\HarveyHerman\build\web)
-                String deployedPath = getServletContext().getRealPath("");
-
-                // Go up two directories to reach the project root
-                File deployedDir = new File(deployedPath);
-                
-                // Back to C:\NetBeans\HarveyHerman
-                File projectRoot = deployedDir.getParentFile().getParentFile(); 
-
-                // Now build path to web/assets/images
-                File targetImageDir = new File(projectRoot, "web/assets/images");
-
-                // Ensure directory exists
-                if (!targetImageDir.exists()) {
-                    targetImageDir.mkdirs();
-                }
-
-                // Final file path
-                File fileToSave = new File(targetImageDir, uniqueFileName);
-
-                // Copy file data with a buffered stream
-                try (InputStream input = imagePart.getInputStream(); OutputStream out = new FileOutputStream(fileToSave)) {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = input.read(buffer)) != -1) {
-                        out.write(buffer, 0, bytesRead);
-                    }
-                }
-
-                // Set the relative path for storing in the database
-                imageUrl = "images/" + uniqueFileName;
-            } catch (IOException ex) {
-                sendJsonResponse(request, response, false, "Item image failed to upload.");
-                return;
-            }
-        }
-
         try {
+            request.setCharacterEncoding("UTF-8");
+
+            String itemName = request.getParameter("itemName");
+            // Validate item name
+            if (itemName == null || itemName.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Item name is required.");
+                return;
+            }
+
+            if (itemName.length() > 100) {
+                sendJsonResponse(request, response, false, "Item name must be less than or equal 100 characters.");
+                return;
+            }
+
+            // Validate description length (if provided)
+            String description = request.getParameter("description");
+
+            if (description != null && description.length() > 1000) {
+                sendJsonResponse(request, response, false, "Description must be less than or equal 1000 characters.");
+                return;
+            }
+
+            // Validate numeric fields
+            double price;
+            try {
+                price = Double.parseDouble(request.getParameter("price"));
+            } catch (NumberFormatException ex) {
+                sendJsonResponse(request, response, false, "Price must be a valid number.");
+                return;
+            }
+            if (price < 0.01) {
+                sendJsonResponse(request, response, false, "Price must be 0.01 or above.");
+                return;
+            }
+
+            int stockQuantity;
+            try {
+                stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
+            } catch (NumberFormatException ex) {
+                sendJsonResponse(request, response, false, "Stock quantity must be a valid number.");
+                return;
+            }
+            if (stockQuantity < 0) {
+                sendJsonResponse(request, response, false, "Stock quantity must be 0 or above.");
+                return;
+            }
+
+            // Validate custom category
+            String category = request.getParameter("category");
+            if (category == null || category.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Category is required.");
+                return;
+            }
+
+            if ("Others".equals(category)) {
+                String customCategory = request.getParameter("customCategory");
+                if (customCategory != null && !customCategory.trim().isEmpty()) {
+                    if (customCategory.trim().length() > 50) {
+                        sendJsonResponse(request, response, false, "Custom category must be less than or equal to 50 characters.");
+                        return;
+                    }
+                    category = customCategory.trim();
+                } else {
+                    sendJsonResponse(request, response, false, "Custom category not provided.");
+                    return;
+                }
+            }
+
+            // Validate image upload
+            Part imagePart = request.getPart("image");
+            String imageUrl = null;
+            Set<String> allowedExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".webp", ".svg"));
+            Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList("image/jpeg", "image/png", "image/webp", "image/svg+xml"));
+
+            if (imagePart != null && imagePart.getSize() > 0) {
+                try {
+                    // Retrieve and sanitize the file name
+                    String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+                    String lowerFileName = originalFileName.toLowerCase();
+
+                    // Validate file type using allowed extensions
+                    boolean validExtension = allowedExtensions.stream().anyMatch(lowerFileName::endsWith);
+                    if (!validExtension) {
+                        sendJsonResponse(request, response, false, "Unsupported file extension for file: " + originalFileName + ". Only supported .jpg, .jpeg, .png, .webp, .svg");
+                        return;
+                    }
+
+                    // Validate file type using allowed MIME types
+                    String mimeType = imagePart.getContentType();
+                    if (!allowedMimeTypes.contains(mimeType)) {
+                        sendJsonResponse(request, response, false, "Unsupported MIME Type: " + mimeType + ". Only supported image/jpeg, image/png, image/webp, image/svg+xml");
+                        return;
+                    }
+
+                    // Get image extension
+                    String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+                    // Generate unique filename using UUID
+                    String uniqueFileName = UUID.randomUUID().toString() + extension;
+
+                    // Get the deployed path (e.g C:\NetBeans\HarveyHerman\build\web)
+                    String deployedPath = getServletContext().getRealPath("");
+
+                    // Go up two directories to reach the project root
+                    File deployedDir = new File(deployedPath);
+
+                    // Back to C:\NetBeans\HarveyHerman
+                    File projectRoot = deployedDir.getParentFile().getParentFile();
+
+                    // Now build path to web/assets/images
+                    File targetImageDir = new File(projectRoot, "web/assets/images");
+
+                    // Ensure directory exists
+                    if (!targetImageDir.exists()) {
+                        targetImageDir.mkdirs();
+                    }
+
+                    // Final file path
+                    File fileToSave = new File(targetImageDir, uniqueFileName);
+
+                    // Copy file data with a buffered stream
+                    try (InputStream input = imagePart.getInputStream(); OutputStream out = new FileOutputStream(fileToSave)) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = input.read(buffer)) != -1) {
+                            out.write(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    // Set the relative path for storing in the database
+                    imageUrl = "images/" + uniqueFileName;
+                } catch (IOException ex) {
+                    sendJsonResponse(request, response, false, "Item image failed to upload.");
+                    return;
+                }
+            }
+
             Item item = new Item();
             item.setItemId(null);
             item.setName(itemName);
@@ -191,8 +211,9 @@ public class AddItemsServlet extends HttpServlet {
             itemDAO.create(item);
 
             sendJsonResponse(request, response, true, "Item added successfully.");
-        } catch (IOException ex) {
-            sendJsonResponse(request, response, false, "Item failed to add.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            sendJsonResponse(request, response, false, "Item failed to add. Exception: " + ex.getMessage());
         }
     }
 

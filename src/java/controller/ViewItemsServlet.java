@@ -64,13 +64,13 @@ public class ViewItemsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String itemId = request.getParameter("itemId");
-        if (itemId == null || itemId.trim().isEmpty()) {
-            sendJsonResponse(request, response, false, "Item ID not provided.", null);
-            return;
-        }
-
         try {
+            String itemId = request.getParameter("itemId");
+            if (itemId == null || itemId.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Item ID not provided.", null);
+                return;
+            }
+
             Item item = itemDAO.getItemById(itemId);
             if (item == null) {
                 sendJsonResponse(request, response, false, "Item not found.", null);
@@ -96,8 +96,9 @@ public class ViewItemsServlet extends HttpServlet {
             sb.append("\"imageUrl\": \"").append(item.getImageUrl() != null ? item.getImageUrl().replace("\"", "\\\"") : "").append("\"");
             sb.append("}");
             sendJsonResponse(request, response, true, null, sb.toString());
-        } catch (IOException e) {
-            sendJsonResponse(request, response, false, "Error retrieving item: " + e.getMessage(), null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            sendJsonResponse(request, response, false, "Error retrieving item: " + ex.getMessage(), null);
         }
     }
 

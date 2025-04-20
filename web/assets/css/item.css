@@ -155,4 +155,83 @@
     .item-info-section {
         padding: 0;
     }
+}
+
+/* --- Shop Page (item.jsp) Custom Styles --- */
+
+/* HERO SECTION ENHANCEMENT */
+.shop-hero {
+    background: linear-gradient(120deg, #3b5d50 60%, #f9bf29 100%);
+    padding: 5rem 0 3rem 0;
+    position: relative;
+    overflow: hidden;
+    margin-top: 120px;
+}
+.shop-hero h1 {
+    color: #fff !important;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.7rem;
+}
+.shop-hero .shop-hero-words {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+    opacity: 0.92;
+    animation: shopFadeInUp 1.2s cubic-bezier(.23,1.01,.32,1) 0.2s both;
+}
+.shop-hero .shop-hero-anim {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 220px;
+    opacity: 0.18;
+    z-index: 1;
+    animation: shopFloat 4s ease-in-out infinite alternate;
+}
+@keyframes shopFadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shopFloat {
+    from { transform: translateY(0); }
+    to { transform: translateY(-18px); }
+}
+
+/* SIDEBAR FILTER */
+.shop-sidebar-card {
+    border-radius: 16px;
+    box-shadow: 0 2px 18px rgba(59,93,80,0.07);
+    background: #fff;
+    border: none;
+    margin-bottom: 2rem;
+}
+.shop-sidebar-card h5 {
+    color: #3b5d50;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+}
+.shop-sidebar-card .form-check-label {
+    font-size: 1.05rem;
+    color: #495057;
+}
+.shop-sidebar-card .form-check-input:checked {
+    background-color: #3b5d50;
+    border-color: #3b5d50;
+}
+.shop-sidebar-card .btn {
+    border-radius: 8px;
+}
+
+/* REMOVE PRODUCT GRID/CARD CUSTOM STYLES TO USE DEFAULT */
+.shop-product-grid,
+.shop-product-card,
+.shop-product-img,
+.shop-product-title,
+.shop-product-price,
+.shop-product-stock,
+.shop-no-items {
+    all: unset;
 } 

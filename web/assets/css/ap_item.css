@@ -101,13 +101,24 @@ body {
 }
 
 .item-table td:first-child,
-.item-table td:last-child {
+.item-table td:last-child,
+.item-table td:nth-child(2) {
     text-align: center;
 }
 
 .item-table th:first-child,
-.item-table th:last-child {
+.item-table th:last-child ,
+.item-table th:nth-child(2) {
     text-align: center;
+}
+
+.item-table td:nth-child(3),
+.item-table th:nth-child(3) {
+    max-width: 280px;
+    min-width: 120px;
+    word-break: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 /* Modal Customization */

@@ -5,21 +5,21 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
 
         <%
-            // Loads Item (object) from Servlet
             Item item = (Item) request.getAttribute("item");
         %>
         <title><%= (item != null) ? item.getName() + " - HarveyHerman" : "Item Not Found - HarveyHerman"%></title>
 
 
-        <!-- Bootstrap CSS -->
+        <!-- Bootstrap Template CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
               rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/item.css" rel="stylesheet">
     </head>
     <body>
@@ -53,10 +53,10 @@
                     <!-- Price and Stock Status -->
                     <div class="item-price">RM <%=String.format("%.2f", item.getPrice())%></div>
                     <% if (item.getStockQuantity() > 0) { %>
-                        <span class="badge bg-success item-stock-badge">In Stock</span>
+                    <span class="badge bg-success item-stock-badge">In Stock</span>
                     <% } else { %>
-                        <span class="badge bg-danger item-stock-badge">Out of Stock</span>
-                    <% } %>
+                    <span class="badge bg-danger item-stock-badge">Out of Stock</span>
+                    <% }%>
 
                     <!-- Description -->
                     <div class="item-description"><%=item.getDescription()%></div>

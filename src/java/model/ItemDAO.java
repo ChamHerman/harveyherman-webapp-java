@@ -7,7 +7,6 @@ package model;
 import controller.CustomIdGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -154,54 +153,6 @@ public class ItemDAO {
     public long getCategoryCount() {
         TypedQuery<Long> query = em.createQuery("SELECT COUNT(DISTINCT i.category) FROM Item i WHERE i.dbstatus = 'active'", Long.class);
         return query.getSingleResult();
-    }
-
-    // Advanced filter: search, categories, stock, price range, sort
-    public List<Item> getFilteredItemsAdvanced(String search, String[] categories, String stock, Double minPrice, Double maxPrice, String sortBy, String sortOrder) {
-        List<Item> items = getAll();
-        // Filter by search
-        if (search != null && !search.isEmpty()) {
-            String searchLower = search.toLowerCase();
-            items.removeIf(i -> i.getName() == null || !i.getName().toLowerCase().contains(searchLower));
-        }
-        // Filter by categories
-        if (categories != null && categories.length > 0) {
-            List<String> categoryList = Arrays.asList(categories);
-            items.removeIf(i -> i.getCategory() == null || !categoryList.contains(i.getCategory()));
-        }
-        // Filter by stock
-        if (stock != null && !stock.equals("All")) {
-            if (stock.equals("InStock")) {
-                items.removeIf(i -> i.getStockQuantity() <= 0);
-            } else if (stock.equals("OutOfStock")) {
-                items.removeIf(i -> i.getStockQuantity() > 0);
-            }
-        }
-        // Filter by price range
-        if (minPrice != null) {
-            items.removeIf(i -> i.getPrice() == null || i.getPrice().doubleValue() < minPrice);
-        }
-        if (maxPrice != null) {
-            items.removeIf(i -> i.getPrice() == null || i.getPrice().doubleValue() > maxPrice);
-        }
-        // Sort
-        if (sortBy != null) {
-            Comparator<Item> comparator = null;
-            if ("name".equals(sortBy)) {
-                comparator = Comparator.comparing(Item::getName, Comparator.nullsLast(String::compareToIgnoreCase));
-            } else if ("price".equals(sortBy)) {
-                comparator = Comparator.comparing(Item::getPrice, Comparator.nullsLast(Comparator.naturalOrder()));
-            } else { // createdDate or default
-                comparator = Comparator.comparing(Item::getCreatedDate, Comparator.nullsLast(Comparator.naturalOrder()));
-            }
-            if (comparator != null) {
-                if ("desc".equals(sortOrder)) {
-                    comparator = comparator.reversed();
-                }
-                items.sort(comparator);
-            }
-        }
-        return items;
     }
 
 }

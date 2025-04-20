@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     // Get the current page filename from the URL and remove any query parameters.
     var path = window.location.pathname.split("/").pop().split("?")[0];

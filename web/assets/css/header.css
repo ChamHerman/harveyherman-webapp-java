@@ -1,0 +1,43 @@
+/* Header scroll animation styles */
+#main-header {
+    transition: top 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.25s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    box-shadow: none;
+    background: #3b5d50 !important;
+}
+#main-header.header-hidden {
+    top: -120px; /* Hide header upwards */
+}
+#main-header.header-visible {
+    top: 0;
+    box-shadow: 0 4px 18px rgba(59,93,80,0.10);
+}
+
+/* Add space for fixed header so content doesn't jump */
+body.has-fixed-header {
+    padding-top: 120px;
+}
+
+.hero {
+    margin-top: 120px;
+}
+
+@media (max-width: 991px) {
+    .hero {
+        margin-top: 100px;
+    }
+    #main-header {
+        top: 0;
+        position: fixed;
+    }
+    #main-header.header-hidden {
+        top: -100px;
+    }
+    body.has-fixed-header {
+        padding-top: 100px;
+    }
+}

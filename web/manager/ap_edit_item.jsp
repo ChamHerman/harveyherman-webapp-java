@@ -29,7 +29,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Item - HarveyHerman</title>
+        <title>Edit Item - Manager</title>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="<%= request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
@@ -50,9 +50,9 @@
                 <%
                 } else {
                     // Define the default categories
-                    List<String> defaultCategories = new ArrayList<String>(Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
-                            "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning", "Bathroom Essentials", "Furniture & Décor"));
-                    List<String> mergedCategories = new ArrayList<String>(defaultCategories);
+                    List<String> defaultCategories = new ArrayList<>(Arrays.asList("Kitchen Appliances", "Cooking & Bakeware", "Refrigeration & Cooling",
+                            "Laundry & Cleaning", "Lighting & Electrical", "Heating & Air Conditioning", "Bathroom Essentials", "Furniture & Decor"));
+                    List<String> mergedCategories = new ArrayList<>(defaultCategories);
                     // Merge the two lists, excluding duplicates and "Others"
                     if (allCategories != null) {
                         for (String cat : allCategories) {
@@ -86,18 +86,18 @@
                     </div>
                     <!-- Item Name -->
                     <div class="mb-3">
-                        <label class="form-label">Item Name</label>
+                        <label class="form-label">Item Name <span class="text-muted">(Max Characters: 100)</span></label>
                         <input type="text" class="form-control" name="itemName" value="<%= item.getName()%>" autocomplete="off" required>
                     </div>
                     <!-- Description -->
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Description <span class="text-muted">(Max Characters: 1000)</span></label>
                         <textarea class="form-control" name="description" rows="3"><%= item.getDescription() != null ? item.getDescription() : ""%></textarea>
                     </div>
                     <!-- Price -->
                     <div class="mb-3">
-                        <label class="form-label">Price <span class="text-muted">(Min: 0 | Max: 9999999)</span></label>
-                        <input type="number" step="0.01" min="0" max="9999999" class="form-control" id="price" name="price" value="<%= item.getPrice()%>" placeholder="Enter price (1.00 - 9999999.00)" required>
+                        <label class="form-label">Price <span class="text-muted">(Min: 0.01 | Max: 9999999.99)</span></label>
+                        <input type="number" step="0.01" min="0.01" max="9999999.99" class="form-control" id="price" name="price" value="<%= item.getPrice()%>" placeholder="Enter price (0.01 - 9999999.99)" required>
                     </div>
                     <!-- Stock Quantity -->
                     <div class="mb-3">
@@ -123,7 +123,7 @@
                     </div>
                     <!-- Custom Category -->
                     <div class="mb-3" id="customCategoryDiv" style="display: <%= othersSelected.equals("selected") ? "block" : "none"%>;">
-                        <label class="form-label">Custom Category</label>
+                        <label class="form-label">Custom Category <span class="text-muted">(Max Characters: 50)</span></label>
                         <input type="text" class="form-control" id="customCategory" name="customCategory" value="<%= othersSelected.equals("selected") ? item.getCategory() : ""%>" autocomplete="off">
                     </div>
                     <!-- Buttons -->

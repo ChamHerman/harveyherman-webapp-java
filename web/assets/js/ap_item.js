@@ -110,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     addItemImagePreview.src = e.target.result;
                 };
                 reader.readAsDataURL(this.files[0]);
+            } else {
+                // If no file selected (user canceled), reset to default image
+                addItemImagePreview.src = addItemImagePreview.getAttribute('data-default-src') || (contextPath + '/assets/images/default.svg');
             }
         });
     }
@@ -185,16 +188,29 @@ function toggleCustomCategory() {
 function validateAddItemForm() {
     var price = parseFloat(document.getElementById("price").value);
     var stockQuantity = parseInt(document.getElementById("stockQuantity").value, 10);
-    var maxPrice = 9999999.00;
-    var maxStock = 9999999;
 
-    if (isNaN(price) || price < 0) {
-        alert("Price must be 0 or above.");
+    // Character length validation
+    var itemName = document.querySelector('[name="itemName"]');
+    if (itemName && itemName.value.length > 100) {
+        alert("Item name must be less than or equal to 100 characters.");
         return false;
     }
+    var description = document.querySelector('[name="description"]');
+    if (description && description.value.length > 1000) {
+        alert("Description must be less than or equal to 1000 characters.");
+        return false;
+    }
+    var categorySelect = document.getElementById("category");
+    if (categorySelect.value === "Others") {
+        var customCategory = document.getElementById("customCategory");
+        if (customCategory && customCategory.value.trim().length > 50) {
+            alert("Custom category must be less than or equal to 50 characters.");
+            return false;
+        }
+    }
 
-    if (price > maxPrice) {
-        alert("Price must not exceed " + maxPrice + ".");
+    if (isNaN(price) || price < 0.01) {
+        alert("Price must be 0.01 or above.");
         return false;
     }
 
@@ -203,12 +219,6 @@ function validateAddItemForm() {
         return false;
     }
 
-    if (stockQuantity > maxStock) {
-        alert("Stock Quantity must not exceed " + maxStock + ".");
-        return false;
-    }
-
-    var categorySelect = document.getElementById("category");
     if (categorySelect.value === "" || (categorySelect.value === "Others" && document.getElementById("customCategory").value.trim() === "")) {
         alert("Please select a category or enter a custom category if 'Others' is selected.");
         return false;
@@ -230,16 +240,29 @@ function validateEditItemForm() {
     var stockElem = document.getElementById("stockQuantity");
     var price = parseFloat(priceElem.value);
     var stockQuantity = parseInt(stockElem.value, 10);
-    var maxPrice = 9999999.00;
-    var maxStock = 9999999;
 
-    if (isNaN(price) || price < 0) {
-        alert("Price must be 0 or above.");
+    // Character length validation
+    var itemName = document.querySelector('[name="itemName"]');
+    if (itemName && itemName.value.length > 100) {
+        alert("Item name must be less than or equal to 100 characters.");
         return false;
     }
+    var description = document.querySelector('[name="description"]');
+    if (description && description.value.length > 1000) {
+        alert("Description must be less than or equal to 1000 characters.");
+        return false;
+    }
+    var categorySelect = document.getElementById("category");
+    if (categorySelect.value === "Others") {
+        var customCategory = document.getElementById("customCategory");
+        if (customCategory && customCategory.value.trim().length > 50) {
+            alert("Custom category must be less than or equal to 50 characters.");
+            return false;
+        }
+    }
 
-    if (price > maxPrice) {
-        alert("Price must not exceed " + maxPrice + ".");
+    if (isNaN(price) || price < 0.01) {
+        alert("Price must be 0.01 or above.");
         return false;
     }
 
@@ -248,12 +271,6 @@ function validateEditItemForm() {
         return false;
     }
 
-    if (stockQuantity > maxStock) {
-        alert("Stock Quantity must not exceed " + maxStock + ".");
-        return false;
-    }
-
-    var categorySelect = document.getElementById("category");
     if (categorySelect.value === "" || (categorySelect.value === "Others" && document.getElementById("customCategory").value.trim() === "")) {
         alert("Please select a category or enter a custom category if 'Others' is selected.");
         return false;
