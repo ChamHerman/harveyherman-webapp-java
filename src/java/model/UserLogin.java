@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
 @Table(name = "userlogin")
@@ -31,23 +31,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "UserLogin.findAll", query = "SELECT u FROM UserLogin u"),
     @NamedQuery(name = "UserLogin.findByLoginId", query = "SELECT u FROM UserLogin u WHERE u.loginId = :loginId"),
+    @NamedQuery(name = "UserLogin.findByAnswer", query = "SELECT u FROM UserLogin u WHERE u.answer = :answer"),
+    @NamedQuery(name = "UserLogin.findByChallengeQuestion", query = "SELECT u FROM UserLogin u WHERE u.challengeQuestion = :challengeQuestion"),
     @NamedQuery(name = "UserLogin.findByUsername", query = "SELECT u FROM UserLogin u WHERE u.username = :username"),
     @NamedQuery(name = "UserLogin.findByPassword", query = "SELECT u FROM UserLogin u WHERE u.password = :password"),
     @NamedQuery(name = "UserLogin.findByLastLogin", query = "SELECT u FROM UserLogin u WHERE u.lastLogin = :lastLogin"),
-    @NamedQuery(name = "UserLogin.findByChallengeQuestion", query = "SELECT u FROM UserLogin u WHERE u.challengeQuestion = :challengeQuestion"),
-    @NamedQuery(name = "UserLogin.findByAnswer", query = "SELECT u FROM UserLogin u WHERE u.answer = :answer")})
+    @NamedQuery(name = "UserLogin.findByDbstatus", query = "SELECT u FROM UserLogin u WHERE u.dbstatus = :dbstatus")})
 public class UserLogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "login_id")
     private String loginId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
+    @Column(name = "answer")
+    private String answer;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "challenge_question")
+    private String challengeQuestion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "username")
     private String username;
     @Basic(optional = false)
@@ -58,16 +69,9 @@ public class UserLogin implements Serializable {
     @Column(name = "last_login")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "challenge_question")
-    private String challengeQuestion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "answer")
-    private String answer;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @OneToOne
     private UserData userId;
@@ -79,12 +83,12 @@ public class UserLogin implements Serializable {
         this.loginId = loginId;
     }
 
-    public UserLogin(String loginId, String username, String password, String challengeQuestion, String answer) {
+    public UserLogin(String loginId, String answer, String challengeQuestion, String username, String password) {
         this.loginId = loginId;
+        this.answer = answer;
+        this.challengeQuestion = challengeQuestion;
         this.username = username;
         this.password = password;
-        this.challengeQuestion = challengeQuestion;
-        this.answer = answer;
     }
 
     public String getLoginId() {
@@ -93,6 +97,22 @@ public class UserLogin implements Serializable {
 
     public void setLoginId(String loginId) {
         this.loginId = loginId;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getChallengeQuestion() {
+        return challengeQuestion;
+    }
+
+    public void setChallengeQuestion(String challengeQuestion) {
+        this.challengeQuestion = challengeQuestion;
     }
 
     public String getUsername() {
@@ -119,20 +139,12 @@ public class UserLogin implements Serializable {
         this.lastLogin = lastLogin;
     }
 
-    public String getChallengeQuestion() {
-        return challengeQuestion;
+    public String getDbstatus() {
+        return dbstatus;
     }
 
-    public void setChallengeQuestion(String challengeQuestion) {
-        this.challengeQuestion = challengeQuestion;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public UserData getUserId() {

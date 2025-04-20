@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
 @Table(name = "cart")
@@ -38,14 +38,18 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cart.findByCartId", query = "SELECT c FROM Cart c WHERE c.cartId = :cartId"),
     @NamedQuery(name = "Cart.findByTotal", query = "SELECT c FROM Cart c WHERE c.total = :total"),
     @NamedQuery(name = "Cart.findByCreatedDate", query = "SELECT c FROM Cart c WHERE c.createdDate = :createdDate"),
-    @NamedQuery(name = "Cart.findByUpdatedDate", query = "SELECT c FROM Cart c WHERE c.updatedDate = :updatedDate")})
+    @NamedQuery(name = "Cart.findByUpdatedDate", query = "SELECT c FROM Cart c WHERE c.updatedDate = :updatedDate"),
+    @NamedQuery(name = "Cart.findByDbstatus", query = "SELECT c FROM Cart c WHERE c.dbstatus = :dbstatus"),
+    @NamedQuery(name = "Cart.findById",query = "SELECT c FROM Cart c WHERE c.cartId = :cartId"),
+    @NamedQuery(name = "Cart.findActiveByUserId", query = "SELECT c FROM Cart c WHERE c.userId.userId = :userId AND c.dbstatus = 'active'")
+})
 public class Cart implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "cart_id")
     private String cartId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -59,6 +63,9 @@ public class Cart implements Serializable {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData userId;
@@ -67,6 +74,7 @@ public class Cart implements Serializable {
 
     public Cart() {
     }
+    
 
     public Cart(String cartId) {
         this.cartId = cartId;
@@ -107,6 +115,14 @@ public class Cart implements Serializable {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public UserData getUserId() {
@@ -150,5 +166,5 @@ public class Cart implements Serializable {
     public String toString() {
         return "model.Cart[ cartId=" + cartId + " ]";
     }
-    
+
 }

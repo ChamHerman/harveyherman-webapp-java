@@ -163,6 +163,7 @@
         <!-- Scripts -->
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+
         <script>
                                        function postItemDetails(itemId) {
                                            document.getElementById("itemId").value = itemId;

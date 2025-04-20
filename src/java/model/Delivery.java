@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
 @Table(name = "delivery")
@@ -35,14 +35,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Delivery.findByShippingStatus", query = "SELECT d FROM Delivery d WHERE d.shippingStatus = :shippingStatus"),
     @NamedQuery(name = "Delivery.findByExpectedDate", query = "SELECT d FROM Delivery d WHERE d.expectedDate = :expectedDate"),
     @NamedQuery(name = "Delivery.findByCreatedDate", query = "SELECT d FROM Delivery d WHERE d.createdDate = :createdDate"),
-    @NamedQuery(name = "Delivery.findByDeliveredDate", query = "SELECT d FROM Delivery d WHERE d.deliveredDate = :deliveredDate")})
+    @NamedQuery(name = "Delivery.findByDeliveredDate", query = "SELECT d FROM Delivery d WHERE d.deliveredDate = :deliveredDate"),
+    @NamedQuery(name = "Delivery.findByDbstatus", query = "SELECT d FROM Delivery d WHERE d.dbstatus = :dbstatus")})
 public class Delivery implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "delivery_id")
     private String deliveryId;
     @Basic(optional = false)
@@ -63,6 +64,9 @@ public class Delivery implements Serializable {
     @Column(name = "delivered_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -125,6 +129,14 @@ public class Delivery implements Serializable {
 
     public void setDeliveredDate(Date deliveredDate) {
         this.deliveredDate = deliveredDate;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public Orders getOrderId() {

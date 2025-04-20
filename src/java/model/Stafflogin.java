@@ -23,31 +23,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
-@Table(name = "aplogin")
+@Table(name = "stafflogin")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "APLogin.findAll", query = "SELECT a FROM APLogin a"),
-    @NamedQuery(name = "APLogin.findByApId", query = "SELECT a FROM APLogin a WHERE a.apId = :apId"),
-    @NamedQuery(name = "APLogin.findByUsername", query = "SELECT a FROM APLogin a WHERE a.username = :username"),
-    @NamedQuery(name = "APLogin.findByPassword", query = "SELECT a FROM APLogin a WHERE a.password = :password"),
-    @NamedQuery(name = "APLogin.findByLastLogin", query = "SELECT a FROM APLogin a WHERE a.lastLogin = :lastLogin"),
-    @NamedQuery(name = "APLogin.findByPosition", query = "SELECT a FROM APLogin a WHERE a.position = :position"),
-    @NamedQuery(name = "APLogin.findByCreatedDate", query = "SELECT a FROM APLogin a WHERE a.createdDate = :createdDate")})
-public class APLogin implements Serializable {
+    @NamedQuery(name = "Stafflogin.findAll", query = "SELECT s FROM Stafflogin s"),
+    @NamedQuery(name = "Stafflogin.findByLoginId", query = "SELECT s FROM Stafflogin s WHERE s.loginId = :loginId"),
+    @NamedQuery(name = "Stafflogin.findByUsername", query = "SELECT s FROM Stafflogin s WHERE s.username = :username"),
+    @NamedQuery(name = "Stafflogin.findByPassword", query = "SELECT s FROM Stafflogin s WHERE s.password = :password"),
+    @NamedQuery(name = "Stafflogin.findByLastLogin", query = "SELECT s FROM Stafflogin s WHERE s.lastLogin = :lastLogin"),
+    @NamedQuery(name = "Stafflogin.findByRole", query = "SELECT s FROM Stafflogin s WHERE s.role = :role"),
+    @NamedQuery(name = "Stafflogin.findByDbstatus", query = "SELECT s FROM Stafflogin s WHERE s.dbstatus = :dbstatus")})
+public class Stafflogin implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "ap_id")
-    private String apId;
+    @Size(min = 1, max = 255)
+    @Column(name = "login_id")
+    private String loginId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
     @Column(name = "username")
     private String username;
     @Basic(optional = false)
@@ -61,35 +61,35 @@ public class APLogin implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 7)
-    @Column(name = "position")
-    private String position;
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    @Column(name = "role")
+    private String role;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
     private StaffData staffId;
 
-    public APLogin() {
+    public Stafflogin() {
     }
 
-    public APLogin(String apId) {
-        this.apId = apId;
+    public Stafflogin(String loginId) {
+        this.loginId = loginId;
     }
 
-    public APLogin(String apId, String username, String password, String position) {
-        this.apId = apId;
+    public Stafflogin(String loginId, String username, String password, String role) {
+        this.loginId = loginId;
         this.username = username;
         this.password = password;
-        this.position = position;
+        this.role = role;
     }
 
-    public String getApId() {
-        return apId;
+    public String getLoginId() {
+        return loginId;
     }
 
-    public void setApId(String apId) {
-        this.apId = apId;
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
     }
 
     public String getUsername() {
@@ -116,20 +116,20 @@ public class APLogin implements Serializable {
         this.lastLogin = lastLogin;
     }
 
-    public String getPosition() {
-        return position;
+    public String getRole() {
+        return role;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public String getDbstatus() {
+        return dbstatus;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     public StaffData getStaffId() {
@@ -143,18 +143,18 @@ public class APLogin implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (apId != null ? apId.hashCode() : 0);
+        hash += (loginId != null ? loginId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof APLogin)) {
+        if (!(object instanceof Stafflogin)) {
             return false;
         }
-        APLogin other = (APLogin) object;
-        if ((this.apId == null && other.apId != null) || (this.apId != null && !this.apId.equals(other.apId))) {
+        Stafflogin other = (Stafflogin) object;
+        if ((this.loginId == null && other.loginId != null) || (this.loginId != null && !this.loginId.equals(other.loginId))) {
             return false;
         }
         return true;
@@ -162,7 +162,7 @@ public class APLogin implements Serializable {
 
     @Override
     public String toString() {
-        return "model.APLogin[ apId=" + apId + " ]";
+        return "model.Stafflogin[ loginId=" + loginId + " ]";
     }
     
 }

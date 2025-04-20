@@ -64,7 +64,7 @@
                                    max="<%=item.getStockQuantity()%>" required>
                         </div>
 
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success" onclick="addToCart('<%= item.getItemId() %>', item.getStockQuantity())">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                     </form>

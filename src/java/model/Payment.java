@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
 @Table(name = "payment")
@@ -33,14 +33,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Payment.findByPaymentId", query = "SELECT p FROM Payment p WHERE p.paymentId = :paymentId"),
     @NamedQuery(name = "Payment.findByPaymentStatus", query = "SELECT p FROM Payment p WHERE p.paymentStatus = :paymentStatus"),
     @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
-    @NamedQuery(name = "Payment.findByPaymentMethod", query = "SELECT p FROM Payment p WHERE p.paymentMethod = :paymentMethod")})
+    @NamedQuery(name = "Payment.findByPaymentMethod", query = "SELECT p FROM Payment p WHERE p.paymentMethod = :paymentMethod"),
+    @NamedQuery(name = "Promotion.findByPromotionCode",query = "SELECT p FROM Promotion p WHERE p.promotionCode = :promotionCode"),
+    @NamedQuery(name = "Payment.findByDbstatus", query = "SELECT p FROM Payment p WHERE p.dbstatus = :dbstatus")})
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "payment_id")
     private String paymentId;
     @Basic(optional = false)
@@ -56,6 +58,9 @@ public class Payment implements Serializable {
     @Size(min = 1, max = 11)
     @Column(name = "payment_method")
     private String paymentMethod;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -105,6 +110,14 @@ public class Payment implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
     public Orders getOrderId() {
         return orderId;
     }
@@ -137,5 +150,5 @@ public class Payment implements Serializable {
     public String toString() {
         return "model.Payment[ paymentId=" + paymentId + " ]";
     }
-    
+
 }

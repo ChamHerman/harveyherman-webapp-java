@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author herman
+ * @author user
  */
 @Entity
 @Table(name = "cart_item")
@@ -31,14 +31,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CartItem.findByCartItemId", query = "SELECT c FROM CartItem c WHERE c.cartItemId = :cartItemId"),
     @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity"),
     @NamedQuery(name = "CartItem.findByUnitPrice", query = "SELECT c FROM CartItem c WHERE c.unitPrice = :unitPrice"),
-    @NamedQuery(name = "CartItem.findBySubtotal", query = "SELECT c FROM CartItem c WHERE c.subtotal = :subtotal")})
+    @NamedQuery(name = "CartItem.findBySubtotal", query = "SELECT c FROM CartItem c WHERE c.subtotal = :subtotal"),
+    @NamedQuery(name = "CartItem.findByDbstatus", query = "SELECT c FROM CartItem c WHERE c.dbstatus = :dbstatus"),
+    @NamedQuery(name = "CartItem.findById",query = "SELECT ci FROM CartItem ci WHERE ci.cartItemId = :cartItemId"),
+    @NamedQuery(name = "CartItem.findActiveByCartIdAndItemId",query = "SELECT ci FROM CartItem ci WHERE ci.cartId.cartId = :cartId AND ci.itemId.itemId = :itemId AND ci.dbstatus = 'active'"),
+    @NamedQuery(name = "CartItem.findActiveByCartId",query = "SELECT ci FROM CartItem ci WHERE ci.cartId.cartId = :cartId AND ci.dbstatus = 'active'")
+})
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 255)
     @Column(name = "cart_item_id")
     private String cartItemId;
     @Basic(optional = false)
@@ -54,6 +59,9 @@ public class CartItem implements Serializable {
     @NotNull
     @Column(name = "subtotal")
     private BigDecimal subtotal;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     @ManyToOne(optional = false)
     private Cart cartId;
@@ -107,6 +115,14 @@ public class CartItem implements Serializable {
         this.subtotal = subtotal;
     }
 
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
     public Cart getCartId() {
         return cartId;
     }
@@ -147,5 +163,5 @@ public class CartItem implements Serializable {
     public String toString() {
         return "model.CartItem[ cartItemId=" + cartItemId + " ]";
     }
-    
+
 }
