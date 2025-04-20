@@ -102,14 +102,14 @@ public class AddOrderServlet extends HttpServlet {
 
         String promotionId = null;
         BigDecimal discount = BigDecimal.ZERO;
-        if (promoCode != null && !promoCode.isEmpty()) {
-            Promotion promotion = promotionDAO.findByPromotionCode(promoCode);
-            if (promotion != null && "active".equals(promotion.getStatus()) &&
-                (promotion.getMinimumPurchase() == null || subtotal.compareTo(promotion.getMinimumPurchase()) >= 0)) {
-                discount = promotion.getDiscountValue();
-                promotionId = promotion.getPromotionId();
-            }
-        }
+//        if (promoCode != null && !promoCode.isEmpty()) {
+//            Promotion promotion = promotionDAO.findByPromotionCode(promoCode);
+//            if (promotion != null && "active".equals(promotion.getStatus()) &&
+//                (promotion.getMinimumPurchase() == null || subtotal.compareTo(promotion.getMinimumPurchase()) >= 0)) {
+//                discount = promotion.getDiscountValue();
+//                promotionId = promotion.getPromotionId();
+//            }
+//        }
 
         BigDecimal totalAmount = subtotal.add(deliveryFee).subtract(discount);
         
