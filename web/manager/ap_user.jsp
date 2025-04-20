@@ -30,9 +30,8 @@
             } catch (NamingException ne) {
                 ne.printStackTrace();
             }
-            List<UserData> allUsers = userDataDAO.findAll();
+            List<UserData> allUsers = userDataDAO.findAllUsers();
 
-            // Filtering, sorting, pagination logic (similar to ap_item.jsp)
             String paramSearch = request.getParameter("search");
             if (paramSearch == null) paramSearch = "";
 
@@ -161,10 +160,6 @@
             </nav>
         </div>
         <% } %>
-
-        <!-- Modals for Add, Edit, View, Delete (structure similar to ap_item.jsp, but for user fields) -->
-        <%-- AddCustomerModal, EditCustomerModal, ViewCustomerModal, DeleteCustomerModal --%>
-        <%-- You can copy the modal HTML from ap_item.jsp and adjust fields for UserData --%>
 
     </div>
 </div>
