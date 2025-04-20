@@ -14,26 +14,4 @@ document.addEventListener("DOMContentLoaded", function () {
     if (pageMap[path]) {
         document.getElementById(pageMap[path]).classList.add("active");
     }
-
-    // Dark Mode Toggle Functionality.
-    const toggleButton = document.getElementById("theme-toggle");
-    const body = document.body;
-
-    // Apply dark mode if it was previously set.
-    if (localStorage.getItem("theme") === "dark") {
-        body.classList.add("dark-mode");
-        toggleButton.textContent = "☀️";
-    }
-
-    // Toggle dark mode on button click and store preference.
-    toggleButton.addEventListener("click", function () {
-        body.classList.toggle("dark-mode");
-        if (body.classList.contains("dark-mode")) {
-            localStorage.setItem("theme", "dark");
-            toggleButton.textContent = "☀️";
-        } else {
-            localStorage.setItem("theme", "light");
-            toggleButton.textContent = "🌙";
-        }
-    });
 });

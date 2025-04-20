@@ -161,55 +161,6 @@ body {
     border-color: #696969;
 }
 
-/* Cancel button of modals in dark mode */
-.dark-mode .modal .btn-secondary {
-    background-color: #808080;  /* Grey */
-    border-color: #808080;
-    color: #fff;
-}
-.dark-mode .modal .btn-secondary:hover {
-    background-color: #696969;
-    border-color: #696969;
-}
-
-/* Dark mode overrides for navbar */
-.dark-mode .navbar {
-    background-color: var(--sidebar-bg) !important;
-    border-color: var(--sidebar-bg) !important;
-}
-.dark-mode .navbar .navbar-nav .nav-link {
-    color: var(--text-color) !important;
-}
-
-/* Dark mode overrides for select elements (category, stock, row count) */
-.dark-mode select {
-    background-color: var(--card-bg) !important;
-    color: var(--text-color) !important;
-    border: 1px solid var(--text-color) !important;
-}
-
-/* Dark mode overrides for search input fields */
-.dark-mode input[type="text"],
-.dark-mode input[type="search"],
-.dark-mode .form-control {
-    background-color: var(--card-bg) !important;
-    color: var(--text-color) !important;
-    border: 1px solid var(--text-color) !important;
-}
-
-
-/* Base button styling for buttons within the item table body */
-.item-table #itemTableBody button {
-    display: inline-block;
-    padding: 6px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    margin-right: 5px;
-}
-
 /* Base button styling for buttons within the item table body */
 .item-table #itemTableBody button {
     display: inline-block;
@@ -251,38 +202,6 @@ body {
 .item-table #itemTableBody button.btn.btn-delete:hover {
     background-color: #ff4f4f;
     border-color: #ff4f4f;
-}
-
-/* Dark mode overrides */
-/* Edit button in dark mode */
-.dark-mode .item-table #itemTableBody button.btn.btn-edit {
-    background-color: #005f9e; /* Dark blue */
-    color: #fff;
-}
-.dark-mode .item-table #itemTableBody button.btn.btn-edit:hover {
-    background-color: #004f82;
-}
-
-/* View button in dark mode */
-.dark-mode .item-table #itemTableBody button.btn.btn-view {
-    background-color: #006400; /* Dark green */
-    color: #fff;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-.dark-mode .item-table #itemTableBody button.btn.btn-view:hover {
-    background-color: #005a00;
-}
-
-/* Delete button in dark mode */
-.dark-mode .item-table #itemTableBody button.btn.btn-delete {
-    background-color: #8b0000; /* Dark red */
-    border-color: #8b0000;
-    color: #fff;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-.dark-mode .item-table #itemTableBody button.btn.btn-delete:hover {
-    background-color: #7a0000;
-    border-color: #7a0000;
 }
 
 .file-input::-webkit-file-upload-button {
@@ -453,45 +372,24 @@ body {
     border-color: #dee2e6;
 }
 
-/* Dark mode for pagination */
-.dark-mode .pagination .page-link {
-    color: var(--btn-text);
-    background-color: #222b36;
-    border: 1px solid #374151;
-}
-.dark-mode .pagination .page-link:hover {
-    background-color: #374151;
-    color: #fff;
-}
-.dark-mode .pagination .page-item.active .page-link {
-    background-color: #006400; /* Dark green */
-    color: #fff;
-    border-color: #006400;
-}
-.dark-mode .pagination .page-item.disabled .page-link {
-    color: #888;
-    background-color: #222b36;
-    border-color: #374151;
-}
-
 /* --- View Item Modal Dark Mode --- */
-.dark-mode #viewItemModal .modal-content {
+#viewItemModal .modal-content {
     color: #e0e0e0;
 }
-.dark-mode #viewItemModal .modal-header {
+#viewItemModal .modal-header {
     background-color: var(--btn-bg);
     color: var(--btn-text);
 }
-.dark-mode #viewItemModal .modal-title {
+#viewItemModal .modal-title {
     color: var(--btn-text)
 }
-.dark-mode #viewItemModal .modal-body .col-sm-4 {
+#viewItemModal .modal-body .col-sm-4 {
     color: #b0b0b0;
 }
-.dark-mode #viewItemModal .modal-body .col-sm-8 {
+#viewItemModal .modal-body .col-sm-8 {
     color: #e0e0e0;
 }
-.dark-mode #viewItemModal img {
+#viewItemModal img {
     border-color: #374151;
 }
 
@@ -522,19 +420,4 @@ body {
     color: var(--btn-text);
     margin: 1.5rem 0;
     letter-spacing: 0.5px;
-}
-
-/* Dark mode for Item Result Message Modal */
-.dark-mode #itemResultMessageModal .modal-content {
-    color: var(--btn-text);
-}
-.dark-mode #itemResultMessageModal .modal-header {
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
-}
-.dark-mode #itemResultMessageModal .modal-title {
-    color: var(--btn-text);
-}
-.dark-mode #itemResultMessageModal .item-result-message {
-    color: var(--btn-text);
 }
