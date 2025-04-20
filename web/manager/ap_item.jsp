@@ -24,10 +24,10 @@
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_item.css">
     </head>
     <body>
+        <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
         <!-- Main Content -->
         <div class="main-content flex-grow-1">
-            <%@ include file="/staff/ap_item_navbar.jsp" %>
             <div class="container">
                 <%
                     ItemDAO itemDAO = null;
