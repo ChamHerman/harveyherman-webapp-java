@@ -26,7 +26,7 @@ public class ItemServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("search");
         String[] selectedCategories = request.getParameterValues("category");
         String stock = request.getParameter("stock");
@@ -36,8 +36,8 @@ public class ItemServlet extends HttpServlet {
         String sortOrder = request.getParameter("sortOrder");
         Double minPrice = null;
         Double maxPrice = null;
-        try { if (minPriceStr != null && !minPriceStr.isEmpty()) minPrice = Double.parseDouble(minPriceStr); } catch (Exception e) {}
-        try { if (maxPriceStr != null && !maxPriceStr.isEmpty()) maxPrice = Double.parseDouble(maxPriceStr); } catch (Exception e) {}
+        try { if (minPriceStr != null && !minPriceStr.isEmpty()) minPrice = Double.valueOf(minPriceStr); } catch (NumberFormatException ex) {}
+        try { if (maxPriceStr != null && !maxPriceStr.isEmpty()) maxPrice = Double.valueOf(maxPriceStr); } catch (NumberFormatException ex) {}
 
         List<Item> filteredItems = itemDAO.getFilteredItemsAdvanced(search, selectedCategories, stock, minPrice, maxPrice, sortBy, sortOrder);
         List<String> allCategories = itemDAO.getAllCategories();
