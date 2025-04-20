@@ -1,0 +1,182 @@
+@charset "UTF-8";
+
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --sidebar-bg: #121212;
+    --card-bg: #242424;
+    --btn-bg: #3b5d50;
+    --btn-text: #ffffff;
+    --btn-hover-bg: #2a4438;
+    --accent-green: #4CAF50;
+    --accent-light: #81c784;
+    --border-color: #333333;
+    --input-bg: #1e1e1e;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-container {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    width: 400px;
+    max-width: 90%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+.login-header {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    padding: 25px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent-green);
+}
+
+.login-header h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
+}
+
+.login-body {
+    padding: 35px 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: all 0.25s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: var(--accent-green);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.btn-login {
+    background: linear-gradient(135deg, var(--btn-bg) 0%, var(--accent-green) 100%);
+    border: none;
+    color: var(--btn-text);
+    padding: 14px 20px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(59, 93, 80, 0.3);
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, var(--accent-green) 0%, var(--btn-bg) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(59, 93, 80, 0.4);
+}
+
+.btn-login:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(59, 93, 80, 0.4);
+}
+
+.alert {
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid transparent;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.alert-danger {
+    color: #ff8a80;
+    border-color: #ff5252;
+    background-color: rgba(255, 82, 82, 0.08);
+}
+
+.login-footer {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 18px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: #aaaaaa;
+    font-size: 0.9rem;
+}
+
+.login-footer a {
+    color: var(--accent-light);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.login-footer a:hover {
+    color: var(--accent-green);
+    text-decoration: underline;
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo img {
+    max-width: 150px;
+    filter: brightness(0.95) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s, filter 0.3s;
+}
+
+.login-logo img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.05) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* Additional decorative elements */
+.login-header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-green);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
