@@ -24,13 +24,13 @@ body {
 
 /* Animation Classes */
 .animate-fade-in {
-    animation: fadeIn 1.2s ease both;
+    animation: fadeIn 1.2s ease;
 }
 .animate-fade-in-delay {
-    animation: fadeInDelay 1.2s 0.4s both;
+    animation: fadeInDelay 1.2s 0.4s;
 }
 .animate-slide-up {
-    animation: slideUp 1.1s cubic-bezier(.23,1.01,.32,1) both;
+    animation: slideUp 1.1s cubic-bezier(.23,1.01,.32,1);
 }
 .animate-bounce {
     transition: transform 0.2s;
@@ -56,14 +56,6 @@ body {
     color: #e0e0e0;
     font-size: 1.1rem;
 }
-.hero-img-wrap img {
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(10,37,64,0.12);
-    transition: transform 0.4s;
-}
-.hero-img-wrap img:hover {
-    transform: scale(1.04) rotate(-2deg);
-}
 
 /* Section Titles */
 .section-title {
@@ -85,8 +77,12 @@ body {
 }
 .btn:hover, .btn:focus {
     background: linear-gradient(90deg, #0a2540 0%, #1a1a2e 100%);
-    color: #ffd700 !important;
+    color: #b5e7a0 !important;
     box-shadow: 0 4px 16px rgba(10,37,64,0.12);
+}
+
+.btn.btn-secondary:hover, .btn.btn-secondary:focus {
+    color: #3b5d50 !important;
 }
 
 /* Why Choose Us & We Help Section */
@@ -152,4 +148,4 @@ body {
     .testimonial-block {
         padding: 1.2rem 1rem;
     }
-} 
+}

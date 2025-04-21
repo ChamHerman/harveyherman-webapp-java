@@ -269,7 +269,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="category" value="<%=cat%>"
                                            <%if (selectedCategoriesSet.contains(cat)) {%> checked <%}%> /> <label
-                                           class="form-check-label"><%=cat%></label>
+                                           class="form-check-label category-title"><%=cat%></label>
                                 </div>
                                 <% } %>
 

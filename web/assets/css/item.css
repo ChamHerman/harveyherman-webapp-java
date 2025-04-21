@@ -246,4 +246,13 @@
 .shop-product-stock,
 .shop-no-items {
     all: unset;
-} 
+}
+
+.product-title,
+.category-title{
+    max-width: 250px;
+    min-width: 50px;
+    word-break: break-all;      
+    white-space: normal;
+    overflow-wrap: break-word;
+}

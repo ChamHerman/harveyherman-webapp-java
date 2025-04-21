@@ -27,14 +27,14 @@
                 <div class="row justify-content-between">
                     <div class="col-lg-5">
                         <div class="intro-excerpt">
-                            <h1>Contact</h1>
-                            <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-                            <p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+                            <h1>Contact Us</h1>
+                            <p class="mb-4">We'd love to hear from you! Whether you have a question about our products, need support, or just want to share your feedback, our team is here to help. Reach out and we'll get back to you as soon as possible.</p>
+                            <p><a href="<%=request.getContextPath()%>/user/item.jsp" class="btn btn-secondary me-2">Shop Now</a><a href="#contact-form" class="btn btn-white-outline">Send a Message</a></p>
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="hero-img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/hero-index.png" class="img-fluid">
+                            <img src="<%=request.getContextPath()%>/assets/images/hero-index.png" class="img-fluid" alt="Contact HarveyHerman">
                         </div>
                     </div>
                 </div>
@@ -95,29 +95,29 @@
                                 </div>
                             </div>
 
-                            <form autocomplete="false">
+                            <form id="contact-form" autocomplete="off" onsubmit="return showNotification(event)">
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="text-black" for="fname">First name</label>
-                                            <input type="text" class="form-control" id="fname" autocomplete="false">
+                                            <input type="text" class="form-control" id="fname" name="fname" required autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="text-black" for="lname">Last name</label>
-                                            <input type="text" class="form-control" id="lname" autocomplete="false">
+                                            <input type="text" class="form-control" id="lname" name="lname" required autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="text-black" for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" autocomplete="false">
+                                    <input type="email" class="form-control" id="email" name="email" required autocomplete="off">
                                 </div>
 
                                 <div class="form-group mb-5">
                                     <label class="text-black" for="message">Message</label>
-                                    <textarea name="" class="form-control" id="message" cols="30" rows="5"></textarea>
+                                    <textarea class="form-control" id="message" name="message" cols="30" rows="5" required></textarea>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary-hover-outline">Send Message</button>
@@ -137,7 +137,23 @@
 
     <!-- End Contact Form -->
 
+    <!-- Notification Popup -->
+    <div id="notification-popup" style="display:none;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:9999;background:#3b5d50;color:#fff;padding:1.2rem 2.2rem;border-radius:12px;box-shadow:0 4px 24px rgba(34,84,61,0.18);font-size:1.1rem;">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Thank you! Your message has been sent.
+    </div>
 
+    <script>
+    function showNotification(event) {
+        event.preventDefault();
+        var popup = document.getElementById('notification-popup');
+        popup.style.display = 'block';
+        setTimeout(function() {
+            popup.style.display = 'none';
+            document.getElementById('contact-form').reset();
+        }, 2500);
+        return false;
+    }
+    </script>
 
     <!-- Footer -->
     <jsp:include page="footer.jsp" />

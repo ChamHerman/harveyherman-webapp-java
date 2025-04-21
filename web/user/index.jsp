@@ -20,6 +20,7 @@
         <link href="<%=request.getContextPath()%>/assets/css/index.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/index_carousel.css" rel="stylesheet">
 
     </head>
 
@@ -29,7 +30,7 @@
         <jsp:include page="header.jsp" />
 
         <!-- Start Hero Section -->
-        <div class="hero">
+        <div class="hero" style="padding: 4.5rem 0;">
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-lg-5">
@@ -43,9 +44,49 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-lg-7">
-                        <div class="hero-img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/hero-index.png" class="img-fluid">
+                    <div class="col-lg-7 d-flex align-items-center justify-content-center animate-fade-in">
+                        <div class="hero-img-wrap w-100">
+                            <!-- Bootstrap Carousel Start -->
+                            <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="<%=request.getContextPath()%>/assets/images/promo1.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
+                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                            <h5>New Release: Smart Refrigerator</h5>
+                                            <p>Experience freshness and innovation with our latest smart fridge. Limited time launch offer!</p>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="<%=request.getContextPath()%>/assets/images/promo2.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 2">
+                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                            <h5>Promotion: Washer & Dryer Combo</h5>
+                                            <p>Save RM300 on our best-selling laundry duo. Free delivery included!</p>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="<%=request.getContextPath()%>/assets/images/promo3.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
+                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                            <h5>Accessory Spotlight: Air Purifier</h5>
+                                            <p>Breathe easy with our advanced air purifier. Special price this week only!</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="carousel-indicators mt-3">
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <!-- Bootstrap Carousel End -->
                         </div>
                     </div>
                 </div>
@@ -54,7 +95,7 @@
         <!-- End Hero Section -->
 
         <!-- Start Product Section -->
-        <div class="product-section">
+        <div class="product-section" style="margin: 4rem 0 3rem 0;">
             <div class="container">
                 <div class="row">
 
@@ -183,7 +224,7 @@
                         </div>
                         <div class="col-lg-5">
                             <div class="img-wrap">
-                                <img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img.svg" alt="Image" class="img-fluid">
+                                <img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img-2.svg" alt="Image" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -334,11 +375,28 @@
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
+
         <script>
                             function postItemDetails(itemId) {
                                 document.getElementById("itemId").value = itemId;
                                 document.getElementById("itemForm").submit();
                             }
+
+                            /*
+                             // Explicitly initialize Bootstrap carousel with auto-slide
+                             document.addEventListener('DOMContentLoaded', function() {
+                             var heroCarousel = document.getElementById('heroCarousel');
+                             if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
+                             var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
+                             interval: 3500,
+                             ride: 'carousel',
+                             pause: false,
+                             wrap: true
+                             });
+                             carousel.cycle();
+                             }
+                             });
+                             */
         </script>
     </body>
 
