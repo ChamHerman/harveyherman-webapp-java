@@ -159,7 +159,7 @@
 
 /* --- Shop Page (item.jsp) Custom Styles --- */
 
-/* HERO SECTION ENHANCEMENT */
+/* Hero Section Enhancement */
 .shop-hero {
     background: linear-gradient(120deg, #3b5d50 60%, #f9bf29 100%);
     padding: 5rem 0 3rem 0;
@@ -213,7 +213,7 @@
     }
 }
 
-/* SIDEBAR FILTER */
+/* Sidebar Filter */
 .shop-sidebar-card {
     border-radius: 16px;
     box-shadow: 0 2px 18px rgba(59,93,80,0.07);
@@ -238,7 +238,6 @@
     border-radius: 8px;
 }
 
-/* REMOVE PRODUCT GRID/CARD CUSTOM STYLES TO USE DEFAULT */
 .shop-product-grid,
 .shop-product-card,
 .shop-product-img,

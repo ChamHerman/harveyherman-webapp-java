@@ -51,6 +51,14 @@
         </div>
         <!-- End Hero Section -->
 
+        <!-- Delivery Banner -->
+        <div class="container" style="margin-top: 1rem;">
+            <div class="alert alert-info d-flex align-items-center justify-content-center p-3 rounded shadow-sm" style="background: linear-gradient(90deg, #d4f5e9 0%, #e8fbe6 100%); color: #22543d; font-size: 1.1rem; font-weight: 500; border: 1px solid #b7e4c7;">
+                <i class="fa fa-truck me-2" style="font-size: 1.3em;"></i>
+                Enjoy <span style="color:#38a169;font-weight:700;" class="mx-1">FREE delivery</span> on orders of <span style="color:#38a169;font-weight:700;" class="mx-1">RM1000</span> and above! For orders below RM1000, a delivery charge of <span style="color:#38a169;font-weight:700;" class="mx-1">RM25</span> applies.
+            </div>
+        </div>
+
         <!-- Fetch Items and Categories from DAO -->
         <%
             ItemDAO itemDAO = null;

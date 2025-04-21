@@ -1,13 +1,9 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
+    <%
+        String companyEmail = application.getInitParameter("companyEmail");
+    %>
     <head>
         <!-- Default Head -->
         <jsp:include page="head.jsp" />
@@ -38,7 +34,7 @@
                     </div>
                     <div class="col-lg-7">
                         <div class="hero-img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/couch.png" class="img-fluid">
+                            <img src="<%=request.getContextPath()%>/assets/images/hero-index.png" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -80,7 +76,7 @@
                                             </svg>
                                         </div> <!-- /.icon -->
                                         <div class="service-contents">
-                                            <p>info@harveyherman.com</p>
+                                            <p><%= companyEmail %></p>
                                         </div> <!-- /.service-contents-->
                                     </div> <!-- /.service -->
                                 </div>
