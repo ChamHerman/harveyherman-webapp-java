@@ -1,0 +1,26 @@
+/* Footer */
+.footer-section {
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -8px 32px rgba(10,37,64,0.08);
+}
+.footer-logo {
+    color: #3b5d50;
+    font-weight: 700;
+    font-size: 2rem;
+}
+.footer-section p, .footer-section a {
+    color: #2f2f2f;
+}
+.footer-section a:hover {
+    color: #ffd700;
+}
+.custom-social li a {
+    background: #ffd700;
+    color: #0a2540;
+    transition: background 0.3s, color 0.3s;
+}
+.custom-social li a:hover {
+    background: #0a2540;
+    color: #ffd700;
+}
+
