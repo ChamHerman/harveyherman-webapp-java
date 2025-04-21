@@ -1,0 +1,31 @@
+/* General layout for sidebar + main content */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.layout-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    /* Already styled and fixed in your ap_sidebar.css */
+    z-index: 1000;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 250px; /* Same as .sidebar width */
+    padding: 24px 24px 24px 24px;
+    background: inherit;
+    min-height: 100vh;
+    transition: margin-left 0.3s;
+}
+
+@media (max-width: 900px) {
+    .main-content {
+        margin-left: 200px; /* Match sidebar width in small screens */
+    }
+}
