@@ -372,27 +372,6 @@ body {
     border-color: #dee2e6;
 }
 
-/* --- View Item Modal Dark Mode --- */
-#viewItemModal .modal-content {
-    color: #e0e0e0;
-}
-#viewItemModal .modal-header {
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
-}
-#viewItemModal .modal-title {
-    color: var(--btn-text)
-}
-#viewItemModal .modal-body .col-sm-4 {
-    color: #b0b0b0;
-}
-#viewItemModal .modal-body .col-sm-8 {
-    color: #e0e0e0;
-}
-#viewItemModal img {
-    border-color: #374151;
-}
-
 /* --- Item Result Message Modal Styling --- */
 #itemResultMessageModal .modal-content {
     background-color: var(--bg-color);
