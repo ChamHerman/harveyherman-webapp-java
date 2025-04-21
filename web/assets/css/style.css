@@ -190,12 +190,14 @@ a.more {
 }
 
 .hero .hero-img-wrap img {
-    position: relative;
-    top: 0px;
-    right: 0px;
-    z-index: 2;
-    max-width: 780px;
-    left: -20px;
+    position: relative !important;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    z-index: auto !important;
 }
 
 @media ( min-width : 768px) {
@@ -298,7 +300,7 @@ a.more {
 }
 
 .product-section {
-    padding: 7rem 0;
+    padding: 1rem 0;
 }
 
 .product-section .product-item {
@@ -391,6 +393,15 @@ a.more {
 
 .product-section .product-item:hover:before {
     height: 70%;
+}
+
+.product-title,
+.category-title{
+    max-width: 250px;
+    min-width: 50px;
+    word-break: break-all;      
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .why-choose-section {
@@ -721,7 +732,7 @@ a.more {
 }
 
 .before-footer-section {
-    padding: 7rem 0 12rem 0 !important;
+    padding: 1rem 0 12rem 0 !important;
 }
 
 .blog-section {
@@ -909,7 +920,7 @@ a.more {
 }
 
 .untree_co-section {
-    padding: 7rem 0;
+    padding: 1rem 0;
 }
 
 .form-control {

@@ -1,11 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
     String companyName = application.getInitParameter("companyName");
     String companyEmail = application.getInitParameter("companyEmail");
     String companyCopyright = application.getInitParameter("companyCopyright");
 %>
-
+<head>
+    <link href="<%=request.getContextPath()%>/assets/css/footer.css" rel="stylesheet">
+</head>
 <!-- Start Footer Section -->
 <footer class="footer-section" style="margin-top: 5rem;">
     <div class="container relative">
@@ -21,7 +23,7 @@
                         <span class="me-1">
                             <img src="<%=request.getContextPath()%>/assets/images/envelope-outline.svg" alt="Image" class="img-fluid">
                         </span>
-                        <span>Subscribe to Newsletter</span>
+                        <span>Stay Updated with Exclusive Offers</span>
                     </h3>
 
                     <form action="#" class="row g-3">
@@ -44,11 +46,10 @@
         <div class="row g-5 mb-5">
             <div class="col-lg-4">
                 <div class="mb-4 footer-logo-wrap">
-                    <a href="#" class="footer-logo"><%= companyName %></a>
+                    <a href="#" class="footer-logo"><%= companyName%></a>
                 </div>
                 <p class="mb-4">
-                    Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. 
-                    Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant.
+                    HarveyHerman is your trusted destination for premium home appliances and accessories. We blend cutting-edge technology with elegant design, helping you create a smarter, more beautiful home. Discover innovative solutions for every room—crafted for comfort, efficiency, and style.
                 </p>
 
                 <ul class="list-unstyled custom-social">
@@ -102,7 +103,7 @@
             <div class="row pt-4">
                 <div class="col-lg-6">
                     <p class="mb-2 text-center text-lg-start">
-                        <%= companyCopyright %> | Contact: <a href="mailto:<%= companyEmail %>"><%= companyEmail %></a>
+                        <%= companyCopyright%> | Contact: <a href="mailto:<%= companyEmail%>"><%= companyEmail%></a>
                     </p>
                 </div>
 
