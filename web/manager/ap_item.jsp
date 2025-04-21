@@ -529,7 +529,6 @@
 
         <!-- JavaScript Import -->
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%= request.getContextPath()%>/assets/js/ap_index.js"></script>
         <!-- Set default context path (manager/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>

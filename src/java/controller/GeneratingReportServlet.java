@@ -87,7 +87,7 @@ public class GeneratingReportServlet extends HttpServlet {
         request.getRequestDispatcher("generatingReport.jsp").forward(request, response);
         
         if (servletPath.contains("/manager/")) {
-            request.getRequestDispatcher("/manager/generatingReport.jsp").forward(request, response);//contextPath+"/manager/
+            request.getRequestDispatcher("/manager/generatingReport.jsp").forward(request, response);
         }
     }
 }
