@@ -1,11 +1,10 @@
 /**
  *
- * @author herman
+ * @author weikang
  */
 
 package controller;
 
-import java.io.File;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,14 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import model.Item;
-import model.ItemDAO;
+import model.UserData;
+import model.UserDataDAO;
+import model.UserLogin;
+import model.UserLoginDAO;
 
 @WebServlet("/manager/DeleteUsersServlet")
 public class DeleteUsersServlet extends HttpServlet {
 
     @EJB
-    private ItemDAO itemDAO;
+    private UserDataDAO userDataDAO;
+    
+    @EJB
+    private UserLoginDAO userLoginDAO;
+    
     private static final long serialVersionUID = 1L;
 
     private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message)
@@ -30,51 +35,52 @@ public class DeleteUsersServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-        
-        String contextPath = request.getContextPath();
-        String json = "Success: " + success + ". Message: " + message.replace("\"", "\\\"");
-        String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);
-    }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doPost(request, response);
+        String contextPath = request.getContextPath();
+        String json;
+
+        if (success) {
+            json = "MESSAGE: " + message.replace("\"", "\\\"");
+        } else {
+            json = "ERROR: " + message.replace("\"", "\\\"");
+        }
+
+        String encodedMessage = URLEncoder.encode(json, "UTF-8");
+        response.sendRedirect(contextPath + "/manager/ap_user.jsp?message=" + encodedMessage);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String itemId = request.getParameter("itemId");
-        if (itemId == null || itemId.trim().isEmpty()) {
-            sendJsonResponse(request, response, false, "Item ID not provided.");
-            return;
-        }
-
         try {
-            Item item = itemDAO.getItemById(itemId);
-            if (item != null && item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
-                // Extract filename from the stored imageUrl (assumes format: images/filename)
-                String fileName = item.getImageUrl().substring("images/".length());
-                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
-                String deployedPath = getServletContext().getRealPath("");
-                File deployedDir = new File(deployedPath);
-                // Navigate back two directories to reach the project root (e.g., C:\NetBeans\HarveyHerman)
-                File projectRoot = deployedDir.getParentFile().getParentFile();
-                // Build the path to \web\assets\images
-                File targetImageDir = new File(projectRoot, "web/assets/images");
-                // Construct the file reference
-                File imageFile = new File(targetImageDir, fileName);
-                if (imageFile.exists() && !imageFile.delete()) {
-                    throw new ServletException("Failed to delete image file: " + imageFile.getAbsolutePath());
-                }
+            String userId = request.getParameter("userId");
+            if (userId == null || userId.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "User ID not provided.");
+                return;
             }
-            itemDAO.delete(itemId);
-           
-            sendJsonResponse(request, response, true, "Item deleted successfully.");
-        } catch (IOException | ServletException ex) {
-            sendJsonResponse(request, response, false, "Item failed to delete: " + ex.getMessage());
+
+            // Get user data to verify it exists
+            UserData userData = userDataDAO.findByUserId(userId);
+            if (userData == null) {
+                sendJsonResponse(request, response, false, "User not found.");
+                return;
+            }
+            
+            // Get user login data
+            UserLogin userLogin = userLoginDAO.findByUserId(userId);
+            
+            // Soft delete user login if exists
+            if (userLogin != null) {
+                userLoginDAO.delete(userLogin.getLoginId());
+            }
+            
+            // Soft delete user data
+            userDataDAO.delete(userId);
+            
+            sendJsonResponse(request, response, true, "User deleted successfully.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            sendJsonResponse(request, response, false, "User failed to delete. Exception: " + ex.getMessage());
         }
     }
 }

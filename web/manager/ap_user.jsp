@@ -92,12 +92,13 @@
                 </div>
 
                 <!-- Filter/Search -->
-                <form method="GET" action="ap_customer.jsp">
+                <form method="GET" action="ap_user.jsp">
                     <div class="filter-section row mb-3">
                         <div class="col-md-6">
                             <label>Search:</label>
                             <div class="input-group">
-                                <input type="text" name="search" class="form-control" value="<%= paramSearch%>" placeholder="Search by name or email...">
+                                <input type="text" id="searchInput" name="search" class="form-control" value="<%= paramSearch%>" placeholder="Search by name or email...">
+                                <button class="btn btn-outline-secondary" id="clearSearch" type="button">Clear</button>
                                 <button class="btn btn-outline-secondary" type="submit">Search</button>
                             </div>
                         </div>
@@ -110,7 +111,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addCustomerModal">Add Customer</button>
+                            <button type="button" id="addUserBtn" class="btn btn-primary w-100">Add Customer</button>
                         </div>
                     </div>
                 </form>
@@ -128,7 +129,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="itemTableBody">
                         <% if (limitedUsers.isEmpty()) { %>
                         <tr>
                             <td colspan="7" class="text-center">No users found.</td>
@@ -144,9 +145,9 @@
                             <td><%= user.getContactNumber()%></td>
                             <td><%= user.getCreatedDate() != null ? user.getCreatedDate() : ""%></td>
                             <td>
-                                <button class="btn btn-edit btn-sm" onclick="editCustomer('<%= user.getUserId()%>')">Edit</button>
-                                <button class="btn btn-view btn-sm" onclick="viewCustomer('<%= user.getUserId()%>')">View</button>
-                                <button class="btn btn-delete btn-sm" onclick="deleteCustomer('<%= user.getUserId()%>')">Delete</button>
+                                <button class="btn btn-edit btn-sm" onclick="editUser('<%= user.getUserId()%>')">Edit</button>
+                                <button class="btn btn-view btn-sm" onclick="viewUser('<%= user.getUserId()%>')">View</button>
+                                <button class="btn btn-delete btn-sm" onclick="deleteUser('<%= user.getUserId()%>')">Delete</button>
                             </td>
                         </tr>
                         <% }
@@ -160,15 +161,15 @@
                     <nav>
                         <ul class="pagination mb-0">
                             <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
-                                <a class="page-link" href="ap_customer.jsp?page=<%= currentPage - 1%>">&laquo; Prev</a>
+                                <a class="page-link" href="ap_user.jsp?page=<%= currentPage - 1%>&search=<%= paramSearch%>&rows=<%= rowCount%>">&laquo; Prev</a>
                             </li>
                             <% for (int p = 1; p <= totalPages; p++) {%>
                             <li class="page-item <%= (p == currentPage) ? "active" : ""%>">
-                                <a class="page-link" href="ap_customer.jsp?page=<%= p%>"><%= p%></a>
+                                <a class="page-link" href="ap_user.jsp?page=<%= p%>&search=<%= paramSearch%>&rows=<%= rowCount%>"><%= p%></a>
                             </li>
                             <% }%>
                             <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
-                                <a class="page-link" href="ap_customer.jsp?page=<%= currentPage + 1%>">Next &raquo;</a>
+                                <a class="page-link" href="ap_user.jsp?page=<%= currentPage + 1%>&search=<%= paramSearch%>&rows=<%= rowCount%>">Next &raquo;</a>
                             </li>
                         </ul>
                     </nav>
@@ -177,7 +178,139 @@
 
             </div>
         </div>
+        
+        <!-- View User Modal -->
+        <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">User Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <h4 class="mb-4 text-center">User Information</h4>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">User ID:</div>
+                                <div class="col-sm-8" id="viewUserId"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Full Name:</div>
+                                <div class="col-sm-8" id="viewFullName"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Email:</div>
+                                <div class="col-sm-8" id="viewEmail"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Contact Number:</div>
+                                <div class="col-sm-8" id="viewContactNumber"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Address:</div>
+                                <div class="col-sm-8" id="viewAddress"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Birth Date:</div>
+                                <div class="col-sm-8" id="viewBirthDate"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Gender:</div>
+                                <div class="col-sm-8" id="viewGender"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Created Date:</div>
+                                <div class="col-sm-8" id="viewCreatedDate"></div>
+                            </div>
+                            
+                            <h4 class="mb-4 mt-4 text-center">Login Information</h4>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Login ID:</div>
+                                <div class="col-sm-8" id="viewLoginId"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Username:</div>
+                                <div class="col-sm-8" id="viewUsername"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Challenge Question:</div>
+                                <div class="col-sm-8" id="viewChallengeQuestion"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Answer:</div>
+                                <div class="col-sm-8" id="viewAnswer"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Last Login:</div>
+                                <div class="col-sm-8" id="viewLastLogin"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Message Modal -->
+        <div class="modal fade" id="userResultMessageModal" tabindex="-1" aria-labelledby="userResultMessageModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userResultMessageModalLabel">System Message</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="userResultMessage" class="item-result-message"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Modal -->
+        <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center p-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5 class="mt-3">Processing...</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Delete User Confirmation Modal -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+                        <form id="deleteUserForm" method="post" action="<%= request.getContextPath() %>/manager/DeleteUsersServlet">
+                            <input type="hidden" id="deleteUserId" name="userId" value="">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="deleteUserForm" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            var contextPath = '<%= request.getContextPath() %>';
+        </script>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%= request.getContextPath()%>/assets/js/ap_customer.js"></script>
+        <script src="<%= request.getContextPath()%>/assets/js/ap_user.js"></script>
     </body>
 </html>
