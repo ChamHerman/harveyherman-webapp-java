@@ -37,30 +37,30 @@
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     String birthDateStr = user.getBirthDate() != null ? dateFormat.format(user.getBirthDate()) : "";
                             %>
-                            <% if (request.getAttribute("updateMessage") != null) {%>
-                            <div class="alert alert-success text-center mb-4">
-                                <%= request.getAttribute("updateMessage")%>
+                            <% if (request.getAttribute("errorMessage") != null) {%>
+                            <div class="alert alert-danger text-center mb-4">
+                                <%= request.getAttribute("errorMessage")%>
                             </div>
                             <% }%>
 
-                            <form action="<%=request.getContextPath()%>/user/EditUserServlet" method="post" class="profile-edit-form">
+                            <form action="<%=request.getContextPath()%>/user/EditUserServlet" method="post" class="profile-edit-form" autocomplete="off">
                                 <input type="hidden" name="userId" value="<%= user.getUserId()%>">
 
                                 <div class="profile-info">
                                     <div class="profile-details">
                                         <div class="profile-item">
                                             <label for="fullName">Full Name</label>
-                                            <input type="text" id="fullName" name="fullName" class="form-control" value="<%= user.getFullname()%>" required>
+                                            <input type="text" id="fullName" name="fullName" class="form-control" value="<%= user.getFullname()%>" autocomplete="off" required>
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="email">Email</label>
-                                            <input type="email" id="email" name="email" class="form-control" value="<%= user.getEmail()%>" required>
+                                            <input type="email" id="email" name="email" class="form-control" value="<%= user.getEmail()%>" autocomplete="off" required>
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="contactNumber">Contact Number</label>
-                                            <input type="tel" id="contactNumber" name="contactNumber" class="form-control" value="<%= user.getContactNumber() != null ? user.getContactNumber() : ""%>">
+                                            <input type="tel" id="contactNumber" name="contactNumber" class="form-control" value="<%= user.getContactNumber() != null ? user.getContactNumber() : ""%>" autocomplete="off">
                                         </div>
 
                                         <div class="profile-item">
@@ -70,18 +70,16 @@
 
                                         <div class="profile-item">
                                             <label for="birthDate">Birth Date</label>
-                                            <input type="date" id="birthDate" name="birthDate" class="form-control" value="<%= birthDateStr%>">
+                                            <input type="date" id="birthDate" name="birthDate" class="form-control" value="<%= birthDateStr%>" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
-
-                                <form action="<%=request.getContextPath()%>/user/EditUserServlet" method="post" class="profile-edit-form">
                                     <div class="profile-actions">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                         <a href="profile.jsp" class="btn btn-secondary">Discard Changes</a>
                                     </div>
                                 </form>
-                            </form>
+                            </form
 
                             <% } else { %>
                             <div class="profile-error">
@@ -99,5 +97,25 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
+        <script>
+            document.querySelector('.profile-edit-form').addEventListener('submit', function (event) {
+                let contact = document.getElementById('contactNumber').value.trim();
+                let contactError = '';
+
+                // Contact number validation
+                const contactPattern = /^\+60\d{10,13}$/;
+                if (!contactPattern.test(contact)) {
+                    contactError = 'Contact number must start with +60 and minimum 8 numbers after it (e.g. +601234567890).';
+                }
+
+                // Show errors if any
+                if (contactError) {
+                    event.preventDefault();
+                    let errorMsg = '';
+                    if (contactError) errorMsg += contactError;
+                    alert(errorMsg);
+                }
+            });
+        </script>
     </body>
 </html>

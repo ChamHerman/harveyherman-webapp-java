@@ -6,6 +6,7 @@ package controller;
 
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -68,10 +69,14 @@ public class ChangePasswordServlet extends HttpServlet {
 
             userLogin.setPassword(newPassword);
             userLoginDAO.update(userLogin);
-            response.sendRedirect(request.getContextPath() + "/user/changePassword.jsp?success=true");
+            request.setAttribute("changePasswordSuccess", Boolean.TRUE);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/profile.jsp");
+            dispatcher.forward(request, response);
 
-        } catch (Exception e) {
-            response.sendRedirect(request.getContextPath() + "/user/changePassword.jsp?error=" + e.getMessage());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/user/changePassword.jsp?error=" + ex.getMessage());
         }
     }
 }

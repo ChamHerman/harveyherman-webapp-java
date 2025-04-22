@@ -6,6 +6,7 @@ package controller;
 
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +22,7 @@ import model.UserLoginDAO;
 public class UserDeleteAccountServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    
+
     @EJB
     private UserDataDAO userDataDAO;
     @EJB
@@ -30,13 +31,13 @@ public class UserDeleteAccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedInUser") == null) {
             response.sendRedirect(request.getContextPath() + "/user/login.jsp");
             return;
         }
-        
+
         try {
             String confirmPassword = request.getParameter("confirmPassword");
             UserData userData = (UserData) session.getAttribute("loggedInUser");
@@ -46,20 +47,22 @@ public class UserDeleteAccountServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/user/profile.jsp?error=password");
                 return;
             }
-            
+
             // Password is correct, proceed with deletion
             String userId = userData.getUserId();
-            
-            if (userLogin != null) {
-                userLoginDAO.delete(userLogin.getLoginId());
-            }
+
+            userLoginDAO.delete(userLogin.getLoginId());
 
             userDataDAO.delete(userId);
-            response.sendRedirect(request.getContextPath() + "/user/UserLogoutServlet");
-            
+            session.removeAttribute("loggedInUser");
+
+            request.setAttribute("deleteSuccess", Boolean.TRUE);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
+            dispatcher.forward(request, response);
+
         } catch (Exception e) {
             System.out.println("Error deleting account: " + e.getMessage());
-            e.printStackTrace();  
+            e.printStackTrace();
             session.setAttribute("errorMessage", "Failed to delete account. Please try again later.");
             response.sendRedirect(request.getContextPath() + "/user/profile.jsp");
         }

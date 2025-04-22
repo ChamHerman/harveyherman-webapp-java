@@ -10,7 +10,7 @@ USE harveyhermandb;
 CREATE TABLE UserData (
     user_id VARCHAR(255) PRIMARY KEY,
     fullname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL,
     contact_number VARCHAR(255) NOT NULL,
     address TEXT,
     birth_date DATE,
@@ -24,7 +24,7 @@ CREATE TABLE UserLogin (
     user_id VARCHAR(255) UNIQUE,
 	answer VARCHAR(255) NOT NULL,
 	challenge_question VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
@@ -127,7 +127,7 @@ CREATE TABLE Payment (
 CREATE TABLE StaffData (
     staff_id VARCHAR(255) PRIMARY KEY,
     fullname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL,
     contact_number VARCHAR(255),
     address TEXT,
     position VARCHAR(255) NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE StaffData (
 -- StaffLogin: Stores admin portal login information
 CREATE TABLE StaffLogin (
     login_id VARCHAR(255) PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
     role ENUM('staff', 'manager') NOT NULL,

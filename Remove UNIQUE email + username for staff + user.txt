@@ -1,0 +1,15 @@
+ALTER TABLE `harveyhermandb`.`userdata` 
+DROP INDEX `email` ;
+;
+
+ALTER TABLE `harveyhermandb`.`userlogin` 
+DROP INDEX `username` ;
+;
+
+ALTER TABLE `harveyhermandb`.`staffdata` 
+DROP INDEX `email` ;
+;
+
+ALTER TABLE `harveyhermandb`.`stafflogin` 
+DROP INDEX `username` ;
+;

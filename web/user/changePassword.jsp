@@ -2,13 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="author" content="HarveyHerman">
-        <link rel="shortcut icon" href="favicon.png">
-
-        <meta name="description" content="" />
-        <meta name="keywords" content="bootstrap, bootstrap4" />
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
+        <title>Change Password - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +12,6 @@
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/profile.css" rel="stylesheet">
-        <title>Change Password - HarveyHerman</title>
     </head>
 
     <body>
@@ -50,12 +45,16 @@
                                     <i class="password-toggle-icon fas fa-eye" id="toggleCurrentPassword"></i>
                                 </div>
 
-                                <div class="mb-3 password-field-container">
-                                    <label for="newPassword" class="form-label">New Password</label>
-                                    <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
-                                    <i class="password-toggle-icon fas fa-eye" id="toggleNewPassword"></i>
+                                <div class="mb-3">
+                                    <div class="password-field-container">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
+
+                                        <i class="password-toggle-icon fas fa-eye" id="toggleNewPassword"></i>
+                                    </div>
                                     <div class="form-text">Password must be at least 6 characters long.</div>
                                 </div>
+
 
                                 <div class="mb-3 password-field-container">
                                     <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
@@ -63,7 +62,7 @@
                                     <i class="password-toggle-icon fas fa-eye" id="toggleConfirmPassword"></i>
                                 </div>
 
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <div class="d-grid gap-2 d-md-flex justify-content-center">
                                     <a href="profile.jsp" class="btn btn-secondary me-md-2">Cancel</a>
                                     <button type="submit" class="btn btn-primary">Change Password</button>
                                 </div>

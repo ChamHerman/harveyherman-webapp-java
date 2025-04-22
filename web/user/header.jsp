@@ -31,12 +31,12 @@
                     <a class="nav-link" href="#"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
                     <div class="user-dropdown">
                         <a href="profile.jsp">View User Details</a>
-                        <a href="<%=request.getContextPath()%>/user/UserLogoutServlet">Log Out</a>
+                        <a href="UserLogoutServlet">Log Out</a>
                     </div>
                 </li>
                 <% } else {%>
                 <li>
-                    <a class="nav-link" href="<%=request.getContextPath()%>/user/login.jsp">
+                    <a class="nav-link" href="login.jsp">
                         <img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="Login">
                     </a>
                 </li>
