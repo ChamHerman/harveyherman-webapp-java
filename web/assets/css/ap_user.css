@@ -161,15 +161,6 @@ body {
     border-color: #696969;
 }
 
-/* Dark mode overrides for navbar */
-.dark-mode .navbar {
-    background-color: var(--sidebar-bg) !important;
-    border-color: var(--sidebar-bg) !important;
-}
-.dark-mode .navbar .navbar-nav .nav-link {
-    color: var(--text-color) !important;
-}
-
 /* Dark mode overrides for select elements (category, stock, row count) */
 .dark-mode select {
     background-color: var(--card-bg) !important;

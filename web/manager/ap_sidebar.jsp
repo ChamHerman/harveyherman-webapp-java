@@ -1,3 +1,5 @@
+<%@page import="model.StaffLogin"%>
+<%@page import="model.StaffData"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     String companyName = application.getInitParameter("companyName");
@@ -8,7 +10,7 @@
         <div class="sidebar-avatar">
             <span class="fa fa-user-circle"></span>
         </div>
-        <span class="sidebar-logo"><%= companyName %></span>
+        <span class="sidebar-logo"><%= companyName%></span>
     </div>
     <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_index.jsp" id="dashboard-link">Dashboard</a></li>
@@ -20,9 +22,20 @@
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_user.jsp" id="user-management-link">User Management</a></li>
     </ul>
     <div class="sidebar-profile">
-        <a href="<%= request.getContextPath()%>/manager/ap_manager_profile.jsp" class="btn btn-outline-primary w-100">
-            <span class="fa fa-user"></span> <%= request.getAttribute("staffName")%>
+        <%
+            StaffData staffData = (StaffData) session.getAttribute("loggedInManager");
+            if (staffData != null) {
+                StaffLogin staffLogin = staffData.getStaffLogin();
+                String username = staffLogin != null ? staffLogin.getUsername() : "Unknown";
+        %>
+        <a href="<%= request.getContextPath()%>/manager/ap_profile.jsp" class="btn btn-outline-primary w-100">
+            <span class="fa fa-user"></span> <%= username%>
         </a>
+        <% } else {%>
+        <a href="<%= request.getContextPath()%>/manager/ap_profile.jsp" class="btn btn-outline-primary w-100">
+            <span class="fa fa-user"></span> Not Logged In
+        </a>
+        <% }%>
     </div>
 </div>
 <script>
