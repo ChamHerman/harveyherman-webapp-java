@@ -136,7 +136,7 @@
                                 <button class="btn btn-info" onclick="viewOrder('<%= order.getOrderId()%>')">View</button>
                             </td>
                             <td>
-                                <button class="btn btn-danger" onclick="confirmDeleteOrder('<%= order.getOrderId()%>')">
+                                <button class="btn btn-secondary" onclick="confirmDeleteOrder('<%= order.getOrderId()%>')">
                                     Delete
                                 </button>
                             </td>
@@ -152,7 +152,7 @@
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                                         <option value="delivered" <%= "delivered".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivered</option>
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-primary">Edit</button>
                                     <input type="hidden" name="oldStatus" value="<%= order.getStatus()%>">
                                 </form>
                             </td>

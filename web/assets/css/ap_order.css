@@ -78,10 +78,10 @@
         #fff;
 }
 
-#pending { border-color: orange; }
-#processing { border-color: blue; }
-#shipping { border-color: purple; }
-#delivered { border-color: green; }
+#pending { border-color: black; }
+#processing { border-color: black; }
+#shipping { border-color: black;}
+#delivered { border-color: black; }
 
 
 .order-table th,

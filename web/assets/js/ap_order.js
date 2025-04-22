@@ -9,7 +9,7 @@ function confirmDeleteOrder(orderId) {
     deleteModal.show();
 }
 
-document.getElementById('confirmDeleteOrder').addEventListener('click', function() {
+document.getElementById('confirmDeleteOrder').addEventListener('click', function () {
     // Redirect to DeleteOrderServlet with orderId parameter
     window.location.href = 'DeleteOrderServlet?orderId=' + deleteOrderId;
 });
@@ -38,10 +38,10 @@ document.getElementById('confirmDeleteOrder').addEventListener('click', function
 
 //view  order
 function viewOrder(orderId) {
-  fetch('OrderDetailsServlet?orderId=' + encodeURIComponent(orderId))
-    .then(response => response.json())
-    .then(data => {
-      let html = `
+    fetch('OrderDetailsServlet?orderId=' + encodeURIComponent(orderId))
+            .then(response => response.json())
+            .then(data => {
+                let html = `
         <div><strong>Order ID:</strong> ${data.orderId}</div>
         <div><strong>User ID:</strong> ${data.userId}</div>
         <div><strong>Status:</strong> ${data.status}</div>
@@ -60,9 +60,9 @@ function viewOrder(orderId) {
           </thead>
           <tbody>
       `;
-      data.orderDetails.forEach(detail => {
-        let subtotal = detail.quantity * detail.pricePerItem;
-        html += `
+                data.orderDetails.forEach(detail => {
+                    let subtotal = detail.quantity * detail.pricePerItem;
+                    html += `
           <tr>
             <td>${detail.itemId}</td>
             <td>${detail.quantity}</td>
@@ -70,9 +70,9 @@ function viewOrder(orderId) {
             <td>${subtotal.toFixed(2)}</td>
           </tr>
         `;
-      });
-      // Last row: total amount from orders table
-      html += `
+                });
+                // Last row: total amount from orders table
+                html += `
           <tr>
             <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
             <td><strong>RM ${parseFloat(data.totalAmount).toFixed(2)}</strong></td>
@@ -80,10 +80,10 @@ function viewOrder(orderId) {
         </tbody>
       </table>
       `;
-      document.getElementById('orderDetailsBody').innerHTML = html;
-      var modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
-      modal.show();
-    });
+                document.getElementById('orderDetailsBody').innerHTML = html;
+                var modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+                modal.show();
+            });
 }
 
 //search item by status
@@ -92,16 +92,16 @@ document.getElementById('searchButton').addEventListener('click', function (e) {
     const status = document.getElementById('statusSelect').value;
 
     fetch(`FilterOrderServlet?status=${encodeURIComponent(status)}`)
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('statusOrdersTableBody');
-            tableBody.innerHTML = '';
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('statusOrdersTableBody');
+                tableBody.innerHTML = '';
 
-            if (data.length === 0 || !data[0].orderId) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found.</td></tr>';
-            } else {
-                data.forEach(order => {
-                    const row = `
+                if (data.length === 0 || !data[0].orderId) {
+                    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found.</td></tr>';
+                } else {
+                    data.forEach(order => {
+                        const row = `
                         <tr>
                             <td>${order.orderId}</td>
                             <td>${order.user}</td>
@@ -110,17 +110,44 @@ document.getElementById('searchButton').addEventListener('click', function (e) {
                             <td>${order.createdDate}</td>
                         </tr>
                     `;
-                    tableBody.insertAdjacentHTML('beforeend', row);
-                });
-            }
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                }
 
-            const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
-            modal.show();
-        })
-        .catch(error => {
-            const tableBody = document.getElementById('statusOrdersTableBody');
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error fetching orders.</td></tr>';
-            const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
-            modal.show();
-        });
+                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
+                modal.show();
+            })
+            .catch(error => {
+                const tableBody = document.getElementById('statusOrdersTableBody');
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error fetching orders.</td></tr>';
+                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
+                modal.show();
+            });
+});
+
+//ask user confirm to edit
+let pendingForm = null;
+function confirmStatusChange(form, orderId) {
+    const oldStatus = form.oldStatus.value;
+    const newStatus = form.status.value;
+    if (oldStatus === newStatus)
+        return false; // No change, no need to submit
+
+    pendingForm = form;
+    document.getElementById('confirmStatusModalBody').innerHTML =
+            `Are you sure you want to change the status of order <b>${orderId}</b> from <b>${oldStatus}</b> to <b>${newStatus}</b>?`;
+    var modal = new bootstrap.Modal(document.getElementById('confirmStatusModal'));
+    modal.show();
+    return false; // Prevent form submit until confirmed
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('confirmStatusBtn').onclick = function () {
+        if (pendingForm) {
+            pendingForm.submit();
+            pendingForm = null;
+            var modal = bootstrap.Modal.getInstance(document.getElementById('confirmStatusModal'));
+            modal.hide();
+        }
+    };
 });

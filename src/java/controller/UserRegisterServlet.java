@@ -5,6 +5,7 @@
 package controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,8 @@ import model.UserData;
 import model.UserDataDAO;
 import model.UserLogin;
 import model.UserLoginDAO;
+import model.Cart;
+import model.CartDAO;
 
 @WebServlet(name = "UserRegisterServlet", urlPatterns = {"/user/UserRegisterServlet"})
 public class UserRegisterServlet extends HttpServlet {
@@ -30,6 +33,8 @@ public class UserRegisterServlet extends HttpServlet {
     private UserLoginDAO userLoginDAO;
     private static final long serialVersionUID = 1L;
     private String errorMsg = "";
+    @EJB
+    private CartDAO cartDAO;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,9 +88,11 @@ public class UserRegisterServlet extends HttpServlet {
 
             UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);
+            Cart cart = createCart(null,user);
 
             userDataDAO.create(user);
             userLoginDAO.create(userLogin);
+            cartDAO.create(cart);
 
             return true;
         } catch (Exception e) {
@@ -128,5 +135,16 @@ public class UserRegisterServlet extends HttpServlet {
         userLogin.setAnswer(answer);
         userLogin.setDbstatus("active");
         return userLogin;
+    }
+
+    private Cart createCart(String cartId, UserData user) {
+        Cart cart = new Cart();
+        cart.setCartId(cartId);
+        cart.setUserId(user);
+        cart.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
+        cart.setUpdatedDate(null);
+        cart.setDbstatus("active");
+        cart.setTotal(new BigDecimal("0.0"));
+        return cart;
     }
 }
