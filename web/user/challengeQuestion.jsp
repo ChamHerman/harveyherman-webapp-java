@@ -7,6 +7,9 @@
         <title>Password Recovery</title>
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <style>
             .password-recovery-container {
@@ -73,15 +76,15 @@
                 </div>
                 <% }%>
 
-                <form action="<%= request.getContextPath()%>/user/VerifyChallengeServlet" method="post">
+                <form action="<%= request.getContextPath()%>/user/VerifyChallengeServlet" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="identifier">Username or Email</label>
-                        <input type="text" class="form-control" id="identifier" name="identifier" required>
+                        <input type="text" class="form-control" id="identifier" name="identifier" autocomplete="off" required>
                     </div>
 
                     <div class="form-group">
                         <label for="challengeQuestion">Your Security Question</label>
-                        <select class="form-control" id="challengeQuestion" name="challengeQuestion" required>
+                        <select class="form-control" id="challengeQuestion" name="challengeQuestion" autocomplete="off" required>
                             <option value="">Select your security question</option>
                             <option value="What is your favourite colors?">What is your favorite colors?</option>
                             <option value="What is your nickname?">What is your nickname?</option>
@@ -91,7 +94,7 @@
 
                     <div class="form-group">
                         <label for="answer">Your Answer</label>
-                        <input type="text" class="form-control" id="answer" name="answer" required>
+                        <input type="text" class="form-control" id="answer" name="answer" autocomplete="off" required>
                     </div>
 
                     <div class="d-grid gap-2">

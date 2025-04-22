@@ -63,7 +63,32 @@
 
 
     </body>
-
+    <!-- Notification Popup -->
+    <%
+        Boolean resetPasswordSuccess = (Boolean) request.getAttribute("resetPasswordSuccess");
+        Boolean registerSuccess = (Boolean) request.getAttribute("registerSuccess");
+        Boolean deleteSuccess = (Boolean) request.getAttribute("deleteSuccess");
+        
+        if (resetPasswordSuccess != null && resetPasswordSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password reset successfully!
+    </div>
+    <%
+    } else if (registerSuccess != null && registerSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Registered successfully!
+    </div>
+    <%
+    } else if (deleteSuccess != null && deleteSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Account deleted successfully!
+    </div>
+    <%
+        }
+    %>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
 
@@ -80,6 +105,29 @@
             // Toggle the eye / eye slash icon
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
+        });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            var popup = document.getElementById('notification-popup');
+            if (popup) {
+                // Slide in
+                setTimeout(function () {
+                    popup.classList.add('show');
+                }, 100); // slight delay for transition
+
+                // Slide out after 3 seconds
+                setTimeout(function () {
+                    popup.classList.remove('show');
+                    popup.classList.add('hide');
+                }, 3100);
+
+                // Remove from DOM after animation
+                setTimeout(function () {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 3700);
+            }
         });
     </script>
 

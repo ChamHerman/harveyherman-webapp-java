@@ -27,6 +27,7 @@ public class EditUserServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         UserData loggedInUser = (UserData) session.getAttribute("loggedInUser");
+        String errorMessage = null;
 
         if (loggedInUser == null) {
             response.sendRedirect(request.getContextPath() + "/user/login.jsp");
@@ -36,9 +37,38 @@ public class EditUserServlet extends HttpServlet {
         String userId = request.getParameter("userId");
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
+        // Email validation
+        if (email == null || !email.contains("@")) {
+            errorMessage = "Email must contain '@' symbol.";
+        } else {
+            // Check uniqueness (except for current user)
+            UserData existingUser = userDataDAO.findByEmail(email);
+            if (existingUser != null && !existingUser.getUserId().equals(userId)) {
+                errorMessage = "Email is already in use by another account.";
+            }
+        }
         String contactNumber = request.getParameter("contactNumber");
+        // Contact number validation
+        if (contactNumber != null && !contactNumber.isEmpty()) {
+            if (!contactNumber.matches("^\\+60\\d{8,13}$")) {
+                errorMessage = "Contact number must start with +60 and be up to 15 characters (e.g. +601234567890).";
+            } else {
+                // Check uniqueness (except for current user)
+                UserData existingContact = userDataDAO.findByContactNumber(contactNumber);
+                if (existingContact != null && !existingContact.getUserId().equals(userId)) {
+                    errorMessage = "Contact number is already in use by another account.";
+                }
+            }
+        }
         String address = request.getParameter("address");
         String birthDateStr = request.getParameter("birthDate");
+
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/editProfile.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
 
         try {
             if (!loggedInUser.getUserId().equals(userId)) {
@@ -68,13 +98,13 @@ public class EditUserServlet extends HttpServlet {
 
             userDataDAO.update(userData);
             session.setAttribute("loggedInUser", userData);
-            
-            request.setAttribute("profileUpdateSuccess", true);
+
+            request.setAttribute("profileUpdateSuccess", Boolean.TRUE);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/profile.jsp");
             dispatcher.forward(request, response);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/editProfile.jsp");
             dispatcher.forward(request, response);
         }

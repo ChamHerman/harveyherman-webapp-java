@@ -4,13 +4,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="author" content="HarveyHerman">
-        <link rel="shortcut icon" href="favicon.png">
-
-        <meta name="description" content="" />
-        <meta name="keywords" content="bootstrap, bootstrap4" />
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
+        <title>User Profile - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +14,7 @@
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/profile.css" rel="stylesheet">
-        <title>User Profile - HarveyHerman</title>
+
     </head>
 
     <body>
@@ -124,20 +120,27 @@
             </div>
         </div>
     </body>
-    <%
-        boolean success = (boolean) request.getAttribute("profileUpdateSuccess");
-        if (success) {
-    %>
     <!-- Notification Popup -->
-    <div id="notification-popup" style="display:block;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:9999;background:#3b5d50;color:#fff;padding:1.2rem 2.2rem;border-radius:12px;box-shadow:0 4px 24px rgba(34,84,61,0.18);font-size:1.1rem;">
-        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Thank you! Your message has been sent.
+    <%
+        Boolean profileUpdateSuccess = (Boolean) request.getAttribute("profileUpdateSuccess");
+        Boolean changePasswordSuccess = (Boolean) request.getAttribute("changePasswordSuccess");
+        if (profileUpdateSuccess != null && profileUpdateSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Profile updated successfully!
     </div>
-    <% }%>
-
+    <%
+        } else if (changePasswordSuccess != null && changePasswordSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password changed successfully!
+    </div>
+    <%
+        }
+    %>
     <jsp:include page="footer.jsp" />
 
     <script>
-        // Password toggle functionality
         document.addEventListener('DOMContentLoaded', function () {
             const toggleDeletePassword = document.querySelector('#toggleDeletePassword');
             const confirmPassword = document.querySelector('#confirmPassword');
@@ -155,6 +158,27 @@
                         icon.classList.toggle('fa-eye-slash');
                     }
                 });
+            }
+
+            var popup = document.getElementById('notification-popup');
+            if (popup) {
+                // Slide in
+                setTimeout(function () {
+                    popup.classList.add('show');
+                }, 100); // slight delay for transition
+
+                // Slide out after 3 seconds
+                setTimeout(function () {
+                    popup.classList.remove('show');
+                    popup.classList.add('hide');
+                }, 3100);
+
+                // Remove from DOM after animation
+                setTimeout(function () {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 3700);
             }
         });
     </script>
