@@ -123,34 +123,44 @@
                 </div>
             </div>
         </div>
-
-        <jsp:include page="footer.jsp" />
-
-        <script>
-            // Password toggle functionality
-            document.addEventListener('DOMContentLoaded', function () {
-                const toggleDeletePassword = document.querySelector('#toggleDeletePassword');
-                const confirmPassword = document.querySelector('#confirmPassword');
-
-                if (toggleDeletePassword && confirmPassword) {
-                    toggleDeletePassword.addEventListener('click', function () {
-                        // Toggle the type attribute
-                        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                        confirmPassword.setAttribute('type', type);
-
-                        // Toggle the eye / eye slash icon
-                        const icon = this.querySelector('i');
-                        if (icon) {
-                            icon.classList.toggle('fa-eye');
-                            icon.classList.toggle('fa-eye-slash');
-                        }
-                    });
-                }
-            });
-        </script>
-
-        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
     </body>
+    <%
+        boolean success = (boolean) request.getAttribute("profileUpdateSuccess");
+        if (success) {
+    %>
+    <!-- Notification Popup -->
+    <div id="notification-popup" style="display:block;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:9999;background:#3b5d50;color:#fff;padding:1.2rem 2.2rem;border-radius:12px;box-shadow:0 4px 24px rgba(34,84,61,0.18);font-size:1.1rem;">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Thank you! Your message has been sent.
+    </div>
+    <% }%>
+
+    <jsp:include page="footer.jsp" />
+
+    <script>
+        // Password toggle functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleDeletePassword = document.querySelector('#toggleDeletePassword');
+            const confirmPassword = document.querySelector('#confirmPassword');
+
+            if (toggleDeletePassword && confirmPassword) {
+                toggleDeletePassword.addEventListener('click', function () {
+                    // Toggle the type attribute
+                    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPassword.setAttribute('type', type);
+
+                    // Toggle the eye / eye slash icon
+                    const icon = this.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-eye');
+                        icon.classList.toggle('fa-eye-slash');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
+
 </html>

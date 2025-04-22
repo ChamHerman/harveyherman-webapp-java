@@ -68,7 +68,8 @@ public class EditUserServlet extends HttpServlet {
 
             userDataDAO.update(userData);
             session.setAttribute("loggedInUser", userData);
-
+            
+            request.setAttribute("profileUpdateSuccess", true);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/profile.jsp");
             dispatcher.forward(request, response);
 

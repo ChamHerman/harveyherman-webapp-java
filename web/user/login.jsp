@@ -14,16 +14,11 @@
         <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/login.css" rel="stylesheet">
     </head>
-    <%
-        if (session.getAttribute("userId") != null) {
-            response.sendRedirect("/user/CartServlet"); // or wherever you want
-            return;
-        }
-    %>
+
     <body>
         <!-- Header -->
         <jsp:include page="header.jsp" />
-        
+
         <div class="login-section">
             <div class="container">
                 <div class="row justify-content-center">
