@@ -51,7 +51,7 @@ public class OrderDetails implements Serializable {
 
     @Size(max = 7)
     @Column(name = "dbstatus")
-    private String dbstatus;
+    private String dbstatus = "active";
 
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     @ManyToOne(optional = false)

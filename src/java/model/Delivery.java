@@ -46,7 +46,7 @@ public class Delivery implements Serializable {
     private String shippingStatus;
     @Size(max = 7)
     @Column(name = "dbstatus")
-    private String dbstatus;
+    private String dbstatus = "active";
 
     private static final long serialVersionUID = 1L;
     @Id

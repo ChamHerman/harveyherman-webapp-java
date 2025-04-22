@@ -25,10 +25,10 @@ public class UserLoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
+        String usernameOrEmail = request.getParameter("usernameOrEmail");
         String password = request.getParameter("password");
 
-        UserData userData = authenticateUser(username, password);
+        UserData userData = authenticateUser(usernameOrEmail, password);
 
         if (userData != null) {
             HttpSession session = request.getSession();
@@ -42,9 +42,13 @@ public class UserLoginServlet extends HttpServlet {
         }
     }
 
-    private UserData authenticateUser(String username, String password) {
+    private UserData authenticateUser(String usernameOrEmail, String password) {
         try {
-            UserLogin userLogin = userLoginDAO.findByUsername(username);
+            UserLogin userLogin = userLoginDAO.findByUsername(usernameOrEmail);
+
+            if (userLogin == null) {
+                userLogin = userLoginDAO.findByEmail(usernameOrEmail);
+            }
 
             if (userLogin != null && userLogin.getPassword().equals(password)) {
                 UserData userData = userLogin.getUserId();

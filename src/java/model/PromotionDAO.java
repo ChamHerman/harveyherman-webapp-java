@@ -5,6 +5,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -14,31 +15,38 @@ public class PromotionDAO {
 
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
-    
+
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }
+
     public EntityManager getEntityManager() {
         return this.em;
     }
-    
+
     public List<Promotion> getAllPromotions() {
-        autoExpirePromotions();
-        return em.createNamedQuery("Promotion.findAll", Promotion.class).getResultList();
+        try {
+            autoExpirePromotions();
+            return em.createNamedQuery("Promotion.findAll", Promotion.class).getResultList();
+        } catch (Exception ex) {
+            ex.getMessage();
+            return new ArrayList<>();
+        }
     }
 
     public String getNextPromotionId() {
         String lastId = em.createQuery("SELECT MAX(p.promotionId) FROM Promotion p", String.class)
-                          .getSingleResult();
-    
+                .getSingleResult();
+
+        if (lastId == null) {
+            return "P001";
+        }
+
         int num = Integer.parseInt(lastId.replaceAll("\\D+", ""));
         num++;
-        
-        if(lastId==null){
-            return "P001";
-        }else{
-            return String.format("P%03d", num);
-        }
+
+        return String.format("P%03d", num);
+
     }
 
     //@Transactional
@@ -57,7 +65,7 @@ public class PromotionDAO {
         }
         return false;
     }
-    
+
     public void autoExpirePromotions() {
         List<Promotion> promoList = em.createNamedQuery("Promotion.findAll", Promotion.class).getResultList();
         LocalDate today = LocalDate.now(); // current local date
@@ -65,8 +73,8 @@ public class PromotionDAO {
         for (Promotion promo : promoList) {
             if ("active".equalsIgnoreCase(promo.getStatus()) && promo.getEndDate() != null) {
                 LocalDate promoEndDate = promo.getEndDate().toInstant()
-                    .atZone(java.time.ZoneId.systemDefault())
-                    .toLocalDate(); // convert java.util.Date to LocalDate
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDate(); // convert java.util.Date to LocalDate
 
                 if (promoEndDate.isBefore(today)) {
                     promo.setStatus("expired"); // mark as expired
@@ -74,5 +82,12 @@ public class PromotionDAO {
                 }
             }
         }
+    }
+
+    public Promotion findPromotionByCode(String promoCode) {
+        List<Promotion> promos = em.createNamedQuery("Promotion.findByPromotionCode", Promotion.class)
+            .setParameter("promotionCode", promoCode)
+            .getResultList();
+        return promos.isEmpty() ? null : promos.get(0);
     }
 }
