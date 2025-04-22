@@ -110,4 +110,16 @@ public class UserLoginDAO {
             return null;
         }
     }
+
+    public UserLogin findByEmail(String email) {
+        try {
+            TypedQuery<UserLogin> query = em.createQuery(
+                    "SELECT u FROM UserLogin u JOIN u.userId d WHERE d.email = :email AND u.dbstatus = 'active'",
+                    UserLogin.class);
+            query.setParameter("email", email);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }
