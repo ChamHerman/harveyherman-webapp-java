@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
         <title>Reset Password</title>
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -12,6 +12,7 @@
 
     </head>
     <body class="bg-light">
+        <jsp:include page="header.jsp" />
         <div class="container">
             <div class="password-reset-container">
                 <h2 class="form-title">Reset Password</h2>

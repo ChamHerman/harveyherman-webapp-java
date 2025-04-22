@@ -17,15 +17,17 @@
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/index.css" rel="stylesheet">
+        <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/index_carousel.css" rel="stylesheet">
 
     </head>
 
     <body>
-
         <!-- Header -->
         <jsp:include page="header.jsp" />
 
@@ -368,36 +370,38 @@
         </div>
         <!-- End Testimonial Slider -->
 
-        <!-- Header -->
-        <jsp:include page="footer.jsp" />
 
-        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
-
-        <script>
-                            function postItemDetails(itemId) {
-                                document.getElementById("itemId").value = itemId;
-                                document.getElementById("itemForm").submit();
-                            }
-
-                            /*
-                             // Explicitly initialize Bootstrap carousel with auto-slide
-                             document.addEventListener('DOMContentLoaded', function() {
-                             var heroCarousel = document.getElementById('heroCarousel');
-                             if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
-                             var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
-                             interval: 3500,
-                             ride: 'carousel',
-                             pause: false,
-                             wrap: true
-                             });
-                             carousel.cycle();
-                             }
-                             });
-                             */
-        </script>
     </body>
+
+    <!-- Footer -->
+    <jsp:include page="footer.jsp" />
+
+    <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
+
+    <script>
+                        function postItemDetails(itemId) {
+                            document.getElementById("itemId").value = itemId;
+                            document.getElementById("itemForm").submit();
+                        }
+
+                        /*
+                         // Explicitly initialize Bootstrap carousel with auto-slide
+                         document.addEventListener('DOMContentLoaded', function() {
+                         var heroCarousel = document.getElementById('heroCarousel');
+                         if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
+                         var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
+                         interval: 3500,
+                         ride: 'carousel',
+                         pause: false,
+                         wrap: true
+                         });
+                         carousel.cycle();
+                         }
+                         });
+                         */
+    </script>
 
 </html>
