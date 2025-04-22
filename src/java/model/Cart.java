@@ -54,7 +54,7 @@ public class Cart implements Serializable {
     
     @Size(max = 7)
     @Column(name = "dbstatus")
-    private String dbstatus;
+    private String dbstatus = "active";
     
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)

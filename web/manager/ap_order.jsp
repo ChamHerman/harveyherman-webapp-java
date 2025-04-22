@@ -262,7 +262,6 @@
 
 
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%= request.getContextPath()%>/assets/js/ap_index.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_order.js"></script>
 
         <script> var contextPath = "<%=request.getContextPath()%>";</script>

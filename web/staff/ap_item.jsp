@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_item.css">
     </head>
     <body>
+        <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
         <!-- Main Content -->
         <div class="main-content flex-grow-1">
@@ -501,7 +502,6 @@
 
         <!-- JavaScript Import -->
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%= request.getContextPath()%>/assets/js/ap_index.js"></script>
         <!-- Set default context path (staff/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>

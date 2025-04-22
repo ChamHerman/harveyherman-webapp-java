@@ -13,13 +13,15 @@
         <!-- Default Head -->
         <jsp:include page="head.jsp" />
         <title>Home - HarveyHerman</title>
-        
+
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <link href="<%=request.getContextPath()%>/assets/css/index.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
-        
+        <link href="<%=request.getContextPath()%>/assets/css/index_carousel.css" rel="stylesheet">
+
     </head>
 
     <body>
@@ -28,23 +30,63 @@
         <jsp:include page="header.jsp" />
 
         <!-- Start Hero Section -->
-        <div class="hero">
+        <div class="hero" style="padding: 4.5rem 0;">
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-lg-5">
-                        <div class="intro-excerpt">
-                            <h1>
-                                Discover Quality Furniture for Every Home
+                        <div class="intro-excerpt animate-fade-in">
+                            <h1 class="animate-slide-up">
+                                Elevate Your Home with Premium Appliances & Accessories
                             </h1>
-                            <p class="mb-4">At HarveyHerman, we bring you a curated selection of stylish, durable, and affordable furniture to transform your living spaces. Shop the latest arrivals and timeless classics, all crafted with care and attention to detail.</p>
+                            <p class="mb-4 animate-fade-in-delay">Discover a curated collection of state-of-the-art home appliances and elegant accessories. Transform your living spaces with innovation, style, and unmatched quality—crafted for modern lifestyles.</p>
                             <p>
-                                <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn btn-secondary me-2">Explore</a>
+                                <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn btn-secondary me-2 animate-bounce">Shop Now</a>
                             </p>
                         </div>
                     </div>
-                    <div class="col-lg-7">
-                        <div class="hero-img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/couch.png" class="img-fluid">
+                    <div class="col-lg-7 d-flex align-items-center justify-content-center animate-fade-in">
+                        <div class="hero-img-wrap w-100">
+                            <!-- Bootstrap Carousel Start -->
+                            <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="<%=request.getContextPath()%>/assets/images/promo1.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
+                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                            <h5>New Release: Smart Refrigerator</h5>
+                                            <p>Experience freshness and innovation with our latest smart fridge. Limited time launch offer!</p>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="<%=request.getContextPath()%>/assets/images/promo2.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 2">
+                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                            <h5>Promotion: Washer & Dryer Combo</h5>
+                                            <p>Save RM300 on our best-selling laundry duo. Free delivery included!</p>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="<%=request.getContextPath()%>/assets/images/promo3.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
+                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                            <h5>Accessory Spotlight: Air Purifier</h5>
+                                            <p>Breathe easy with our advanced air purifier. Special price this week only!</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="carousel-indicators mt-3">
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <!-- Bootstrap Carousel End -->
                         </div>
                     </div>
                 </div>
@@ -53,16 +95,16 @@
         <!-- End Hero Section -->
 
         <!-- Start Product Section -->
-        <div class="product-section">
+        <div class="product-section" style="margin: 4rem 0 3rem 0;">
             <div class="container">
                 <div class="row">
 
                     <!-- Start Column 1 -->
                     <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-                        <h2 class="mb-4 section-title">Crafted with Excellent Materials</h2>
-                        <p class="mb-4">Every piece at HarveyHerman is made from premium, sustainably sourced materials, ensuring both comfort and longevity. Our commitment to quality means you can enjoy your furniture for years to come.</p>
+                        <h2 class="mb-4 section-title animate-slide-up">Engineered for Excellence</h2>
+                        <p class="mb-4 animate-fade-in-delay">Our appliances and accessories are designed with precision, blending advanced technology and timeless aesthetics. Enjoy seamless performance, energy efficiency, and a touch of luxury in every product.</p>
                         <p>
-                            <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn">Shop Now</a>
+                            <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn animate-bounce">Browse Collection</a>
                         </p>
                     </div>
                     <!-- End Column 1 -->
@@ -133,164 +175,106 @@
         </div>
         <!-- End Product Section -->
 
-        <!-- Start Why Choose Us Section -->
-        <div class="why-choose-section">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-6">
-                        <h2 class="section-title">Why Choose Us</h2>
-                        <p>At HarveyHerman, we believe your home deserves the best. Here's why our customers keep coming back:</p>
-                        <div class="row my-5">
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/truck.svg" alt="Image" class="imf-fluid">
+        <div class="card-section">
+            <!-- Start Why Choose Us Section -->
+            <div class="why-choose-section">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-6">
+                            <h2 class="section-title animate-slide-up">Why Shop With Us?</h2>
+                            <p class="animate-fade-in-delay">Experience the difference with our commitment to quality, customer satisfaction, and exclusive after-sales support. Here's why discerning homeowners choose us for their appliance and accessory needs:</p>
+                            <div class="row my-5">
+                                <div class="col-6 col-md-6">
+                                    <div class="feature">
+                                        <div class="icon">
+                                            <img src="<%=request.getContextPath()%>/assets/images/truck.svg" alt="Image" class="imf-fluid">
+                                        </div>
+                                        <h3>Fast &amp; Free Shipping</h3>
+                                        <p>Enjoy complimentary, insured delivery on every order. Your appliances and accessories arrive swiftly and securely, ready to enhance your home.</p>
                                     </div>
-                                    <h3>Fast &amp; Free Shipping</h3>
-                                    <p>Enjoy complimentary shipping on all orders, delivered quickly and safely to your doorstep. We partner with trusted couriers to ensure your furniture arrives in perfect condition, every time.</p>
                                 </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/bag.svg" alt="Image" class="imf-fluid">
+                                <div class="col-6 col-md-6">
+                                    <div class="feature">
+                                        <div class="icon">
+                                            <img src="<%=request.getContextPath()%>/assets/images/bag.svg" alt="Image" class="imf-fluid">
+                                        </div>
+                                        <h3>Easy Shopping Experience</h3>
+                                        <p>Our intuitive platform makes it effortless to find, compare, and purchase the perfect products for your home. Secure checkout and multiple payment options included.</p>
                                     </div>
-                                    <h3>Easy to Shop</h3>
-                                    <p>Our user-friendly website makes it simple to browse, filter, and find the perfect piece for your space. Secure checkout and multiple payment options make shopping a breeze.</p>
                                 </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/support.svg" alt="Image" class="imf-fluid">
+                                <div class="col-6 col-md-6">
+                                    <div class="feature">
+                                        <div class="icon">
+                                            <img src="<%=request.getContextPath()%>/assets/images/support.svg" alt="Image" class="imf-fluid">
+                                        </div>
+                                        <h3>24/7 Expert Support</h3>
+                                        <p>Our knowledgeable team is always available to assist with product advice, installation guidance, and after-sales care—anytime you need us.</p>
                                     </div>
-                                    <h3>24/7 Support</h3>
-                                    <p>Questions? Our dedicated support team is available around the clock to assist you with product inquiries, order tracking, and after-sales service.</p>
                                 </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/return.svg" alt="Image" class="imf-fluid">
+                                <div class="col-6 col-md-6">
+                                    <div class="feature">
+                                        <div class="icon">
+                                            <img src="<%=request.getContextPath()%>/assets/images/return.svg" alt="Image" class="imf-fluid">
+                                        </div>
+                                        <h3>Hassle-Free Returns</h3>
+                                        <p>Shop with confidence. If you're not fully satisfied, our straightforward return policy ensures a smooth and worry-free process.</p>
                                     </div>
-                                    <h3>Hassle Free Returns</h3>
-                                    <p>If you're not completely satisfied, our easy return policy ensures you can shop with confidence. We make returns and exchanges straightforward and stress-free.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
+                        <div class="col-lg-5">
+                            <div class="img-wrap">
+                                <img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img-2.svg" alt="Image" class="img-fluid">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- End Why Choose Us Section -->
+            <!-- End Why Choose Us Section -->
 
-        <!-- Start We Help Section -->
-        <div class="we-help-section">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-7 mb-5 mb-lg-0">
-                        <div class="imgs-grid">
-                            <div class="grid grid-1">
-                                <img src="<%=request.getContextPath()%>/assets/images/img-grid-1.jpg" alt="HarveyHerman Living Room">
-                            </div>
-                            <div class="grid grid-2">
-                                <img src="<%=request.getContextPath()%>/assets/images/img-grid-2.jpg" alt="HarveyHerman Workspace">
-                            </div>
-                            <div class="grid grid-3">
-                                <img src="<%=request.getContextPath()%>/assets/images/img-grid-3.jpg" alt="HarveyHerman Bedroom">
+            <!-- Start We Help Section -->
+
+            <div class="we-help-section">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-7 mb-5 mb-lg-0">
+                            <div class="imgs-grid">
+                                <div class="grid grid-1">
+                                    <img src="<%=request.getContextPath()%>/assets/images/img-grid-1.jpg" alt="HarveyHerman Living Room">
+                                </div>
+                                <div class="grid grid-2">
+                                    <img src="<%=request.getContextPath()%>/assets/images/img-grid-2.jpg" alt="HarveyHerman Workspace">
+                                </div>
+                                <div class="grid grid-3">
+                                    <img src="<%=request.getContextPath()%>/assets/images/img-grid-3.jpg" alt="HarveyHerman Bedroom">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-5 ps-lg-5">
-                        <h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
-                        <p>Our team is passionate about helping you create a home that reflects your style and meets your needs. Whether you're furnishing a new space or updating your current one, we're here to guide you every step of the way.</p>
-                        <ul class="list-unstyled custom-list my-4">
-                            <li>Personalization based on your preferences.</li>
-                            <li>Expert tips and inspiration for every room in your home.</li>
-                            <li>Flexible delivery and assembly options to fit your schedule.</li>
-                            <li>After-sales support to ensure your complete satisfaction.</li>
-                        </ul>
-                        <p>
-                            <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn">Shop Now</a>
-                        </p>
+                        <div class="col-lg-5 ps-lg-5">
+                            <h2 class="section-title mb-4 animate-slide-up">We Help You Create a Smarter, More Beautiful Home</h2>
+                            <p class="animate-fade-in-delay">From kitchen essentials to smart home upgrades, our experts are here to inspire and support your journey to a more comfortable, efficient, and stylish living space.</p>
+                            <ul class="list-unstyled custom-list my-4 animate-fade-in-delay">
+                                <li>Personalized recommendations for your unique needs.</li>
+                                <li>Expert tips for maximizing appliance performance and longevity.</li>
+                                <li>Flexible delivery and professional installation services.</li>
+                                <li>Dedicated after-sales support for lasting satisfaction.</li>
+                            </ul>
+                            <p>
+                                <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn animate-bounce">Discover More</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- End We Help Section -->
 
-        <!-- Start Popular Product -->
-        <div class="popular-product">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                        <div class="product-item-sm d-flex">
-                            <div class="thumbnail">
-                                <img src="<%=request.getContextPath()%>/assets/images/product-1.png" alt="Image"
-                                     class="img-fluid">
-                            </div>
-                            <div class="pt-3">
-                                <h3>Nordic Chair</h3>
-                                <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae
-                                    odio</p>
-                                <p>
-                                    <a href="#">Read More</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                        <div class="product-item-sm d-flex">
-                            <div class="thumbnail">
-                                <img src="<%=request.getContextPath()%>/assets/images/product-2.png" alt="Image"
-                                     class="img-fluid">
-                            </div>
-                            <div class="pt-3">
-                                <h3>Kruzo Aero Chair</h3>
-                                <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae
-                                    odio</p>
-                                <p>
-                                    <a href="#">Read More</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                        <div class="product-item-sm d-flex">
-                            <div class="thumbnail">
-                                <img src="<%=request.getContextPath()%>/assets/images/product-3.png" alt="Image"
-                                     class="img-fluid">
-                            </div>
-                            <div class="pt-3">
-                                <h3>Ergonomic Chair</h3>
-                                <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae
-                                    odio</p>
-                                <p>
-                                    <a href="#">Read More</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- End Popular Product -->
-
         <!-- Start Testimonial Slider -->
         <div class="testimonial-section">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-7 mx-auto text-center">
-                        <h2 class="section-title">Testimonials</h2>
+                        <h2 class="section-title animate-slide-up">Testimonials</h2>
                     </div>
                 </div>
 
@@ -310,24 +294,17 @@
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8 mx-auto">
 
-                                            <div class="testimonial-block text-center">
+                                            <div class="testimonial-block text-center animate-fade-in">
                                                 <blockquote class="mb-5">
-                                                    <p>&ldquo;Donec facilisis quam ut purus rutrum lobortis.
-                                                        Donec vitae odio quis nisl dapibus malesuada. Nullam ac
-                                                        aliquet velit. Aliquam vulputate velit imperdiet dolor
-                                                        tempor tristique. Pellentesque habitant morbi tristique
-                                                        senectus et netus et malesuada fames ac turpis egestas.
-                                                        Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
+                                                    <p>&ldquo;We upgraded our entire kitchen with HarveyHerman's appliances. The quality and design exceeded our expectations—our team loves the new break room!&rdquo;</p>
                                                 </blockquote>
 
                                                 <div class="author-info">
                                                     <div class="author-pic">
-                                                        <img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Maria Jones"
-                                                             class="img-fluid">
+                                                        <img src="<%=request.getContextPath()%>/assets/images/person_2.jpg" alt="James Lee" class="img-fluid">
                                                     </div>
-                                                    <h3 class="font-weight-bold">Maria Jones</h3>
-                                                    <span class="position d-block mb-3">CEO, Co-Founder,
-                                                        XYZ Inc.</span>
+                                                    <h3 class="font-weight-bold">James Lee</h3>
+                                                    <span class="position d-block mb-3">Facilities Manager, UrbanTech Solutions</span>
                                                 </div>
                                             </div>
 
@@ -340,24 +317,17 @@
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8 mx-auto">
 
-                                            <div class="testimonial-block text-center">
+                                            <div class="testimonial-block text-center animate-fade-in">
                                                 <blockquote class="mb-5">
-                                                    <p>&ldquo;Donec facilisis quam ut purus rutrum lobortis.
-                                                        Donec vitae odio quis nisl dapibus malesuada. Nullam ac
-                                                        aliquet velit. Aliquam vulputate velit imperdiet dolor
-                                                        tempor tristique. Pellentesque habitant morbi tristique
-                                                        senectus et netus et malesuada fames ac turpis egestas.
-                                                        Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
+                                                    <p>&ldquo;Our boutique hotel guests rave about the elegant accessories and smart features. HarveyHerman delivers both luxury and reliability.&rdquo;</p>
                                                 </blockquote>
 
                                                 <div class="author-info">
                                                     <div class="author-pic">
-                                                        <img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Maria Jones"
-                                                             class="img-fluid">
+                                                        <img src="<%=request.getContextPath()%>/assets/images/person_3.jpg" alt="Ethan Tan" class="img-fluid">
                                                     </div>
-                                                    <h3 class="font-weight-bold">Maria Jones</h3>
-                                                    <span class="position d-block mb-3">CEO, Co-Founder,
-                                                        XYZ Inc.</span>
+                                                    <h3 class="font-weight-bold">Ethan Tan</h3>
+                                                    <span class="position d-block mb-3">General Manager, The Luxe Stay</span>
                                                 </div>
                                             </div>
 
@@ -370,24 +340,17 @@
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8 mx-auto">
 
-                                            <div class="testimonial-block text-center">
+                                            <div class="testimonial-block text-center animate-fade-in">
                                                 <blockquote class="mb-5">
-                                                    <p>&ldquo;Donec facilisis quam ut purus rutrum lobortis.
-                                                        Donec vitae odio quis nisl dapibus malesuada. Nullam ac
-                                                        aliquet velit. Aliquam vulputate velit imperdiet dolor
-                                                        tempor tristique. Pellentesque habitant morbi tristique
-                                                        senectus et netus et malesuada fames ac turpis egestas.
-                                                        Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
+                                                    <p>&ldquo;Exceptional service and top-notch products. Our office's new air purifiers and coffee machines have made a noticeable difference!&rdquo;</p>
                                                 </blockquote>
 
                                                 <div class="author-info">
                                                     <div class="author-pic">
-                                                        <img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Maria Jones"
-                                                             class="img-fluid">
+                                                        <img src="<%=request.getContextPath()%>/assets/images/person-1.png" alt="Priya Nair" class="img-fluid">
                                                     </div>
-                                                    <h3 class="font-weight-bold">Maria Jones</h3>
-                                                    <span class="position d-block mb-3">CEO, Co-Founder,
-                                                        XYZ Inc.</span>
+                                                    <h3 class="font-weight-bold">Priya Nair</h3>
+                                                    <span class="position d-block mb-3">Operations Director, GreenLeaf Co.</span>
                                                 </div>
                                             </div>
 
@@ -405,73 +368,6 @@
         </div>
         <!-- End Testimonial Slider -->
 
-        <!-- Start Blog Section -->
-        <div class="blog-section">
-            <div class="container">
-                <div class="row mb-5">
-                    <div class="col-md-6">
-                        <h2 class="section-title">Recent Blog</h2>
-                    </div>
-                    <div class="col-md-6 text-start text-md-end">
-                        <a href="#" class="more">View All Posts</a>
-                    </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                        <div class="post-entry">
-                            <a href="#" class="post-thumbnail"><img
-                                    src="<%=request.getContextPath()%>/assets/images/post-1.jpg" alt="Image" class="img-fluid"></a>
-                            <div class="post-content-entry">
-                                <h3>
-                                    <a href="#">First Time Home Owner Ideas</a>
-                                </h3>
-                                <div class="meta">
-                                    <span>by <a href="#">Kristin Watson</a></span> <span>on <a
-                                            href="#">Dec 19, 2021</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                        <div class="post-entry">
-                            <a href="#" class="post-thumbnail"><img
-                                    src="<%=request.getContextPath()%>/assets/images/post-2.jpg" alt="Image" class="img-fluid"></a>
-                            <div class="post-content-entry">
-                                <h3>
-                                    <a href="#">How To Keep Your Furniture Clean</a>
-                                </h3>
-                                <div class="meta">
-                                    <span>by <a href="#">Robert Fox</a></span> <span>on <a
-                                            href="#">Dec 15, 2021</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                        <div class="post-entry">
-                            <a href="#" class="post-thumbnail"><img
-                                    src="<%=request.getContextPath()%>/assets/images/post-3.jpg" alt="Image" class="img-fluid"></a>
-                            <div class="post-content-entry">
-                                <h3>
-                                    <a href="#">Small Space Furniture Apartment Ideas</a>
-                                </h3>
-                                <div class="meta">
-                                    <span>by <a href="#">Kristin Watson</a></span> <span>on <a
-                                            href="#">Dec 12, 2021</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- End Blog Section -->
-
         <!-- Header -->
         <jsp:include page="footer.jsp" />
 
@@ -479,11 +375,28 @@
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
+
         <script>
                             function postItemDetails(itemId) {
                                 document.getElementById("itemId").value = itemId;
                                 document.getElementById("itemForm").submit();
                             }
+
+                            /*
+                             // Explicitly initialize Bootstrap carousel with auto-slide
+                             document.addEventListener('DOMContentLoaded', function() {
+                             var heroCarousel = document.getElementById('heroCarousel');
+                             if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
+                             var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
+                             interval: 3500,
+                             ride: 'carousel',
+                             pause: false,
+                             wrap: true
+                             });
+                             carousel.cycle();
+                             }
+                             });
+                             */
         </script>
     </body>
 

@@ -5,8 +5,8 @@
     border-radius: 18px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
     padding: 2.5rem 2rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 5rem;
+    margin-bottom: 7rem;
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
@@ -49,7 +49,11 @@
     color: #222;
     letter-spacing: 0.01em;
     line-height: 1.25;
-    word-break: break-word;
+    max-width: 50rem;
+    min-width: 10rem;
+    word-break: break-all;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .item-category {
@@ -78,6 +82,11 @@
     color: #444;
     margin-bottom: 2rem;
     line-height: 1.7;
+    max-width: 50rem;
+    min-width: 10rem;
+    word-break: break-all;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .item-quantity-label {
@@ -159,7 +168,7 @@
 
 /* --- Shop Page (item.jsp) Custom Styles --- */
 
-/* HERO SECTION ENHANCEMENT */
+/* Hero Section Enhancement */
 .shop-hero {
     background: linear-gradient(120deg, #3b5d50 60%, #f9bf29 100%);
     padding: 5rem 0 3rem 0;
@@ -184,23 +193,46 @@
 }
 .shop-hero .shop-hero-anim {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 220px;
-    opacity: 0.18;
+    right: 40px;
+    width: 60%;
+    max-width: 300px;
+    min-width: 300px;
+    height: auto;
+    opacity: 0.20;
     z-index: 1;
     animation: shopFloat 4s ease-in-out infinite alternate;
+    pointer-events: none;
 }
 @keyframes shopFadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes shopFloat {
-    from { transform: translateY(0); }
-    to { transform: translateY(-18px); }
+    from {
+        transform: translateY(-80px);
+    }
+    to {
+        transform: translateY(-100px);
+    }
+}
+@media (max-width: 991px) {
+    .shop-hero .shop-hero-anim {
+        right: 10px;
+        top: 60%;
+        width: 55%;
+        max-width: 180px;
+        min-width: 90px;
+        opacity: 0.13;
+    }
 }
 
-/* SIDEBAR FILTER */
+/* Sidebar Filter */
 .shop-sidebar-card {
     border-radius: 16px;
     box-shadow: 0 2px 18px rgba(59,93,80,0.07);
@@ -225,7 +257,6 @@
     border-radius: 8px;
 }
 
-/* REMOVE PRODUCT GRID/CARD CUSTOM STYLES TO USE DEFAULT */
 .shop-product-grid,
 .shop-product-card,
 .shop-product-img,
@@ -234,4 +265,13 @@
 .shop-product-stock,
 .shop-no-items {
     all: unset;
-} 
+}
+
+.product-title,
+.category-title{
+    max-width: 250px;
+    min-width: 50px;
+    word-break: break-all;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
