@@ -18,7 +18,7 @@
     </context-param>
     <context-param>
         <param-name>companyCopyright</param-name>
-        <param-value>Copyright © 2024 HarveyHerman. All rights reserved.</param-value>
+        <param-value>Copyright © 2025 HarveyHerman. All rights reserved.</param-value>
     </context-param>
     <session-config>
         <session-timeout>30</session-timeout>

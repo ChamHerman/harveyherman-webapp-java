@@ -5,8 +5,8 @@
     border-radius: 18px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
     padding: 2.5rem 2rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 5rem;
+    margin-bottom: 7rem;
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
@@ -49,7 +49,11 @@
     color: #222;
     letter-spacing: 0.01em;
     line-height: 1.25;
-    word-break: break-word;
+    max-width: 50rem;
+    min-width: 10rem;
+    word-break: break-all;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .item-category {
@@ -78,6 +82,11 @@
     color: #444;
     margin-bottom: 2rem;
     line-height: 1.7;
+    max-width: 50rem;
+    min-width: 10rem;
+    word-break: break-all;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .item-quantity-label {
@@ -195,12 +204,22 @@
     pointer-events: none;
 }
 @keyframes shopFadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes shopFloat {
-    from { transform: translateY(-80px); }
-    to { transform: translateY(-100px); }
+    from {
+        transform: translateY(-80px);
+    }
+    to {
+        transform: translateY(-100px);
+    }
 }
 @media (max-width: 991px) {
     .shop-hero .shop-hero-anim {
@@ -252,7 +271,7 @@
 .category-title{
     max-width: 250px;
     min-width: 50px;
-    word-break: break-all;      
+    word-break: break-all;
     white-space: normal;
     overflow-wrap: break-word;
 }

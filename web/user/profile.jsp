@@ -91,9 +91,12 @@
                                             <p>Please enter your password to confirm deletion:</p>
 
                                             <form action="<%=request.getContextPath()%>/user/UserDeleteAccountServlet" method="post" id="deleteAccountForm">
-                                                <div class="mb-3">
+                                                <div class="mb-3 password-field-container">
                                                     <label for="confirmPassword" class="form-label">Password</label>
                                                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                                    <span class="password-toggle-icon" id="toggleDeletePassword">
+                                                        <i class="fas fa-eye"></i>
+                                                    </span>
                                                 </div>
                                                 <% if (request.getParameter("error") != null) { %>
                                                 <div class="alert alert-danger">
@@ -122,6 +125,29 @@
         </div>
 
         <jsp:include page="footer.jsp" />
+
+        <script>
+            // Password toggle functionality
+            document.addEventListener('DOMContentLoaded', function () {
+                const toggleDeletePassword = document.querySelector('#toggleDeletePassword');
+                const confirmPassword = document.querySelector('#confirmPassword');
+
+                if (toggleDeletePassword && confirmPassword) {
+                    toggleDeletePassword.addEventListener('click', function () {
+                        // Toggle the type attribute
+                        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                        confirmPassword.setAttribute('type', type);
+
+                        // Toggle the eye / eye slash icon
+                        const icon = this.querySelector('i');
+                        if (icon) {
+                            icon.classList.toggle('fa-eye');
+                            icon.classList.toggle('fa-eye-slash');
+                        }
+                    });
+                }
+            });
+        </script>
 
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>

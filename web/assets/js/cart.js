@@ -1,6 +1,6 @@
 //click add to cart button
 function addToCart(itemId, quantity) {
-    fetch('AddToCartServlet', {
+    fetch('CartServlet', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `itemId=${encodeURIComponent(itemId)}&quantity=${encodeURIComponent(quantity)}`

@@ -28,18 +28,20 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity AND c.dbstatus = 'active'"),
     @NamedQuery(name = "CartItem.findByUnitPrice", query = "SELECT c FROM CartItem c WHERE c.unitPrice = :unitPrice AND c.dbstatus = 'active'"),
     @NamedQuery(name = "CartItem.findBySubtotal", query = "SELECT c FROM CartItem c WHERE c.subtotal = :subtotal AND c.dbstatus = 'active'"),
-    @NamedQuery(name = "CartItem.findByDbstatus", query = "SELECT c FROM CartItem c WHERE c.dbstatus = :dbstatus")})
+    @NamedQuery(name = "CartItem.findByDbstatus", query = "SELECT c FROM CartItem c WHERE c.dbstatus = :dbstatus"),
+    @NamedQuery(name = "CartItem.findActiveByCartIdAndItemId", query = "SELECT c FROM CartItem c WHERE c.cartId.cartId = :cartId AND c.itemId.itemId = :itemId AND c.dbstatus = 'active'"),
+    @NamedQuery(name = "CartItem.findActiveByCartId", query = "SELECT c FROM CartItem c WHERE c.cartId.cartId = :cartId AND c.dbstatus = 'active'")})
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "cart_item_id")
     private String cartItemId;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
@@ -57,12 +59,12 @@ public class CartItem implements Serializable {
 
     @Size(max = 7)
     @Column(name = "dbstatus")
-    private String dbstatus;
-    
+    private String dbstatus = "active";
+
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     @ManyToOne(optional = false)
     private Cart cartId;
-    
+
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     @ManyToOne(optional = false)
     private Item itemId;

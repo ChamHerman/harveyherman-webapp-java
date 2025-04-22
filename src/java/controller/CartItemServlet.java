@@ -1,11 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author kaibin
  */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
@@ -20,6 +19,7 @@ import model.CartDAO;
 import model.CartItem;
 import model.CartItemDAO;
 import model.Promotion;
+import model.PromotionDAO;
 
 @WebServlet(name = "CartItemServlet", urlPatterns = {"/user/CartItemServlet"})
 public class CartItemServlet extends HttpServlet {
@@ -28,6 +28,8 @@ public class CartItemServlet extends HttpServlet {
     private CartItemDAO cartItemDAO;
     @EJB
     private CartDAO cartDAO;
+    @EJB
+    private PromotionDAO promotionDAO;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -125,8 +127,8 @@ public class CartItemServlet extends HttpServlet {
         String message = "";
         boolean success = false;
 
-        // Use CartDAO to find promotion
-        Promotion promo = cartDAO.findPromotionByCode(promoCode);
+        // Use PromotionDAO to find promotion
+        Promotion promo = promotionDAO.findPromotionByCode(promoCode);
 
         if (promo == null) {
             message = "Promotion code not found.";

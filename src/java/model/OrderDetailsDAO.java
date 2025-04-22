@@ -4,6 +4,7 @@
  */
 package model;
 
+import controller.CustomIdGenerator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,21 +30,30 @@ public class OrderDetailsDAO {
     public OrderDetails getByDetailId(String detailId) {
         return em.find(OrderDetails.class, detailId);
     }
-
-    // (Optional) Add, update, delete methods as needed
+    
     public void create(OrderDetails od) {
+        if (od.getDetailId() == null || od.getDetailId().isEmpty()) {
+            String generatedId = CustomIdGenerator.generateNextId(em, "OrderDetails", "D", 3, "detailId");
+            od.setDetailId(generatedId);
+        }
         em.persist(od);
+        em.flush();
+        em.refresh(od);
     }
-
+    
     public void update(OrderDetails od) {
-        em.merge(od);
+        od = em.merge(od);
+        em.flush();
+        em.refresh(od);
     }
 
     public void delete(String detailId) {
-        OrderDetails od = getByDetailId(detailId);
+        OrderDetails od = em.find(OrderDetails.class, detailId);
         if (od != null) {
             od.setDbstatus("deleted");
-            em.merge(od);
+            od = em.merge(od);
+            em.flush();
+            em.refresh(od);
         }
     }
 }

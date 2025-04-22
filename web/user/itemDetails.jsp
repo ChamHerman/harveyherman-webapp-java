@@ -65,7 +65,7 @@
                     <div class="item-quantity-left"><span class="item-quantity-label">Quantity Left:</span> <%=item.getStockQuantity()%></div>
 
                     <!-- Add to Cart Form -->
-                    <form action="AddToCartServlet" method="post" class="item-cart-form">
+                    <form action="CartServlet" method="post" class="item-cart-form">
                         <input type="hidden" name="itemId" value="<%=item.getItemId()%>">
                         <label for="quantity" class="form-label">Quantity:</label>
                         <input type="number"
@@ -78,7 +78,7 @@
                                required
                                <% if (item.getStockQuantity() == 0) { %> disabled <% } %>>
                         <% if (item.getStockQuantity() == 0) { %>
-                        <button type="button" class="btn btn-danger" disabled style="cursor:not-allowed;">
+                        <button type="submit" class="btn btn-success" onclick="addToCart('<%= item.getItemId() %>', item.getStockQuantity())">
                             <i class="fas fa-times-circle"></i> Out of Stock
                         </button>
                         <% } else { %>

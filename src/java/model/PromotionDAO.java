@@ -83,4 +83,11 @@ public class PromotionDAO {
             }
         }
     }
+
+    public Promotion findPromotionByCode(String promoCode) {
+        List<Promotion> promos = em.createNamedQuery("Promotion.findByPromotionCode", Promotion.class)
+            .setParameter("promotionCode", promoCode)
+            .getResultList();
+        return promos.isEmpty() ? null : promos.get(0);
+    }
 }
