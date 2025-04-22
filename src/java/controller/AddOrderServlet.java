@@ -128,6 +128,6 @@ public class AddOrderServlet extends HttpServlet {
 
         // ... handle order details, clear cart, etc. ...
 
-        response.sendRedirect("user/thankyou.html");
+        response.sendRedirect("/user/thankyou.html");
     }
 }

@@ -14,27 +14,27 @@ document.getElementById('confirmDeleteOrder').addEventListener('click', function
     window.location.href = 'DeleteOrderServlet?orderId=' + deleteOrderId;
 });
 
-//add order
-document.getElementById('addOrderForm').addEventListener('submit', function(e) {
-  const userId = document.getElementById('userId').value.trim();
-  const promotionId = document.getElementById('promotionId').value.trim();
-  const errorDiv = document.getElementById('addOrderError');
-  errorDiv.classList.add('d-none');
-  errorDiv.textContent = '';
-
-  if (!/^U\d{3}$/.test(userId)) {
-    e.preventDefault();
-    errorDiv.textContent = 'User ID must be in format U??? (e.g. U001)';
-    errorDiv.classList.remove('d-none');
-    return;
-  }
-  if (promotionId && !/^P\d{3}$/.test(promotionId)) {
-    e.preventDefault();
-    errorDiv.textContent = 'Promotion ID must be in format P??? (e.g. P001)';
-    errorDiv.classList.remove('d-none');
-    return;
-  }
-});
+////add order
+//document.getElementById('addOrderForm').addEventListener('submit', function(e) {
+//  const userId = document.getElementById('userId').value.trim();
+//  const promotionId = document.getElementById('promotionId').value.trim();
+//  const errorDiv = document.getElementById('addOrderError');
+//  errorDiv.classList.add('d-none');
+//  errorDiv.textContent = '';
+//
+//  if (!/^U\d{3}$/.test(userId)) {
+//    e.preventDefault();
+//    errorDiv.textContent = 'User ID must be in format U??? (e.g. U001)';
+//    errorDiv.classList.remove('d-none');
+//    return;
+//  }
+//  if (promotionId && !/^P\d{3}$/.test(promotionId)) {
+//    e.preventDefault();
+//    errorDiv.textContent = 'Promotion ID must be in format P??? (e.g. P001)';
+//    errorDiv.classList.remove('d-none');
+//    return;
+//  }
+//});
 
 //view  order
 function viewOrder(orderId) {
