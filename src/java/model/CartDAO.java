@@ -4,11 +4,11 @@
  */
 package model;
 
+import controller.CustomIdGenerator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 @Stateless
 public class CartDAO {
@@ -32,17 +32,28 @@ public class CartDAO {
     }
 
     public void create(Cart cart) {
+        if (cart.getCartId() == null || cart.getCartId().isEmpty()) {
+            String generatedId = CustomIdGenerator.generateNextId(em, "Cart", "C", 3, "cartId");
+            cart.setCartId(generatedId);
+        }
         em.persist(cart);
+        em.flush();
+        em.refresh(cart);
     }
     
-    public Promotion findPromotionByCode(String promoCode) {
-        List<Promotion> promos = em.createNamedQuery("Promotion.findByPromotionCode", Promotion.class)
-            .setParameter("promotionCode", promoCode)
-            .getResultList();
-        return promos.isEmpty() ? null : promos.get(0);
+    public void update(Cart cart) {
+        cart = em.merge(cart);
+        em.flush();
+        em.refresh(cart);
     }
-    
-    public UserData findUserById(String userId) {
-        return em.find(UserData.class, userId);
+
+    public void delete(String cartId) {
+        Cart cart = em.find(Cart.class, cartId);
+        if (cart != null) {
+            cart.setDbstatus("deleted");
+            cart = em.merge(cart);
+            em.flush();
+            em.refresh(cart);
+        }
     }
 }

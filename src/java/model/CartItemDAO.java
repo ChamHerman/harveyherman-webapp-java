@@ -4,6 +4,7 @@
  */
 package model;
 
+import controller.CustomIdGenerator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,7 +17,6 @@ public class CartItemDAO {
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
 
-    
     public CartItem getActiveCartItem(String cartId, String itemId) {
         TypedQuery<CartItem> query = em.createNamedQuery("CartItem.findActiveByCartIdAndItemId", CartItem.class);
         query.setParameter("cartId", cartId);
@@ -24,11 +24,11 @@ public class CartItemDAO {
         List<CartItem> result = query.getResultList();
         return result.isEmpty() ? null : result.get(0);
     }
-    
+
     public CartItem findById(String cartItemId) {
-        List<CartItem> items = em.createNamedQuery("CartItem.findById", CartItem.class)
-                                 .setParameter("cartItemId", cartItemId)
-                                 .getResultList();
+        List<CartItem> items = em.createNamedQuery("CartItem.findByCartItemId", CartItem.class)
+                .setParameter("cartItemId", cartItemId)
+                .getResultList();
         return items.isEmpty() ? null : items.get(0);
     }
 
@@ -39,18 +39,28 @@ public class CartItemDAO {
     }
 
     public void create(CartItem cartItem) {
+        if (cartItem.getCartItemId() == null || cartItem.getCartItemId().isEmpty()) {
+            String generatedId = CustomIdGenerator.generateNextId(em, "CartItem", "CI", 3, "cartItemId");
+            cartItem.setCartItemId(generatedId);
+        }
         em.persist(cartItem);
+        em.flush();
+        em.refresh(cartItem);
     }
 
     public void update(CartItem cartItem) {
-        em.merge(cartItem);
+        cartItem = em.merge(cartItem);
+        em.flush();
+        em.refresh(cartItem);
     }
 
     public void softDelete(String cartItemId) {
-        CartItem ci = em.find(CartItem.class, cartItemId);
-        if (ci != null) {
-            ci.setDbstatus("deleted");
-            em.merge(ci);
+        CartItem cartItem = em.find(CartItem.class, cartItemId);
+        if (cartItem != null) {
+            cartItem.setDbstatus("deleted");
+            cartItem = em.merge(cartItem);
+            em.flush();
+            em.refresh(cartItem);
         }
     }
 }

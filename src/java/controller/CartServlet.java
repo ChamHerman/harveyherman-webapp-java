@@ -1,17 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author kaibin
  */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,20 +17,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.*;
 
-/**
- *
- * @author user
- */
 @WebServlet(name = "CartServlet", urlPatterns = {"/user/CartServlet"})
 public class CartServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     @EJB
     private CartDAO cartDAO;
-    private static final long serialVersionUID = 1L;
     @EJB
     private CartItemDAO cartItemDAO;
     @EJB
     private ItemDAO itemDAO;
+    @EJB
+    private UserDataDAO userDataDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +48,7 @@ public class CartServlet extends HttpServlet {
                 request.setAttribute("deliveryFee", 0.0);
                 request.setAttribute("discount", 0.0);
                 request.setAttribute("cartTotal", 0.0);
-                request.getRequestDispatcher(request.getContextPath() + "/user/CartServlet").forward(request, response);
+                request.getRequestDispatcher("cart.jsp").forward(request, response);
                 return;
             }
 
@@ -80,7 +75,7 @@ public class CartServlet extends HttpServlet {
             throw e;
         }
 
-        request.getRequestDispatcher(request.getContextPath() + "/user/CartServlet").forward(request, response);
+        request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
     @Override
@@ -106,7 +101,7 @@ public class CartServlet extends HttpServlet {
         Cart cart = cartDAO.getActiveCartByUserId(userId);
         if (cart == null) {
             cart = new Cart();
-            cart.setUserId(new UserData(userId));
+            cart.setUserId(userDataDAO.findByUserId(userId));
             cart.setCreatedDate(new Timestamp(System.currentTimeMillis()));
             cart.setDbstatus("active");
             cartDAO.create(cart);
@@ -114,6 +109,7 @@ public class CartServlet extends HttpServlet {
         CartItem cartItem = cartItemDAO.getActiveCartItem(cart.getCartId(), itemId);
         if (cartItem == null) {
             cartItem = new CartItem();
+            cartItem.setCartItemId(null);
             cartItem.setCartId(cart);
             cartItem.setItemId(item);
             cartItem.setQuantity(quantity);

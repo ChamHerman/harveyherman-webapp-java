@@ -19,6 +19,7 @@ import model.CartDAO;
 import model.CartItem;
 import model.CartItemDAO;
 import model.UserData;
+import model.UserDataDAO;
 
 /**
  *
@@ -31,6 +32,9 @@ public class CheckOutServlet extends HttpServlet {
     private CartDAO cartDAO;
     @EJB
     private CartItemDAO cartItemDAO;
+    @EJB
+    private UserDataDAO userDataDAO;
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +56,7 @@ public class CheckOutServlet extends HttpServlet {
         String userId = (String) session.getAttribute("userId");
 
         // Get user info using CartDAO
-        UserData user = cartDAO.findUserById(userId);
+        UserData user = userDataDAO.findByUserId(userId);
 
         // Get cart and cart items
         Cart cart = cartDAO.getActiveCartByUserId(userId);
