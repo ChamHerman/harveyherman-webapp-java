@@ -66,9 +66,9 @@ public class EditStaffServlet extends HttpServlet {
             }
 
             if (servletPath.contains("/manager/")) {
-                response.sendRedirect(contextPath + "/manager/ap_profile.jsp?success=true");
+                response.sendRedirect(contextPath + "/manager/ap_profile.jsp?success=edit");
             } else if (servletPath.contains("/staff/")) {
-                response.sendRedirect(contextPath + "/staff/ap_profile.jsp?success=true");
+                response.sendRedirect(contextPath + "/staff/ap_profile.jsp?success=edit");
             }
         } else {
             response.sendRedirect(contextPath + "/staff/ap_login.jsp");

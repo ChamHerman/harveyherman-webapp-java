@@ -24,6 +24,21 @@
                 <div class="profile-card">
                     <h2 class="profile-title">Profile</h2>
                     <%
+                        String successParam = request.getParameter("success");
+                        if (successParam != null) {
+                            if (successParam.equalsIgnoreCase("password")) {
+                    %>
+                    <div class="alert alert-success">
+                        Password changed successfully!
+                    </div>
+                    <% } else if (successParam.equalsIgnoreCase("edit")) { %>
+                    <div class="alert alert-success">
+                        Profile edited successfully!
+                    </div>
+                    <% }
+                        } %>
+
+                    <%
                         StaffData staff = (StaffData) session.getAttribute("loggedInManager");
                         if (staff != null) {
                     %>
@@ -55,7 +70,8 @@
                     </div>
                     <div class="profile-actions">
                         <a href="<%= request.getContextPath()%>/manager/ap_editProfile.jsp" class="btn btn-primary">Edit Profile</a>
-                        <a href="<%= request.getContextPath()%>/manager/changePassword.jsp" class="btn btn-outline-secondary">Change Password</a>
+                        <a href="<%= request.getContextPath()%>/manager/ap_changePassword.jsp" class="btn btn-outline-secondary">Change Password</a>
+                        <a href="<%= request.getContextPath()%>/manager/StaffLogoutServlet" class="btn btn-danger">Logout</a>
                     </div>
                     <% } else {%>
                     <div class="alert alert-danger">

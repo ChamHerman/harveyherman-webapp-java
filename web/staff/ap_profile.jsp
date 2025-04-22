@@ -17,12 +17,27 @@
     <body>
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
-        
+
         <!-- Main Content -->
         <div class="main-content">
             <div class="container">
                 <div class="profile-card">
                     <h2 class="profile-title">Profile</h2>
+                    <%
+                        String successParam = request.getParameter("success");
+                        if (successParam != null) {
+                            if (successParam.equalsIgnoreCase("password")) {
+                    %>
+                    <div class="alert alert-success">
+                        Password changed successfully!
+                    </div>
+                    <% } else if (successParam.equalsIgnoreCase("edit")) { %>
+                    <div class="alert alert-success">
+                        Profile edited successfully!
+                    </div>
+                    <% }
+                        } %>
+
                     <%
                         StaffData staff = (StaffData) session.getAttribute("loggedInStaff");
                         if (staff != null) {
@@ -30,42 +45,43 @@
                     <div class="profile-info">
                         <div class="profile-item">
                             <label>Full Name</label>
-                            <div class="detail-value"><%= staff.getFullname() %></div>
+                            <div class="detail-value"><%= staff.getFullname()%></div>
                         </div>
                         <div class="profile-item">
                             <label>Email</label>
-                            <div class="detail-value"><%= staff.getEmail() %></div>
+                            <div class="detail-value"><%= staff.getEmail()%></div>
                         </div>
                         <div class="profile-item">
                             <label>Contact Number</label>
-                            <div class="detail-value"><%= staff.getContactNumber() != null ? staff.getContactNumber() : "Not provided" %></div>
+                            <div class="detail-value"><%= staff.getContactNumber() != null ? staff.getContactNumber() : "Not provided"%></div>
                         </div>
                         <div class="profile-item">
                             <label>Address</label>
-                            <div class="detail-value"><%= staff.getAddress() != null ? staff.getAddress() : "Not provided" %></div>
+                            <div class="detail-value"><%= staff.getAddress() != null ? staff.getAddress() : "Not provided"%></div>
                         </div>
                         <div class="profile-item">
                             <label>Position</label>
-                            <div class="detail-value"><%= staff.getPosition() %></div>
+                            <div class="detail-value"><%= staff.getPosition()%></div>
                         </div>
                         <div class="profile-item">
                             <label>Gender</label>
-                            <div class="detail-value"><%= staff.getGender() %></div>
+                            <div class="detail-value"><%= staff.getGender()%></div>
                         </div>
                     </div>
                     <div class="profile-actions">
                         <a href="<%= request.getContextPath()%>/staff/ap_editProfile.jsp" class="btn btn-primary">Edit Profile</a>
-                        <a href="<%= request.getContextPath()%>/staff/changePassword.jsp" class="btn btn-outline-secondary">Change Password</a>
+                        <a href="<%= request.getContextPath()%>/staff/ap_changePassword.jsp" class="btn btn-outline-secondary">Change Password</a>
+                        <a href="<%= request.getContextPath()%>/staff/StaffLogoutServlet" class="btn btn-danger">Logout</a>
                     </div>
-                    <% } else { %>
+                    <% } else {%>
                     <div class="alert alert-danger">
                         You are not logged in. Please <a href="<%= request.getContextPath()%>/staff/ap_login.jsp">login</a> to view your profile.
                     </div>
-                    <% } %>
+                    <% }%>
                 </div>
             </div>
         </div>
-        
+
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

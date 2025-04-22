@@ -23,6 +23,12 @@
             <div class="container">
                 <div class="profile-card">
                     <h2 class="profile-title">Edit Profile</h2>
+                    <% if (request.getParameter("error") != null) { %>
+                    <div class="alert alert-danger">
+                        Duplicate email or phone number used!
+                    </div>
+                    <% } %>
+                    
                     <%
                         StaffData staff = (StaffData) session.getAttribute("loggedInManager");
                         if (staff != null) {
