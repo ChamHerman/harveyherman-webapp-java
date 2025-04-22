@@ -7,6 +7,12 @@
         <title>Login</title>
     </head>
     <body>
+         <%
+    if (session.getAttribute("userId") != null) {
+        response.sendRedirect("/user/CartServlet"); // or wherever you want
+        return;
+    }
+  %>
         <form action="<%= request.getContextPath()%>/user/UserLoginServlet" method="post">
             <%
                 if (session.getAttribute("loginError") != null) {
