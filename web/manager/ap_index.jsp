@@ -136,7 +136,6 @@
             <div class="dashboard-actions">
                 <a href="salesReport.jsp" class="dashboard-action-btn">View Top 10 Sales</a>
                 <a href="generatingReport.jsp" class="dashboard-action-btn">Generate Sales Report</a>
-                <a href="promotion.jsp" class="dashboard-action-btn">Manage Promotion</a>
                 <a href="viewHistoryReport.jsp" class="dashboard-action-btn">View History Report</a>
             </div>
 
@@ -248,5 +247,4 @@
             });
         }
     </script>
-    <script src="<%=request.getContextPath()%>/assets/js/ap_index.js"></script>
 </html>
