@@ -1,4 +1,4 @@
-<%@ page import="model.Orders" %>
+<%--<%@ page import="model.Orders" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <html>
     <%
@@ -94,4 +94,4 @@
 </html>
 <%
     }
-%>
+%>--%>

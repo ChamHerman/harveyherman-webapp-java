@@ -39,7 +39,7 @@ public class OrderServlet extends HttpServlet {
             long deliveredCount = orderDAO.countOrdersByStatus("Delivered");
 
             // Optionally, if you want grouped counts:
-            List<Object[]> statusCounts = orderDAO.countOrdersGroupedByStatus();
+//            List<Object[]> statusCounts = orderDAO.countOrdersGroupedByStatus();
 
             request.setAttribute("ordersList", ordersList);
             request.setAttribute("totalOrders", totalOrders);
@@ -47,7 +47,7 @@ public class OrderServlet extends HttpServlet {
             request.setAttribute("packagingCount", packagingCount);
             request.setAttribute("shippingCount", shippingCount);
             request.setAttribute("deliveredCount", deliveredCount);
-            request.setAttribute("statusCounts", statusCounts);
+//            request.setAttribute("statusCounts", statusCounts);
 
             request.getRequestDispatcher("ap_order.jsp").forward(request, response);
         } catch (Exception e) {

@@ -9,7 +9,7 @@ function addToCart(itemId, quantity) {
     .then(data => {
       if (data.success) {
         alert('Added to cart!');
-        // Optionally update cart icon/mini-cart here
+        
       } else {
         alert('Failed to add to cart: ' + data.message);
       }

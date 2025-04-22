@@ -97,8 +97,8 @@
                                         <th>No.</th>
                                         <th>Image</th>
                                         <th>Item</th>
-                                        <th>Quantity</th>
                                         <th>Unit Price</th>
+                                        <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Action</th>
                                     </tr>
@@ -158,7 +158,7 @@
                                 <%
                                     cartSubtotal = (Double) request.getAttribute("cartSubtotal");
                                 %>
-                                
+
                                 Purchase more than RM1000, free delivery !!!
                             </table>
                         </div>
