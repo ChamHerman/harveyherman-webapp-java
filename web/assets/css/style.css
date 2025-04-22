@@ -382,11 +382,11 @@ a.more {
 }
 
 .product-section .product-item:hover .product-thumbnail {
-    top: -25px;
+    top: -10px;
 }
 
 .product-section .product-item:hover .icon-cross {
-    bottom: 0;
+    bottom: -5px;
     opacity: 1;
     visibility: visible;
 }
@@ -395,10 +395,18 @@ a.more {
     height: 70%;
 }
 
-.product-title,
 .category-title{
     max-width: 250px;
     min-width: 50px;
+    word-break: break-all;      
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.product-title {
+    text-align: center;
+    max-width: 30rem;
+    min-width: 10rem;
     word-break: break-all;      
     white-space: normal;
     overflow-wrap: break-word;
@@ -463,7 +471,8 @@ a.more {
 }
 
 .we-help-section {
-    padding: 7rem 0;
+    padding-top: 1rem;
+    padding-bottom: 5rem;
 }
 
 .we-help-section .imgs-grid {
