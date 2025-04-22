@@ -7,6 +7,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
@@ -25,63 +26,107 @@ import model.*;
  */
 @WebServlet(name = "CartServlet", urlPatterns = {"/user/CartServlet"})
 public class CartServlet extends HttpServlet {
-    
 
     @EJB
     private CartDAO cartDAO;
     private static final long serialVersionUID = 1L;
     @EJB
     private CartItemDAO cartItemDAO;
+    @EJB
+    private ItemDAO itemDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       HttpSession session = request.getSession();
-        if (session.getAttribute("userId") == null) {
-            session.setAttribute("userId", "U003"); // Use a real user_id from your DB!
-        }
-        String userId = (String) session.getAttribute("userId");
+        try {
+            HttpSession session = request.getSession();
+            String userId = (String) session.getAttribute("userId");
+            if (session.getAttribute("userId") == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
 
-        Cart cart = cartDAO.getActiveCartByUserId(userId);
-        System.out.println("Cart: " + cart);
-        if (cart == null) {
-            //use to debug
-             System.out.println("No cart found for userId: " + userId);
-            request.setAttribute("cartItems", null);
-            request.setAttribute("cartSubtotal", 0.0);
-            request.setAttribute("deliveryFee", 0.0);
-            request.setAttribute("discount", 0.0);
-            request.setAttribute("cartTotal", 0.0);
-            request.getRequestDispatcher("cart.jsp").forward(request, response);
+            Cart cart = cartDAO.getActiveCartByUserId(userId);
+            if (cart == null) {
+                request.setAttribute("cartItems", null);
+                request.setAttribute("cartSubtotal", 0.0);
+                request.setAttribute("deliveryFee", 0.0);
+                request.setAttribute("discount", 0.0);
+                request.setAttribute("cartTotal", 0.0);
+                request.getRequestDispatcher(request.getContextPath() + "/user/CartServlet").forward(request, response);
+                return;
+            }
+
+            List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
+
+            double cartSubtotal = 0.0;
+            for (CartItem item : cartItems) {
+                cartSubtotal += item.getQuantity() * item.getUnitPrice().doubleValue();
+            }
+
+            double deliveryFee = (cartSubtotal >= 1000 || cartSubtotal == 0) ? 0.0 : 25.0;
+            double discount = 0.0;
+            double cartTotal = cartSubtotal + deliveryFee - discount;
+
+            request.setAttribute("cart", cart);
+            request.setAttribute("cartItems", cartItems);
+            request.setAttribute("cartSubtotal", cartSubtotal);
+            request.setAttribute("deliveryFee", deliveryFee);
+            request.setAttribute("discount", discount);
+            request.setAttribute("cartTotal", cartTotal);
+        } catch (Exception e) {
+            System.out.println("Error");
+            e.printStackTrace();
+            throw e;
+        }
+
+        request.getRequestDispatcher(request.getContextPath() + "/user/CartServlet").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+        String itemId = request.getParameter("itemId");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+        if (userId == null) {
+            response.sendRedirect("login.jsp");
             return;
         }
 
-        List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
-
-        double cartSubtotal = 0.0;
-        for (CartItem item : cartItems) {
-            cartSubtotal += item.getQuantity() * item.getUnitPrice().doubleValue();
+        Item item = itemDAO.getItemById(itemId);
+        if (item == null) {
+            //redirect to an error   page send error msg
+            response.sendRedirect("itemDetails.jsp?itemId=" + itemId + "&error=notfound");
+            return;
         }
-        
-        double deliveryFee = 0.0;
-        if(cartSubtotal >= 1000 || cartSubtotal == 0){
-            deliveryFee = 0.0;
-        }else if(cartSubtotal < 1000){
-            deliveryFee = 25.0;
-        }
-            
-        
-        double discount = 0.0;
-        double cartTotal = cartSubtotal + deliveryFee - discount;
-        
-        request.setAttribute("cart", cart);
-        request.setAttribute("cartItems", cartItems);
-        request.setAttribute("cartSubtotal", cartSubtotal);
-        request.setAttribute("deliveryFee", deliveryFee);
-        request.setAttribute("discount", discount);
-        request.setAttribute("cartTotal", cartTotal);
 
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        Cart cart = cartDAO.getActiveCartByUserId(userId);
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUserId(new UserData(userId));
+            cart.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            cart.setDbstatus("active");
+            cartDAO.create(cart);
+        }
+        CartItem cartItem = cartItemDAO.getActiveCartItem(cart.getCartId(), itemId);
+        if (cartItem == null) {
+            cartItem = new CartItem();
+            cartItem.setCartId(cart);
+            cartItem.setItemId(item);
+            cartItem.setQuantity(quantity);
+            cartItem.setUnitPrice(item.getPrice());
+            cartItem.setSubtotal(item.getPrice().multiply(BigDecimal.valueOf(quantity)));
+            cartItem.setDbstatus("active");
+            cartItemDAO.create(cartItem);
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            cartItem.setSubtotal(cartItem.getUnitPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+            cartItemDAO.update(cartItem);
+        }
+
+        response.sendRedirect(request.getContextPath() + "/user/CartServlet");
     }
-
 }

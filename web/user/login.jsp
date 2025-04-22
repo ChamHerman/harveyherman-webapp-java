@@ -14,7 +14,14 @@
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/login.css" rel="stylesheet">
     </head>
+    <%
+    if (session.getAttribute("userId") != null) {
+        response.sendRedirect("/user/CartServlet"); // or wherever you want
+        return;
+    }
+  %>
     <body>
+
         <jsp:include page="header.jsp" />
 
         <div class="login-section">
@@ -56,8 +63,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
         <jsp:include page="footer.jsp" />
 
