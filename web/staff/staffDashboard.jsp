@@ -166,8 +166,8 @@
                         </p>
                     <%}else if(equalS==0){%>
                         <p class="card-text text-success fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        accesskey="" title="Compare today's sales with yesterday's">
-                            <div style="color:'black';"><%= 0%>%</div>
+                        accesskey="" title="Compare today's sales with yesterday's" style="color:black;">
+                            <%= 0%>%
                         </p>
                     <%}else if(equalS>0){%>
                         <p class="card-text text-success fs-4" data-bs-toggle="tooltip" data-bs-placement="bottom"
