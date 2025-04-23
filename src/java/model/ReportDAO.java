@@ -22,7 +22,11 @@ public class ReportDAO {
     public String getNextReportId() {
         String lastId = em.createQuery("SELECT MAX(r.reportId) FROM Report r", String.class)
                 .getSingleResult();
-
+        
+        if (lastId == null) {
+            return "R001";
+        }
+        
         int num = Integer.parseInt(lastId.replaceAll("\\D+", ""));
         num++;
 
