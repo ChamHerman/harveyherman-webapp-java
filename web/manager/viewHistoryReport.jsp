@@ -63,7 +63,7 @@
                             }
                         } else {
                         %>
-                        <tr><td colspan="5" class="text-center text-danger">No promotions available.</td></tr>
+                        <tr><td colspan="5" class="text-center text-danger">No reports available.</td></tr>
                         <% }%>
 
                     </tbody>

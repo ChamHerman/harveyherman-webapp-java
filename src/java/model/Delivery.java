@@ -1,6 +1,6 @@
 /**
  *
- * @author kaibin
+ * @author herman
  */
 package model;
 

@@ -24,16 +24,15 @@
 
         <!-- Custom CSS -->
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_index.css">
-        <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_order.css">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_item.css">
+        <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_order.css">
     </head>
 
     <body>
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content flex-grow-1">
             <div class="container">
-                <%
-                    OrderDAO orderDAO = null;
+                <%                    OrderDAO orderDAO = null;
                     try {
                         InitialContext context = new InitialContext();
                         // Adjust the JNDI lookup path as needed depending on your server configuration
@@ -58,9 +57,9 @@
                 %>
                 <!-- Dashboard Overview Section -->
                 <h2>Order Dashboard</h2>
-                <div class="dashboard-summary single-summary">
-                    <div class="summary-box total-orders">
-                        Total Orders: <%= totalOrders%>
+                <div class="total-order-box">
+                    <div class="total-orders">
+                        <p>Total Orders: <%= totalOrders%></p>
                     </div>
                 </div>
 
@@ -152,7 +151,7 @@
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                                         <option value="delivered" <%= "delivered".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivered</option>
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
                                     <input type="hidden" name="oldStatus" value="<%= order.getStatus()%>">
                                 </form>
                             </td>

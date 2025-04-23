@@ -79,7 +79,7 @@ public class ManagerDashboardDAO {
     
     public int getPaymentMethodCredit() {
         Long credit;
-        credit=em.createQuery("SELECT COUNT(o.paymentMethod) FROM Orders o WHERE o.paymentMethod='cash'", Long.class).getSingleResult();
+        credit=em.createQuery("SELECT COUNT(o.paymentMethod) FROM Orders o WHERE o.paymentMethod='credit_card'", Long.class).getSingleResult();
         
         int creditInt=(credit != null) ? credit.intValue() : 0;
         return creditInt;

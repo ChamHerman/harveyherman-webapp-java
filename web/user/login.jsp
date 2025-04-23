@@ -1,10 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
         <title>Login - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
@@ -12,10 +11,12 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/login.css" rel="stylesheet">
     </head>
-    <body>
 
+    <body>
+        <!-- Header -->
         <jsp:include page="header.jsp" />
 
         <div class="login-section">
@@ -25,7 +26,7 @@
                         <div class="login-card">
                             <h2 class="login-title">Login</h2>
 
-                            <form class="login-form" action="<%= request.getContextPath()%>/user/UserLoginServlet" method="post">
+                            <form class="login-form" action="<%= request.getContextPath()%>/user/UserLoginServlet" method="post" autocomplete="off">
                                 <% if (session.getAttribute("loginError") != null) {
                                         session.removeAttribute("loginError"); %>
                                 <div class="login-error">
@@ -34,11 +35,11 @@
                                 <% }%>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="usernameOrEmail" placeholder="Username or Email" required>
+                                    <input type="text" class="form-control" name="usernameOrEmail" placeholder="Username or Email" autocomplete="off" required>
                                 </div>
 
                                 <div class="form-group password-field-container">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off" required>
                                     <i class="password-toggle-icon fas fa-eye" id="togglePassword"></i>
                                 </div>
 
@@ -57,27 +58,80 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-        <jsp:include page="footer.jsp" />
 
-        <script>
-            // Password toggle functionality
-            const togglePassword = document.querySelector('#togglePassword');
-            const password = document.querySelector('#password');
-
-            togglePassword.addEventListener('click', function () {
-                // Toggle the type attribute
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-
-                // Toggle the eye / eye slash icon
-                this.classList.toggle('fa-eye');
-                this.classList.toggle('fa-eye-slash');
-            });
-        </script>
-
-        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
     </body>
+    <!-- Notification Popup -->
+    <%
+        Boolean resetPasswordSuccess = (Boolean) request.getAttribute("resetPasswordSuccess");
+        Boolean registerSuccess = (Boolean) request.getAttribute("registerSuccess");
+        Boolean deleteSuccess = (Boolean) request.getAttribute("deleteSuccess");
+        
+        if (resetPasswordSuccess != null && resetPasswordSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password reset successfully!
+    </div>
+    <%
+    } else if (registerSuccess != null && registerSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Registered successfully!
+    </div>
+    <%
+    } else if (deleteSuccess != null && deleteSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Account deleted successfully!
+    </div>
+    <%
+        }
+    %>
+    <!-- Footer -->
+    <jsp:include page="footer.jsp" />
+
+    <script>
+        // Password toggle functionality
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Toggle the eye / eye slash icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            var popup = document.getElementById('notification-popup');
+            if (popup) {
+                // Slide in
+                setTimeout(function () {
+                    popup.classList.add('show');
+                }, 100); // slight delay for transition
+
+                // Slide out after 3 seconds
+                setTimeout(function () {
+                    popup.classList.remove('show');
+                    popup.classList.add('hide');
+                }, 3100);
+
+                // Remove from DOM after animation
+                setTimeout(function () {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 3700);
+            }
+        });
+    </script>
+
+    <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
 </html>
