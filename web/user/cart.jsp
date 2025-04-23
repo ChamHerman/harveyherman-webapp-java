@@ -225,7 +225,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <form action="CheckOutServlet" method="get">
+                                    <form action="CheckOutServlet" method="post">
                                         <button class="btn btn-black btn-lg py-3 btn-block" type="submit">Proceed To Checkout</button>
                                     </form>
                                 </div>

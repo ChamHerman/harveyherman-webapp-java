@@ -27,15 +27,14 @@ public class CartServlet extends HttpServlet {
     private CartItemDAO cartItemDAO;
     @EJB
     private ItemDAO itemDAO;
-    @EJB
-    private UserDataDAO userDataDAO;
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession(false);
-            if (session == null || session.getAttribute("loggedInUser") == null) {
+            if (session.getAttribute("loggedInUser") == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
@@ -62,14 +61,22 @@ public class CartServlet extends HttpServlet {
             }
 
             double deliveryFee = 0.0;
-
             if (cartSubtotal >= 1000 || cartSubtotal == 0) {
                 deliveryFee = 0.0;
             } else {
                 deliveryFee = 25.0;
             }
+
             double discount = 0.0;
             double cartTotal = cartSubtotal + deliveryFee - discount;
+
+            //store in session also
+            session.setAttribute("cartSubtotal", cartSubtotal);
+            session.setAttribute("deliveryFee", deliveryFee);
+            session.setAttribute("discount", discount);
+            session.setAttribute("cartTotal", cartTotal);
+            session.setAttribute("cartItems", cartItems);
+            session.setAttribute("cart", cart);
 
             request.setAttribute("cart", cart);
             request.setAttribute("cartItems", cartItems);
@@ -89,8 +96,8 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loggedInUser") == null) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("loggedInUser") == null) {
             response.sendRedirect("login.jsp");
             return;
         }
@@ -101,23 +108,26 @@ public class CartServlet extends HttpServlet {
         String itemId = request.getParameter("itemId");
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
+        //get item
         Item item = itemDAO.getItemById(itemId);
         if (item == null) {
             response.sendRedirect("itemDetails.jsp?itemId=" + itemId + "&error=notfound");
             return;
         }
 
+        //get exist cart
         Cart cart = cartDAO.getActiveCartByUserId(userId);
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUserId(userDataDAO.findByUserId(userId));
-            cart.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-            cart.setDbstatus("active");
-            cartDAO.create(cart);
-        }
+//        if (cart == null) {
+//            cart = new Cart();
+//            cart.setUserId(userDataDAO.findByUserId(userId));
+//            cart.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+//            cart.setDbstatus("active");
+//            cartDAO.create(cart);
+//        }
 
         CartItem cartItem = cartItemDAO.getActiveCartItem(cart.getCartId(), itemId);
         if (cartItem == null) {
+            //add new item
             cartItem = new CartItem();
             cartItem.setCartItemId(null);
             cartItem.setCartId(cart);
@@ -128,6 +138,7 @@ public class CartServlet extends HttpServlet {
             cartItem.setDbstatus("active");
             cartItemDAO.create(cartItem);
         } else {
+            //if item exist in cart, just add quantity
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItem.setSubtotal(cartItem.getUnitPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
             cartItemDAO.update(cartItem);

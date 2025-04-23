@@ -35,99 +35,73 @@ public class AddOrderServlet extends HttpServlet {
     @EJB
     private OrderDAO orderDAO;
     private static final long serialVersionUID = 1L;
-    
+
     @EJB
-    private CartDAO cartDAO;
-    @EJB
-    private CartItemDAO cartItemDAO;
-    @EJB
-    private PromotionDAO promotionDAO;
+    private OrderDetailsDAO orderDetailsDAO;
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        try {
-            Orders newOrder = buildOrderFromRequest(request);
-            orderDAO.create(newOrder);
-            response.sendRedirect("OrderServlet");
-        } catch (Exception ex) {
-            ex.printStackTrace(); // For debugging, check your server log!
-            request.setAttribute("error", "Failed to add order. Please check your input.");
-            request.getRequestDispatcher("ap_order.jsp").forward(request, response);
-        }
-        
         HttpSession session = request.getSession(false);
-        String userId = (String) session.getAttribute("userId");
-        String promoCode = request.getParameter("promoCode");
-        String paymentMethod = request.getParameter("paymentMethod");
-
-        createOrderForUser(userId, promoCode, paymentMethod, request, response);
-    }
-    
-    private Orders buildOrderFromRequest(HttpServletRequest request) {
-        String userId = request.getParameter("userId");
-        String totalAmountStr = request.getParameter("totalAmount");
-        String paymentMethod = request.getParameter("paymentMethod");
-        String status = request.getParameter("status");
-        String promotionId = request.getParameter("promotionId");
-
-        Orders newOrder = new Orders();
-        newOrder.setUserId(new model.UserData(userId)); // Just set the ID, let JPA handle FK
-        newOrder.setTotalAmount(new java.math.BigDecimal(totalAmountStr));
-        newOrder.setPaymentMethod(paymentMethod);
-        newOrder.setStatus(status);
-        newOrder.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
-        if (promotionId != null && !promotionId.trim().isEmpty()) {
-            newOrder.setPromotionId(new model.Promotion(promotionId));
-        }
-        newOrder.setDbstatus("active");
-        return newOrder;
-    }
-    
-    private void createOrderForUser(String userId, String promoCode, String paymentMethod,
-                                    HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Cart cart = cartDAO.getActiveCartByUserId(userId);
-        List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
-
-        BigDecimal subtotal = BigDecimal.ZERO;
-        for (CartItem item : cartItems) {
-            BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
-            subtotal = subtotal.add(item.getUnitPrice().multiply(quantity));
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
 
-        BigDecimal deliveryFee = subtotal.compareTo(new BigDecimal("1000")) > 0 ? BigDecimal.ZERO : new BigDecimal("25");
-
+        UserData user = (UserData) session.getAttribute("loggedInUser");
+        Cart cart = (Cart) session.getAttribute("cart");
+        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
+        Double cartTotal = (Double) session.getAttribute("cartTotal");
+        String paymentMethod = request.getParameter("paymentMethod");
         String promotionId = null;
-        BigDecimal discount = BigDecimal.ZERO;
-//        if (promoCode != null && !promoCode.isEmpty()) {
-//            Promotion promotion = promotionDAO.findByPromotionCode(promoCode);
-//            if (promotion != null && "active".equals(promotion.getStatus()) &&
-//                (promotion.getMinimumPurchase() == null || subtotal.compareTo(promotion.getMinimumPurchase()) >= 0)) {
-//                discount = promotion.getDiscountValue();
-//                promotionId = promotion.getPromotionId();
-//            }
-//        }
 
-        BigDecimal totalAmount = subtotal.add(deliveryFee).subtract(discount);
-        
+        // If card, validate details (already done by HTML, but double-check)
+        if ("debit_card".equals(paymentMethod) || "credit_card".equals(paymentMethod)) {
+            String cardNumber = request.getParameter("cardNumber");
+            String expiryDate = request.getParameter("expiryDate");
+            String cvv = request.getParameter("cvv");
+            if (!cardNumber.matches("\\d{16}") || !expiryDate.matches("\\d{2}/\\d{2}") || !cvv.matches("\\d{3}")) {
+                request.setAttribute("error", "Invalid card details.");
+                request.getRequestDispatcher("checkout.jsp").forward(request, response);
+                return;
+            }
+        }
 
-
-        Orders order = new Orders();
-        order.setUserId(new model.UserData(userId));
-        order.setTotalAmount(totalAmount);
-        order.setPaymentMethod(paymentMethod);
-        order.setStatus("pending");
-        order.setPromotionId(new model.Promotion(promotionId));
-        order.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        order.setDbstatus("active");
-
+ 
+        Orders order = createOrder(null, user, cartTotal, paymentMethod, promotionId);
         orderDAO.create(order);
 
-        // ... handle order details, clear cart, etc. ...
+        for (CartItem cartItem : cartItems) {
+            OrderDetails detail = createOrderDetail(null, order, cartItem);
+            orderDetailsDAO.create(detail);
+        }
 
-        response.sendRedirect("/user/thankyou.html");
+        response.sendRedirect("thankyou.jsp");
     }
+
+    private Orders createOrder(String orderId, UserData user, Double total, String paymentMethod, String promotionId) {
+        Orders order = new Orders();
+        order.setOrderId(orderId);
+        order.setUserId(user);
+        order.setTotalAmount(BigDecimal.valueOf(total));
+        order.setPaymentMethod(paymentMethod);
+        order.setStatus("pending");
+//        order.setPromotionId(Promotion.getPromotionId);
+        order.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        order.setDbstatus("active");
+        return order;
+    }
+
+    private OrderDetails createOrderDetail(String detailId, Orders order, CartItem cartItem) {
+        OrderDetails detail = new OrderDetails();
+        detail.setDetailId(detailId);
+        detail.setOrderId(order);
+        detail.setItemId(cartItem.getItemId());
+        detail.setQuantity(cartItem.getQuantity());
+        detail.setPricePerItem(cartItem.getUnitPrice());
+        detail.setDbstatus("active");
+        return detail;
+    }
+
 }
