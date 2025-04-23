@@ -27,12 +27,9 @@ public class AccessFilter implements Filter {
 
     // Define paths that should be excluded from authentication checks
     private final List<String> publicPaths = Arrays.asList(
-            "/assets/",
-            "/images/",
             "/staff/ap_login.jsp",
             "/staff/StaffLoginServlet",
             "/user/about.jsp",
-            "/user/cart.jsp",
             "/user/challengeQuestion.jsp",
             "/user/contact.jsp",
             "/user/footer.jsp",
@@ -45,11 +42,7 @@ public class AccessFilter implements Filter {
             "/user/register.jsp",
             "/user/resetPassword.jsp",
             "/user/services.jsp",
-            "/user/success.jsp",
-            "/user/thankyou.jsp",
-            "/user/CartItemServlet",
-            "/user/CartServlet",
-            "/user/ItemDetailsServlet",
+            "/user/details",
             "/user/ResetPasswordServlet",
             "/user/UserLoginServlet",
             "/user/UserRegisterServlet",
