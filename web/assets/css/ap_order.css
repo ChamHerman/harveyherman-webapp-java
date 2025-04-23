@@ -9,20 +9,16 @@
     padding: 0;
 }
 
-/* Header and footer styling similar to items */
-.header, .footer {
-    background-color:#333;
-    color:#fff;
-    padding: 1rem;
-    text-align: center;
-}
+    
 
 .dashboard-summary {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 20px;
+    width: 100%;
+    align-content: center;
 }
 
 /* search section and two button 
@@ -53,20 +49,45 @@
 
 /* Style for the total orders block when it's just one box */
 .dashboard-summary.single-summary {
-    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
 }
+
 
 /* Each summary box */
 .summary-box {
     flex: 1;
     min-width: 200px; /* Prevents shrinking too small on small screens */
     background-color: #ffffff;
-    border: 2px solid #28a745;
+    border: 2px solid black;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+
+
+.total-order-box {
+    text-align: center;
+    display: flex;
+    width: 100%;
+    background-color: #ffffff;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    align-content: center;
+}
+
+.total-orders {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    padding-top: 1rem;
+}
+
 
 
 /* Order table styling */
@@ -78,10 +99,6 @@
         #fff;
 }
 
-#pending { border-color: orange; }
-#processing { border-color: blue; }
-#shipping { border-color: purple; }
-#delivered { border-color: green; }
 
 
 .order-table th,
@@ -94,7 +111,7 @@
 
 .order-table th {
     background-color:
-        #007bff;
+        grey;
     color:
         #fff;
 }
@@ -134,4 +151,8 @@
     display: inline-block;
     margin: 0.25rem;
     border-radius: 3px;
+}
+
+.summary-box p {
+    font-size: 15px;
 }

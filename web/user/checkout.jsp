@@ -1,5 +1,7 @@
 <%@page import="java.util.List"%>
 <%@page import="model.CartItem"%>
+<%@ page import="model.UserData" %>
+<%@ page import="model.Cart" %>
 <!doctype html>
 <html lang="en">
     <head>
@@ -68,7 +70,14 @@
         </div>
         <!-- End Hero Section -->
         <%
-            model.UserData user = (model.UserData) request.getAttribute("user");
+            UserData user = (UserData) session.getAttribute("loggedInUser");
+            Cart cart = (Cart) session.getAttribute("cart");
+            List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
+            Double cartSubtotal = (Double) session.getAttribute("cartSubtotal");
+            Double deliveryFee = (Double) session.getAttribute("deliveryFee");
+            Double discount = (Double) session.getAttribute("discount");
+            Double cartTotal = (Double) session.getAttribute("cartTotal");
+            String paymentMethod = (String) session.getAttribute("paymentMethod");
         %>
         <div class="untree_co-section">
             <div class="container">
@@ -81,20 +90,21 @@
                             <h3>Billing Details</h3>
                             <div class="form-group mb-4">
                                 <label>Full Name</label>
-                                <input type="text" name="fullname" class="form-control" value="<%= user.getFullname()%>" required>
+                                <input type="text" name="fullname" class="form-control" value="<%= user.getFullname()%>" readonly>
                             </div>
                             <div class="form-group mb-4">
                                 <label>Address</label>
-                                <input type="text" name="address" class="form-control" value="<%= user.getAddress()%>" required>
+                                <input type="text" name="address" class="form-control" value="<%= user.getAddress()%>" readonly>
                             </div>
                             <div class="form-group mb-4">
                                 <label>Contact Number</label>
-                                <input type="text" name="contact" class="form-control" value="<%= user.getContactNumber()%>" required>
+                                <input type="text" name="contact" class="form-control" value="<%= user.getContactNumber()%>" readonly>
                             </div>
                             <div class="form-group mb-4">
                                 <label>Email Address</label>
-                                <input type="email" name="email" class="form-control" value="<%= user.getEmail()%>" required>
+                                <input type="email" name="email" class="form-control" value="<%= user.getEmail()%>" readonly>
                             </div>
+                            <a href="editProfile.jsp" class="btn btn-secondary mt-2">Edit Profile</a>
                         </div>
                     </div>
 
@@ -116,8 +126,8 @@
                                 <tbody>
                                     <%
                                         int rowNum = 1;
-                                        List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
-                                        for (CartItem item : cartItems) {
+                                        if (cartItems != null) {
+                                            for (CartItem item : cartItems) {
                                     %>
                                     <tr>
                                         <td><%= rowNum++%></td>
@@ -127,104 +137,74 @@
                                         <td>RM <%= item.getSubtotal()%></td>
                                     </tr>
                                     <%
+                                            }
                                         }
                                     %>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colspan="4">Subtotal</td>
-                                        <td>RM <span id="cartSubtotal"><%= request.getAttribute("cartSubtotal")%></span></td>
+                                        <td>RM <span id="cartSubtotal"><%= cartSubtotal != null ? String.format("%.2f", cartSubtotal) : "0.00"%></span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4">Discount</td>
-                                        <td>RM <span id="discount"><%= request.getAttribute("discount")%></span></td>
+                                        <td>RM <span id="discount"><%= discount != null ? String.format("%.2f", discount) : "0.00"%></span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4">Delivery Fee</td>
-                                        <td>RM <span id="deliveryFee"><%= request.getAttribute("deliveryFee")%></span></td>
+                                        <td>RM <span id="deliveryFee"><%= deliveryFee != null ? String.format("%.2f", deliveryFee) : "0.00"%>  </span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4"><strong>Total</strong></td>
-                                        <td><strong>RM <span id="cartTotal"><%= request.getAttribute("cartTotal")%></span></strong></td>
+                                        <td><strong>RM <span id="cartTotal"><%= cartTotal != null ? String.format("%.2f", cartTotal) : "0.00"%></span></strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
-                        <%
-                            String selectedPayment = request.getParameter("paymentMethod");
-                            if (selectedPayment == null) {
-                                selectedPayment = "cash"; // default
-                            }
-                        %>
                         <!-- Payment Method -->
-                        <div class="payment-section">
-                            <h3>Payment Method</h3>
-                            <div>
-                                <input type="radio" name="paymentMethod" value="cash" id="cash"
-                                       <%= "cash".equals(selectedPayment) ? "checked" : ""%>
-                                       onclick="toggleCardForm(false)">
-                                <label for="cash">Cash on Delivery</label>
-                            </div>
-                            <div>
-                                <input type="radio" name="paymentMethod" value="debit_card" id="debit"
-                                       <%= "debit_card".equals(selectedPayment) ? "checked" : ""%>
-                                       onclick="toggleCardForm(true)">
-                                <label for="debit">Debit Card</label>
-                            </div>
-                            <div>
-                                <input type="radio" name="paymentMethod" value="credit_card" id="credit"
-                                       <%= "credit_card".equals(selectedPayment) ? "checked" : ""%>
-                                       onclick="toggleCardForm(true)">
-                                <label for="credit">Credit Card</label>
-                            </div>
-                            <div>
-                                <input type="radio" name="paymentMethod" value="e-wallet" id="ewallet"
-                                       <%= "e-wallet".equals(selectedPayment) ? "checked" : ""%>
-                                       onclick="toggleCardForm(false)">
-                                <label for="ewallet">E-Wallet</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block mt-4">Place Order</button>
-            </div>
-
-
-            <!-- Card Info Modal -->
-            <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form id="cardForm">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="cardModalLabel">Card Information</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Card Number</label>
-                                    <input type="text" class="form-control" name="cardNumber" required>
+                        <form id="checkoutForm" action="AddOrderServlet" method="post">
+                            <div class="payment-section mt-4">
+                                <h3>Payment Method</h3>
+                                <div>
+                                    <input type="radio" name="paymentMethod" value="cash" id="cash" checked onclick="toggleCardForm(false)">
+                                    <label for="cash">Cash on Delivery</label>
                                 </div>
-                                <div class="form-group">
-                                    <label>Card Holder Name</label>
-                                    <input type="text" class="form-control" name="cardHolder" required>
+                                <div>
+                                    <input type="radio" name="paymentMethod" value="debit_card" id="debit" onclick="toggleCardForm(true)">
+                                    <label for="debit">Debit Card</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="paymentMethod" value="credit_card" id="credit" onclick="toggleCardForm(true)">
+                                    <label for="credit">Credit Card</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="paymentMethod" value="e-wallet" id="ewallet" onclick="toggleCardForm(false)">
+                                    <label for="ewallet">E-Wallet</label>
+                                </div>
+                            </div>
+                            
+                            <!-- Card Info Modal -->
+                            <div id="cardInfo" style="display:none;">
+                                <div class="form-group mt-3">
+                                    <label>Card Number</label>
+                                    <input type="text" name="cardNumber" class="form-control" pattern="\\d{16}" title="16 digits" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Expiry Date</label>
-                                    <input type="text" class="form-control" name="expiry" placeholder="MM/YY" required>
+                                    <input type="text" name="expiryDate" class="form-control" pattern="\\d{2}/\\d{2}" maxlength="5" title="MM/YY" required>
                                 </div>
                                 <div class="form-group">
                                     <label>CVV</label>
-                                    <input type="text" class="form-control" name="cvv" required>
+                                    <input type="text" name="cvv" class="form-control" pattern="\\d{3}" maxlength="3" minlength="3" title="3 digits" required>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save Card</button>
-                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Place Order</button>
                         </form>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Start Footer Section -->

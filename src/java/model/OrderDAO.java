@@ -99,20 +99,20 @@ public class OrderDAO {
     return countAllOrders();
 }
 
-    public List<Object[]> countOrdersGroupedByStatus() {
-    // No named query for group by, so do it in Java
-    List<Orders> orders = getAllOrders();
-    java.util.Map<String, Long> map = new java.util.HashMap<>();
-    for (Orders o : orders) {
-        String status = o.getStatus();
-        map.put(status, map.getOrDefault(status, 0L) + 1);
-    }
-    List<Object[]> result = new java.util.ArrayList<>();
-    for (java.util.Map.Entry<String, Long> entry : map.entrySet()) {
-        result.add(new Object[]{entry.getKey(), entry.getValue()});
-    }
-    return result;
-}
+//    public List<Object[]> countOrdersGroupedByStatus() {
+//    // No named query for group by, so do it in Java
+//    List<Orders> orders = getAllOrders();
+//    java.util.Map<String, Long> map = new java.util.HashMap<>();
+//    for (Orders o : orders) {
+//        String status = o.getStatus();
+//        map.put(status, map.getOrDefault(status, 0L) + 1);
+//    }
+//    List<Object[]> result = new java.util.ArrayList<>();
+//    for (java.util.Map.Entry<String, Long> entry : map.entrySet()) {
+//        result.add(new Object[]{entry.getKey(), entry.getValue()});
+//    }
+//    return result;
+//}
 
     // Update the order
     public void update(Orders order) {

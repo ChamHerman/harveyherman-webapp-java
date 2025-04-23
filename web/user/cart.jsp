@@ -97,8 +97,8 @@
                                         <th>No.</th>
                                         <th>Image</th>
                                         <th>Item</th>
-                                        <th>Quantity</th>
                                         <th>Unit Price</th>
+                                        <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Action</th>
                                     </tr>
@@ -158,7 +158,7 @@
                                 <%
                                     cartSubtotal = (Double) request.getAttribute("cartSubtotal");
                                 %>
-                                
+
                                 Purchase more than RM1000, free delivery !!!
                             </table>
                         </div>
@@ -225,7 +225,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <form action="CheckOutServlet" method="get">
+                                    <form action="CheckOutServlet" method="post">
                                         <button class="btn btn-black btn-lg py-3 btn-block" type="submit">Proceed To Checkout</button>
                                     </form>
                                 </div>
