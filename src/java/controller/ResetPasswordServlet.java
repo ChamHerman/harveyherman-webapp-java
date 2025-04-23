@@ -58,10 +58,9 @@ public class ResetPasswordServlet extends HttpServlet {
             userLogin.setPassword(newPassword);
             userLoginDAO.update(userLogin);
             session.removeAttribute("resetPasswordLoginId");
-            request.setAttribute("resetPasswordSuccess", Boolean.TRUE);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
-            dispatcher.forward(request, response);
 
+            request.getSession().setAttribute("resetPasswordSuccess", Boolean.TRUE);
+            response.sendRedirect(request.getContextPath() + "/user/login.jsp");
         } catch (Exception e) {
             request.setAttribute("errorMessage", "Failed to reset password: " + e.getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/resetPassword.jsp");

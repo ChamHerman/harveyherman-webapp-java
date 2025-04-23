@@ -54,13 +54,10 @@ public class UserDeleteAccountServlet extends HttpServlet {
             userDataDAO.delete(userId);
             session.removeAttribute("loggedInUser");
 
-            request.setAttribute("deleteSuccess", Boolean.TRUE);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
-            dispatcher.forward(request, response);
-
-        } catch (Exception e) {
-            System.out.println("Error deleting account: " + e.getMessage());
-            e.printStackTrace();
+            request.getSession().setAttribute("deleteSuccess", Boolean.TRUE);
+            response.sendRedirect(request.getContextPath() + "/user/login.jsp");
+        } catch (Exception ex) {
+            ex.printStackTrace();
             session.setAttribute("errorMessage", "Failed to delete account. Please try again later.");
             response.sendRedirect(request.getContextPath() + "/user/profile.jsp");
         }

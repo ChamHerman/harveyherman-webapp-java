@@ -28,10 +28,19 @@
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <% if (session.getAttribute("loggedInUser") != null) {%>
                 <li class="user-dropdown-container">
-                    <a class="nav-link" href="#"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
+                    <a class="nav-link" href="profile.jsp"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
                     <div class="user-dropdown">
                         <a href="profile.jsp">View User Details</a>
                         <a href="UserLogoutServlet">Log Out</a>
+                    </div>
+                </li>
+                <li class="user-dropdown-container">
+                    <a class="nav-link" href="CartServlet">
+                        <img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart">
+                    </a>
+                    <div class="user-dropdown">
+                        <a href="CartServlet">Cart</a>
+                        <a href="viewOrders.jsp">View Order(s)</a>
                     </div>
                 </li>
                 <% } else {%>
@@ -40,60 +49,65 @@
                         <img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="Login">
                     </a>
                 </li>
+                <li>
+                    <a class="nav-link" href="cart.jsp">
+                        <img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart">
+                    </a>
+                </li>
                 <% }%>
-                <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
+
             </ul>
         </div>
     </div>
 </nav>
 
 <script>
-(function() {
-    var header = document.getElementById('main-header');
-    var lastScrollY = window.scrollY;
-    var ticking = false;
-    var heroHeight = 0;
-    var body = document.body;
-    function getHeroHeight() {
-        var hero = document.querySelector('.shop-hero, .hero');
-        return hero ? hero.offsetHeight : 0;
-    }
-    function onScroll() {
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                var currentY = window.scrollY;
-                if (currentY > getHeroHeight() - 40) {
-                    body.classList.add('has-fixed-header');
-                    if (currentY < lastScrollY - 10) {
-                        // Scrolling up
-                        header.classList.add('header-visible');
-                        header.classList.remove('header-hidden');
-                    } else if (currentY > lastScrollY + 10) {
-                        // Scrolling down
-                        header.classList.remove('header-visible');
-                        header.classList.add('header-hidden');
+    (function () {
+        var header = document.getElementById('main-header');
+        var lastScrollY = window.scrollY;
+        var ticking = false;
+        var heroHeight = 0;
+        var body = document.body;
+        function getHeroHeight() {
+            var hero = document.querySelector('.shop-hero, .hero');
+            return hero ? hero.offsetHeight : 0;
+        }
+        function onScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(function () {
+                    var currentY = window.scrollY;
+                    if (currentY > getHeroHeight() - 40) {
+                        body.classList.add('has-fixed-header');
+                        if (currentY < lastScrollY - 10) {
+                            // Scrolling up
+                            header.classList.add('header-visible');
+                            header.classList.remove('header-hidden');
+                        } else if (currentY > lastScrollY + 10) {
+                            // Scrolling down
+                            header.classList.remove('header-visible');
+                            header.classList.add('header-hidden');
+                        }
+                    } else {
+                        // At top/hero
+                        header.classList.remove('header-visible', 'header-hidden');
+                        body.classList.remove('has-fixed-header');
                     }
-                } else {
-                    // At top/hero
-                    header.classList.remove('header-visible', 'header-hidden');
-                    body.classList.remove('has-fixed-header');
-                }
-                lastScrollY = currentY;
-                ticking = false;
-            });
-            ticking = true;
+                    lastScrollY = currentY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-    // Show header on page load if not at top
-    window.addEventListener('DOMContentLoaded', function() {
-        heroHeight = getHeroHeight();
-        if (window.scrollY > heroHeight - 40) {
-            body.classList.add('has-fixed-header');
-            header.classList.add('header-visible');
-        }
-    });
-})();
+        window.addEventListener('scroll', onScroll, {passive: true});
+        // Show header on page load if not at top
+        window.addEventListener('DOMContentLoaded', function () {
+            heroHeight = getHeroHeight();
+            if (window.scrollY > heroHeight - 40) {
+                body.classList.add('has-fixed-header');
+                header.classList.add('header-visible');
+            }
+        });
+    })();
 </script>
 
 
