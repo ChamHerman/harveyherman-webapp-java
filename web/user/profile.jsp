@@ -4,13 +4,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="author" content="HarveyHerman">
-        <link rel="shortcut icon" href="favicon.png">
-
-        <meta name="description" content="" />
-        <meta name="keywords" content="bootstrap, bootstrap4" />
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
+        <title>User Profile - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +14,7 @@
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/profile.css" rel="stylesheet">
-        <title>User Profile - HarveyHerman</title>
+
     </head>
 
     <body>
@@ -123,34 +119,72 @@
                 </div>
             </div>
         </div>
-
-        <jsp:include page="footer.jsp" />
-
-        <script>
-            // Password toggle functionality
-            document.addEventListener('DOMContentLoaded', function () {
-                const toggleDeletePassword = document.querySelector('#toggleDeletePassword');
-                const confirmPassword = document.querySelector('#confirmPassword');
-
-                if (toggleDeletePassword && confirmPassword) {
-                    toggleDeletePassword.addEventListener('click', function () {
-                        // Toggle the type attribute
-                        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                        confirmPassword.setAttribute('type', type);
-
-                        // Toggle the eye / eye slash icon
-                        const icon = this.querySelector('i');
-                        if (icon) {
-                            icon.classList.toggle('fa-eye');
-                            icon.classList.toggle('fa-eye-slash');
-                        }
-                    });
-                }
-            });
-        </script>
-
-        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
     </body>
+    <!-- Notification Popup -->
+    <%
+        Boolean profileUpdateSuccess = (Boolean) request.getAttribute("profileUpdateSuccess");
+        Boolean changePasswordSuccess = (Boolean) request.getAttribute("changePasswordSuccess");
+        if (profileUpdateSuccess != null && profileUpdateSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Profile updated successfully!
+    </div>
+    <%
+        } else if (changePasswordSuccess != null && changePasswordSuccess) {
+    %>
+    <div id="notification-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password changed successfully!
+    </div>
+    <%
+        }
+    %>
+    <jsp:include page="footer.jsp" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleDeletePassword = document.querySelector('#toggleDeletePassword');
+            const confirmPassword = document.querySelector('#confirmPassword');
+
+            if (toggleDeletePassword && confirmPassword) {
+                toggleDeletePassword.addEventListener('click', function () {
+                    // Toggle the type attribute
+                    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPassword.setAttribute('type', type);
+
+                    // Toggle the eye / eye slash icon
+                    const icon = this.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-eye');
+                        icon.classList.toggle('fa-eye-slash');
+                    }
+                });
+            }
+
+            var popup = document.getElementById('notification-popup');
+            if (popup) {
+                // Slide in
+                setTimeout(function () {
+                    popup.classList.add('show');
+                }, 100); // slight delay for transition
+
+                // Slide out after 3 seconds
+                setTimeout(function () {
+                    popup.classList.remove('show');
+                    popup.classList.add('hide');
+                }, 3100);
+
+                // Remove from DOM after animation
+                setTimeout(function () {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 3700);
+            }
+        });
+    </script>
+
+    <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
+
 </html>

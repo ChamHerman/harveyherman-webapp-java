@@ -14,6 +14,37 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <style>
+            #notification-popup {
+                display: block;
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 0;
+                z-index: 9999;
+                background: #3b5d50;
+                color: #fff;
+                padding: 1.2rem 2.2rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(34,84,61,0.18);
+                font-size: 1.1rem;
+                opacity: 0;
+                transition: transform 0.5s cubic-bezier(.4,2,.6,1), opacity 0.5s;
+            }
+
+            #notification-popup.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0px);
+                bottom: 40px;
+            }
+
+            #notification-popup.hide {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 0;
+            }
+        </style>
     </head>
 
     <body>
@@ -76,7 +107,7 @@
                                             </svg>
                                         </div> <!-- /.icon -->
                                         <div class="service-contents">
-                                            <p><%= companyEmail %></p>
+                                            <p><%= companyEmail%></p>
                                         </div> <!-- /.service-contents-->
                                     </div> <!-- /.service -->
                                 </div>
@@ -138,21 +169,41 @@
     <!-- End Contact Form -->
 
     <!-- Notification Popup -->
-    <div id="notification-popup" style="display:none;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:9999;background:#3b5d50;color:#fff;padding:1.2rem 2.2rem;border-radius:12px;box-shadow:0 4px 24px rgba(34,84,61,0.18);font-size:1.1rem;">
+    <div id="notification-popup">
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Thank you! Your message has been sent.
     </div>
 
     <script>
-    function showNotification(event) {
-        event.preventDefault();
-        var popup = document.getElementById('notification-popup');
-        popup.style.display = 'block';
-        setTimeout(function() {
-            popup.style.display = 'none';
-            document.getElementById('contact-form').reset();
-        }, 2500);
-        return false;
-    }
+        function showNotification(event) {
+            event.preventDefault();
+            var popup = document.getElementById('notification-popup');
+            if (popup) {
+                // Reset popup state
+                popup.classList.remove('hide');
+                popup.classList.remove('show');
+                popup.style.display = 'block';
+
+                // Slide in
+                setTimeout(function () {
+                    popup.classList.add('show');
+                }, 100);
+
+                // Slide out after 2.5 seconds
+                setTimeout(function () {
+                    popup.classList.remove('show');
+                    popup.classList.add('hide');
+                }, 2600);
+
+                // Remove from DOM after animation, or just hide
+                setTimeout(function () {
+                    popup.style.display = 'none';
+                }, 3200);
+
+                // Reset the form
+                document.getElementById('contact-form').reset();
+            }
+            return false;
+        }
     </script>
 
     <!-- Footer -->

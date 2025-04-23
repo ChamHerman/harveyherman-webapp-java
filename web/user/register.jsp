@@ -1,10 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
         <title>Register - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
@@ -15,6 +14,7 @@
         <link href="<%=request.getContextPath()%>/assets/css/register.css" rel="stylesheet">
     </head>
     <body>
+        <!-- Header -->
         <jsp:include page="header.jsp" />
 
         <div class="register-section">
@@ -112,26 +112,29 @@
             </div>
         </div>
 
-        <jsp:include page="footer.jsp" />
 
-        <script>
-            // Password toggle functionality
-            const togglePassword = document.querySelector('#togglePassword');
-            const password = document.querySelector('#password');
-
-            togglePassword.addEventListener('click', function () {
-                // Toggle the type attribute
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-
-                // Toggle the eye / eye slash icon
-                this.classList.toggle('fa-eye');
-                this.classList.toggle('fa-eye-slash');
-            });
-        </script>
-
-        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
     </body>
+
+    <!-- Footer -->
+    <jsp:include page="footer.jsp" />
+
+    <script>
+        // Password toggle functionality
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Toggle the eye / eye slash icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+
+    <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
 </html>
