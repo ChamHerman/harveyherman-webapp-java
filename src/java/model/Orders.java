@@ -39,6 +39,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findByDbstatus", query = "SELECT o FROM Orders o WHERE o.dbstatus = :dbstatus")})
 public class Orders implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total_amount")
+    private BigDecimal totalAmount;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 11)
+    @Column(name = "payment_method")
+    private String paymentMethod;
+    @Size(max = 9)
+    @Column(name = "status")
+    private String status;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -48,24 +65,6 @@ public class Orders implements Serializable {
     @Column(name = "order_id")
     private String orderId;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "total_amount")
-    private BigDecimal totalAmount;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 11)
-    @Column(name = "payment_method")
-    private String paymentMethod;
-
-    @Size(max = 9)
-    @Column(name = "status")
-    private String status;
-
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus = "active";
 
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -133,13 +132,6 @@ public class Orders implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
 
     public void setDeliveryList(List<Delivery> deliveryList) {
         this.deliveryList = deliveryList;
@@ -164,14 +156,23 @@ public class Orders implements Serializable {
     public void setUserId(UserData userId) {
         this.userId = userId;
     }
-
-    public String getStatus() {
+    
+        public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
 
     @XmlTransient
     public List<Delivery> getDeliveryList() {
@@ -216,5 +217,7 @@ public class Orders implements Serializable {
     public String toString() {
         return "model.Orders[ orderId=" + orderId + " ]";
     }
+
+
 
 }
