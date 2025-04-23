@@ -9,7 +9,7 @@ function addToCart(itemId, quantity) {
     .then(data => {
       if (data.success) {
         alert('Added to cart!');
-        // Optionally update cart icon/mini-cart here
+        
       } else {
         alert('Failed to add to cart: ' + data.message);
       }
@@ -80,20 +80,15 @@ function addToCart(itemId, quantity) {
   }
   
   //show credit and debit card information modal
-  function toggleCardForm(show) {
-      var cardModal = new bootstrap.Modal(document.getElementById('cardModal'));
-      if (show) {
-          cardModal.show();
-          document.getElementById('cardInfo').style.display = show ? 'block' : 'none';
-      } else {
-          cardModal.hide();
-          document.getElementById('cardInfo').style.display = show ? 'block' : 'none';
-      }
-  }
-  
-  
-  // On page load, show card info if card is selected
-  window.onload = function() {
-    var cardSelected = document.getElementById('debit').checked || document.getElementById('credit').checked;
-    toggleCardForm(cardSelected);
-  };
+function toggleCardForm(show) {
+    document.getElementById('cardInfo').style.display = show ? 'block' : 'none';
+    // Set required only if card is selected
+    document.querySelectorAll('#cardInfo input').forEach(function(input) {
+        input.required = show;
+    });
+}
+window.onload = function() {
+    var debit = document.getElementById('debit');
+    var credit = document.getElementById('credit');
+    toggleCardForm((debit && debit.checked) || (credit && credit.checked));
+};

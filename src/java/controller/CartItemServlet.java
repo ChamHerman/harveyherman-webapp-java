@@ -51,7 +51,8 @@ public class CartItemServlet extends HttpServlet {
             return;
         }
     }
-
+    
+    //increase or decrease item
     private void handleUpdate(HttpServletRequest request, HttpServletResponse response, String cartItemId)
             throws IOException {
         int change = Integer.parseInt(request.getParameter("change"));
@@ -68,6 +69,7 @@ public class CartItemServlet extends HttpServlet {
         updateCartTotalsAndRespond(response, cartItem);
     }
 
+    //remove item
     private void handleRemove(HttpServletRequest request, HttpServletResponse response, String cartItemId)
             throws IOException {
         CartItem cartItem = cartItemDAO.findById(cartItemId);
@@ -79,7 +81,8 @@ public class CartItemServlet extends HttpServlet {
             response.getWriter().write("{\"success\":false,\"message\":\"Item not found.\"}");
         }
     }
-
+    
+    
     private void updateCartTotalsAndRespond(HttpServletResponse response, CartItem cartItem) throws IOException {
         Cart cart = cartItem.getCartId();
         String cartId = cart.getCartId();

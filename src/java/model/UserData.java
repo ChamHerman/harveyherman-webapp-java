@@ -40,6 +40,35 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "UserData.findByDbstatus", query = "SELECT u FROM UserData u WHERE u.dbstatus = :dbstatus")})
 public class UserData implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "fullname")
+    private String fullname;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "email")
+    private String email;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "contact_number")
+    private String contactNumber;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "address")
+    private String address;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "gender")
+    private String gender;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -53,38 +82,6 @@ public class UserData implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "fullname")
-    private String fullname;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "email")
-    private String email;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "contact_number")
-    private String contactNumber;
-
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "address")
-    private String address;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "gender")
-    private String gender;
-
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
 
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -121,55 +118,7 @@ public class UserData implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
-
-    public UserLogin getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(UserLogin userLogin) {
-        this.userLogin = userLogin;
-    }
-
+    
     public String getFullname() {
         return fullname;
     }
@@ -193,6 +142,57 @@ public class UserData implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+
+    public UserLogin getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(UserLogin userLogin) {
+        this.userLogin = userLogin;
+    }
+
 
     @XmlTransient
     public List<Cart> getCartList() {
@@ -237,4 +237,6 @@ public class UserData implements Serializable {
     public String toString() {
         return "model.UserData[ userId=" + userId + " ]";
     }
+
+    
 }

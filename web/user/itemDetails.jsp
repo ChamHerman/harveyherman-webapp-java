@@ -78,11 +78,11 @@
                                required
                                <% if (item.getStockQuantity() == 0) { %> disabled <% } %>>
                         <% if (item.getStockQuantity() == 0) { %>
-                        <button type="submit" class="btn btn-success" onclick="addToCart('<%= item.getItemId() %>', item.getStockQuantity())">
+                        <button type="submit" class="btn btn-success">
                             <i class="fas fa-times-circle"></i> Out of Stock
                         </button>
                         <% } else { %>
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success" onclick="addToCart('<%= item.getItemId() %>', item.getStockQuantity())">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                         <% } %>

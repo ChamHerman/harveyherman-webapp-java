@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "UserLogoutServlet", urlPatterns = {"/user/UserLogoutServlet"})
-public class UserLogoutServlet extends HttpServlet {
+@WebServlet(name = "StaffLogoutServlet", urlPatterns = {"/manager/StaffLogoutServlet", "/staff/StaffLogoutServlet"})
+public class StaffLogoutServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,9 +23,10 @@ public class UserLogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            session.removeAttribute("loggedInUser");
+            session.removeAttribute("loggedInManager");
+            session.removeAttribute("loggedInStaff");
         }
 
-        response.sendRedirect(request.getContextPath() + "/user/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/staff/ap_login.jsp");
     }
 }

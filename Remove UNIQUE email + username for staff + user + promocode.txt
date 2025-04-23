@@ -13,3 +13,7 @@ DROP INDEX `email` ;
 ALTER TABLE `harveyhermandb`.`stafflogin` 
 DROP INDEX `username` ;
 ;
+
+ALTER TABLE `harveyhermandb`.`promotion` 
+DROP INDEX `promotion_code` ;
+;
