@@ -86,7 +86,7 @@ public class AddOrderServlet extends HttpServlet {
         order.setUserId(user);
         order.setTotalAmount(BigDecimal.valueOf(total));
         order.setPaymentMethod(paymentMethod);
-        order.setStatus("pending");
+        order.setStatus("packaging");
 //        order.setPromotionId(Promotion.getPromotionId);
         order.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         order.setDbstatus("active");
