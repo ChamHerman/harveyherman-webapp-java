@@ -1,0 +1,11 @@
+ALTER TABLE `harveyhermandb`.`orders` 
+CHANGE COLUMN `status` `status` ENUM('packaging', 'shipping', 'delivery', 'delivered') NULL DEFAULT 'packaging' ;
+
+ALTER TABLE `harveyhermandb`.`delivery` 
+DROP COLUMN `expected_date`,
+DROP COLUMN `shipping_status`,
+ADD COLUMN `receiver_name` VARCHAR(255) NOT NULL AFTER `order_id`,
+ADD COLUMN `receiver_contact` VARCHAR(255) NOT NULL AFTER `receiver_name`,
+CHANGE COLUMN `delivered_date` `delivered_date` TIMESTAMP NULL DEFAULT NULL AFTER `receiver_address`,
+CHANGE COLUMN `shipping_address` `receiver_address` TEXT NOT NULL ;
+

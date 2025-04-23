@@ -46,7 +46,7 @@ CREATE TABLE Item (
 -- Promotion: Stores promotional codes and discounts
 CREATE TABLE Promotion (
     promotion_id VARCHAR(255) PRIMARY KEY,
-    promotion_code VARCHAR(255) NOT NULL UNIQUE,
+    promotion_code VARCHAR(255) NOT NULL,
     discount_value DECIMAL(25,2) NOT NULL,
     status ENUM('active', 'expired') NOT NULL,
     minimum_purchase DECIMAL(25,2),
@@ -61,7 +61,7 @@ CREATE TABLE Orders (
     user_id VARCHAR(255) NOT NULL,
     total_amount DECIMAL(25,2) NOT NULL,
     payment_method ENUM('cash', 'debit_card', 'credit_card', 'e-wallet') NOT NULL,
-    status ENUM('pending', 'packaging', 'shipping', 'delivered') DEFAULT 'pending',
+    status ENUM('packaging', 'shipping', 'delivery', 'delivered') DEFAULT 'packaging',
     promotion_id VARCHAR(255) DEFAULT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE,
@@ -83,11 +83,11 @@ CREATE TABLE OrderDetails (
 CREATE TABLE Delivery (
     delivery_id VARCHAR(255) PRIMARY KEY,
     order_id VARCHAR(255) NOT NULL,
-    shipping_address TEXT NOT NULL,
-    shipping_status ENUM('pending', 'shipped', 'delivered') DEFAULT 'pending',
-    expected_date DATE,
+	receiver_name VARCHAR(255) NOT NULL,
+	receiver_contact VARCHAR(255) NOT NULL,
+    receiver_address TEXT NOT NULL,
+	delivered_date TIMESTAMP NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    delivered_date TIMESTAMP NULL,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
 );
 
