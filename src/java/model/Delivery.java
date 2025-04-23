@@ -22,31 +22,22 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author herman
+ */
 @Entity
 @Table(name = "delivery")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Delivery.findAll", query = "SELECT d FROM Delivery d WHERE d.dbstatus = 'active'"),
     @NamedQuery(name = "Delivery.findByDeliveryId", query = "SELECT d FROM Delivery d WHERE d.deliveryId = :deliveryId AND d.dbstatus = 'active'"),
-    @NamedQuery(name = "Delivery.findByShippingStatus", query = "SELECT d FROM Delivery d WHERE d.shippingStatus = :shippingStatus AND d.dbstatus = 'active'"),
-    @NamedQuery(name = "Delivery.findByExpectedDate", query = "SELECT d FROM Delivery d WHERE d.expectedDate = :expectedDate AND d.dbstatus = 'active'"),
-    @NamedQuery(name = "Delivery.findByCreatedDate", query = "SELECT d FROM Delivery d WHERE d.createdDate = :createdDate AND d.dbstatus = 'active'"),
+    @NamedQuery(name = "Delivery.findByReceiverName", query = "SELECT d FROM Delivery d WHERE d.receiverName = :receiverName AND d.dbstatus = 'active'"),
+    @NamedQuery(name = "Delivery.findByReceiverContact", query = "SELECT d FROM Delivery d WHERE d.receiverContact = :receiverContact AND d.dbstatus = 'active'"),
     @NamedQuery(name = "Delivery.findByDeliveredDate", query = "SELECT d FROM Delivery d WHERE d.deliveredDate = :deliveredDate AND d.dbstatus = 'active'"),
+    @NamedQuery(name = "Delivery.findByCreatedDate", query = "SELECT d FROM Delivery d WHERE d.createdDate = :createdDate AND d.dbstatus = 'active'"),
     @NamedQuery(name = "Delivery.findByDbstatus", query = "SELECT d FROM Delivery d WHERE d.dbstatus = :dbstatus")})
 public class Delivery implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "shipping_address")
-    private String shippingAddress;
-    @Size(max = 9)
-    @Column(name = "shipping_status")
-    private String shippingStatus;
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus = "active";
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,15 +46,31 @@ public class Delivery implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "delivery_id")
     private String deliveryId;
-    @Column(name = "expected_date")
-    @Temporal(TemporalType.DATE)
-    private Date expectedDate;
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "receiver_name")
+    private String receiverName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "receiver_contact")
+    private String receiverContact;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Size(min = 1, max = 65535)
+    @Column(name = "receiver_address")
+    private String receiverAddress;
     @Column(name = "delivered_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredDate;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @ManyToOne(optional = false)
     private Orders orderId;
@@ -75,9 +82,11 @@ public class Delivery implements Serializable {
         this.deliveryId = deliveryId;
     }
 
-    public Delivery(String deliveryId, String shippingAddress) {
+    public Delivery(String deliveryId, String receiverName, String receiverContact, String receiverAddress) {
         this.deliveryId = deliveryId;
-        this.shippingAddress = shippingAddress;
+        this.receiverName = receiverName;
+        this.receiverContact = receiverContact;
+        this.receiverAddress = receiverAddress;
     }
 
     public String getDeliveryId() {
@@ -88,36 +97,28 @@ public class Delivery implements Serializable {
         this.deliveryId = deliveryId;
     }
 
-    public String getShippingAddress() {
-        return shippingAddress;
+    public String getReceiverName() {
+        return receiverName;
     }
 
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 
-    public String getShippingStatus() {
-        return shippingStatus;
+    public String getReceiverContact() {
+        return receiverContact;
     }
 
-    public void setShippingStatus(String shippingStatus) {
-        this.shippingStatus = shippingStatus;
+    public void setReceiverContact(String receiverContact) {
+        this.receiverContact = receiverContact;
     }
 
-    public Date getExpectedDate() {
-        return expectedDate;
+    public String getReceiverAddress() {
+        return receiverAddress;
     }
 
-    public void setExpectedDate(Date expectedDate) {
-        this.expectedDate = expectedDate;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 
     public Date getDeliveredDate() {
@@ -128,15 +129,14 @@ public class Delivery implements Serializable {
         this.deliveredDate = deliveredDate;
     }
 
-    public Orders getOrderId() {
-        return orderId;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setOrderId(Orders orderId) {
-        this.orderId = orderId;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
-    
-    
+
     public String getDbstatus() {
         return dbstatus;
     }
@@ -144,7 +144,14 @@ public class Delivery implements Serializable {
     public void setDbstatus(String dbstatus) {
         this.dbstatus = dbstatus;
     }
-    
+
+    public Orders getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Orders orderId) {
+        this.orderId = orderId;
+    }
 
     @Override
     public int hashCode() {
@@ -170,5 +177,5 @@ public class Delivery implements Serializable {
     public String toString() {
         return "model.Delivery[ deliveryId=" + deliveryId + " ]";
     }
-
+    
 }

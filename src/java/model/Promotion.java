@@ -39,6 +39,29 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Promotion.findByDbstatus", query = "SELECT p FROM Promotion p WHERE p.dbstatus = :dbstatus")})
 public class Promotion implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "promotion_code")
+    private String promotionCode;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "discount_value")
+    private BigDecimal discountValue;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 7)
+    @Column(name = "status")
+    private String status;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+    @Size(max = 7)
+    @Column(name = "dbstatus")
+    private String dbstatus;
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -47,44 +70,18 @@ public class Promotion implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "promotion_id")
     private String promotionId;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "promotion_code")
-    private String promotionCode;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "discount_value")
-    private BigDecimal discountValue;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 7)
-    @Column(name = "status")
-    private String status;
-    
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "description")
-    private String description;
-    
-    @Size(max = 7)
-    @Column(name = "dbstatus")
-    private String dbstatus;
-    
+
     @Column(name = "minimum_purchase")
     private BigDecimal minimumPurchase;
-    
+
     @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
-    
+
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
-    
+
     @OneToMany(mappedBy = "promotionId")
     private List<Orders> ordersList;
 
@@ -150,15 +147,7 @@ public class Promotion implements Serializable {
         this.endDate = endDate;
     }
 
-    public String getDbstatus() {
-        return dbstatus;
-    }
-
-    public void setDbstatus(String dbstatus) {
-        this.dbstatus = dbstatus;
-    }
-    
-        public String getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -172,6 +161,14 @@ public class Promotion implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDbstatus() {
+        return dbstatus;
+    }
+
+    public void setDbstatus(String dbstatus) {
+        this.dbstatus = dbstatus;
     }
 
     @XmlTransient
