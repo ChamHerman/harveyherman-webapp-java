@@ -16,6 +16,10 @@
     String promoActive = "active";
     //String searchQuery = request.getParameter("search");
     PromotionDAO promotionDAO = null;
+    
+    Promotion editPromo = (Promotion) request.getAttribute("editPromotion");
+    String error = (String) request.getAttribute("error");
+
     try {
         InitialContext context = new InitialContext();
         promotionDAO = (PromotionDAO) context.lookup("java:global/HarveyHerman/PromotionDAO");
@@ -46,7 +50,8 @@
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content">
             <h2 class="text-center text-primary">Manage Promotions</h2>
-            <%                String successMessage = (String) request.getAttribute("successMessage");
+            <%                
+                String successMessage = (String) request.getAttribute("successMessage");
                 String errorMessage = (String) request.getAttribute("errorMessage");
             %>
 
@@ -57,6 +62,10 @@
             <% if (errorMessage != null) {%>
             <div class="alert alert-danger"><%= errorMessage%></div>
             <% } %>
+            <% if (error != null) { %>
+                <div class="alert alert-danger mt-4"><%= error %></div>
+            <% } %>
+            
 
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
@@ -100,6 +109,13 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
                     Add Promotion
                 </button>
+                
+                <%if(promotions != null && !promotions.isEmpty()){%>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPromotionModal">
+                    Edit Promotion
+                </button>
+                <%}%>
+                
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
                     Delete Promotion
                 </button>
@@ -125,6 +141,28 @@
                             </form>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <%--edit promotion--%>
+            <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <form action="FindPromotionServlet" method="post">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editPromotionModalLabel">Edit Promotion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <label for="promotionIdInput" class="form-label">Enter Promotion ID:</label>
+                        <input type="text" name="promotionId" id="promotionIdInput" class="form-control" required>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
             </div>
 
@@ -159,7 +197,7 @@
                                     <input type="number" class="form-control" id="minimumPurchase" name="minimumPurchase" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label> <!-- ADDED DESCRIPTION FIELD -->
+                                    <label for="description" class="form-label">Description</label>
                                     <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                                 </div>
                                 <div class="mb-3">
@@ -176,8 +214,55 @@
                     </div>
                 </div>
             </div>
+                                
+            <% if (editPromo != null) { %>
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        Edit Promotion: <%= editPromo.getPromotionId() %>
+                    </div>
+                    <div class="card-body">
+                        <form id="editForm" action="UpdatePromotionServlet" method="post">
+                            <input type="hidden" name="promotionId" value="<%= editPromo.getPromotionId() %> ">
 
+                            <div class="mb-3">
+                                <label class="text-dark">Promotion Code:</label>
+                                <input type="text" name="promotionCode" value="<%= editPromo.getPromotionCode() %>" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-dark">Status:</label>
+                                <input type="text" name="status" value="<%= editPromo.getStatus() %>" class="form-control" readonly>
+                                <small class="text-muted">Status is automatically determined based on the end date.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-dark">Discount Value:</label>
+                                <input type="number" step="0.01" min="0" name="discountValue" id="discountValue" value="<%= editPromo.getDiscountValue() %>" class="form-control" required>
+                                <small class="text-danger" id="discountError"></small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-dark">Minimum Purchase:</label>
+                                <input type="number" step="0.01" min="0" name="minimumPurchase" id="minimumPurchase" value="<%= editPromo.getMinimumPurchase() %>" class="form-control" required>
+                                <small class="text-danger" id="minPurchaseError"></small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-dark">Description:</label>
+                                <input type="text" name="description" value="<%= editPromo.getDescription() %>" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="text-dark">Start Date:</label>
+                                <input type="date" name="startDate" id="startDate" value="<%= editPromo.getStartDate() %>" class="form-control" required>
+                                <small class="text-danger" id="startDateError"></small>
+                            </div>
 
+                            <div class="mb-3">
+                                <label class="text-dark">End Date:</label>
+                                <input type="date" name="endDate" id="endDate" value="<%= editPromo.getEndDate() %>" class="form-control" required>
+                                <small class="text-danger" id="endDateError"></small>
+                            </div>
+                            <button type="submit" class="btn btn-success">Update Promotion</button>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
         </div>
     </body>
 
@@ -319,6 +404,98 @@
 
             deleteInput.addEventListener("input", validateDelete);
             validateDelete();
+        });
+        
+        //edit promotion validation
+        document.addEventListener("DOMContentLoaded", function () {
+            const updateButton = document.querySelector("#updateBtn");
+            const startDateInput = document.querySelector("#startDate");
+            const endDateInput = document.querySelector("#endDate");
+            const discountInput = document.querySelector("#discountValue");
+            const minPurchaseInput = document.querySelector("#minimumPurchase");
+
+            const form = document.querySelector("#editForm");
+            const inputs = form.querySelectorAll("input, textarea");
+
+            function showError(input, message) {
+                clearError(input);
+                const error = document.createElement("div");
+                error.className = "text-danger mt-1";
+                error.textContent = message;
+                input.parentNode.appendChild(error);
+            }
+
+            function clearError(input) {
+                // Remove any existing error messages
+                const existingError = input.parentNode.querySelector(".text-danger");
+                if (existingError) {
+                    existingError.remove();
+                }
+            }
+
+            function validateForm() {
+                let isValid = true;
+                const today = new Date().toISOString().split("T")[0];
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+
+                // Required field validation
+                inputs.forEach(input => {
+                    if (input.value.trim() === "") {
+                        showError(input, "This field is required.");
+                        isValid = false;
+                    } else {
+                        clearError(input);
+                    }
+                });
+
+                // Numeric validations
+                if (isNaN(discountInput.value) || parseFloat(discountInput.value) < 0) {
+                    showError(discountInput, "Discount value must be a valid number and cannot be negative.");
+                    isValid = false;
+                } else {
+                    clearError(discountInput);
+                }
+
+                if (isNaN(minPurchaseInput.value) || parseFloat(minPurchaseInput.value) < 0) {
+                    showError(minPurchaseInput, "Minimum purchase must be a valid number and cannot be negative.");
+                    isValid = false;
+                } else {
+                    clearError(minPurchaseInput);
+                }
+
+                // Date validation
+                if (startDate < today) {
+                    showError(startDateInput, "Start date cannot be in the past.");
+                    isValid = false;
+                } else {
+                    clearError(startDateInput);
+                }
+
+                if (endDate < today) {
+                    showError(endDateInput, "End date cannot be in the past.");
+                    isValid = false;
+                } else if (startDate && endDate && endDate < startDate) {
+                    showError(endDateInput, "End date cannot be before start date.");
+                    isValid = false;
+                } else {
+                    clearError(endDateInput);
+                }
+
+                // Enable/Disable the update button
+                updateButton.disabled = !isValid;
+            }
+
+            // Live validation on input change
+            inputs.forEach(input => {
+                input.addEventListener("input", validateForm);
+            });
+
+            startDateInput.addEventListener("change", validateForm);
+            endDateInput.addEventListener("change", validateForm);
+
+            // Initial run to validate the form
+            validateForm();
         });
     </script>
 </html>

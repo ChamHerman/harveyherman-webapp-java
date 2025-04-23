@@ -40,6 +40,16 @@ public class AddPromotionServlet extends HttpServlet {
             Date endDate = request.getParameter("endDate").isEmpty() ? null : sdf.parse(request.getParameter("endDate"));
             
             String dbstatus="active";
+            Promotion existingPromo = promotionDAO.findByPromotionCode(code);
+            if (existingPromo != null) {
+                request.setAttribute("errorMessage", "Promotion Code: " + code + " has been used.");
+                if (servletPath.contains("/manager/")) {
+                    request.getRequestDispatcher("/manager/promotion.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("/staff/promotion.jsp").forward(request, response);
+                }
+                return;
+            }
 
             Promotion promo = new Promotion();
             promo.setPromotionId(id);

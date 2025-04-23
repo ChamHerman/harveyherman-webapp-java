@@ -66,6 +66,7 @@
                 }
                 .print_chart{
                     margin-top:1000px;
+                    margin-left:-135px;
                 }
             }
         </style>
