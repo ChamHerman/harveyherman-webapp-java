@@ -216,6 +216,11 @@
             </div>
                                 
             <% if (editPromo != null) { %>
+            <%
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                String formattedStartDate = sdf.format(editPromo.getStartDate());
+                String formattedEndDate = sdf.format(editPromo.getEndDate());
+            %>
                 <div class="card mt-4">
                     <div class="card-header bg-info text-white">
                         Edit Promotion: <%= editPromo.getPromotionId() %>
@@ -249,13 +254,13 @@
                             </div>
                             <div class="mb-3">
                                 <label class="text-dark">Start Date:</label>
-                                <input type="date" name="startDate" id="startDate" value="<%= editPromo.getStartDate() %>" class="form-control" required>
+                                <input type="date" name="startDate" id="startDate" value="<%= formattedStartDate %>" class="form-control" required>
                                 <small class="text-danger" id="startDateError"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="text-dark">End Date:</label>
-                                <input type="date" name="endDate" id="endDate" value="<%= editPromo.getEndDate() %>" class="form-control" required>
+                                <input type="date" name="endDate" id="endDate" value="<%= formattedEndDate %>" class="form-control" required>
                                 <small class="text-danger" id="endDateError"></small>
                             </div>
                             <button type="submit" class="btn btn-success">Update Promotion</button>
@@ -408,94 +413,103 @@
         
         //edit promotion validation
         document.addEventListener("DOMContentLoaded", function () {
-            const updateButton = document.querySelector("#updateBtn");
-            const startDateInput = document.querySelector("#startDate");
-            const endDateInput = document.querySelector("#endDate");
-            const discountInput = document.querySelector("#discountValue");
-            const minPurchaseInput = document.querySelector("#minimumPurchase");
+            const updateButton = document.querySelector("#editForm button[type='submit']");
+            const discountInput = document.querySelector("#editForm input[name='discountValue']");
+            const minPurchaseInput = document.querySelector("#editForm input[name='minimumPurchase']");
+            const startDateInput = document.querySelector("#editForm input[name='startDate']");
+            const endDateInput = document.querySelector("#editForm input[name='endDate']");
+            const inputs = document.querySelectorAll("#editForm input, #editForm textarea");
 
-            const form = document.querySelector("#editForm");
-            const inputs = form.querySelectorAll("input, textarea");
-
-            function showError(input, message) {
-                clearError(input);
-                const error = document.createElement("div");
-                error.className = "text-danger mt-1";
+            function createError(input, message) {
+                let error = input.nextElementSibling;
+                if (!error || !error.classList.contains("text-danger")) {
+                    error = document.createElement("small");
+                    error.classList.add("text-danger", "mt-1", "d-block");
+                    input.after(error);
+                }
                 error.textContent = message;
-                input.parentNode.appendChild(error);
+                input.classList.add("is-invalid");
             }
 
             function clearError(input) {
-                // Remove any existing error messages
-                const existingError = input.parentNode.querySelector(".text-danger");
-                if (existingError) {
-                    existingError.remove();
+                let error = input.nextElementSibling;
+                if (error && error.classList.contains("text-danger")) {
+                    error.remove();
                 }
+                input.classList.remove("is-invalid");
             }
 
-            function validateForm() {
-                let isValid = true;
+            function validateDates() {
                 const today = new Date().toISOString().split("T")[0];
-                const startDate = startDateInput.value;
-                const endDate = endDateInput.value;
+                const start = startDateInput.value;
+                const end = endDateInput.value;
 
-                // Required field validation
+                let valid = true;
+
+                if (start && start < today) {
+                    createError(startDateInput, "Start date cannot be in the past.");
+                    valid = false;
+                } else {
+                    clearError(startDateInput);
+                }
+
+                if (end && end < today) {
+                    createError(endDateInput, "End date cannot be in the past.");
+                    valid = false;
+                } else if (start && end && end < start) {
+                    createError(endDateInput, "End date cannot be before start date.");
+                    valid = false;
+                } else {
+                    clearError(endDateInput);
+                }
+
+                return valid;
+            }
+
+            function validateInputs() {
+                let valid = true;
+
                 inputs.forEach(input => {
-                    if (input.value.trim() === "") {
-                        showError(input, "This field is required.");
-                        isValid = false;
+                    if (input.hasAttribute("required") && input.value.trim() === "") {
+                        createError(input, "This field is required.");
+                        valid = false;
                     } else {
                         clearError(input);
                     }
                 });
 
-                // Numeric validations
-                if (isNaN(discountInput.value) || parseFloat(discountInput.value) < 0) {
-                    showError(discountInput, "Discount value must be a valid number and cannot be negative.");
-                    isValid = false;
+                const discount = parseFloat(discountInput.value);
+                if (isNaN(discount) || discount < 0) {
+                    createError(discountInput, "Discount value cannot be negative.");
+                    valid = false;
                 } else {
                     clearError(discountInput);
                 }
 
-                if (isNaN(minPurchaseInput.value) || parseFloat(minPurchaseInput.value) < 0) {
-                    showError(minPurchaseInput, "Minimum purchase must be a valid number and cannot be negative.");
-                    isValid = false;
+                const minPurchase = parseFloat(minPurchaseInput.value);
+                if (isNaN(minPurchase) || minPurchase < 0) {
+                    createError(minPurchaseInput, "Minimum purchase cannot be negative.");
+                    valid = false;
                 } else {
                     clearError(minPurchaseInput);
                 }
 
-                // Date validation
-                if (startDate < today) {
-                    showError(startDateInput, "Start date cannot be in the past.");
-                    isValid = false;
-                } else {
-                    clearError(startDateInput);
-                }
-
-                if (endDate < today) {
-                    showError(endDateInput, "End date cannot be in the past.");
-                    isValid = false;
-                } else if (startDate && endDate && endDate < startDate) {
-                    showError(endDateInput, "End date cannot be before start date.");
-                    isValid = false;
-                } else {
-                    clearError(endDateInput);
-                }
-
-                // Enable/Disable the update button
-                updateButton.disabled = !isValid;
+                return valid;
             }
 
-            // Live validation on input change
-            inputs.forEach(input => {
-                input.addEventListener("input", validateForm);
-            });
+            function validateAll() {
+                const inputValid = validateInputs();
+                const dateValid = validateDates();
+                updateButton.disabled = !(inputValid && dateValid);
+            }
 
-            startDateInput.addEventListener("change", validateForm);
-            endDateInput.addEventListener("change", validateForm);
+            // Bind all validation on input change
+            inputs.forEach(input => input.addEventListener("input", validateAll));
+            startDateInput.addEventListener("change", validateAll);
+            endDateInput.addEventListener("change", validateAll);
 
-            // Initial run to validate the form
-            validateForm();
+            // Initial check
+            validateAll();
         });
     </script>
 </html>
