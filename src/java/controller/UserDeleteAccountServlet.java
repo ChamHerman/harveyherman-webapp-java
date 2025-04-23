@@ -41,18 +41,16 @@ public class UserDeleteAccountServlet extends HttpServlet {
         try {
             String confirmPassword = request.getParameter("confirmPassword");
             UserData userData = (UserData) session.getAttribute("loggedInUser");
-            UserLogin userLogin = userData.getUserLogin();
+            UserLogin userLogin = userLoginDAO.findByUserId(userData.getUserId());
 
             if (userLogin == null || !userLogin.getPassword().equals(confirmPassword)) {
                 response.sendRedirect(request.getContextPath() + "/user/profile.jsp?error=password");
                 return;
             }
 
-            // Password is correct, proceed with deletion
             String userId = userData.getUserId();
 
             userLoginDAO.delete(userLogin.getLoginId());
-
             userDataDAO.delete(userId);
             session.removeAttribute("loggedInUser");
 
