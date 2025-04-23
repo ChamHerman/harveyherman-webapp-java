@@ -46,7 +46,7 @@ CREATE TABLE Item (
 -- Promotion: Stores promotional codes and discounts
 CREATE TABLE Promotion (
     promotion_id VARCHAR(255) PRIMARY KEY,
-    promotion_code VARCHAR(255) NOT NULL UNIQUE,
+    promotion_code VARCHAR(255) NOT NULL,
     discount_value DECIMAL(25,2) NOT NULL,
     status ENUM('active', 'expired') NOT NULL,
     minimum_purchase DECIMAL(25,2),
