@@ -46,7 +46,6 @@ public class AccessFilter implements Filter {
             "/user/resetPassword.jsp",
             "/user/services.jsp",
             "/user/success.jsp",
-            "/user/thankyou.jsp",
             "/user/CartItemServlet",
             "/user/CartServlet",
             "/user/ItemDetailsServlet",

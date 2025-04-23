@@ -1,10 +1,10 @@
+<%@page import="model.UserData"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="javax.naming.NamingException"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.CartItem"%>
 <%@ page import="model.Cart"%>
-<%@ page import="model.CartDAO"%>
 <%@ page import="model.Item"%>
 <!doctype html>
 <html lang="en">
@@ -26,18 +26,8 @@
     </head>
 
     <body>
-        <%
-            CartDAO cartDAO = null;
-            try {
-                InitialContext context = new InitialContext();
-                cartDAO = (CartDAO) context.lookup("java:global/HarveyHerman/CartDAO");
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-            }
-        %>
         <!-- Start Header/Navigation -->
         <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-
             <div class="container">
                 <a class="navbar-brand" href="index.html">Furni<span>.</span></a>
 
@@ -236,6 +226,8 @@
             </div>
         </div>
 
+        
+
         <!-- Modal to show Promotion Error -->
         <div class="modal fade" id="promoModal" tabindex="-1" aria-labelledby="promoModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -355,7 +347,7 @@
 
                     </div>
                 </div>
-
+                
             </div>
         </footer>
         <!-- End Footer Section -->	
