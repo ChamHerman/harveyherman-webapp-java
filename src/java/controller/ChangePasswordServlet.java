@@ -69,11 +69,8 @@ public class ChangePasswordServlet extends HttpServlet {
 
             userLogin.setPassword(newPassword);
             userLoginDAO.update(userLogin);
-            request.setAttribute("changePasswordSuccess", Boolean.TRUE);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/profile.jsp");
-            dispatcher.forward(request, response);
-
-
+            session.setAttribute("changePasswordSuccess", Boolean.TRUE);
+            response.sendRedirect(request.getContextPath() + "/user/profile.jsp");
         } catch (Exception ex) {
             ex.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/user/changePassword.jsp?error=" + ex.getMessage());

@@ -75,26 +75,23 @@
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password reset successfully!
     </div>
     <%
-            session.removeAttribute("registerSuccess");
-        }
-
-        if (registerSuccess != null && resetPasswordSuccess) {
+    } else if (registerSuccess != null && resetPasswordSuccess) {
     %>
     <div id="notification-popup">
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Registered successfully!
     </div>
     <%
-            session.removeAttribute("registerSuccess");
-        }
-
-        if (deleteSuccess != null && deleteSuccess) {
+    } else if (deleteSuccess != null && deleteSuccess) {
     %>
     <div id="notification-popup">
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Account deleted successfully!
     </div>
     <%
-            session.removeAttribute("deleteSuccess");
         }
+
+        session.removeAttribute("registerSuccess");
+        session.removeAttribute("registerSuccess");
+        session.removeAttribute("deleteSuccess");
     %>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
