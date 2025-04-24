@@ -88,6 +88,10 @@
     </div>
     <%
         }
+
+        session.removeAttribute("registerSuccess");
+        session.removeAttribute("registerSuccess");
+        session.removeAttribute("deleteSuccess");
     %>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
