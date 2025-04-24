@@ -13,19 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import model.UserData;
-import model.UserDataDAO;
-import model.UserLogin;
-import model.UserLoginDAO;
+import model.StaffData;
+import model.StaffDataDAO;
+import model.StaffLogin;
+import model.StaffLoginDAO;
 
-@WebServlet("/manager/DeleteUsersServlet")
-public class DeleteUsersServlet extends HttpServlet {
+@WebServlet("/manager/DeleteStaffServlet")
+public class DeleteStaffServlet extends HttpServlet {
 
     @EJB
-    private UserDataDAO userDataDAO;
+    private StaffDataDAO staffDataDAO;
     
     @EJB
-    private UserLoginDAO userLoginDAO;
+    private StaffLoginDAO staffLoginDAO;
     
     private static final long serialVersionUID = 1L;
 
@@ -46,37 +46,37 @@ public class DeleteUsersServlet extends HttpServlet {
         }
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-        response.sendRedirect(contextPath + "/manager/ap_user.jsp?message=" + encodedMessage);
+        response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String userId = request.getParameter("userId");
-            if (userId == null || userId.trim().isEmpty()) {
-                sendJsonResponse(request, response, false, "User ID not provided.");
+            String staffId = request.getParameter("staffId");
+            if (staffId == null || staffId.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Staff ID not provided.");
                 return;
             }
 
             // Get user data to verify it exists
-            UserData userData = userDataDAO.findByUserId(userId);
-            if (userData == null) {
-                sendJsonResponse(request, response, false, "User not found.");
+            StaffData staffData = staffDataDAO.findByStaffId(staffId);
+            if (staffData == null) {
+                sendJsonResponse(request, response, false, "Staff not found.");
                 return;
             }
             
-            UserLogin userLogin = userLoginDAO.findByUserId(userId);
+            StaffLogin staffLogin = staffLoginDAO.findByStaffId(staffId);
             
-            if (userLogin != null) {
-                userLoginDAO.delete(userLogin.getLoginId());
+            if (staffLogin != null) {
+                staffLoginDAO.delete(staffLogin.getLoginId());
             }
-            userDataDAO.delete(userId);
+            staffDataDAO.delete(staffId);
             
-            sendJsonResponse(request, response, true, "User deleted successfully.");
+            sendJsonResponse(request, response, true, "Staff deleted successfully.");
         } catch (Exception ex) {
             ex.printStackTrace();
-            sendJsonResponse(request, response, false, "User failed to delete. Exception: " + ex.getMessage());
+            sendJsonResponse(request, response, false, "Staff failed to delete. Exception: " + ex.getMessage());
         }
     }
 }
