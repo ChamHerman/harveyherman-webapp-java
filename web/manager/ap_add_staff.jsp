@@ -53,7 +53,7 @@
             <div class="container">
                 <h2 class="mt-4 mb-4">Add New Staff</h2>
                 
-                <form id="addStaffForm" action="<%= request.getContextPath()%>/manager/AddStaffServlet" method="post">
+                <form id="addStaffForm" action="<%= request.getContextPath()%>/manager/AddStaffServlet" method="post" autocomplete="off">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0">Staff Information</h5>
@@ -62,29 +62,29 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="fullname" class="form-label required">Full Name</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" required>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email" class="form-label required">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <input type="email" class="form-control" id="email" name="email" required autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="contactNumber" class="form-label required">Contact Number</label>
-                                    <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                                    <input type="text" class="form-control" id="contactNumber" name="contactNumber" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="position" class="form-label required">Position</label>
-                                    <input type="text" class="form-control" id="position" name="position" required>
+                                    <input type="text" class="form-control" id="position" name="position" required autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="gender" class="form-label required">Gender</label>
-                                    <select class="form-select" id="gender" name="gender" required>
+                                    <select class="form-select" id="gender" name="gender" required autocomplete="off">
                                         <option value="">Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -93,14 +93,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="username" class="form-label required">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username" required>
+                                    <input type="text" class="form-control" id="username" name="username" required autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="address" class="form-label">Address</label>
-                                    <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                                    <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"></textarea>
                                 </div>
                             </div>
                             

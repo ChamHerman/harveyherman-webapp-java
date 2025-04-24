@@ -43,16 +43,16 @@
                 </div>
                 <% }%>
 
-                <form action="<%=request.getContextPath()%>/staff/StaffLoginServlet" method="post">
+                <form action="<%=request.getContextPath()%>/staff/StaffLoginServlet" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control" id="username" name="username" required autocomplete="off">
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
                         <div style="position: relative;">
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" required autocomplete="off">
                             <div class="password-toggle-icon" id="togglePassword" style="position: absolute; right: 12px; top: 15px;">
                                 <i class="fas fa-eye"></i>
                             </div>

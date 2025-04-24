@@ -92,19 +92,19 @@
                 </div>
 
                 <!-- Filter/Search -->
-                <form method="GET" action="ap_user.jsp">
+                <form method="GET" action="ap_user.jsp" autocomplete="off">
                     <div class="filter-section row mb-3">
                         <div class="col-md-6">
                             <label>Search:</label>
                             <div class="input-group">
-                                <input type="text" id="searchInput" name="search" class="form-control" value="<%= paramSearch%>" placeholder="Search by name or email...">
+                                <input type="text" id="searchInput" name="search" class="form-control" value="<%= paramSearch%>" placeholder="Search by name or email..." autocomplete="off">
                                 <button class="btn btn-outline-secondary" id="clearSearch" type="button">Clear</button>
                                 <button class="btn btn-outline-secondary" type="submit">Search</button>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Show Rows:</label>
-                            <select name="rows" class="form-select" onchange="this.form.submit()">
+                            <select name="rows" class="form-select" onchange="this.form.submit()" autocomplete="off">
                                 <option value="15" <%= rowCount == 15 ? "selected" : ""%>>15</option>
                                 <option value="30" <%= rowCount == 30 ? "selected" : ""%>>30</option>
                                 <option value="50" <%= rowCount == 50 ? "selected" : ""%>>50</option>

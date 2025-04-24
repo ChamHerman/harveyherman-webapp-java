@@ -49,12 +49,10 @@ public class EditStaffsServlet extends HttpServlet {
             
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            String role = request.getParameter("role");
             
             // Validate required fields
             if (staffId == null || fullname == null || email == null || 
-                position == null || gender == null || username == null || 
-                role == null) {
+                position == null || gender == null || username == null) {
                 
                 session.setAttribute("errorMessage", "Missing required fields");
                 response.sendRedirect(request.getContextPath() + "/manager/ap_edit_staff.jsp?staffId=" + staffId);
@@ -88,7 +86,6 @@ public class EditStaffsServlet extends HttpServlet {
             
             // Update StaffLogin object
             staffLogin.setUsername(username);
-            staffLogin.setRole(role);
             
             // Update password only if it has been changed
             String oldPassword = staffLogin.getPassword();

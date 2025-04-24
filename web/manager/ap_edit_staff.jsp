@@ -101,8 +101,8 @@
             <div class="container">
                 <h2 class="mt-4 mb-4">Edit Staff</h2>
                 
-                <form id="editStaffForm" action="<%= request.getContextPath()%>/manager/EditStaffsServlet" method="post">
-                    <input type="hidden" name="staffId" value="<%= newStaffData.getStaffId() %>">
+                <form id="editStaffForm" action="<%= request.getContextPath()%>/manager/EditStaffsServlet" method="post" autocomplete="off">
+                    <input type="hidden" name="staffId" value="<%= newStaffData.getStaffId() %>" autocomplete="off">
                     
                     <div class="card">
                         <div class="card-header">
@@ -113,12 +113,12 @@
                                 <div class="col-md-6">
                                     <label for="fullname" class="form-label required">Full Name</label>
                                     <input type="text" class="form-control" id="fullname" name="fullname" 
-                                           value="<%= newStaffData.getFullname() %>" required>
+                                           value="<%= newStaffData.getFullname() %>" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email" class="form-label required">Email</label>
                                     <input type="email" class="form-control" id="email" name="email" 
-                                           value="<%= newStaffData.getEmail() %>" required>
+                                           value="<%= newStaffData.getEmail() %>" required autocomplete="off">
                                 </div>
                             </div>
                             
@@ -126,11 +126,11 @@
                                 <div class="col-md-6">
                                     <label for="contactNumber" class="form-label required">Contact Number</label>
                                     <input type="text" class="form-control" id="contactNumber" name="contactNumber" 
-                                           value="<%= newStaffData.getContactNumber() != null ? newStaffData.getContactNumber() : "" %>" required>
+                                           value="<%= newStaffData.getContactNumber() != null ? newStaffData.getContactNumber() : "" %>" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="gender" class="form-label required">Gender</label>
-                                    <select class="form-select" id="gender" name="gender" required>
+                                    <select class="form-select" id="gender" name="gender" required autocomplete="off">
                                         <option value="">Select Gender</option>
                                         <option value="Male" <%= "Male".equals(newStaffData.getGender()) ? "selected" : "" %>>Male</option>
                                         <option value="Female" <%= "Female".equals(newStaffData.getGender()) ? "selected" : "" %>>Female</option>
@@ -142,7 +142,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="address" class="form-label">Address</label>
-                                    <textarea class="form-control" id="address" name="address" rows="3"><%= newStaffData.getAddress() != null ? newStaffData.getAddress() : "" %></textarea>
+                                    <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"><%= newStaffData.getAddress() != null ? newStaffData.getAddress() : "" %></textarea>
                                 </div>
                             </div>
                         </div>
@@ -157,14 +157,14 @@
                                 <div class="col-md-12">
                                     <label for="position" class="form-label required">Position</label>
                                     <input type="text" class="form-control" id="position" name="position" 
-                                           value="<%= newStaffData.getPosition() %>" required>
+                                           value="<%= newStaffData.getPosition() %>" required autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="dbstatus" class="form-label required">Status</label>
-                                    <select class="form-select" id="dbstatus" name="dbstatus" required>
+                                    <select class="form-select" id="dbstatus" name="dbstatus" required autocomplete="off">
                                         <option value="active" <%= "active".equals(newStaffData.getDbstatus()) ? "selected" : "" %>>Active</option>
                                         <option value="inactive" <%= "inactive".equals(newStaffData.getDbstatus()) ? "selected" : "" %>>Inactive</option>
                                     </select>
@@ -182,14 +182,7 @@
                                 <div class="col-md-6">
                                     <label for="username" class="form-label required">Username</label>
                                     <input type="text" class="form-control" id="username" name="username" 
-                                           value="<%= staffLogin.getUsername() %>" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="role" class="form-label required">Role</label>
-                                    <select class="form-select" id="role" name="role" required>
-                                        <option value="staff" <%= "staff".equals(staffLogin.getRole()) ? "selected" : "" %>>Staff</option>
-                                        <option value="manager" <%= "manager".equals(staffLogin.getRole()) ? "selected" : "" %>>Manager</option>
-                                    </select>
+                                           value="<%= staffLogin.getUsername() %>" required autocomplete="off">
                                 </div>
                             </div>
                             
@@ -198,7 +191,7 @@
                                     <label for="password" class="form-label">Password</label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" id="password" name="password" 
-                                            value="<%= staffLogin.getPassword() %>">
+                                            value="<%= staffLogin.getPassword() %>" autocomplete="off">
                                         <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                             <i class="fas fa-eye"></i>
                                         </button>
