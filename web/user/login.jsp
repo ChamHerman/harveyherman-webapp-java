@@ -75,7 +75,7 @@
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password reset successfully!
     </div>
     <%
-    } else if (registerSuccess != null && resetPasswordSuccess) {
+    } else if (registerSuccess != null && registerSuccess) {
     %>
     <div id="notification-popup">
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Registered successfully!
