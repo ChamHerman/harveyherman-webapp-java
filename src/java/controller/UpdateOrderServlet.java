@@ -35,7 +35,11 @@ public class UpdateOrderServlet extends HttpServlet {
             }
         }
         // Redirect back to the order management page
-        response.sendRedirect(request.getContextPath() + "/manager/ap_order.jsp");
+        String servletPath = request.getServletPath();
+        if (servletPath.contains("/manager/")) {
+            response.sendRedirect(request.getContextPath() + "/manager/ap_order.jsp");
+        } else if (servletPath.contains("/staff/")) {
+            response.sendRedirect(request.getContextPath() + "/staff/ap_order.jsp");
+        }
     }
 }
-

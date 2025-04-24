@@ -1,7 +1,6 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.Orders"%>
 <%@ page import="model.OrderDAO" %>
-<%@ page import="controller.AddOrderServlet" %>
 <%@ page import="java.util.Arrays"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.HashSet"%>
@@ -32,7 +31,8 @@
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content flex-grow-1">
             <div class="container">
-                <%                    OrderDAO orderDAO = null;
+                <%                    
+                    OrderDAO orderDAO = null;
                     try {
                         InitialContext context = new InitialContext();
                         // Adjust the JNDI lookup path as needed depending on your server configuration
@@ -50,9 +50,9 @@
                     long totalOrders = orderDAO != null ? orderDAO.countAllOrders() : 0;
                 %>
                 <%
-                    long pendingCount = orderDAO.countOrdersByStatus("pending");
                     long packagingCount = orderDAO.countOrdersByStatus("packaging");
                     long shippingCount = orderDAO.countOrdersByStatus("shipping");
+                    long deliveryCount = orderDAO.countOrdersByStatus("delivery");
                     long deliveredCount = orderDAO.countOrdersByStatus("delivered");
                 %>
                 <!-- Dashboard Overview Section -->
@@ -65,14 +65,14 @@
 
 
                 <div class="dashboard-summary">
-                    <div class="summary-box" id="pending">
-                        <p>Pending: <%= pendingCount%></p>
-                    </div>
                     <div class="summary-box" id="processing">
                         <p>Packaging: <%= packagingCount%></p>
                     </div>
                     <div class="summary-box" id="shipping"> 
                         <p>Shipping: <%= shippingCount%></p>
+                    </div>
+                    <div class="summary-box" id="delivery">
+                        <p>Delivery <%= deliveryCount%></p>
                     </div>
                     <div class="summary-box" id="delivered">
                         <p> Delivered: <%= deliveredCount%></p>
@@ -82,18 +82,18 @@
 
                 <!-- Search Function -->
                 <div class="order-controls d-flex align-items-end mb-3">
-                    <form action="FilterOrderServlet" method="get" class="flex-grow-1 me-2 d-flex align-items-end">
+                    <form action="<%=request.getContextPath()%>/manager/FilterOrderServlet" method="post" class="flex-grow-1 me-2 d-flex align-items-end">
                         <div class="form-group mb-0 me-2">
                             <label for="statusSelect" class="form-label mb-0 me-2">Order Status:</label>
                             <select name="status" id="statusSelect" class="form-control me-2">
                                 <option value="">All</option>
-                                <option value="Pending">Pending</option>
                                 <option value="Packaging">Packaging</option>
                                 <option value="Shipping">Shipping</option>
+                                <option value="Delivery">Delivery</option>
                                 <option value="Delivered">Delivered</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
+                        <button type="submit" class="btn btn-primary" id="searchButton">Filter</button>
                     </form>
                 </div>
 
@@ -113,6 +113,11 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <%
+    if (ordersList == null && orderDAO != null) {
+        ordersList = orderDAO.getAllOrders();
+    }
+%>
                             <%
                                 if (ordersList != null) {
                                     int rowNum = 1;
@@ -146,9 +151,9 @@
                                 <form class="status-form d-flex align-items-center" method="post" action="UpdateOrderServlet" onsubmit="return confirmStatusChange(this, '<%= order.getOrderId()%>');">
                                     <input type="hidden" name="orderId" value="<%= order.getOrderId()%>">
                                     <select name="status" class="form-select form-select-sm me-2">
-                                        <option value="pending" <%= "pending".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Pending</option>
                                         <option value="packaging" <%= "packaging".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Packaging</option>
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
+                                        <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
                                         <option value="delivered" <%= "delivered".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivered</option>
                                     </select>
                                     <button type="submit" class="btn btn-sm btn-primary">Save</button>
@@ -171,7 +176,7 @@
             </div>
         </div>
 
-        <!-- Search Results Modal -->
+<!--         Search Results Modal 
         <div class="modal fade" id="statusOrdersModal" tabindex="-1" aria-labelledby="statusOrdersModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -191,7 +196,7 @@
                                 </tr>
                             </thead>
                             <tbody id="statusOrdersTableBody">
-                                <!-- Results will be inserted here -->
+                                 Results will be inserted here 
                             </tbody>
                         </table>
                     </div>
@@ -200,7 +205,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <!-- View Order Modal -->
         <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">

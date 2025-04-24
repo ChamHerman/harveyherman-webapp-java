@@ -1,4 +1,4 @@
-<%@ page import="model.Orders" %>
+<%--<%@ page import="model.Orders" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <html>
     <%
@@ -41,7 +41,7 @@
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" id="status" name="status" required>
-                        <option value="pending" <%= "pending".equals(order.getStatus()) ? "selected" : ""%>>Pending</option>
+                        <option value="delivery" <%= "delivery".equals(order.getStatus()) ? "selected" : ""%>>Delivery</option>
                         <option value="packaging" <%= "packaging".equals(order.getStatus()) ? "selected" : ""%>>Packaging</option>
                         <option value="shipping" <%= "shipping".equals(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                         <option value="delivered" <%= "delivered".equals(order.getStatus()) ? "selected" : ""%>>Delivered</option>
@@ -94,4 +94,4 @@
 </html>
 <%
     }
-%>
+%>--%>
