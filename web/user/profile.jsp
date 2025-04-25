@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.UserData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<jsp:useBean id="loggedInUser" class="model.UserData" scope="session" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,32 +28,30 @@
                         <div class="profile-card">
                             <h2 class="profile-title">User Profile</h2>
 
-                            <%
-                                UserData user = (UserData) session.getAttribute("loggedInUser");
-                                if (user != null) {
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-                                    String birthDateStr = user.getBirthDate() != null ? dateFormat.format(user.getBirthDate()) : "Not provided";
+                            <% if (loggedInUser != null) { 
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+                                String birthDateStr = loggedInUser.getBirthDate() != null ? dateFormat.format(loggedInUser.getBirthDate()) : "Not provided";
                             %>
                             <div class="profile-info">
                                 <div class="profile-details">
                                     <div class="profile-item">
                                         <label>Full Name</label>
-                                        <div class="detail-value"><%= user.getFullname()%></div>
+                                        <div class="detail-value">${loggedInUser.fullname}</div>
                                     </div>
 
                                     <div class="profile-item">
                                         <label>Email</label>
-                                        <div class="detail-value"><%= user.getEmail()%></div>
+                                        <div class="detail-value">${loggedInUser.email}</div>
                                     </div>
 
                                     <div class="profile-item">
                                         <label>Contact Number</label>
-                                        <div class="detail-value"><%= user.getContactNumber() != null ? user.getContactNumber() : "Not provided"%></div>
+                                        <div class="detail-value"><%= loggedInUser.getContactNumber() != null ? loggedInUser.getContactNumber() : "Not provided"%></div>
                                     </div>
 
                                     <div class="profile-item">
                                         <label>Address</label>
-                                        <div class="detail-value"><%= user.getAddress() != null ? user.getAddress() : "Not provided"%></div>
+                                        <div class="detail-value"><%= loggedInUser.getAddress() != null ? loggedInUser.getAddress() : "Not provided"%></div>
                                     </div>
 
                                     <div class="profile-item">
@@ -62,7 +61,7 @@
 
                                     <div class="profile-item">
                                         <label>Account Created</label>
-                                        <div class="detail-value"><%= user.getCreatedDate() != null ? dateFormat.format(user.getCreatedDate()) : "Not available"%></div>
+                                        <div class="detail-value"><%= loggedInUser.getCreatedDate() != null ? dateFormat.format(loggedInUser.getCreatedDate()) : "Not available"%></div>
                                     </div>
                                 </div>
                             </div>
@@ -122,8 +121,8 @@
     </body>
     <!-- Notification Popup -->
     <%
-        Boolean profileUpdateSuccess = (Boolean) request.getAttribute("profileUpdateSuccess");
-        Boolean changePasswordSuccess = (Boolean) request.getAttribute("changePasswordSuccess");
+        Boolean profileUpdateSuccess = (Boolean) session.getAttribute("profileUpdateSuccess");
+        Boolean changePasswordSuccess = (Boolean) session.getAttribute("changePasswordSuccess");
         if (profileUpdateSuccess != null && profileUpdateSuccess) {
     %>
     <div id="notification-popup">
@@ -137,6 +136,9 @@
     </div>
     <%
         }
+
+        session.removeAttribute("profileUpdateSuccess");
+        session.removeAttribute("changePasswordSuccess");
     %>
     <jsp:include page="footer.jsp" />
 
