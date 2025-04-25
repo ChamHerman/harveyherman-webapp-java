@@ -46,38 +46,51 @@ public class OrderDAO {
     return query.getResultList();
 }
 
-    public List<Orders> getFilteredOrders(String search, String status) {
-    if (status != null && !status.trim().isEmpty()) {
+//    public List<Orders> getFilteredOrders(String search, String status) {
+//    if (status != null && !status.trim().isEmpty()) {
+//        TypedQuery<Orders> query = em.createNamedQuery("Orders.findByStatus", Orders.class);
+//        query.setParameter("status", status);
+//        List<Orders> orders = query.getResultList();
+//        // Filter by dbstatus in Java
+//        List<Orders> filtered = new java.util.ArrayList<>();
+//        for (Orders o : orders) {
+//            if ("active".equals(o.getDbstatus())) {
+//                // Optionally filter by search (orderId or userId.fullname)
+//                if (search == null || search.trim().isEmpty() ||
+//                    (o.getOrderId() != null && o.getOrderId().contains(search)) ||
+//                    (o.getUserId() != null && o.getUserId().getFullname() != null && o.getUserId().getFullname().contains(search))) {
+//                    filtered.add(o);
+//                }
+//            }
+//        }
+//        return filtered;
+//    } else {
+//        // No status filter, just get all active orders and filter by search if needed
+//        List<Orders> orders = getAllOrders();
+//        if (search == null || search.trim().isEmpty()) {
+//            return orders;
+//        }
+//        List<Orders> filtered = new java.util.ArrayList<>();
+//        for (Orders o : orders) {
+//            if ((o.getOrderId() != null && o.getOrderId().contains(search)) ||
+//                (o.getUserId() != null && o.getUserId().getFullname() != null && o.getUserId().getFullname().contains(search))) {
+//                filtered.add(o);
+//            }
+//        }
+//        return filtered;
+//    }
+//}
+    
+    public List<Orders> filterOrderByStatus(String status) {
+    if (status == null || status.isEmpty() || "all".equalsIgnoreCase(status)) {
+        // Return all active orders
+        TypedQuery<Orders> query = em.createNamedQuery("Orders.findByDbstatus", Orders.class);
+        query.setParameter("dbstatus", "active");
+        return query.getResultList();
+    } else {
         TypedQuery<Orders> query = em.createNamedQuery("Orders.findByStatus", Orders.class);
         query.setParameter("status", status);
-        List<Orders> orders = query.getResultList();
-        // Filter by dbstatus in Java
-        List<Orders> filtered = new java.util.ArrayList<>();
-        for (Orders o : orders) {
-            if ("active".equals(o.getDbstatus())) {
-                // Optionally filter by search (orderId or userId.fullname)
-                if (search == null || search.trim().isEmpty() ||
-                    (o.getOrderId() != null && o.getOrderId().contains(search)) ||
-                    (o.getUserId() != null && o.getUserId().getFullname() != null && o.getUserId().getFullname().contains(search))) {
-                    filtered.add(o);
-                }
-            }
-        }
-        return filtered;
-    } else {
-        // No status filter, just get all active orders and filter by search if needed
-        List<Orders> orders = getAllOrders();
-        if (search == null || search.trim().isEmpty()) {
-            return orders;
-        }
-        List<Orders> filtered = new java.util.ArrayList<>();
-        for (Orders o : orders) {
-            if ((o.getOrderId() != null && o.getOrderId().contains(search)) ||
-                (o.getUserId() != null && o.getUserId().getFullname() != null && o.getUserId().getFullname().contains(search))) {
-                filtered.add(o);
-            }
-        }
-        return filtered;
+        return query.getResultList();
     }
 }
 

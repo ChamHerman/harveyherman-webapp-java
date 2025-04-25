@@ -33,19 +33,18 @@ public class OrderServlet extends HttpServlet {
         try {
             List<Orders> ordersList = orderDAO.getAllOrders();
             long totalOrders = orderDAO.getTotalOrderCount();
-            long pendingCount = orderDAO.countOrdersByStatus("Pending");
             long packagingCount = orderDAO.countOrdersByStatus("Packaging");
             long shippingCount = orderDAO.countOrdersByStatus("Shipping");
+            long deliveryCount = orderDAO.countOrdersByStatus("Delivery");
             long deliveredCount = orderDAO.countOrdersByStatus("Delivered");
 
             // Optionally, if you want grouped counts:
 //            List<Object[]> statusCounts = orderDAO.countOrdersGroupedByStatus();
-
             request.setAttribute("ordersList", ordersList);
             request.setAttribute("totalOrders", totalOrders);
-            request.setAttribute("pendingCount", pendingCount);
             request.setAttribute("packagingCount", packagingCount);
             request.setAttribute("shippingCount", shippingCount);
+            request.setAttribute("deliveryCount", deliveryCount);
             request.setAttribute("deliveredCount", deliveredCount);
 //            request.setAttribute("statusCounts", statusCounts);
 

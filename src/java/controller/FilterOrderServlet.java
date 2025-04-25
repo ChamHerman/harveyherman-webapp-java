@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.OrderDAO;
 import model.Orders;
 
@@ -30,31 +31,26 @@ public class FilterOrderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String status = request.getParameter("status");
-        List<Orders> orders = orderDAO.getFilteredOrders(null, status);
+        List<Orders> filteredOrders = filterOrdersByStatus(status);
 
-        response.setContentType("application/json");
-        response.getWriter().write(ordersToJson(orders));
+        HttpSession session = request.getSession();
+        session.setAttribute("filteredOrders", filteredOrders);
+         String servletPath = request.getServletPath();
+        if (servletPath.contains("/manager/")) {
+            response.sendRedirect(request.getContextPath() + "/manager/ap_order.jsp");
+        } else if (servletPath.contains("/staff/")) {
+            response.sendRedirect(request.getContextPath() + "/staff/ap_order.jsp");
+        }
     }
 
-    private String ordersToJson(List<Orders> orders) {
-        StringBuilder json = new StringBuilder("[");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (Orders order : orders) {
-            json.append("{")
-                    .append("\"orderId\":\"").append(order.getOrderId()).append("\",")
-                    .append("\"user\":\"").append(order.getUserId() != null ? order.getUserId().getFullname() : "N/A").append("\",")
-                    .append("\"totalAmount\":").append(order.getTotalAmount()).append(",")
-                    .append("\"status\":\"").append(order.getStatus()).append("\",")
-                    .append("\"createdDate\":\"").append(order.getCreatedDate() != null ? sdf.format(order.getCreatedDate()) : "").append("\"")
-                    .append("},");
+    private List<Orders> filterOrdersByStatus(String status) {
+        if (status == null || status.isEmpty()) {
+            return orderDAO.getAllOrders();
+        } else {
+            return orderDAO.filterOrderByStatus(status);
         }
-        if (!orders.isEmpty()) {
-            json.setLength(json.length() - 1);
-        }
-        json.append("]");
-        return json.toString();
     }
 }

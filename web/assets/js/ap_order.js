@@ -86,44 +86,44 @@ function viewOrder(orderId) {
             });
 }
 
-//search item by status
-document.getElementById('searchButton').addEventListener('click', function (e) {
-    e.preventDefault(); // Prevent form submit
-    const status = document.getElementById('statusSelect').value;
-
-    fetch(`FilterOrderServlet?status=${encodeURIComponent(status)}`)
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('statusOrdersTableBody');
-                tableBody.innerHTML = '';
-
-                if (data.length === 0 || !data[0].orderId) {
-                    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found.</td></tr>';
-                } else {
-                    data.forEach(order => {
-                        const row = `
-                        <tr>
-                            <td>${order.orderId}</td>
-                            <td>${order.user}</td>
-                            <td>RM ${parseFloat(order.totalAmount).toFixed(2)}</td>
-                            <td>${order.status}</td>
-                            <td>${order.createdDate}</td>
-                        </tr>
-                    `;
-                        tableBody.insertAdjacentHTML('beforeend', row);
-                    });
-                }
-
-                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
-                modal.show();
-            })
-            .catch(error => {
-                const tableBody = document.getElementById('statusOrdersTableBody');
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error fetching orders.</td></tr>';
-                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
-                modal.show();
-            });
-});
+////search item by status
+//document.getElementById('searchButton').addEventListener('click', function (e) {
+//    e.preventDefault(); // Prevent form submit
+//    const status = document.getElementById('statusSelect').value;
+//
+//    fetch(`FilterOrderServlet?status=${encodeURIComponent(status)}`)
+//            .then(response => response.json())
+//            .then(data => {
+//                const tableBody = document.getElementById('statusOrdersTableBody');
+//                tableBody.innerHTML = '';
+//
+//                if (data.length === 0 || !data[0].orderId) {
+//                    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found.</td></tr>';
+//                } else {
+//                    data.forEach(order => {
+//                        const row = `
+//                        <tr>
+//                            <td>${order.orderId}</td>
+//                            <td>${order.user}</td>
+//                            <td>RM ${parseFloat(order.totalAmount).toFixed(2)}</td>
+//                            <td>${order.status}</td>
+//                            <td>${order.createdDate}</td>
+//                        </tr>
+//                    `;
+//                        tableBody.insertAdjacentHTML('beforeend', row);
+//                    });
+//                }
+//
+//                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
+//                modal.show();
+//            })
+//            .catch(error => {
+//                const tableBody = document.getElementById('statusOrdersTableBody');
+//                tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error fetching orders.</td></tr>';
+//                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
+//                modal.show();
+//            });
+//});
 
 //ask user confirm to edit
 let pendingForm = null;
