@@ -52,7 +52,6 @@
 
                                         <i class="password-toggle-icon fas fa-eye" id="toggleNewPassword"></i>
                                     </div>
-                                    <div class="form-text">Password must be at least 6 characters long.</div>
                                 </div>
 
 
@@ -83,6 +82,7 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
 
         <script>
             // Password toggle functionality

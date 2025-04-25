@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.StaffData" %>
+<jsp:useBean id="loggedInManager" class="model.StaffData" scope="session" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -39,33 +40,32 @@
                         } %>
 
                     <%
-                        StaffData staff = (StaffData) session.getAttribute("loggedInManager");
-                        if (staff != null) {
+                        if (loggedInManager != null) {
                     %>
                     <div class="profile-info">
                         <div class="profile-item">
                             <label>Full Name</label>
-                            <div class="detail-value"><%= staff.getFullname()%></div>
+                            <div class="detail-value"><%= loggedInManager.getFullname()%></div>
                         </div>
                         <div class="profile-item">
                             <label>Email</label>
-                            <div class="detail-value"><%= staff.getEmail()%></div>
+                            <div class="detail-value"><%= loggedInManager.getEmail()%></div>
                         </div>
                         <div class="profile-item">
                             <label>Contact Number</label>
-                            <div class="detail-value"><%= staff.getContactNumber() != null ? staff.getContactNumber() : "Not provided"%></div>
+                            <div class="detail-value"><%= loggedInManager.getContactNumber() != null ? loggedInManager.getContactNumber() : "Not provided"%></div>
                         </div>
                         <div class="profile-item">
                             <label>Address</label>
-                            <div class="detail-value"><%= staff.getAddress() != null ? staff.getAddress() : "Not provided"%></div>
+                            <div class="detail-value"><%= loggedInManager.getAddress() != null ? loggedInManager.getAddress() : "Not provided"%></div>
                         </div>
                         <div class="profile-item">
                             <label>Position</label>
-                            <div class="detail-value"><%= staff.getPosition()%></div>
+                            <div class="detail-value"><%= loggedInManager.getPosition()%></div>
                         </div>
                         <div class="profile-item">
                             <label>Gender</label>
-                            <div class="detail-value"><%= staff.getGender()%></div>
+                            <div class="detail-value"><%= loggedInManager.getGender()%></div>
                         </div>
                     </div>
                     <div class="profile-actions">

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.StaffData" %>
+<jsp:useBean id="loggedInManager" class="model.StaffData" scope="session" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,36 +31,35 @@
                     <% } %>
                     
                     <%
-                        StaffData staff = (StaffData) session.getAttribute("loggedInManager");
-                        if (staff != null) {
+                        if (loggedInManager != null) {
                     %>
                     <form action="<%= request.getContextPath()%>/manager/EditStaffServlet" method="post" autocomplete="off">
                         <div class="form-group">
                             <label for="fullname">Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= staff.getFullname() %>" required autocomplete="off">
+                            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= loggedInManager.getFullname() %>" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<%= staff.getEmail() %>" required autocomplete="off">
+                            <input type="email" class="form-control" id="email" name="email" value="<%= loggedInManager.getEmail() %>" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="contactNumber">Contact Number</label>
-                            <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= staff.getContactNumber() != null ? staff.getContactNumber() : "" %>" autocomplete="off">
+                            <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= loggedInManager.getContactNumber() != null ? loggedInManager.getContactNumber() : "" %>" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"><%= staff.getAddress() != null ? staff.getAddress() : "" %></textarea>
+                            <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"><%= loggedInManager.getAddress() != null ? loggedInManager.getAddress() : "" %></textarea>
                         </div>
                         <div class="form-group">
                             <label for="position">Position</label>
-                            <input type="text" class="form-control" id="position" name="position" value="<%= staff.getPosition() %>" readonly autocomplete="off">
+                            <input type="text" class="form-control" id="position" name="position" value="<%= loggedInManager.getPosition() %>" readonly autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="gender">Gender</label>
                             <select class="form-control" id="gender" name="gender" autocomplete="off">
-                                <option value="Male" <%= "Male".equals(staff.getGender()) ? "selected" : "" %>>Male</option>
-                                <option value="Female" <%= "Female".equals(staff.getGender()) ? "selected" : "" %>>Female</option>
-                                <option value="Other" <%= "Other".equals(staff.getGender()) ? "selected" : "" %>>Other</option>
+                                <option value="Male" <%= "Male".equals(loggedInManager.getGender()) ? "selected" : "" %>>Male</option>
+                                <option value="Female" <%= "Female".equals(loggedInManager.getGender()) ? "selected" : "" %>>Female</option>
+                                <option value="Other" <%= "Other".equals(loggedInManager.getGender()) ? "selected" : "" %>>Other</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -77,5 +77,6 @@
         </div>
         
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
     </body>
 </html>

@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="contact_number" placeholder="Contact Number" autocomplete="off" required>
+                                    <input type="text" class="form-control" id="contactNumber" name="contact_number" placeholder="Contact Number" autocomplete="off" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -68,7 +68,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="date" class="form-control" name="birthdate" autocomplete="off" required>
+                                    <input type="text" class="form-control" id="birthDate" name="birthdate" autocomplete="off" required placeholder="Birthdate"
+                                           onfocus="(this.type = 'date')" onblur="if (this.value === ''){this.type = 'text';}">
                                 </div>
                             </div>
                         </div>
@@ -137,4 +138,5 @@
     <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
     <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
     <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
 </html>
