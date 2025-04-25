@@ -33,7 +33,7 @@
                         StaffData staff = (StaffData) session.getAttribute("loggedInManager");
                         if (staff != null) {
                     %>
-                    <form action="<%= request.getContextPath()%>/manager/EditStaffServlet" method="post">
+                    <form action="<%= request.getContextPath()%>/manager/EditStaffServlet" method="post" autocomplete="off">
                         <div class="form-group">
                             <label for="fullname">Full Name</label>
                             <input type="text" class="form-control" id="fullname" name="fullname" value="<%= staff.getFullname() %>" required autocomplete="off">
@@ -52,7 +52,7 @@
                         </div>
                         <div class="form-group">
                             <label for="position">Position</label>
-                            <input type="text" class="form-control" id="position" name="position" value="<%= staff.getPosition() %>" readonly>
+                            <input type="text" class="form-control" id="position" name="position" value="<%= staff.getPosition() %>" readonly autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="gender">Gender</label>

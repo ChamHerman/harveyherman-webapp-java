@@ -40,23 +40,23 @@
                     </div>
                     <% } %>
 
-                    <form action="<%= request.getContextPath()%>/manager/StaffChangePasswordServlet" method="post">
+                    <form action="<%= request.getContextPath()%>/manager/StaffChangePasswordServlet" method="post" autocomplete="off">
                         <div class="form-group password-field-container">
                             <label for="currentPassword">Current Password</label>
-                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required autocomplete="off">
                             <i class="password-toggle-icon fas fa-eye" id="toggleCurrentPassword"></i>
                         </div>
 
                         <div class="form-group password-field-container">
                             <label for="newPassword">New Password</label>
-                            <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6" autocomplete="off">
                             <i class="password-toggle-icon fas fa-eye" id="toggleNewPassword"></i>
                             <div class="form-text text-muted">Password must be at least 6 characters long.</div>
                         </div>
 
                         <div class="form-group password-field-container">
                             <label for="confirmNewPassword">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required autocomplete="off">
                             <i class="password-toggle-icon fas fa-eye" id="toggleConfirmPassword"></i>
                         </div>
 

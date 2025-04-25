@@ -11,6 +11,20 @@
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/ap_login.css" rel="stylesheet">
+        <style>
+            /* Override styles directly in the page */
+            .password-toggle-icon {
+                position: absolute;
+                right: 16px;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+            }
+            
+            /* Ensure the input has enough padding for the icon */
+            #password {
+                padding-right: 40px;
+            }
+        </style>
     </head>
     <body>
         <div class="login-container">
@@ -29,21 +43,23 @@
                 </div>
                 <% }%>
 
-                <form action="<%=request.getContextPath()%>/staff/StaffLoginServlet" method="post">
+                <form action="<%=request.getContextPath()%>/staff/StaffLoginServlet" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control" id="username" name="username" required autocomplete="off">
                     </div>
 
-                    <div class="form-group password-field-container">
+                    <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <span class="password-toggle-icon" id="togglePassword">
-                            <i class="fas fa-eye"></i>
-                        </span>
+                        <div style="position: relative;">
+                            <input type="password" class="form-control" id="password" name="password" required autocomplete="off">
+                            <div class="password-toggle-icon" id="togglePassword" style="position: absolute; right: 12px; top: 15px;">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn-login">Login</button>
+                    <button type="submit" class="btn-login">LOGIN</button>
                 </form>
             </div>
 

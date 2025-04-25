@@ -31,36 +31,36 @@
                         <h5>User Information</h5>
                     </div>
                     <div class="card-body">
-                        <form id="addUserForm" method="post" action="<%= request.getContextPath() %>/manager/AddUsersServlet" onsubmit="return validateAddUserForm()">
+                        <form id="addUserForm" method="post" action="<%= request.getContextPath() %>/manager/AddUsersServlet" onsubmit="return validateAddUserForm()" autocomplete="off">
                             <!-- Personal Information Section -->
                             <h4 class="mb-3">Personal Information</h4>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="fullname" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" required>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <input type="email" class="form-control" id="email" name="email" required autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                                    <input type="text" class="form-control" id="contactNumber" name="contactNumber" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="birthDate" class="form-label">Birth Date</label>
-                                    <input type="date" class="form-control" id="birthDate" name="birthDate">
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate" autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="gender" name="gender" required>
+                                    <select class="form-select" id="gender" name="gender" required autocomplete="off">
                                         <option value="">Select gender...</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -71,7 +71,7 @@
                             
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="2"></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="2" autocomplete="off"></textarea>
                             </div>
                             
                             <!-- Account Information Section -->
@@ -83,7 +83,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="20" pattern="^[a-zA-Z0-9_-]{3,20}$">
+                                    <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="20" pattern="^[a-zA-Z0-9_-]{3,20}$" autocomplete="off">
                                     <div class="form-text">Username must be 3-20 characters and can only contain letters, numbers, underscores, and hyphens.</div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="securityQuestion" class="form-label">Security Question <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="securityQuestion" name="securityQuestion" required>
+                                    <select class="form-select" id="securityQuestion" name="securityQuestion" required autocomplete="off">
                                         <option value="">Select security question...</option>
                                         <option value="What is your favorite color?">What is your favorite color?</option>
                                         <option value="What is your nickname?">What is your nickname?</option>
@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="securityAnswer" class="form-label">Security Answer <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="securityAnswer" name="securityAnswer" required>
+                                    <input type="text" class="form-control" id="securityAnswer" name="securityAnswer" required autocomplete="off">
                                 </div>
                             </div>
                             

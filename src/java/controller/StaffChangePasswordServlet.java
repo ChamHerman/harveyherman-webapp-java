@@ -65,7 +65,7 @@ public class StaffChangePasswordServlet extends HttpServlet {
         }
 
         try {
-            StaffLogin staffLogin = staff.getStaffLogin();
+            StaffLogin staffLogin = staffLoginDAO.findByStaffId(staff.getStaffId());
 
             if (staffLogin == null) {
                 response.sendRedirect(contextPath + sourcePath + "/ap_changePassword.jsp?error=Staff+account+not+found");

@@ -74,8 +74,8 @@
                         <h5>Editing User: <%= userData.getFullname() %> (ID: <%= userData.getUserId() %>)</h5>
                     </div>
                     <div class="card-body">
-                        <form id="editUserForm" method="post" action="<%= request.getContextPath() %>/manager/EditUsersServlet">
-                            <input type="hidden" name="userId" value="<%= userData.getUserId() %>">
+                        <form id="editUserForm" method="post" action="<%= request.getContextPath() %>/manager/EditUsersServlet" autocomplete="off">
+                            <input type="hidden" name="userId" value="<%= userData.getUserId() %>" autocomplete="off">
                             
                             <!-- Personal Information Section -->
                             <h4 class="mb-3">Personal Information</h4>
@@ -83,29 +83,29 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="fullname" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" value="<%= userData.getFullname() %>" required>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" value="<%= userData.getFullname() %>" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" id="email" name="email" value="<%= userData.getEmail() %>" required>
+                                    <input type="email" class="form-control" id="email" name="email" value="<%= userData.getEmail() %>" required autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= userData.getContactNumber() %>" required>
+                                    <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= userData.getContactNumber() %>" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="birthDate" class="form-label">Birth Date</label>
-                                    <input type="date" class="form-control" id="birthDate" name="birthDate" value="<%= birthDateStr %>">
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate" value="<%= birthDateStr %>" autocomplete="off">
                                 </div>
                             </div>
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="gender" name="gender" required>
+                                    <select class="form-select" id="gender" name="gender" required autocomplete="off">
                                         <option value="">Select gender...</option>
                                         <option value="Male" <%= "Male".equals(userData.getGender()) ? "selected" : "" %>>Male</option>
                                         <option value="Female" <%= "Female".equals(userData.getGender()) ? "selected" : "" %>>Female</option>
@@ -116,7 +116,7 @@
                             
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="3"><%= userData.getAddress() != null ? userData.getAddress() : "" %></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"><%= userData.getAddress() != null ? userData.getAddress() : "" %></textarea>
                             </div>
                             
                             <% if (userLogin != null) { %>
@@ -126,11 +126,11 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Username</label>
-                                    <input type="text" class="form-control" value="<%= userLogin.getUsername() %>" readonly>
+                                    <input type="text" class="form-control" value="<%= userLogin.getUsername() %>" readonly autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="securityQuestion" class="form-label">Security Question</label>
-                                    <select class="form-select" id="securityQuestion" name="securityQuestion">
+                                    <select class="form-select" id="securityQuestion" name="securityQuestion" autocomplete="off">
                                         <option value="">Current: "<%= userLogin.getChallengeQuestion() %>"</option>
                                         <% for (String question : securityQuestions) { 
                                             if (!question.equals(userLogin.getChallengeQuestion())) { %>
@@ -146,7 +146,7 @@
                                 <div class="col-md-6">
                                     <label for="securityAnswer" class="form-label">Security Answer</label>
                                     <input type="text" class="form-control" id="securityAnswer" name="securityAnswer" 
-                                           placeholder="Current: <%= userLogin.getAnswer() %>">
+                                           placeholder="Current: <%= userLogin.getAnswer() %>" autocomplete="off">
                                     <div class="form-text">Only fill if you want to update the security answer.</div>
                                 </div>
                             </div>
