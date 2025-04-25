@@ -5,7 +5,8 @@
 <html>
     <%List<Object[]> topSales = (List<Object[]>) request.getAttribute("topSales");%>
     <head>
-        <title>Top 10 Sales Report</title>
+        <jsp:include page="/user/head.jsp" />
+        <title>Top 10 Sales</title>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -55,7 +56,7 @@
                         <tr>
                             <th>No</th>
                             <th>Item ID</th>
-                            <th>Product Name</th>
+                            <th>Item Name</th>
                             <th>Total Quantity Sold</th>
                         </tr>
                     </thead>
@@ -96,7 +97,7 @@
                 %>
                 <%if (topSales != null && !topSales.isEmpty()) {%>
                 <div class="mt-5">
-                    <h4 class="text-center">Top 10 Products Chart</h4>
+                    <h4 class="text-center">Top 10 Items Chart</h4>
                     <div class="d-flex justify-content-center">
                         <canvas id="salesChart" width="800" height="400"></canvas>
                     </div>

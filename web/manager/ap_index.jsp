@@ -71,7 +71,7 @@
         chartData.append("]");
     %>
     <head>
-        <meta charset="UTF-8">
+        <jsp:include page="/user/head.jsp" />
         <title>Manager Dashboard - HarveyHerman</title>
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">

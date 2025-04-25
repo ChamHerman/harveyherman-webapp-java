@@ -40,7 +40,7 @@
                     </a>
                     <div class="user-dropdown">
                         <a href="CartServlet">Cart</a>
-                        <a href="viewOrders.jsp">View Order(s)</a>
+                        <a href="ViewUserOrdersServlet">View Order(s)</a>
                     </div>
                 </li>
                 <% } else {%>

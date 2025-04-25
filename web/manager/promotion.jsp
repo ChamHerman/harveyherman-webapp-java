@@ -35,7 +35,10 @@
 %>
 <html>
     <head>
-        <title>Manage Promotions</title>
+        <!-- Default Head -->
+        <jsp:include page="/user/head.jsp" />
+        <title>Promotion Management - Manager</title>
+        
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -43,8 +46,8 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_index.css">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_layout.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
+    
     <body class="container mt-4">
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>

@@ -1,7 +1,8 @@
-<%@page import="model.UserData"%>
-<%@page import="java.math.BigDecimal"%>
-<%@page import="javax.naming.NamingException"%>
-<%@page import="javax.naming.InitialContext"%>
+<%@ page import="model.CartDAO"%>
+<%@ page import="model.UserData"%>
+<%@ page import="java.math.BigDecimal"%>
+<%@ page import="javax.naming.NamingException"%>
+<%@ page import="javax.naming.InitialContext"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.CartItem"%>
 <%@ page import="model.Cart"%>

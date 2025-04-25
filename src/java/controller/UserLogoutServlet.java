@@ -23,7 +23,9 @@ public class UserLogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
+            // Remove session's attribute when log out.
             session.removeAttribute("loggedInUser");
+            session.removeAttribute("loggedInUserOrders");
         }
 
         response.sendRedirect(request.getContextPath() + "/user/login.jsp");

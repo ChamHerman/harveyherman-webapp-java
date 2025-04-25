@@ -29,7 +29,8 @@
         double totalSalesAmount = 0.0;
     %>
     <head>
-        <title>Generate Sales Report</title>
+        <jsp:include page="/user/head.jsp" />
+        <title>Generate Sales Report - Manager</title>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -92,8 +93,8 @@
                 <% }%>
                 <!-- print pdf -->
                 <div id="printSection" class="d-none text-center">
-                    <img src="logo.png" alt="Company Logo" style="height: 80px; margin-right: 10px;">
-                    <h2 style="display: inline-block; vertical-align: middle;">HARVEY HERMAN</h2>
+                    <img src="<%=request.getContextPath()%>/assets/images/favicon.png" alt="Company Logo" style="height: 100px; width: auto; margin-right: 20px; padding-bottom: 20px;">
+                    <h2 style="display: inline-block; vertical-align: middle;"><%=companyName%></h2>
                     <hr>
                 </div>
 
@@ -124,20 +125,18 @@
 
                 <div id="printSection" class="print_table">
                     <%if (reportSales != null) {%>
-                    <h4 class="text-center text-info">
-                        Type of Report: <%= reportTypeR%> | Date: <%=selectedStartDate%> to <%= selectedEndDate%>
-                    </h4>  
+                    <h4 class="text-center text-info" style="width: 100%; margin: 0.5rem 0 2rem 0; font-size: 20px; color: black !important;"><%= reportTypeR%> Report | From <%=selectedStartDate%> to <%= selectedEndDate%></h4>  
                     <%}%>
 
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered" style="width: 100%;">
                         <thead class="table-dark">
                             <tr>
                                 <th>No</th>
                                 <th>Item ID</th>
-                                <th>Product Name</th>
+                                <th>Item Name</th>
                                 <th>Price Per Unit</th>
-                                <th>Total Quantity Sold</th>
-                                <th>Total Sales (RM)</th>
+                                <th>Quantity Sold</th>
+                                <th>Sales (RM)</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    String companyCopyright = application.getInitParameter("companyCopyright");
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -64,7 +67,7 @@
             </div>
 
             <div class="login-footer">
-                <p>&copy; 2023 HarveyHerman. All rights reserved.</p>
+                <p><%=companyCopyright%></p>
             </div>
         </div>
 

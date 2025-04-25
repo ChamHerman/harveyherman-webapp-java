@@ -1,0 +1,93 @@
+.order-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-bottom: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 5px solid #38a169;
+    transition: box-shadow 0.2s;
+}
+.order-card:hover {
+    box-shadow: 0 4px 16px rgba(56,161,105,0.13);
+}
+
+.order-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #22543d;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.order-address {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    font-style: italic;
+}
+
+.order-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.order-table th, .order-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.order-table th {
+    background: #e6fffa;
+    color: #22543d;
+    font-weight: 600;
+    border-bottom: 2px solid #b7e4c7;
+}
+
+.order-table td {
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+.order-table tr:last-child td {
+    border-bottom: none;
+}
+
+.order-total-row td {
+    font-weight: bold;
+    color: #38a169;
+    background: #f6fff8;
+    font-size: 1.08em;
+    border-top: 2px solid #b7e4c7;
+}
+
+a.item-link {
+    color: #3182ce;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+a.item-link:hover {
+    color: #22543d;
+    text-decoration: underline;
+}
+
+.alert-info {
+    background: linear-gradient(90deg, #d4f5e9 0%, #e8fbe6 100%);
+    color: #22543d;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: 1px solid #b7e4c7;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+}

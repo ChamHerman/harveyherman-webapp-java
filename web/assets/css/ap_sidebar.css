@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.07);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
     z-index: 1000;
     overflow: hidden;
 }
@@ -30,21 +30,13 @@
     padding: 24px 0 12px 0;
     border-bottom: 1px solid #333;
 }
-.sidebar-header .sidebar-logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--sidebar-accent);
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-    display: block;
-    word-break: break-word;
-}
+
 .sidebar-header .sidebar-avatar {
-    width: 48px;
-    height: 48px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background: #fff;
-    margin: 0 auto 8px auto;
+    margin: 1px auto 8px auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,24 +46,35 @@
     overflow: hidden;
 }
 
+.sidebar-header .sidebar-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sidebar-accent);
+    letter-spacing: 1px;
+    margin-bottom: 1vh;
+    display: block;
+    word-break: break-word;
+}
+
 .sidebar .nav {
     flex: 1;
-    padding: 18px 0 0 0;
+    padding: 0;
     overflow-y: auto;
     max-height: calc(100vh - 220px);
 }
 .sidebar .nav-link {
     color: var(--sidebar-text);
-    padding: 14px 28px;
     display: block;
-    font-size: 0.98rem;
+    font-size: 1rem;
     border-left: 4px solid transparent;
     transition: background 0.2s, color 0.2s, border-color 0.2s;
-    margin-bottom: 6px;
-    line-height: 1.4;
+    line-height: 1.0;
     word-break: break-word;
     white-space: normal;
-    border-radius: 8px;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 2rem;
+    margin-bottom: 0.3vh;
 }
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
@@ -90,9 +93,9 @@
 .sidebar-profile .btn {
     background: var(--sidebar-accent);
     color: var(--sidebar-bg);
-    border: none;
+    border: 2px solid var(--sidebar-accent);
     border-radius: 0;
-    padding: 18px 0;
+    padding: 1rem 0;
     font-size: 1.05rem;
     font-weight: 600;
     transition: background 0.2s, color 0.2s;

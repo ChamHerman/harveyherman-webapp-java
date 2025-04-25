@@ -9,11 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import javax.persistence.PersistenceContext;
-
-/**
- *
- * @author user
- */
 import controller.CustomIdGenerator;
 
 @Stateless
@@ -140,5 +135,15 @@ public class OrderDAO {
         em.merge(order);
     }
 }
+
+    // Get all active orders for a specific user
+    public List<Orders> getOrdersByUserId(String userId) {
+        TypedQuery<Orders> query = em.createQuery(
+            "SELECT o FROM Orders o WHERE o.userId.userId = :userId AND o.dbstatus = 'active'",
+            Orders.class
+        );
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
 
 }

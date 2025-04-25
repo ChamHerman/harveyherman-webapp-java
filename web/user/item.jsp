@@ -262,7 +262,7 @@
                             <div class="card p-3 shop-sidebar-card">
                                 <h5>Search</h5>
                                 <input type="text" name="search" class="form-control" placeholder="Search item..."
-                                       value="<%=(searchQuery != null) ? searchQuery : ""%>">
+                                       value="<%=(searchQuery != null) ? searchQuery : ""%>" autocomplete="off">
 
                                 <h5 class="mt-3">Category</h5>
                                 <% for (String cat : categories) { %>
