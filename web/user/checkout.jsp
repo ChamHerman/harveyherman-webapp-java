@@ -57,14 +57,14 @@
         </div>
         <% String error = (String) request.getAttribute("error"); %>
         <% if (error != null) {%>
-        <div class="alert alert-danger"><%= error%></div>
+        <div class="alert alert-danger text-center mb-4"><%= error%></div>
         <% }%>
         <div class="untree_co-section">
             <div class="container">
                 <div class="row">
                     <form id="checkoutForm" action="AddOrderServlet" method="post">
                         <!-- left -->
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <!-- Billing Details -->
                             <div class="billing-section">
                                 <h3>Delivery Details</h3>
@@ -84,7 +84,7 @@
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <!-- Your Order -->
                             <div class="order-section">
                                 <h3>Your Order</h3>

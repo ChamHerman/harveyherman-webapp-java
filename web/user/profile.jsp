@@ -121,8 +121,8 @@
     </body>
     <!-- Notification Popup -->
     <%
-        Boolean profileUpdateSuccess = (Boolean) request.getAttribute("profileUpdateSuccess");
-        Boolean changePasswordSuccess = (Boolean) request.getAttribute("changePasswordSuccess");
+        Boolean profileUpdateSuccess = (Boolean) session.getAttribute("profileUpdateSuccess");
+        Boolean changePasswordSuccess = (Boolean) session.getAttribute("changePasswordSuccess");
         if (profileUpdateSuccess != null && profileUpdateSuccess) {
     %>
     <div id="notification-popup">
@@ -136,6 +136,9 @@
     </div>
     <%
         }
+
+        session.removeAttribute("profileUpdateSuccess");
+        session.removeAttribute("changePasswordSuccess");
     %>
     <jsp:include page="footer.jsp" />
 

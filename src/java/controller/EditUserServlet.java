@@ -99,9 +99,8 @@ public class EditUserServlet extends HttpServlet {
             userDataDAO.update(userData);
             session.setAttribute("loggedInUser", userData);
 
-            request.setAttribute("profileUpdateSuccess", Boolean.TRUE);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/profile.jsp");
-            dispatcher.forward(request, response);
+            session.setAttribute("profileUpdateSuccess", Boolean.TRUE);          
+            response.sendRedirect(request.getContextPath() + "/user/profile.jsp");
 
         } catch (Exception ex) {
             ex.printStackTrace();
