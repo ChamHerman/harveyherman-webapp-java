@@ -36,10 +36,10 @@ public class OrderDAO {
 
     // Retrieve all orders using the named query declared in Orders.java ("Orders.findAll")
     public List<Orders> getAllOrders() {
-    TypedQuery<Orders> query = em.createNamedQuery("Orders.findByDbstatus", Orders.class);
-    query.setParameter("dbstatus", "active");
-    return query.getResultList();
-}
+        TypedQuery<Orders> query = em.createNamedQuery("Orders.findByDbstatus", Orders.class);
+        query.setParameter("dbstatus", "active");
+        return query.getResultList();
+    }
 
 //    public List<Orders> getFilteredOrders(String search, String status) {
 //    if (status != null && !status.trim().isEmpty()) {
@@ -75,37 +75,36 @@ public class OrderDAO {
 //        return filtered;
 //    }
 //}
-    
     public List<Orders> filterOrderByStatus(String status) {
-    if (status == null || status.isEmpty() || "all".equalsIgnoreCase(status)) {
-        // Return all active orders
+        if (status == null || status.isEmpty() || "all".equalsIgnoreCase(status)) {
+            // Return all active orders
+            TypedQuery<Orders> query = em.createNamedQuery("Orders.findByDbstatus", Orders.class);
+            query.setParameter("dbstatus", "active");
+            return query.getResultList();
+        } else {
+            TypedQuery<Orders> query = em.createNamedQuery("Orders.findByStatus", Orders.class);
+            query.setParameter("status", status);
+            return query.getResultList();
+        }
+    }
+
+    public long countAllOrders() {
         TypedQuery<Orders> query = em.createNamedQuery("Orders.findByDbstatus", Orders.class);
         query.setParameter("dbstatus", "active");
-        return query.getResultList();
-    } else {
-        TypedQuery<Orders> query = em.createNamedQuery("Orders.findByStatus", Orders.class);
-        query.setParameter("status", status);
-        return query.getResultList();
+        return query.getResultList().size();
     }
-}
-
-   public long countAllOrders() {
-    TypedQuery<Orders> query = em.createNamedQuery("Orders.findByDbstatus", Orders.class);
-    query.setParameter("dbstatus", "active");
-    return query.getResultList().size();
-}
 
     public long countOrdersByStatus(String status) {
-    TypedQuery<Orders> query = em.createNamedQuery("Orders.findByStatus", Orders.class);
-    query.setParameter("status", status);
-    List<Orders> orders = query.getResultList();
-    // Filter by dbstatus in Java
-    return orders.stream().filter(o -> "active".equals(o.getDbstatus())).count();
-}
+        TypedQuery<Orders> query = em.createNamedQuery("Orders.findByStatus", Orders.class);
+        query.setParameter("status", status);
+        List<Orders> orders = query.getResultList();
+        // Filter by dbstatus in Java
+        return orders.stream().filter(o -> "active".equals(o.getDbstatus())).count();
+    }
 
     public long getTotalOrderCount() {
-    return countAllOrders();
-}
+        return countAllOrders();
+    }
 
 //    public List<Object[]> countOrdersGroupedByStatus() {
 //    // No named query for group by, so do it in Java
@@ -121,29 +120,34 @@ public class OrderDAO {
 //    }
 //    return result;
 //}
-
     // Update the order
     public void update(Orders order) {
         em.merge(order);
     }
 
-   
     public void delete(String orderId) {
-    Orders order = selectOrder(orderId);
-    if (order != null) {
-        order.setDbstatus("deleted");
-        em.merge(order);
+        Orders order = selectOrder(orderId);
+        if (order != null) {
+            order.setDbstatus("deleted");
+            em.merge(order);
+        }
     }
-}
 
     // Get all active orders for a specific user
     public List<Orders> getOrdersByUserId(String userId) {
         TypedQuery<Orders> query = em.createQuery(
-            "SELECT o FROM Orders o WHERE o.userId.userId = :userId AND o.dbstatus = 'active'",
-            Orders.class
+                "SELECT o FROM Orders o WHERE o.userId.userId = :userId AND o.dbstatus = 'active'",
+                Orders.class
         );
+
         query.setParameter("userId", userId);
-        return query.getResultList();
+        List<Orders> orders = query.getResultList();
+
+        // Force fetch delivery list for each order
+        for (Orders order : orders) {
+            order.getDeliveryList().size();
+        }
+        return orders;
     }
 
 }
