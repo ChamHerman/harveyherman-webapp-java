@@ -67,6 +67,7 @@
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
     <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
     <script>
         // Password toggle functionality
         function setupPasswordToggle(toggleId, passwordId) {

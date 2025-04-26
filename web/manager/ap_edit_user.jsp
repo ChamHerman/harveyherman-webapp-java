@@ -208,10 +208,8 @@
             </div>
         </div>
         
-        <script>
-            var contextPath = '<%= request.getContextPath() %>';
-        </script>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_user.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
     </body>
 </html> 

@@ -193,10 +193,10 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="discountValue" class="form-label">Discount Value (%)</label>
-                                    <input type="number" class="form-control" id="discountValue" name="discountValue" required>
+                                    <input type="number" class="form-control" max="100" id="discountValue" name="discountValue" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="minimumPurchase" class="form-label">Minimum Purchase</label>
+                                    <label for="minimumPurchase" class="form-label">Minimum Purchase (RM)</label>
                                     <input type="number" class="form-control" id="minimumPurchase" name="minimumPurchase" required>
                                 </div>
                                 <div class="mb-3">
@@ -242,12 +242,12 @@
                                 <small class="text-muted">Status is automatically determined based on the end date.</small>
                             </div>
                             <div class="mb-3">
-                                <label class="text-dark">Discount Value:</label>
-                                <input type="number" step="0.01" min="0" name="discountValue" id="discountValue" value="<%= editPromo.getDiscountValue() %>" class="form-control" required>
+                                <label class="text-dark">Discount Value (%):</label>
+                                <input type="number" step="0.01" min="0" max="100" name="discountValue" id="discountValue" value="<%= editPromo.getDiscountValue() %>" class="form-control" required>
                                 <small class="text-danger" id="discountError"></small>
                             </div>
                             <div class="mb-3">
-                                <label class="text-dark">Minimum Purchase:</label>
+                                <label class="text-dark">Minimum Purchase (RM):</label>
                                 <input type="number" step="0.01" min="0" name="minimumPurchase" id="minimumPurchase" value="<%= editPromo.getMinimumPurchase() %>" class="form-control" required>
                                 <small class="text-danger" id="minPurchaseError"></small>
                             </div>
