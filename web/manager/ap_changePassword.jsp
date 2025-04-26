@@ -50,7 +50,6 @@
                             <label for="newPassword">New Password</label>
                             <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6" autocomplete="off">
                             <i class="password-toggle-icon fas fa-eye" id="toggleNewPassword"></i>
-                            <div class="form-text text-muted">Password must be at least 6 characters long.</div>
                         </div>
 
                         <div class="form-group password-field-container">
@@ -74,6 +73,7 @@
         </div>
         
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
         
         <script>
             // Password toggle functionality
