@@ -28,7 +28,6 @@ public class CartServlet extends HttpServlet {
     @EJB
     private ItemDAO itemDAO;
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -78,19 +77,20 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cartItems", cartItems);
             session.setAttribute("cart", cart);
 
-            request.setAttribute("cart", cart);
-            request.setAttribute("cartItems", cartItems);
-            request.setAttribute("cartSubtotal", cartSubtotal);
-            request.setAttribute("deliveryFee", deliveryFee);
-            request.setAttribute("discount", discount);
-            request.setAttribute("cartTotal", cartTotal);
+//            request.setAttribute("cart", cart);
+//            request.setAttribute("cartItems", cartItems);
+//            request.setAttribute("cartSubtotal", cartSubtotal);
+//            request.setAttribute("deliveryFee", deliveryFee);
+//            request.setAttribute("discount", discount);
+//            request.setAttribute("cartTotal", cartTotal);
+
         } catch (Exception e) {
             System.out.println("Error");
             e.printStackTrace();
             throw e;
         }
 
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        response.sendRedirect("cart.jsp");
     }
 
     @Override
@@ -143,6 +143,14 @@ public class CartServlet extends HttpServlet {
             cartItem.setSubtotal(cartItem.getUnitPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
             cartItemDAO.update(cartItem);
         }
+
+        List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
+        BigDecimal cartTotal = BigDecimal.ZERO;
+        for (CartItem ci : cartItems) {
+            cartTotal = cartTotal.add(ci.getSubtotal());
+        }
+        cart.setTotal(cartTotal);
+        cartDAO.update(cart);
 
         response.sendRedirect(request.getContextPath() + "/user/CartServlet");
     }

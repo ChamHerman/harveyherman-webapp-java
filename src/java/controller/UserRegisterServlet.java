@@ -53,9 +53,8 @@ public class UserRegisterServlet extends HttpServlet {
         boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, challengeQuestion, answer);
 
         if (success) {
-            request.setAttribute("registerSuccess", Boolean.TRUE);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
-            dispatcher.forward(request, response);
+            request.getSession().setAttribute("registerSuccess", Boolean.TRUE);
+            response.sendRedirect(request.getContextPath() + "/user/login.jsp");
         } else {
             request.setAttribute("errorMessage", errorMsg);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/register.jsp");

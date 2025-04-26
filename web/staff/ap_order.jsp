@@ -56,7 +56,7 @@
                     long deliveredCount = orderDAO.countOrdersByStatus("delivered");
                 %>
                 <!-- Dashboard Overview Section -->
-                <h2>Order Dashboard</h2>
+                <h2 style="text-align: center; margin-bottom: 2rem;">Order Management</h2>
                 <div class="total-order-box">
                     <div class="total-orders">
                         <p>Total Orders: <%= totalOrders%></p>
@@ -108,18 +108,17 @@
                             <th>Payment method</th>
                             <th>Status</th>
                             <th>Created Date</th>
-                            <th colspan="3" >Actions</th>
+                            <th colspan="2" >Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <%
-    List<Orders> orders = (List<Orders>) session.getAttribute("filteredOrders");
-    if (orders == null) {
-        // fallback: load all orders if not filtered
-        orders = ... // call your DAO or whatever you did before
-    }
-%>
+                                List<Orders> orders = (List<Orders>) session.getAttribute("filteredOrders");
+                                if (orders == null) {
+
+                                }
+                            %>
                             <%
                                 if (ordersList != null) {
                                     int rowNum = 1;
@@ -140,11 +139,6 @@
                             <td><%= sdf.format(order.getCreatedDate())%></td>
                             <td>
                                 <button class="btn btn-info" onclick="viewOrder('<%= order.getOrderId()%>')">View</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-secondary" onclick="confirmDeleteOrder('<%= order.getOrderId()%>')">
-                                    Delete
-                                </button>
                             </td>
 
 
@@ -181,7 +175,7 @@
                                     <%
                                         }
                                     %>
-                                    
+
                                 </form>
                             </td>
                         </tr>
@@ -190,7 +184,7 @@
                         } else {
                         %>
                         <tr>
-                            <td colspan="9">No orders found.</td>
+                            <td colspan="8">No orders found.</td>
                         </tr>
                         <%
                             }

@@ -14,13 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import controller.CustomIdGenerator;
 import model.OrderDAO;
 import model.Orders;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import model.UserData;
 import model.*;
@@ -29,7 +24,7 @@ import model.*;
  *
  * @author user
  */
-@WebServlet(name = "AddOrderServlet", urlPatterns = {"/manager/AddOrderServlet", "/staff/AddOrderServlet", "/user/AddOrderServlet"})
+@WebServlet(name = "AddOrderServlet", urlPatterns = {"/user/AddOrderServlet"})
 public class AddOrderServlet extends HttpServlet {
 
     @EJB
@@ -37,8 +32,13 @@ public class AddOrderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @EJB
-    private OrderDetailsDAO orderDetailsDAO;
+    private CartItemDAO cartItemDAO;
 
+    @EJB
+    private ItemDAO itemDAO;
+
+    @EJB
+    private OrderDetailsDAO orderDetailsDAO;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -68,14 +68,28 @@ public class AddOrderServlet extends HttpServlet {
             }
         }
 
- 
         Orders order = createOrder(null, user, cartTotal, paymentMethod, promotionId);
         orderDAO.create(order);
 
         for (CartItem cartItem : cartItems) {
             OrderDetails detail = createOrderDetail(null, order, cartItem);
             orderDetailsDAO.create(detail);
+
+            // Decrease stock
+            Item item = cartItem.getItemId();
+            int newStock = item.getStockQuantity() - cartItem.getQuantity();
+            item.setStockQuantity(newStock);
+            itemDAO.update(item);
+            
+            cartItemDAO.softDelete(cartItem.getCartItemId());
         }
+
+        session.removeAttribute("cart");
+        session.removeAttribute("cartItems");
+        session.removeAttribute("cartSubtotal");
+        session.removeAttribute("deliveryFee");
+        session.removeAttribute("discount");
+        session.removeAttribute("cartTotal");
 
         response.sendRedirect("thankyou.jsp");
     }

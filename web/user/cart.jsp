@@ -95,12 +95,12 @@
                                 </thead>
                                 <tbody>
                                     <%
-                                        List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
+                                        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
                                         int rowNum = 1;
-                                        double cartSubtotal = (Double) request.getAttribute("cartSubtotal");
-                                        double deliveryFee = (Double) request.getAttribute("deliveryFee");
-                                        double discount = (Double) request.getAttribute("discount");
-                                        double cartTotal = (Double) request.getAttribute("cartTotal");
+                                        double cartSubtotal = (Double) session.getAttribute("cartSubtotal");
+                                        double deliveryFee = (Double) session.getAttribute("deliveryFee");
+                                        double discount = (Double) session.getAttribute("discount");
+                                        double cartTotal = (Double) session.getAttribute("cartTotal");
                                         if (cartItems != null && !cartItems.isEmpty()) {
                                             for (CartItem cartItem : cartItems) {
                                     %>
@@ -146,7 +146,7 @@
                                     %>
                                 </tbody>
                                 <%
-                                    cartSubtotal = (Double) request.getAttribute("cartSubtotal");
+                                    cartSubtotal = (Double) session.getAttribute("cartSubtotal");
                                 %>
 
                                 Purchase more than RM1000, free delivery !!!
@@ -226,7 +226,7 @@
             </div>
         </div>
 
-        
+
 
         <!-- Modal to show Promotion Error -->
         <div class="modal fade" id="promoModal" tabindex="-1" aria-labelledby="promoModalLabel" aria-hidden="true">
@@ -241,6 +241,23 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        modal to show stock not enough-->
+        <div class="modal fade" id="stockModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Stock Not Enough</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sorry, not enough stock for this item.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
                     </div>
                 </div>
             </div>
@@ -347,7 +364,7 @@
 
                     </div>
                 </div>
-                
+
             </div>
         </footer>
         <!-- End Footer Section -->	

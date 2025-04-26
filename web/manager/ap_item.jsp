@@ -185,6 +185,7 @@
                     // Avoid subList errors if no items
                     List<Item> limitedItems = (startIdx < endIdx) ? filteredItems.subList(startIdx, endIdx) : new ArrayList<>();
                 %>
+                <h2 style="text-align: center; margin-bottom: 2rem;">Item Management</h2>
                 <!-- Dashboard Overview Section -->
                 <div class="dashboard-summary">
                     <div class="summary-box fs-6" id="totalItems">Total Items: <%= totalItems%></div>

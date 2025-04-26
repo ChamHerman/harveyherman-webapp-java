@@ -56,7 +56,7 @@
                     long deliveredCount = orderDAO.countOrdersByStatus("delivered");
                 %>
                 <!-- Dashboard Overview Section -->
-                <h2>Order Dashboard</h2>
+                <h2 style="text-align: center; margin-bottom: 2rem;">Order Management</h2>
                 <div class="total-order-box">
                     <div class="total-orders">
                         <p>Total Orders: <%= totalOrders%></p>

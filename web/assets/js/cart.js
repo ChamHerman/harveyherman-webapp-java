@@ -92,3 +92,13 @@ window.onload = function() {
     var credit = document.getElementById('credit');
     toggleCardForm((debit && debit.checked) || (credit && credit.checked));
 };
+
+//valid quantity cannot more than stock
+function increaseQuantity(itemId, currentQty, stock) {
+    if (currentQty + 1 > stock) {
+        // Show modal
+        $('#stockModal').modal('show');
+        return false;
+    }
+    // Otherwise, submit form or AJAX to increase quantity
+}

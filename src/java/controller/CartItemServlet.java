@@ -99,7 +99,8 @@ public class CartItemServlet extends HttpServlet {
             deliveryFee = 25.0;
         }
         double cartTotal = cartSubtotal + deliveryFee;
-
+        cart.setTotal(BigDecimal.valueOf(cartTotal));
+        cartDAO.update(cart);
         response.setContentType("application/json");
         response.getWriter().write("{"
                 + "\"success\":true,"

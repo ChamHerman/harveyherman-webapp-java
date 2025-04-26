@@ -9,7 +9,7 @@
     padding: 0;
 }
 
-    
+
 
 .dashboard-summary {
     display: flex;
@@ -59,7 +59,7 @@
     flex: 1;
     min-width: 200px; /* Prevents shrinking too small on small screens */
     background-color: #ffffff;
-    border: 2px solid black;
+    border: 2px solid transparent;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
@@ -72,7 +72,8 @@
     display: flex;
     width: 100%;
     background-color: #ffffff;
-    border: 2px solid black;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
     border-radius: 5px;
     margin-bottom: 2rem;
     align-content: center;

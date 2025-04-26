@@ -48,13 +48,13 @@ public class CheckOutServlet extends HttpServlet {
         Double cartTotal = (Double) session.getAttribute("cartTotal");
 
         // Set as request attributes for checkout.jsp
-        request.setAttribute("userData", userData);
-        request.setAttribute("cart", cart);
-        request.setAttribute("cartItems", cartItems);
-        request.setAttribute("cartSubtotal", cartSubtotal);
-        request.setAttribute("deliveryFee", deliveryFee);
-        request.setAttribute("discount", discount);
-        request.setAttribute("cartTotal", cartTotal);
+        session.setAttribute("userData", userData);
+        session.setAttribute("cart", cart);
+        session.setAttribute("cartItems", cartItems);
+        session.setAttribute("cartSubtotal", cartSubtotal);
+        session.setAttribute("deliveryFee", deliveryFee);
+        session.setAttribute("discount", discount);
+        session.setAttribute("cartTotal", cartTotal);
         }
         catch (Exception e) {
             System.out.println("Error");
@@ -66,51 +66,4 @@ public class CheckOutServlet extends HttpServlet {
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
     }
 
-//    // Show the checkout page with all data
-//    private void processCheckoutPage(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        String userId = (String) session.getAttribute("userId");
-//
-//        // Get user info using CartDAO
-//        UserData user = userDataDAO.findByUserId(userId);
-//
-//        // Get cart and cart items
-//        Cart cart = cartDAO.getActiveCartByUserId(userId);
-//        List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
-//
-//        // Calculate totals
-//        double cartSubtotal = 0.0;
-//        String paymentMethod = request.getParameter("paymentMethod");
-//        for (CartItem item : cartItems) {
-//            cartSubtotal += item.getQuantity() * item.getUnitPrice().doubleValue();
-//        }
-//        double deliveryFee = cartSubtotal >= 1000 ? 0.0 : 25.0;
-//        double discount = 0.0; // If you have promotion, get from session or recalculate
-//        double cartTotal = cartSubtotal - discount + deliveryFee;
-//
-//        // Set as request attributes
-//        request.setAttribute("user", user);
-//        request.setAttribute("cartItems", cartItems);
-//        request.setAttribute("cartSubtotal", cartSubtotal);
-//        request.setAttribute("deliveryFee", deliveryFee);
-//        request.setAttribute("discount", discount);
-//        request.setAttribute("cartTotal", cartTotal);
-//        request.setAttribute("selectedPayment", paymentMethod);
-//        
-//        request.getRequestDispatcher("checkout.jsp").forward(request, response);
-//    }
-//    private void processPlaceOrder(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        // 1. Get all form data (billing, payment, etc.)
-//        // 2. Validate and process payment if needed
-//        // 3. Save order and order details to DB
-//        // 4. Clear cart, etc.
-//        // 5. Redirect to thank you page
-//
-//        // Example:
-//        // String paymentMethod = request.getParameter("paymentMethod");
-//        // ... your order creation logic here ...
-//        response.sendRedirect("thankyou.html");
-//    }
 }
