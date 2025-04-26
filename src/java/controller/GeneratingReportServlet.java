@@ -10,13 +10,19 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.ejb.EJB;
+import model.ReportDAO;
 
 @WebServlet(name="GeneratingReportServlet",urlPatterns={"/manager/GeneratingReportServlet"})
 public class GeneratingReportServlet extends HttpServlet {
+    
+    //@EJB
+    //private ReportDAO reportDAO;
     
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
@@ -66,7 +72,7 @@ public class GeneratingReportServlet extends HttpServlet {
                 "FROM OrderDetails od " +
                 "JOIN od.itemId i " +
                 "JOIN od.orderId o " +
-                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR " +
+                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR AND o.dbstatus='active'" +
                 "GROUP BY i.itemId, i.name, i.price " +
                 "ORDER BY i.itemId", Object[].class)
                 .setParameter("startDateR", startDateConverted)
@@ -80,10 +86,19 @@ public class GeneratingReportServlet extends HttpServlet {
             reportResults.add(new Object[]{no++, row[0], row[1], row[2],row[3],row[4]});
         }
         
+        BigDecimal promoAmount;
+        promoAmount = em.createQuery("SELECT SUM(o.totalAmount) From Orders o WHERE o.createdDate BETWEEN :startDate AND :endDate AND o.dbstatus='active' ",BigDecimal.class)
+                .setParameter("startDate", startDateConverted)
+                .setParameter("endDate", endDateConverted)
+                .getSingleResult();
+   
+        double promoAmountDouble = (promoAmount != null) ? promoAmount.doubleValue() : 0.0;
+        
         request.setAttribute("reportSales",reportResults);
         request.setAttribute("reportType",reportType);
         request.setAttribute("selectedStartDateR", startDateStr);
         request.setAttribute("selectedEndDateR", endDateStr);
+        request.setAttribute("promoAmount",promoAmountDouble);
         request.getRequestDispatcher("generatingReport.jsp").forward(request, response);
         
         if (servletPath.contains("/manager/")) {

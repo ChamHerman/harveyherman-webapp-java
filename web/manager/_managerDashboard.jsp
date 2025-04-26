@@ -191,18 +191,19 @@
 
         <div class="row mt-5">
             <%if (cash != 0 || debit != 0 || credit != 0 || eWallet != 0) {%>
-            <!-- Pie Chart -->
-            <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
-                <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Payment Method Distribution</h5>
-                <canvas id="paymentMethodChart" style="max-width: 320px; max-height: 320px;"></canvas>
-            </div>
+                <!-- Pie Chart -->
+                <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
+                    <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Payment Method Distribution</h5>
+                    <canvas id="paymentMethodChart" style="max-width: 320px; max-height: 320px;"></canvas>
+                </div>
             <%}%>
+            
             <%if (topSales != null) {%>
-            <!-- Bar Chart -->
-            <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
-                <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Top 10 Products Chart</h5>
-                <canvas id="salesChart" style="max-width: 400px; max-height: 300px;"></canvas>
-            </div>
+                <!-- Bar Chart -->
+                <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
+                    <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Top 10 Products Chart</h5>
+                    <canvas id="salesChart" style="max-width: 400px; max-height: 300px;"></canvas>
+                </div>
             <%}%>
         </div>
 
