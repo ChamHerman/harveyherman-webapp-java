@@ -20,6 +20,9 @@
         String nextID = reportDAO.getNextReportId();
         List<Object[]> reportSales = (List<Object[]>) request.getAttribute("reportSales");
         String reportTypeR = (String) request.getAttribute("reportType");
+        Object promoObj = request.getAttribute("promoAmount");
+        double promoAmount = (promoObj != null) ? (double) promoObj : 0.0;
+        //double promoAmount=0.0;
         String selectedEndDate = (request.getAttribute("selectedEndDateR") != null)
                 ? request.getAttribute("selectedEndDateR").toString()
                 : "";
@@ -27,6 +30,9 @@
                 ? request.getAttribute("selectedStartDateR").toString()
                 : "";
         double totalSalesAmount = 0.0;
+        double promoBetweenTotal = 0.0;
+        double totalRevenue =0.0;
+        String contextPath = request.getContextPath();
     %>
     <head>
         <title>Generate Sales Report</title>
@@ -55,7 +61,7 @@
                 }
 
                 .chart-container {
-                    page-break-before: always; /* Move chart to new page */
+                    page-break-before: always; 
                 }
                 table {
                     width: 100%;
@@ -64,9 +70,13 @@
                 .print_table{
                     margin-top:100px;
                 }
-                .print_chart{
-                    margin-top:1000px;
-                    margin-left:-135px;
+                .print_chart {
+                    page-break-before: always ;
+                    margin-top: 0 ;
+                    margin-left: -135px;
+                    width: 100% ;
+                    height: 400px ;
+                    background: white;
                 }
             }
         </style>
@@ -92,7 +102,7 @@
                 <% }%>
                 <!-- print pdf -->
                 <div id="printSection" class="d-none text-center">
-                    <img src="logo.png" alt="Company Logo" style="height: 80px; margin-right: 10px;">
+                    <img src="<%=contextPath%>/assets/images/favicon.png" alt="Company Logo" style="height: 80px; margin-right: 10px;">
                     <h2 style="display: inline-block; vertical-align: middle;">HARVEY HERMAN</h2>
                     <hr>
                 </div>
@@ -157,12 +167,25 @@
                                 <td><%= row[5]%></td>
                             </tr>
                             <%}%>
+                            <% 
+                                promoBetweenTotal=totalSalesAmount-promoAmount;
+                                totalRevenue=totalSalesAmount-promoBetweenTotal;
+                            %>
                             <tr>
                                 <td colspan="4"></td>
                                 <td>Total (RM)</td>
                                 <td><%=totalSalesAmount%></td>
                             </tr>
-
+                            <tr>
+                                <td colspan="4"></td>
+                                <td>Promotion (RM)</td>
+                                <td><%=promoBetweenTotal%></td>                            </tr>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td>Total Revenue (RM)</td>
+                                <td><%=String.format("%.2f", totalRevenue)%></td>                            </tr>
+                            </tr>
                             <%} else { %>
                             <tr>
                                 <td colspan="6" class="text-center text-danger">No sales data found for the selected dates.</td>
@@ -172,7 +195,7 @@
                             %>
                         </tbody>
                     </table>
-                </div>
+                
                 <%
                     StringBuilder chartDataLabels = new StringBuilder();
                     StringBuilder chartDataSales = new StringBuilder();
@@ -190,7 +213,7 @@
                 %>
 
                 <% if (reportSales != null) {%>
-                <div id="printSection" class="print_table">
+                
                     <div id="chartSection" class="print_chart">
                         <div class="chart-container mt-5">
                             <canvas id="salesChart"></canvas>

@@ -36,7 +36,7 @@ public class PromotionDAO {
     
     public Promotion findByPromotionCode(String code) {
         try {
-            return em.createQuery("SELECT p FROM Promotion p WHERE p.promotionCode = :promotionCode", Promotion.class)
+            return em.createQuery("SELECT p FROM Promotion p WHERE p.promotionCode = :promotionCode AND p.dbstatus= 'active'", Promotion.class)
                     .setParameter("promotionCode", code)
                     .getSingleResult();
         } catch (NoResultException e) {

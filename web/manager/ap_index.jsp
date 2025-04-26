@@ -108,27 +108,45 @@
             <div class="dashboard-summary">
                 <div class="summary-box">
                     <div class="summary-label">Total Sales</div>
-                    <div class="summary-value">RM <%= totalSales%></div>
+                    <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        accesskey="" title="The total amount of products sold by the company">
+                        RM <%= totalSales%>
+                    </div>
                 </div>
                 <div class="summary-box">
                     <div class="summary-label">Products Sold</div>
-                    <div class="summary-value"><%= productSold%></div>
+                    <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        accesskey="" title="Products purchased since the company was founded">
+                        <%= productSold%>
+                    </div>
                 </div>
                 <div class="summary-box">
                     <div class="summary-label">Active Customers</div>
-                    <div class="summary-value"><%= activeUsers%></div>
+                    <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           accesskey="" title="Customers who purchased our products in the past month">
+                        <%= activeUsers%>
+                    </div>
                 </div>
                 <div class="summary-box">
                     <div class="summary-label">Contrast</div>
                     <%if (equalS < 0) {%>
                         <div class="summary-value" style="color: #c0392b;">-<%= String.format("%.2f", avgS2)%>%</div>
-                        <div class="summary-extra">Less than yesterday RM<%= equalS%></div>
+                        <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           accesskey="" title="Compare today's sales with yesterday's">
+                            Less than yesterday RM<%= equalS%>
+                        </div>
                     <%} else if (equalS == 0) {%>
                         <div class="summary-value">0%</div>
-                        <div class="summary-extra">No change</div>
+                        <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           accesskey="" title="Compare today's sales with yesterday's">
+                            No change
+                        </div>
                     <%} else if (equalS > 0) {%>
                         <div class="summary-value" style="color: #27ae60;">+<%= String.format("%.2f", avgS1)%>%</div>
-                        <div class="summary-extra">More than yesterday RM<%= equalS%></div>
+                        <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           accesskey="" title="Compare today's sales with yesterday's">
+                            More than yesterday RM<%= equalS%>
+                        </div>
                     <%}%>
                 </div>
             </div>
@@ -151,7 +169,10 @@
                     <%if (topSales != null) {%>
                     <!-- Bar Chart -->
                     <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
-                        <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Top 10 Products Chart</h5>
+                        <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;" data-bs-toggle="tooltip" data-bs-placement="top"
+                           accesskey="" title="Top 10 best-selling products in the past month">
+                            Top 10 Products Chart
+                        </h5>
                         <canvas id="salesChart" style="max-width: 400px; max-height: 300px;"></canvas>
                     </div>
                     <%}%>

@@ -37,6 +37,18 @@
             <%@ include file="ap_sidebar.jsp" %>
             <div class="main-content">
                 <h2 class="text-center text-primary">History Report</h2>
+                <%                
+                        String successMessage = (String) request.getAttribute("successMessage");
+                        String errorMessage = (String) request.getAttribute("errorMessage");
+                %>
+
+                <% if (successMessage != null) {%>
+                    <div class="alert alert-success"><%= successMessage%></div>
+                <% } %>
+
+                <% if (errorMessage != null) {%>
+                    <div class="alert alert-danger"><%= errorMessage%></div>
+                <% } %>
                 <table class="table table-striped table-bordered">
                     <thead class="table-dark">
                         <tr>
@@ -68,11 +80,57 @@
 
                     </tbody>
                 </table>
-                <a href="ap_index.jsp" class="btn btn-secondary">Back to Dashboard</a>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteReportModal">
+                        Delete Report
+                    </button>
+                    <a href="ap_index.jsp" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Delete Report Modal -->
+        <div class="modal fade" id="deleteReportModal" tabindex="-1" aria-labelledby="deleteReportModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteReportModalLabel">Delete Report</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="DeleteReportServlet" method="post">
+                            <div class="mb-3">
+                                <label for="deleteReportId" class="form-label">Report ID</label>
+                                <input type="text" class="form-control" id="deleteReportId" name="reportId" required>
+                                <small class="text-danger" id="deleteError" style="display: none;">Report ID is required.</small>
+                            </div>
+                            <button type="submit" name="deleteReportBtn" id="deleteReportBtn" class="btn btn-danger w-100">Delete Report</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
     <!-- JavaScript Import -->
     <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const deleteButton = document.querySelector("#deleteReportBtn");
+            const deleteInput = document.querySelector("#deleteReportId");
+            const deleteError = document.querySelector("#deleteError");
 
+            function validateDelete() {
+                if (deleteInput.value.trim() === "") {
+                    deleteError.style.display = "block";
+                    deleteButton.disabled = true;
+                } else {
+                    deleteError.style.display = "none";
+                    deleteButton.disabled = false;
+                }
+            }
+
+            deleteInput.addEventListener("input", validateDelete);
+            validateDelete();
+        });
+    </script>
 </html>

@@ -20,9 +20,9 @@ public class ManagerDashboardDAO {
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;
     
-	private static final String SELECT_TOTAL_SALES = "SELECT SUM(total_amount) AS total_sales FROM Orders";
-	private static final String SELECT_TOTAL_PRODUCT_SOLD="SELECT SUM(quantity) AS product_sold FROM Orderdetails";
-	private static final String SELECT_ACTIVE_USER="SELECT COUNT(DISTINCT o.user_id) AS active_users\r\n";
+	//private static final String SELECT_TOTAL_SALES = "SELECT SUM(total_amount) AS total_sales FROM Orders";
+	//private static final String SELECT_TOTAL_PRODUCT_SOLD="SELECT SUM(quantity) AS product_sold FROM Orderdetails";
+	//private static final String SELECT_ACTIVE_USER="SELECT COUNT(DISTINCT o.user_id) AS active_users\r\n";
 
     public void setEntityManager(EntityManager em) {
         this.em = em;
@@ -40,7 +40,7 @@ public class ManagerDashboardDAO {
         return totalSalesDouble;
     }
 
-    public  int getProductSold() {
+    public int getProductSold() {
         Long productSold;
         productSold = em.createQuery("SELECT SUM(od.quantity) FROM OrderDetails od",Long.class).getSingleResult();
         
@@ -93,7 +93,8 @@ public class ManagerDashboardDAO {
     }
     
     public List<Object[]> getTopSales(){
-        LocalDate endDate = LocalDate.now();
+        LocalDate date = LocalDate.now();
+        LocalDate endDate = date.plusDays(1);
         LocalDate startDate = endDate.minusDays(30);
         
         Date startDateConverted = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
