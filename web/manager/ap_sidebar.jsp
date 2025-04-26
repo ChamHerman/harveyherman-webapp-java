@@ -16,10 +16,12 @@
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_index.jsp" id="dashboard-link">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_item.jsp" id="item-management-link">Item Management</a></li>
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_order.jsp" id="order-management-link">Order Management</a></li>
-        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/promotion.jsp" id="promotion-management-link">Promotion Management</a></li>
-        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/generatingReport.jsp" id="report-management-link">Report Management</a></li>
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_staff.jsp" id="staff-management-link">Staff Management</a></li>
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/ap_user.jsp" id="user-management-link">User Management</a></li>
+        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/promotion.jsp" id="promotion-management-link">Promotion Management</a></li>
+        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/salesReport.jsp" id="top-10-report-management-link">View Top 10 Sales</a></li>
+        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/generatingReport.jsp" id="sales-report-management-link">Generate Sales Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/manager/viewHistoryReport.jsp" id="report-history-management-link">View Report History</a></li>
     </ul>
     <div class="sidebar-profile">
         <%
@@ -49,7 +51,9 @@
             "ap_item.jsp": "item-management-link",
             "ap_order.jsp": "order-management-link",
             "promotion.jsp": "promotion-management-link",
-            "generatingReport.jsp": "report-management-link",
+            "generatingReport.jsp": "sales-report-management-link",
+            "salesReport.jsp": "top-10-report-management-link",
+            "viewHistoryReport.jsp": "report-history-management-link",
             "ap_staff.jsp": "staff-management-link",
             "ap_user.jsp": "user-management-link"
         };

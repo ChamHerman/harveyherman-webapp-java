@@ -33,8 +33,6 @@ public class CustomIdGenerator {
             int nextNumber = 1;
             if (!resultList.isEmpty() && resultList.get(0) != null) {
                 String lastId = resultList.get(0);
-                // Debug output to verify retrieved id.
-                // System.out.println("Last id retrieved: " + lastId);
                 String numericPart = lastId.substring(prefix.length());
                 nextNumber = Integer.parseInt(numericPart) + 1;
             }

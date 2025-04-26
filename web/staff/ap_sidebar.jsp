@@ -1,6 +1,9 @@
-<%@page import="model.StaffLogin"%>
-<%@page import="model.StaffData"%>
+<%@page import="javax.naming.NamingException"%>
+<%@page import="javax.naming.InitialContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.StaffLoginDAO"%>
+<%@ page import="model.StaffLogin"%>
+<%@ page import="model.StaffData"%>
 <%
     String companyName = application.getInitParameter("companyName");
 %>
@@ -20,9 +23,18 @@
     </ul>
     <div class="sidebar-profile">
         <%
+            StaffLoginDAO staffLoginDAO = null;
+                try {
+                    InitialContext context = new InitialContext();
+                    staffLoginDAO = (StaffLoginDAO) context.lookup("java:global/HarveyHerman/StaffLoginDAO");
+                } catch (NamingException ne) {
+                    ne.printStackTrace();
+                }
+                
             StaffData staffData = (StaffData) session.getAttribute("loggedInStaff");
+
             if (staffData != null) {
-                StaffLogin staffLogin = staffData.getStaffLogin();
+                StaffLogin staffLogin = staffLoginDAO.findByStaffId(staffData.getStaffId());
                 String username = staffLogin != null ? staffLogin.getUsername() : "Unknown";
         %>
         <a href="<%= request.getContextPath()%>/staff/ap_profile.jsp" class="btn btn-outline-primary w-100">

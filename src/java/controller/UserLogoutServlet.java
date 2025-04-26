@@ -23,6 +23,10 @@ public class UserLogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
+            // Remove set session attributes when log out.
+            session.removeAttribute("loggedInUserOrders");
+            session.removeAttribute("orderDetailsMap");
+            session.removeAttribute("orderDeliveryMap");
             session.removeAttribute("loggedInUser");
         }
 

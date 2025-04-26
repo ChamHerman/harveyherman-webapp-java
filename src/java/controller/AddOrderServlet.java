@@ -71,8 +71,8 @@ public class AddOrderServlet extends HttpServlet {
             String promotionId = null;
 
             // Validate delivery info
-            if (receiverName == null || receiverName.trim().isEmpty() 
-                    || receiverContact == null || receiverContact.trim().isEmpty() 
+            if (receiverName == null || receiverName.trim().isEmpty()
+                    || receiverContact == null || receiverContact.trim().isEmpty()
                     || receiverAddress == null || receiverAddress.trim().isEmpty()) {
                 request.setAttribute("error", "Please fill in all delivery details.");
                 request.getRequestDispatcher("/user/CheckOutServlet").forward(request, response);
@@ -91,8 +91,8 @@ public class AddOrderServlet extends HttpServlet {
                 String cardNumber = request.getParameter("cardNumber");
                 String expiryDate = request.getParameter("expiryDate");
                 String cvv = request.getParameter("cvv");
-                if (cardNumber == null || !cardNumber.matches("\\d{16}") 
-                        || expiryDate == null || !expiryDate.matches("\\d{2}/\\d{2}") 
+                if (cardNumber == null || !cardNumber.matches("\\d{16}")
+                        || expiryDate == null || !expiryDate.matches("\\d{2}/\\d{2}")
                         || !cvv.matches("\\d{3}")) {
                     request.setAttribute("error", "Invalid card details.");
                     request.getRequestDispatcher("/user/CheckOutServlet").forward(request, response);
@@ -101,16 +101,16 @@ public class AddOrderServlet extends HttpServlet {
             }
 
             // Create and save Order
-            Orders order = createOrder(null, user, cartTotal, paymentMethod, promotionId);
+            Orders order = createOrder(user, cartTotal, paymentMethod, promotionId);
             orderDAO.create(order);
 
             // Create and save Delivery
             Delivery delivery = createDelivery(receiverName, receiverContact, receiverAddress, order);
             deliveryDAO.create(delivery);
-
+            
             // Create and save OrderDetails for each cart item
             for (CartItem cartItem : cartItems) {
-                OrderDetails detail = createOrderDetail(null, order, cartItem);
+                OrderDetails detail = createOrderDetail(order, cartItem);
                 orderDetailsDAO.create(detail);
             }
 
@@ -130,9 +130,8 @@ public class AddOrderServlet extends HttpServlet {
         }
     }
 
-    private Orders createOrder(String orderId, UserData user, Double total, String paymentMethod, String promotionId) {
+    private Orders createOrder(UserData user, Double total, String paymentMethod, String promotionId) {
         Orders order = new Orders();
-        order.setOrderId(orderId);
         order.setUserId(user);
         order.setTotalAmount(BigDecimal.valueOf(total));
         order.setPaymentMethod(paymentMethod);
@@ -143,9 +142,8 @@ public class AddOrderServlet extends HttpServlet {
         return order;
     }
 
-    private OrderDetails createOrderDetail(String detailId, Orders order, CartItem cartItem) {
+    private OrderDetails createOrderDetail(Orders order, CartItem cartItem) {
         OrderDetails detail = new OrderDetails();
-        detail.setDetailId(detailId);
         detail.setOrderId(order);
         detail.setItemId(cartItem.getItemId());
         detail.setQuantity(cartItem.getQuantity());
