@@ -90,6 +90,17 @@
         </style>
     </head>
     <body class="container mt-4">
+        <%
+            String logoutNotice = (String) session.getAttribute("logoutNotice");
+            if (logoutNotice != null) {
+        %>
+        <script>
+        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
+        </script>
+        <%
+                session.removeAttribute("logoutNotice");
+            }
+        %>
         <h1 class="text-center text-primary">Manager Dashboard</h1>
         <p class="text-center">Welcome to the Manager Dashboard. Use the options below to manage and view sales reports.</p>
 
@@ -191,107 +202,107 @@
 
         <div class="row mt-5">
             <%if (cash != 0 || debit != 0 || credit != 0 || eWallet != 0) {%>
-                <!-- Pie Chart -->
-                <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
-                    <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Payment Method Distribution</h5>
-                    <canvas id="paymentMethodChart" style="max-width: 320px; max-height: 320px;"></canvas>
-                </div>
+            <!-- Pie Chart -->
+            <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
+                <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Payment Method Distribution</h5>
+                <canvas id="paymentMethodChart" style="max-width: 320px; max-height: 320px;"></canvas>
+            </div>
             <%}%>
-            
+
             <%if (topSales != null) {%>
-                <!-- Bar Chart -->
-                <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
-                    <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Top 10 Products Chart</h5>
-                    <canvas id="salesChart" style="max-width: 400px; max-height: 300px;"></canvas>
-                </div>
+            <!-- Bar Chart -->
+            <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
+                <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;">Top 10 Products Chart</h5>
+                <canvas id="salesChart" style="max-width: 400px; max-height: 300px;"></canvas>
+            </div>
             <%}%>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
 
-            //display pie chart
-            var cash = <%= cash%>; // Replace with dynamic data (e.g., the count of "cash" payments)
-            var debitCard = <%= debit%>; // Replace with dynamic data (e.g., the count of "debit_card" payments)
-            var creditCard = <%= credit%>; // Replace with dynamic data (e.g., the count of "credit_card" payments)
-            var eWallet = <%= eWallet%>; // Replace with dynamic data (e.g., the count of "e_wallet" payments)
+        //display pie chart
+        var cash = <%= cash%>; // Replace with dynamic data (e.g., the count of "cash" payments)
+        var debitCard = <%= debit%>; // Replace with dynamic data (e.g., the count of "debit_card" payments)
+        var creditCard = <%= credit%>; // Replace with dynamic data (e.g., the count of "credit_card" payments)
+        var eWallet = <%= eWallet%>; // Replace with dynamic data (e.g., the count of "e_wallet" payments)
 
-            // Total of all payment method counts
-            var total = cash + debitCard + creditCard + eWallet;
+        // Total of all payment method counts
+        var total = cash + debitCard + creditCard + eWallet;
 
-            var ctx = document.getElementById('paymentMethodChart').getContext('2d');
+        var ctx = document.getElementById('paymentMethodChart').getContext('2d');
 
-            var chart = new Chart(ctx, {
-                type: 'pie', // Pie chart type
-                data: {
-                    labels: ['Cash', 'Debit Card', 'Credit Card', 'E-wallet'], // Labels for the chart
-                    datasets: [{
-                            label: 'Payment Method Distribution',
-                            data: [cash, debitCard, creditCard, eWallet], // Use dynamic data here
-                            backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'], // Slice colors
-                        }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                // Tooltip to display percentage
-                                label: function (tooltipItem) {
-                                    // Calculate percentage for the tooltip
-                                    var percentage = Math.round((tooltipItem.raw / total) * 100);
-                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' (' + percentage + '%)';
-                                }
+        var chart = new Chart(ctx, {
+            type: 'pie', // Pie chart type
+            data: {
+                labels: ['Cash', 'Debit Card', 'Credit Card', 'E-wallet'], // Labels for the chart
+                datasets: [{
+                        label: 'Payment Method Distribution',
+                        data: [cash, debitCard, creditCard, eWallet], // Use dynamic data here
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'], // Slice colors
+                    }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            // Tooltip to display percentage
+                            label: function (tooltipItem) {
+                                // Calculate percentage for the tooltip
+                                var percentage = Math.round((tooltipItem.raw / total) * 100);
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' (' + percentage + '%)';
                             }
-                        },
-                        legend: {
-                            position: 'bottom', // Position labels below the pie chart
-                            labels: {
-                                usePointStyle: true, // Makes the labels display as small colored dots
-                                pointStyle: 'circle',
-                                font: {
-                                    size: 14, // Adjust label font size
-                                }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom', // Position labels below the pie chart
+                        labels: {
+                            usePointStyle: true, // Makes the labels display as small colored dots
+                            pointStyle: 'circle',
+                            font: {
+                                size: 14, // Adjust label font size
                             }
                         }
                     }
                 }
-            });
+            }
+        });
 
-            let topSalesData = <%= chartData.toString()%>;
+        let topSalesData = <%= chartData.toString()%>;
 
-            if (topSalesData.length > 0) {
-                let labels = topSalesData.map(item => item.name);
-                let data = topSalesData.map(item => item.quantity);
+        if (topSalesData.length > 0) {
+            let labels = topSalesData.map(item => item.name);
+            let data = topSalesData.map(item => item.quantity);
 
-                let ctx = document.getElementById("salesChart").getContext("2d");
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                                label: "Total Quantity Sold",
-                                data: data,
-                                backgroundColor: "rgba(54, 162, 235, 0.6)",
-                                borderColor: "rgba(54, 162, 235, 1)",
-                                borderWidth: 1
-                            }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+            let ctx = document.getElementById("salesChart").getContext("2d");
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: "Total Quantity Sold",
+                            data: data,
+                            backgroundColor: "rgba(54, 162, 235, 0.6)",
+                            borderColor: "rgba(54, 162, 235, 1)",
+                            borderWidth: 1
+                        }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
                     }
-                });
-            }
+                }
+            });
+        }
         </script>
     </body>
 </html>

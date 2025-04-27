@@ -31,6 +31,18 @@
         <!-- Header -->
         <jsp:include page="header.jsp" />
 
+        <%
+            String logoutNotice = (String) session.getAttribute("logoutNotice");
+            if (logoutNotice != null) {
+        %>
+        <script>
+        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
+        </script>
+        <%
+                session.removeAttribute("logoutNotice");
+            }
+        %>
+
         <!-- Start Hero Section -->
         <div class="hero" style="padding: 4.5rem 0;">
             <div class="container">
@@ -382,26 +394,26 @@
     <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
 
     <script>
-                        function postItemDetails(itemId) {
-                            document.getElementById("itemId").value = itemId;
-                            document.getElementById("itemForm").submit();
-                        }
+                            function postItemDetails(itemId) {
+                                document.getElementById("itemId").value = itemId;
+                                document.getElementById("itemForm").submit();
+                            }
 
-                        /*
-                         // Explicitly initialize Bootstrap carousel with auto-slide
-                         document.addEventListener('DOMContentLoaded', function() {
-                         var heroCarousel = document.getElementById('heroCarousel');
-                         if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
-                         var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
-                         interval: 3500,
-                         ride: 'carousel',
-                         pause: false,
-                         wrap: true
-                         });
-                         carousel.cycle();
-                         }
-                         });
-                         */
+                            /*
+                             // Explicitly initialize Bootstrap carousel with auto-slide
+                             document.addEventListener('DOMContentLoaded', function() {
+                             var heroCarousel = document.getElementById('heroCarousel');
+                             if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
+                             var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
+                             interval: 3500,
+                             ride: 'carousel',
+                             pause: false,
+                             wrap: true
+                             });
+                             carousel.cycle();
+                             }
+                             });
+                             */
     </script>
 
 </html>
