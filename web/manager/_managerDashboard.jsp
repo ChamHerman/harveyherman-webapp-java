@@ -90,17 +90,6 @@
         </style>
     </head>
     <body class="container mt-4">
-        <%
-            String logoutNotice = (String) session.getAttribute("logoutNotice");
-            if (logoutNotice != null) {
-        %>
-        <script>
-        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
-        </script>
-        <%
-                session.removeAttribute("logoutNotice");
-            }
-        %>
         <h1 class="text-center text-primary">Manager Dashboard</h1>
         <p class="text-center">Welcome to the Manager Dashboard. Use the options below to manage and view sales reports.</p>
 

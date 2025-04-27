@@ -91,17 +91,6 @@
     </style>
 </head>
 <body class="container mt-4">
-    <%
-        String logoutNotice = (String) session.getAttribute("logoutNotice");
-        if (logoutNotice != null) {
-    %>
-    <script>
-        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
-    </script>
-    <%
-            session.removeAttribute("logoutNotice");
-        }
-    %>
     <h1 class="text-center text-primary">Staff Dashboard</h1>
     <p class="text-center">Welcome to the Staff Dashboard. Use the options below to manage and view Top 10 Sales reports.</p>
 
