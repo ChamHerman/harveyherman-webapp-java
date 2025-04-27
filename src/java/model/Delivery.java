@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -63,11 +64,9 @@ public class Delivery implements Serializable {
     @Column(name = "receiver_address")
     private String receiverAddress;
     @Column(name = "delivered_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deliveredDate;
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Timestamp deliveredDate;
+    @Column(name = "created_date", nullable = false, updatable = false, insertable = false)
+    private Timestamp createdDate;
     @Size(max = 7)
     @Column(name = "dbstatus")
     private String dbstatus;
@@ -121,19 +120,19 @@ public class Delivery implements Serializable {
         this.receiverAddress = receiverAddress;
     }
 
-    public Date getDeliveredDate() {
+    public Timestamp getDeliveredDate() {
         return deliveredDate;
     }
 
-    public void setDeliveredDate(Date deliveredDate) {
+    public void setDeliveredDate(Timestamp deliveredDate) {
         this.deliveredDate = deliveredDate;
     }
 
-    public Date getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
