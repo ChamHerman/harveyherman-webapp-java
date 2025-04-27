@@ -65,7 +65,7 @@ public class Delivery implements Serializable {
     private String receiverAddress;
     @Column(name = "delivered_date")
     private Timestamp deliveredDate;
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false, updatable = false, insertable = false)
     private Timestamp createdDate;
     @Size(max = 7)
     @Column(name = "dbstatus")
