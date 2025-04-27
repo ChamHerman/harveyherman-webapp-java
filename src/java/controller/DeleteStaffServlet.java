@@ -2,7 +2,6 @@
  *
  * @author weikang
  */
-
 package controller;
 
 import javax.ejb.EJB;
@@ -59,7 +58,6 @@ public class DeleteStaffServlet extends HttpServlet {
                 return;
             }
 
-            // Get user data to verify it exists
             StaffData staffData = staffDataDAO.findByStaffId(staffId);
             if (staffData == null) {
                 sendJsonResponse(request, response, false, "Staff not found.");

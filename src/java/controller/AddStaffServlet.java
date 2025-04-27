@@ -63,8 +63,7 @@ public class AddStaffServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
-            
-            // Get form parameters
+
             String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
             String contactNumber = request.getParameter("contactNumber");
@@ -103,15 +102,13 @@ public class AddStaffServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Username is required.");
                 return;
             }
-            
-            // Check for existing username
+
             StaffLogin existingLogin = staffLoginDAO.findByUsername(username);
             if (existingLogin != null) {
                 sendJsonResponse(request, response, false, "Username is already taken. Please choose another one.");
                 return;
             }
-            
-            // Check for duplicate email
+
             StaffData existingStaffWithEmail = staffDataDAO.findByEmail(email);
             if (existingStaffWithEmail != null) {
                 sendJsonResponse(request, response, false, "Email address is already in use.");
@@ -158,7 +155,6 @@ public class AddStaffServlet extends HttpServlet {
             staffData.setDbstatus("active");
             staffData.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
             
-            // Save the StaffData first to get the generated ID
             staffDataDAO.create(staffData);
             
             // Create StaffLogin object
@@ -169,7 +165,6 @@ public class AddStaffServlet extends HttpServlet {
             staffLogin.setRole("staff");
             staffLogin.setDbstatus("active");
             
-            // Save the StaffLogin
             staffLoginDAO.create(staffLogin);
             
             sendJsonResponse(request, response, true, "Staff created successfully. Default password is: " + DEFAULT_PASSWORD);
@@ -177,12 +172,5 @@ public class AddStaffServlet extends HttpServlet {
             ex.printStackTrace();
             sendJsonResponse(request, response, false, "Failed to create staff. Error: " + ex.getMessage());
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Redirect GET requests to the add staff form
-        response.sendRedirect(request.getContextPath() + "/manager/ap_add_staff.jsp");
     }
 } 

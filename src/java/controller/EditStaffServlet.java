@@ -1,7 +1,10 @@
+/**
+ *
+ * @author weikang
+ */
 package controller;
 
 import java.io.IOException;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

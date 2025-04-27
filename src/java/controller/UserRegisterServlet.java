@@ -65,7 +65,6 @@ public class UserRegisterServlet extends HttpServlet {
 
     private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String challengeQuestion, String answer) {
         try {
-            // Check if any field is null
             if (fullName == null || fullName.trim().isEmpty()
                     || email == null || email.trim().isEmpty()
                     || contactNumber == null || contactNumber.trim().isEmpty()
@@ -80,19 +79,16 @@ public class UserRegisterServlet extends HttpServlet {
                 return false;
             }
 
-            // Check for duplicate email
             if (userDataDAO.findByEmail(email) != null) {
                 errorMsg = "Registration failed: Email address is already in use by another user.";
                 return false;
             }
 
-            // Check for duplicate contact number
             if (userDataDAO.findByContactNumber(contactNumber) != null) {
                 errorMsg = "Registration failed: Contact number is already in use by another user.";
                 return false;
             }
 
-            // Check for duplicate username
             if (userLoginDAO.findByUsername(username) != null) {
                 errorMsg = "Registration failed: Username is already in use by another user.";
                 return false;
@@ -123,25 +119,21 @@ public class UserRegisterServlet extends HttpServlet {
                 return false;
             }
 
-            // Email format validation
             if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
                 errorMsg = "Registration failed: Invalid email format.";
                 return false;
             }
 
-            // Contact number format validation
             if (!contactNumber.matches("^60\\d{9,10}$")) {
                 errorMsg = "Registration failed: Contact number must start with 60 and be 11 or 12 digits long.";
                 return false;
             }
 
-            // Password strength validation
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&_.\\-+=]).{8,}$")) {
                 errorMsg = "Registration failed: Password must be at least 8 characters and include uppercase, lowercase, number, and symbol (!@#$%^&_.-+=).";
                 return false;
             }
 
-            // Birthdate validation
             Date birthdate = parseBirthdate(birthdateStr);
             if (birthdate == null) {
                 errorMsg = "Registration failed: Invalid birthdate format.";

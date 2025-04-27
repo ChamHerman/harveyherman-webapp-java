@@ -86,7 +86,6 @@ public class EditUsersServlet extends HttpServlet {
                 return;
             }
 
-            // Validate and get full name
             String fullname = request.getParameter("fullname");
             if (fullname == null || fullname.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Full name is required.");
@@ -97,7 +96,6 @@ public class EditUsersServlet extends HttpServlet {
                 return;
             }
 
-            // Validate and get email
             String email = request.getParameter("email");
             if (email == null || email.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Email is required.");
@@ -117,7 +115,6 @@ public class EditUsersServlet extends HttpServlet {
                 return;
             }
 
-            // Validate and get contact number
             String contactNumber = request.getParameter("contactNumber");
             if (contactNumber == null || contactNumber.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Contact number is required.");
@@ -133,14 +130,12 @@ public class EditUsersServlet extends HttpServlet {
                 return;
             }
 
-            // Validate and get address
             String address = request.getParameter("address");
             if (address != null && address.length() > 1000) {
                 sendJsonResponse(request, response, false, "Address must be less than 1000 characters.");
                 return;
             }
 
-            // Validate and parse birth date if provided
             Date birthDate = null;
             String birthDateStr = request.getParameter("birthDate");
             if (birthDateStr != null && !birthDateStr.trim().isEmpty()) {
@@ -148,7 +143,6 @@ public class EditUsersServlet extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     birthDate = dateFormat.parse(birthDateStr);
 
-                    // Check if birth date is in the future
                     if (birthDate.after(new Date())) {
                         sendJsonResponse(request, response, false, "Birth date cannot be in the future.");
                         return;
@@ -159,7 +153,6 @@ public class EditUsersServlet extends HttpServlet {
                 }
             }
 
-            // Validate and get gender
             String gender = request.getParameter("gender");
             if (gender == null || gender.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Gender is required.");
@@ -181,11 +174,9 @@ public class EditUsersServlet extends HttpServlet {
                 return;
             }
 
-            // Check for security question and answer updates
             String securityQuestion = request.getParameter("securityQuestion");
             String securityAnswer = request.getParameter("securityAnswer");
 
-            // Update the user data in the database
             userData.setFullname(fullname);
             userData.setEmail(email);
             userData.setContactNumber(contactNumber);
@@ -235,7 +226,6 @@ public class EditUsersServlet extends HttpServlet {
                 return;
             }
 
-            // Reset the password to the default
             userLogin.setPassword(hashPasswordSHA256(DEFAULT_PASSWORD));
             userLoginDAO.update(userLogin);
 
