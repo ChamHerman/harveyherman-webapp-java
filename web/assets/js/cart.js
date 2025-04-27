@@ -1,13 +1,3 @@
-//function validateAddToCart() {
-//    var inputQty = parseInt(document.getElementById('quantity').value);
-//    if (currentCartQty + inputQty > stock) {
-//        $('#stockModal').modal('show');
-//        return false;
-//    }
-//    // Submit the form if valid
-//    document.querySelector('.item-cart-form').submit();
-//}
-
 //valid quantity cannot more than stock
 function increaseQuantity(itemId, currentQty, stock) {
     var qtySpan = document.getElementById('qty_' + itemId);
