@@ -25,7 +25,7 @@
                     <h2 class="profile-title">Edit Profile</h2>
                     <% if (request.getParameter("error") != null) { %>
                     <div class="alert alert-danger">
-                        Duplicate email or phone number used!
+                        <%= request.getAttribute("error")%>
                     </div>
                     <% } %>
                     

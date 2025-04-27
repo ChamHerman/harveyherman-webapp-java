@@ -133,6 +133,7 @@
         </div>
         
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('addStaffForm');
