@@ -113,16 +113,6 @@ CREATE TABLE Cart_Item (
     FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
 );
 
--- Payment: Tracks payment information
-CREATE TABLE Payment (
-    payment_id VARCHAR(255) PRIMARY KEY,
-    payment_status ENUM('pending', 'completed', 'failed') NOT NULL,
-    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    payment_method ENUM('cash', 'debit_card', 'credit_card', 'e-wallet') NOT NULL,
-    order_id VARCHAR(255) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
-);
-
 -- StaffData: Stores staff personal information
 CREATE TABLE StaffData (
     staff_id VARCHAR(255) PRIMARY KEY,
@@ -164,7 +154,6 @@ ALTER TABLE OrderDetails ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT '
 ALTER TABLE Delivery ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE Cart ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE Cart_Item ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Payment ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE StaffData ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE StaffLogin ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE Report ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
