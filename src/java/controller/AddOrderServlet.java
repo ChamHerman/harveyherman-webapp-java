@@ -26,6 +26,8 @@ import model.Item;
 import model.ItemDAO;
 import model.OrderDetails;
 import model.OrderDetailsDAO;
+import model.Promotion;
+import model.PromotionDAO;
 import model.UserData;
 
 @WebServlet(name = "AddOrderServlet", urlPatterns = { "/manager/AddOrderServlet", "/staff/AddOrderServlet",
@@ -150,7 +152,7 @@ public class AddOrderServlet extends HttpServlet {
 
     }
 
-    private Orders createOrder(String orderId, UserData user, Double total, String paymentMethod, Promotion promotion) {
+    private Orders createOrder(UserData user, Double total, String paymentMethod, Promotion promotion) {
         Orders order = new Orders();
         order.setUserId(user);
         order.setTotalAmount(BigDecimal.valueOf(total));
