@@ -96,7 +96,19 @@
                         <td>No: HH-<%= delivery != null ? delivery.getDeliveryId() : "N/A"%></td>
                         <td>Name: <%= delivery != null ? delivery.getReceiverName() : "N/A"%></td>
                         <td>Contact: <%= delivery != null ? delivery.getReceiverContact() : "N/A"%></td>
-                        <td>Payment Method: <%= order.getPaymentMethod()%></td>
+                        <%
+                            String method = "N/A";
+                            if (order.getPaymentMethod().equals("cash")) {
+                                method = "Cash on Delivery";
+                            } else if (order.getPaymentMethod().equals("debit_card")) {
+                                method = "Debit Card";
+                            } else if (order.getPaymentMethod().equals("credit_card")) {
+                                method = "Credit Card";
+                            } else if (order.getPaymentMethod().equals("e-wallet")) {
+                                method = "e-Wallet";
+                            }
+                        %>
+                        <td>Payment Method: <%= method%></td>
                         <td style="text-align:right;">
                             Status: <span class="order-status <%= status%>"><%= statusLabel%></span>
                         </td>
@@ -134,8 +146,8 @@
                         %>
                         <tr>
                             <td style="display: flex; align-items: center;">
-                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="postItemDetails('<%=item.getItemId()%>')" alt="Item Image" style="width: 30%; height: 30%; object-fit: cover; border-radius: 8px; margin-right: 2rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.13); ">
-                                <a class="item-link" href="javascript:void(0);" onclick="postItemDetails('<%=item.getItemId()%>')">
+                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Item Image" style="width: 30%; height: 30%; object-fit: cover; border-radius: 8px; margin-right: 2rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.13); ">
+                                <a class="item-link" href="details?itemId=<%=item.getItemId()%>">
                                     <%= item.getName()%>
                                 </a>
                             </td>
@@ -210,12 +222,6 @@
                 </form>
             </div>
         </div>
-
-        <!-- Hidden form and JS for item details navigation -->
-        <form id="itemForm" action="details" method="post" style="display: none;">
-            <input type="hidden" name="itemId" id="itemId">
-        </form>
-
     </body>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
@@ -223,10 +229,6 @@
     <!-- Scripts -->
     <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
     <script>
-                                    function postItemDetails(itemId) {
-                                        document.getElementById("itemId").value = itemId;
-                                        document.getElementById("itemForm").submit();
-                                    }
                                     function showConfirmModal(deliveryId) {
                                         document.getElementById("modalDeliveryId").value = deliveryId;
                                         var modal = new bootstrap.Modal(document.getElementById('confirmModal'));

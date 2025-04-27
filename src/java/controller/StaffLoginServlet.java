@@ -32,6 +32,12 @@ public class StaffLoginServlet extends HttpServlet {
             StaffData staffData = staffLogin.getStaffId();
             updateLastLoginTime(staffLogin);
 
+            if ((session.getAttribute("loggedInManager") != null) || (session.getAttribute("loggedInStaff") != null)) {
+                session.removeAttribute("loggedInManager");
+                session.removeAttribute("loggedInStaff");
+                session.setAttribute("logoutNotice", "Last logged in has logged out automatically");
+            }
+
             if ("manager".equalsIgnoreCase(staffLogin.getRole())) {
                 session.setAttribute("loggedInManager", staffData);
                 response.sendRedirect(request.getContextPath() + "/manager/ap_index.jsp");

@@ -42,10 +42,12 @@ public class TopSalesServlet extends HttpServlet {
 
         LocalDate startDate = LocalDate.parse(startDateStr);
         LocalDate endDate = LocalDate.parse(endDateStr);
+        LocalDate endDate1day = LocalDate.parse(endDateStr).plusDays(1);
 
         // Convert LocalDate to Date
         Date startDateConverted = java.util.Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate1dayConverted = java.util.Date.from(endDate1day.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         List<Object[]> topSales = em.createQuery(
                 "SELECT i.itemId, i.name, SUM(od.quantity) " +
@@ -56,7 +58,7 @@ public class TopSalesServlet extends HttpServlet {
                 "GROUP BY i.itemId, i.name " +
                 "ORDER BY SUM(od.quantity) DESC", Object[].class)
             .setParameter("startDate", startDateConverted)
-            .setParameter("endDate", endDateConverted)
+            .setParameter("endDate", endDate1dayConverted)
             .setMaxResults(10)
             .getResultList();
 

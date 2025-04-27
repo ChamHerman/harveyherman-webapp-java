@@ -37,16 +37,19 @@ public class AccessFilter implements Filter {
             "/user/header.jsp",
             "/user/index.jsp",
             "/user/item.jsp",
+            "/user/items",
             "/user/itemDetails.jsp",
+            "/user/details",
             "/user/login.jsp",
             "/user/register.jsp",
             "/user/resetPassword.jsp",
             "/user/services.jsp",
-            "/user/details",
             "/user/ResetPasswordServlet",
             "/user/UserLoginServlet",
             "/user/UserRegisterServlet",
-            "/user/VerifyChallengeServlet"
+            "/user/VerifyChallengeServlet",
+            "/user/privacyPolicy.jsp",
+            "/user/termsConditions.jsp"
     );
 
     @Override
