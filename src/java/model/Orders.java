@@ -84,8 +84,6 @@ public class Orders implements Serializable {
     @ManyToOne(optional = false)
     private UserData userId;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
-    private List<Payment> paymentList;
 
     public Orders() {
     }
@@ -182,15 +180,6 @@ public class Orders implements Serializable {
     @XmlTransient
     public List<OrderDetails> getOrderDetailsList() {
         return orderDetailsList;
-    }
-
-    @XmlTransient
-    public List<Payment> getPaymentList() {
-        return paymentList;
-    }
-
-    public void setPaymentList(List<Payment> paymentList) {
-        this.paymentList = paymentList;
     }
 
     @Override
