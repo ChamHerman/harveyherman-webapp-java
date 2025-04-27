@@ -64,6 +64,12 @@
                     <!-- Quantity Left -->
                     <div class="item-quantity-left"><span class="item-quantity-label">Quantity Left:</span> <%=item.getStockQuantity()%></div>
 
+                    <!--show over stock error-->
+                    <% String error = (String) request.getAttribute("error"); %>
+                    <% if (error != null) {%>
+                    <div class="alert alert-danger"><%= error%></div>
+                    <% }%>
+
                     <!-- Add to Cart Form -->
                     <form action="CartServlet" method="post" class="item-cart-form">
                         <input type="hidden" name="itemId" value="<%=item.getItemId()%>">
@@ -86,6 +92,7 @@
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                         <% } %>
+
                     </form>
                 </div>
             </div>
@@ -99,5 +106,6 @@
 
         <!-- Scripts -->
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/cart.js"></script>
     </body>
 </html>

@@ -17,28 +17,32 @@ import java.util.List;
 import javax.ejb.EJB;
 import model.Cart;
 import model.CartItem;
+import model.CartItemDAO;
 import model.Delivery;
 import model.OrderDAO;
 import model.Orders;
 import model.DeliveryDAO;
+import model.Item;
+import model.ItemDAO;
 import model.OrderDetails;
 import model.OrderDetailsDAO;
 import model.UserData;
 
-/**
- *
- * @author user
- */
 @WebServlet(name = "AddOrderServlet", urlPatterns = {"/manager/AddOrderServlet", "/staff/AddOrderServlet", "/user/AddOrderServlet"})
 public class AddOrderServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
     @EJB
     private OrderDAO orderDAO;
-    private static final long serialVersionUID = 1L;
     @EJB
     private DeliveryDAO deliveryDAO;
     @EJB
+    private CartItemDAO cartItemDAO;
+    @EJB
     private OrderDetailsDAO orderDetailsDAO;
+    @EJB
+    private ItemDAO itemDAO;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -107,20 +111,28 @@ public class AddOrderServlet extends HttpServlet {
             // Create and save Delivery
             Delivery delivery = createDelivery(receiverName, receiverContact, receiverAddress, order);
             deliveryDAO.create(delivery);
-            
+
             // Create and save OrderDetails for each cart item
             for (CartItem cartItem : cartItems) {
                 OrderDetails detail = createOrderDetail(order, cartItem);
                 orderDetailsDAO.create(detail);
+
+                // Decrease stock
+                Item item = cartItem.getItemId();
+                int newStock = item.getStockQuantity() - cartItem.getQuantity();
+                item.setStockQuantity(newStock);
+                itemDAO.update(item);
+
+                cartItemDAO.softDelete(cartItem.getCartItemId());
             }
 
             // Clear cart from session
             session.removeAttribute("cart");
             session.removeAttribute("cartItems");
             session.removeAttribute("cartSubtotal");
-            session.removeAttribute("cartTotal");
             session.removeAttribute("deliveryFee");
             session.removeAttribute("discount");
+            session.removeAttribute("cartTotal");
 
             response.sendRedirect("thankyou.jsp");
         } catch (Exception ex) {

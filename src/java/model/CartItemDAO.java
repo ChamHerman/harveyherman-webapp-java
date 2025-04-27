@@ -24,6 +24,17 @@ public class CartItemDAO {
         List<CartItem> result = query.getResultList();
         return result.isEmpty() ? null : result.get(0);
     }
+    
+    public CartItem getAnyCartItem(String cartId, String itemId) {
+    TypedQuery<CartItem> query = em.createQuery(
+        "SELECT c FROM CartItem c WHERE c.cartId.cartId = :cartId AND c.itemId.itemId = :itemId",
+        CartItem.class
+    );
+    query.setParameter("cartId", cartId);
+    query.setParameter("itemId", itemId);
+    List<CartItem> result = query.getResultList();
+    return result.isEmpty() ? null : result.get(0);
+}
 
     public CartItem findById(String cartItemId) {
         List<CartItem> items = em.createNamedQuery("CartItem.findByCartItemId", CartItem.class)

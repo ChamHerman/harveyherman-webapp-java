@@ -130,12 +130,12 @@ public class ManagerDashboardDAO {
         Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         
         List<Object[]> query = em.createQuery(
-                "SELECT i.itemId, i.name, i.price, SUM(od.quantity), SUM(od.quantity * i.price) " +
+                "SELECT i.itemId, i.name, od.pricePerItem, SUM(od.quantity), SUM(od.quantity * od.pricePerItem) " +
                 "FROM OrderDetails od " +
                 "JOIN od.itemId i " +
                 "JOIN od.orderId o " +
-                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR " +
-                "GROUP BY i.itemId, i.name, i.price " +
+                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR AND o.dbstatus='active'" +
+                "GROUP BY i.itemId, i.name, od.pricePerItem " +
                 "ORDER BY i.itemId", Object[].class)
                 .setParameter("startDateR", startDateConverted)
                 .setParameter("endDateR", endDateConverted)
@@ -156,12 +156,12 @@ public class ManagerDashboardDAO {
         Date endDateConverted = java.util.Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         
         List<Object[]> query = em.createQuery(
-                "SELECT i.itemId, i.name, i.price, SUM(od.quantity), SUM(od.quantity * i.price) " +
+                "SELECT i.itemId, i.name, od.pricePerItem, SUM(od.quantity), SUM(od.quantity * od.pricePerItem) " +
                 "FROM OrderDetails od " +
                 "JOIN od.itemId i " +
                 "JOIN od.orderId o " +
-                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR " +
-                "GROUP BY i.itemId, i.name, i.price " +
+                "WHERE o.createdDate BETWEEN :startDateR AND :endDateR AND o.dbstatus='active'" +
+                "GROUP BY i.itemId, i.name, od.pricePerItem " +
                 "ORDER BY i.itemId", Object[].class)
                 .setParameter("startDateR", startDateConverted)
                 .setParameter("endDateR", endDateConverted)
