@@ -46,7 +46,9 @@ public class AccessFilter implements Filter {
             "/user/ResetPasswordServlet",
             "/user/UserLoginServlet",
             "/user/UserRegisterServlet",
-            "/user/VerifyChallengeServlet"
+            "/user/VerifyChallengeServlet",
+            "/user/privacyPolicy.jsp",
+            "/user/termsConditions.jsp"
     );
 
     @Override

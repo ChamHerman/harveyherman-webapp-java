@@ -116,7 +116,7 @@
             String maxPrice = (String) session.getAttribute("maxPriceFilter");
             String sortBy = (String) session.getAttribute("sortByFilter");
             String sortOrder = (String) session.getAttribute("sortOrderFilter");
-            
+
             if (sortBy == null) {
                 sortBy = "createdDate";
             }
@@ -169,28 +169,26 @@
             }
             // Filter by price range
             if (minPrice != null && !minPrice.isEmpty()) {
-                try {
-                    double min = Double.parseDouble(minPrice);
-                    for (java.util.Iterator<Item> it = items.iterator(); it.hasNext();) {
-                        Item i = it.next();
-                        if (i.getPrice() == null || i.getPrice().doubleValue() < min) {
-                            it.remove();
-                        }
+
+                double min = Double.parseDouble(minPrice);
+                for (java.util.Iterator<Item> it = items.iterator(); it.hasNext();) {
+                    Item i = it.next();
+                    if (i.getPrice() == null || i.getPrice().doubleValue() < min) {
+                        it.remove();
                     }
-                } catch (Exception e) {
                 }
+
             }
             if (maxPrice != null && !maxPrice.isEmpty()) {
-                try {
-                    double max = Double.parseDouble(maxPrice);
-                    for (java.util.Iterator<Item> it = items.iterator(); it.hasNext();) {
-                        Item i = it.next();
-                        if (i.getPrice() == null || i.getPrice().doubleValue() > max) {
-                            it.remove();
-                        }
+
+                double max = Double.parseDouble(maxPrice);
+                for (java.util.Iterator<Item> it = items.iterator(); it.hasNext();) {
+                    Item i = it.next();
+                    if (i.getPrice() == null || i.getPrice().doubleValue() > max) {
+                        it.remove();
                     }
-                } catch (Exception e) {
                 }
+
             }
             // Sort
             if (sortBy != null) {
@@ -265,13 +263,13 @@
                                        value="<%=(searchQuery != null) ? searchQuery : ""%>" autocomplete="off">
 
                                 <h5 class="mt-3">Category</h5>
-                                <% for (String cat : categories) { %>
+                                <% for (String cat : categories) {%>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="category" value="<%=cat%>"
                                            <%if (selectedCategoriesSet.contains(cat)) {%> checked <%}%> /> <label
                                            class="form-check-label category-title"><%=cat%></label>
                                 </div>
-                                <% } %>
+                                <% }%>
 
                                 <!-- Stock Filter -->
                                 <h5 class="mt-3">Stock</h5>
@@ -316,27 +314,27 @@
                     <div class="col-md-9">
                         <div class="row">
                             <% if (items != null && !items.isEmpty()) { %>
-                                <% for (Item item : items) { %>
-                                <div class="col-12 col-md-6 col-lg-3 mb-5">
-                                    <a class="product-item border rounded p-3 d-block text-center"
-                                       href="#" onclick="postItemDetails('<%=item.getItemId()%>')" style="text-decoration: none;">
-                                        <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" class="img-fluid product-thumbnail" alt="Product Image">
-                                        <h3 class="product-title" style="text-decoration: none;"> <%=item.getName()%> </h3>
-                                        <strong class="product-price">RM <%=String.format("%.2f", item.getPrice())%></strong>
-                                        <% if (item.getStockQuantity() > 0) { %>
-                                            <div class="mt-1"><span class="badge bg-success" style="font-size: 0.95em;">In Stock</span></div>
-                                        <% } else { %>
-                                            <div class="mt-1"><span class="badge bg-danger" style="font-size: 0.95em;">Out of Stock</span></div>
-                                        <% } %>
-                                        <span class="icon-cross">
-                                            <img src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
-                                        </span>
-                                    </a>
-                                </div>
-                                <% } %>
-                            <% } else { %>
-                                <p class="text-center w-100">No items found.</p>
+                            <% for (Item item : items) {%>
+                            <div class="col-12 col-md-6 col-lg-3 mb-5">
+                                <a class="product-item border rounded p-3 d-block text-center"
+                                   href="details?itemId=<%=item.getItemId()%>" style="text-decoration: none;">
+                                    <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" class="img-fluid product-thumbnail" alt="Product Image">
+                                    <h3 class="product-title" style="text-decoration: none;"> <%=item.getName()%> </h3>
+                                    <strong class="product-price">RM <%=String.format("%.2f", item.getPrice())%></strong>
+                                    <% if (item.getStockQuantity() > 0) { %>
+                                    <div class="mt-1"><span class="badge bg-success" style="font-size: 0.95em;">In Stock</span></div>
+                                    <% } else { %>
+                                    <div class="mt-1"><span class="badge bg-danger" style="font-size: 0.95em;">Out of Stock</span></div>
+                                    <% }%>
+                                    <span class="icon-cross">
+                                        <img src="<%=request.getContextPath()%>/assets/images/cross.svg" class="img-fluid">
+                                    </span>
+                                </a>
+                            </div>
                             <% } %>
+                            <% } else { %>
+                            <p class="text-center w-100">No items found.</p>
+                            <% }%>
                         </div>
                     </div>
                     <!-- /Products Section -->
@@ -356,12 +354,6 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
-        <script>
-                                       function postItemDetails(itemId) {
-                                           document.getElementById("itemId").value = itemId;
-                                           document.getElementById("itemForm").submit();
-                                       }
-        </script>
 
     </body>
 </html>

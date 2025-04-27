@@ -96,7 +96,19 @@
                         <td>No: HH-<%= delivery != null ? delivery.getDeliveryId() : "N/A"%></td>
                         <td>Name: <%= delivery != null ? delivery.getReceiverName() : "N/A"%></td>
                         <td>Contact: <%= delivery != null ? delivery.getReceiverContact() : "N/A"%></td>
-                        <td>Payment Method: <%= order.getPaymentMethod()%></td>
+                        <%
+                            String method = "N/A";
+                            if (order.getPaymentMethod().equals("cash")) {
+                                method = "Cash on Delivery";
+                            } else if (order.getPaymentMethod().equals("debit_card")) {
+                                method = "Debit Card";
+                            } else if (order.getPaymentMethod().equals("credit_card")) {
+                                method = "Credit Card";
+                            } else if (order.getPaymentMethod().equals("e-wallet")) {
+                                method = "e-Wallet";
+                            }
+                        %>
+                        <td>Payment Method: <%= method%></td>
                         <td style="text-align:right;">
                             Status: <span class="order-status <%= status%>"><%= statusLabel%></span>
                         </td>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.ItemDAO,model.Item,java.util.List,java.util.Collections,javax.naming.InitialContext,javax.naming.NamingException" %>
+<%@ page import="model.ItemDAO,model.Item,java.util.List,java.util.Collections,javax.naming.InitialContext,javax.naming.NamingException,model.ManagerDashboardDAO" %>
 <!-- /*
 * Bootstrap 5
 * Template Name: Furni
@@ -103,37 +103,55 @@
 
                     <!-- Start Column 1 -->
                     <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-                        <h2 class="mb-4 section-title animate-slide-up">Engineered for Excellence</h2>
-                        <p class="mb-4 animate-fade-in-delay">Our appliances and accessories are designed with precision, blending advanced technology and timeless aesthetics. Enjoy seamless performance, energy efficiency, and a touch of luxury in every product.</p>
+                        <h2 class="mb-4 section-title animate-slide-up">Top 3 Best Sellers</h2>
+                        <p class="mb-4 animate-fade-in-delay">Discover our most popular products, loved by customers for their quality, performance, and value. These best sellers are proven favorites—see why they're flying off the shelves!</p>
                         <p>
-                            <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn animate-bounce">Browse Collection</a>
+                            <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn animate-bounce">View All Products</a>
                         </p>
                     </div>
                     <!-- End Column 1 -->
 
-                    <!-- Start Columns 2, 3, 4: Top 3 Newest Products -->
-
+                    <!-- Start Columns 2, 3, 4: Top 3 Best Sellers -->
                     <%
                         ItemDAO itemDAO = null;
+                        ManagerDashboardDAO dashboardDAO = null;
                         try {
                             InitialContext context = new InitialContext();
                             itemDAO = (ItemDAO) context.lookup("java:global/HarveyHerman/ItemDAO");
+                            dashboardDAO = (ManagerDashboardDAO) context.lookup("java:global/HarveyHerman/ManagerDashboardDAO");
                         } catch (NamingException ne) {
                             ne.printStackTrace();
                         }
-                        List<Item> newestItems = null;
-                        if (itemDAO != null) {
-                            newestItems = itemDAO.getAll();
+                        java.util.List<Item> displayItems = new java.util.ArrayList<>();
+                        java.util.Set<String> addedItemIds = new java.util.HashSet<>();
+                        if (dashboardDAO != null && itemDAO != null) {
+                            java.util.List<Object[]> topSales = dashboardDAO.getTopSales();
+                            if (topSales != null) {
+                                for (Object[] row : topSales) {
+                                    String itemId = (String) row[1]; // row[1] is itemId (see getTopSales)
+                                    Item item = itemDAO.getItemById(itemId);
+                                    if (item != null && item.getStockQuantity() > 0 && !addedItemIds.contains(item.getItemId())) {
+                                        displayItems.add(item);
+                                        addedItemIds.add(item.getItemId());
+                                        if (displayItems.size() == 3) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // If less than 3, fill with newest in-stock items not already shown
+                        if (displayItems.size() < 3 && itemDAO != null) {
+                            java.util.List<Item> newestItems = itemDAO.getAll();
                             if (newestItems != null) {
-                                // Only keep in-stock items
                                 java.util.Iterator<Item> it = newestItems.iterator();
                                 while (it.hasNext()) {
                                     Item i = it.next();
-                                    if (i.getStockQuantity() <= 0) {
+                                    if (i.getStockQuantity() <= 0 || addedItemIds.contains(i.getItemId())) {
                                         it.remove();
                                     }
                                 }
-                                Collections.sort(newestItems, new java.util.Comparator<Item>() {
+                                java.util.Collections.sort(newestItems, new java.util.Comparator<Item>() {
                                     public int compare(Item i1, Item i2) {
                                         if (i1.getCreatedDate() == null && i2.getCreatedDate() == null) {
                                             return 0;
@@ -147,15 +165,21 @@
                                         return i2.getCreatedDate().compareTo(i1.getCreatedDate()); // Descending
                                     }
                                 });
+                                for (Item i : newestItems) {
+                                    if (displayItems.size() == 3) {
+                                        break;
+                                    }
+                                    displayItems.add(i);
+                                    addedItemIds.add(i.getItemId());
+                                }
                             }
                         }
                     %>
-                    <% if (newestItems != null) {
-                            for (int i = 0; i < Math.min(3, newestItems.size()); i++) {
-                                Item item = newestItems.get(i);
+                    <% for (int i = 0; i < displayItems.size(); i++) {
+                            Item item = displayItems.get(i);
                     %>
                     <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                        <a class="product-item border rounded p-3 d-block text-center" href="#" onclick="postItemDetails('<%=item.getItemId()%>')">
+                        <a class="product-item border rounded p-3 d-block text-center" href="details?itemId=<%=item.getItemId()%>">
                             <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" class="img-fluid product-thumbnail" alt="<%=item.getName()%>">
                             <h3 class="product-title"><%=item.getName()%></h3>
                             <strong class="product-price">RM <%=String.format("%.2f", item.getPrice())%></strong>
@@ -164,13 +188,11 @@
                             </span>
                         </a>
                     </div>
-                    <% }
-                        }%>
+                    <% }%>
                     <form id="itemForm" action="<%=request.getContextPath()%>/user/details" method="post" style="display: none;">
                         <input type="hidden" name="itemId" id="itemId">
                     </form>
-
-                    <!-- End Top 3 Newest Products -->
+                    <!-- End Top 3 Best Sellers -->
 
                 </div>
             </div>
@@ -380,28 +402,5 @@
     <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
     <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
     <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
-
-    <script>
-                        function postItemDetails(itemId) {
-                            document.getElementById("itemId").value = itemId;
-                            document.getElementById("itemForm").submit();
-                        }
-
-                        /*
-                         // Explicitly initialize Bootstrap carousel with auto-slide
-                         document.addEventListener('DOMContentLoaded', function() {
-                         var heroCarousel = document.getElementById('heroCarousel');
-                         if (heroCarousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
-                         var carousel = bootstrap.Carousel.getOrCreateInstance(heroCarousel, {
-                         interval: 3500,
-                         ride: 'carousel',
-                         pause: false,
-                         wrap: true
-                         });
-                         carousel.cycle();
-                         }
-                         });
-                         */
-    </script>
 
 </html>
