@@ -39,6 +39,9 @@ public class AddOrderServlet extends HttpServlet {
 
     @EJB
     private OrderDetailsDAO orderDetailsDAO;
+    
+    @EJB
+    private PromotionDAO promotionDAO;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -54,9 +57,12 @@ public class AddOrderServlet extends HttpServlet {
         List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
         Double cartTotal = (Double) session.getAttribute("cartTotal");
         String paymentMethod = request.getParameter("paymentMethod");
-        String promotionId = null;
-
-        Orders order = createOrder(null, user, cartTotal, paymentMethod, promotionId);
+        String promoCode = (String) session.getAttribute("appliedPromotionCode");
+        Promotion promotion = null;
+        if (promoCode != null) {
+            promotion = promotionDAO.findByPromotionCode(promoCode);
+        }
+        Orders order = createOrder(null, user, cartTotal, paymentMethod, promotion);
         orderDAO.create(order);
 
         for (CartItem cartItem : cartItems) {
@@ -69,6 +75,7 @@ public class AddOrderServlet extends HttpServlet {
             item.setStockQuantity(newStock);
             itemDAO.update(item);
             
+            //clear cart
             cartItemDAO.softDelete(cartItem.getCartItemId());
         }
 
@@ -78,18 +85,19 @@ public class AddOrderServlet extends HttpServlet {
         session.removeAttribute("deliveryFee");
         session.removeAttribute("discount");
         session.removeAttribute("cartTotal");
+        
 
         response.sendRedirect("thankyou.jsp");
     }
 
-    private Orders createOrder(String orderId, UserData user, Double total, String paymentMethod, String promotionId) {
+    private Orders createOrder(String orderId, UserData user, Double total, String paymentMethod, Promotion promotion) {
         Orders order = new Orders();
         order.setOrderId(orderId);
         order.setUserId(user);
         order.setTotalAmount(BigDecimal.valueOf(total));
         order.setPaymentMethod(paymentMethod);
         order.setStatus("packaging");
-//        order.setPromotionId(Promotion.getPromotionId);
+        order.setPromotionId(promotion);
         order.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         order.setDbstatus("active");
         return order;
