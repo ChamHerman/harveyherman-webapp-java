@@ -27,15 +27,6 @@
     </head>
 
     <body>
-        <%
-            CartDAO cartDAO = null;
-            try {
-                InitialContext context = new InitialContext();
-                cartDAO = (CartDAO) context.lookup("java:global/HarveyHerman/CartDAO");
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-            }
-        %>
         <!-- Header -->
         <jsp:include page="header.jsp" />
 
