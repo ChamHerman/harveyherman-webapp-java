@@ -84,7 +84,7 @@ public class AddUsersServlet extends HttpServlet {
             }
             UserLogin existingLogin = userLoginDAO.findByUsername(username);
             if (existingLogin != null) {
-                sendJsonResponse(request, response, false, "Username is already taken. Please choose another one.");
+                sendJsonResponse(request, response, false, "Username is already taken. Please check on the record and try again.");
                 return;
             }
             
@@ -103,7 +103,7 @@ public class AddUsersServlet extends HttpServlet {
             }
             UserData existingUserWithEmail = userDataDAO.findByEmail(email);
             if (existingUserWithEmail != null) {
-                sendJsonResponse(request, response, false, "Email address is already in use.");
+                sendJsonResponse(request, response, false, "Email address is already in use. Please check on the record and try again.");
                 return;
             }
 
@@ -118,7 +118,7 @@ public class AddUsersServlet extends HttpServlet {
             }
             UserData existingUserWithContact = userDataDAO.findByContactNumber(contactNumber);
             if (existingUserWithContact != null) {
-                sendJsonResponse(request, response, false, "Contact number is already in use.");
+                sendJsonResponse(request, response, false, "Contact number is already in use. Please check on the record and try again.");
                 return;
             }
 

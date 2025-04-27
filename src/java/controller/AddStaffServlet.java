@@ -99,13 +99,19 @@ public class AddStaffServlet extends HttpServlet {
 
             StaffLogin existingLogin = staffLoginDAO.findByUsername(username);
             if (existingLogin != null) {
-                sendJsonResponse(request, response, false, "Username is already taken. Please choose another one.");
+                sendJsonResponse(request, response, false, "Username is already taken. Please check on the record and try again.");
                 return;
             }
 
             StaffData existingStaffWithEmail = staffDataDAO.findByEmail(email);
             if (existingStaffWithEmail != null) {
-                sendJsonResponse(request, response, false, "Email address is already in use.");
+                sendJsonResponse(request, response, false, "Email address is already in use. Please check on the record and try again.");
+                return;
+            }
+            
+            StaffData existingStaffWithContact = staffDataDAO.findByContactNumber(contactNumber);
+            if (existingStaffWithContact != null) {
+                sendJsonResponse(request, response, false, "Contact number is already in use. Please check on the record and try again.");
                 return;
             }
             

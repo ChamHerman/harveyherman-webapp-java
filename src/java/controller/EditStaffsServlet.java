@@ -93,7 +93,7 @@ public class EditStaffsServlet extends HttpServlet {
             }
             StaffData existingStaffWithEmail = staffDataDAO.findByEmail(email);
             if (existingStaffWithEmail != null && !existingStaffWithEmail.getStaffId().equals(staffId)) {
-                sendJsonResponse(request, response, false, "Email address is already in use by another staff.");
+                sendJsonResponse(request, response, false, "Email address is already in use by another staff. Please check on the record and try again.");
                 return;
             }
 
@@ -103,7 +103,7 @@ public class EditStaffsServlet extends HttpServlet {
             }
             StaffData existingStaffWithContact = staffDataDAO.findByContactNumber(contactNumber);
             if (existingStaffWithContact != null && !existingStaffWithContact.getStaffId().equals(staffId)) {
-                sendJsonResponse(request, response, false, "Contact number is already in use by another staff.");
+                sendJsonResponse(request, response, false, "Contact number is already in use by another staff. Please check on the record and try again.");
                 return;
             }
 
@@ -123,7 +123,7 @@ public class EditStaffsServlet extends HttpServlet {
             }
             StaffLogin existingStaffWithUsername = staffLoginDAO.findByUsername(username);
             if (existingStaffWithUsername != null && !existingStaffWithUsername.getStaffId().getStaffId().equals(staffId)) {
-                sendJsonResponse(request, response, false, "Username is already in use by another staff.");
+                sendJsonResponse(request, response, false, "Username is already in use by another staff. Please check on the record and try again.");
                 return;
             }
             
