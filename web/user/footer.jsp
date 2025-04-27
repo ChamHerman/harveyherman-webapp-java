@@ -62,7 +62,7 @@
                         <span>Stay Updated with Exclusive Offers</span>
                     </h3>
 
-                    <form class="row g-3" autocomplete="off" onsubmit="return showNotification(event)">
+                    <form id="footer-form" class="row g-3" autocomplete="off" onsubmit="return showFooter(event)">
                         <div class="col-auto">
                             <input type="text" class="form-control" placeholder="Enter your name" autocomplete="off" required>
                         </div>
@@ -143,7 +143,7 @@
 <!-- End Footer Section -->
 
 <script>
-    function showNotification(event) {
+    function showFooter(event) {
         event.preventDefault();
         var popup = document.getElementById('footer-popup');
         if (popup) {
@@ -169,7 +169,7 @@
             }, 3200);
 
             // Reset the form
-            document.getElementById('contact-form').reset();
+            document.getElementById('footer-form').reset();
         }
         return false;
     }

@@ -131,7 +131,7 @@ CREATE TABLE StaffLogin (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
-    role ENUM('staff', 'manager') NOT NULL,
+    staff_role ENUM('staff', 'manager') NOT NULL,
 	staff_id VARCHAR(255) UNIQUE,
     FOREIGN KEY (staff_id) REFERENCES StaffData(staff_id) ON DELETE CASCADE
 );
@@ -157,3 +157,6 @@ ALTER TABLE Cart_Item ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'act
 ALTER TABLE StaffData ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE StaffLogin ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
 ALTER TABLE Report ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
+
+INSERT INTO `staffdata` (`staff_id`,`fullname`,`email`,`contact_number`,`address`,`position`,`gender`) VALUES ('S000','Manager','manager@harveyherman.my','60116969232','721 Mya Brook, Donavonfurt, Alaska - 03304, Dominica','manager','Other');
+INSERT INTO `stafflogin` (`login_id`,`username`,`password`,`last_login`,`staff_role`,`staff_id`,`dbstatus`) VALUES ('L000','admin','admin',NULL,'manager','S000','active');
