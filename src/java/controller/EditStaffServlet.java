@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Date;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +26,7 @@ public class EditStaffServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
         StaffData staff = null;
+        String errorMessage = null;
         HttpSession session = request.getSession();
         if (servletPath.contains("/manager/")) {
             staff = (StaffData) session.getAttribute("loggedInManager");
@@ -38,16 +41,40 @@ public class EditStaffServlet extends HttpServlet {
             String address = request.getParameter("address");
             String gender = request.getParameter("gender");
 
-            // Check for duplicate email and contact number
-            StaffData existingEmail = staffDataDAO.findByEmail(email);
-            StaffData existingContact = staffDataDAO.findByContactNumber(contactNumber);
+            if (fullname == null || fullname.trim().isEmpty()
+                    || email == null || email.trim().isEmpty()
+                    || contactNumber == null || contactNumber.trim().isEmpty()
+                    || address == null || address.trim().isEmpty()
+                    || gender == null || gender.trim().isEmpty()) {
+                errorMessage = "All fields should be completed";
+            } else if (fullname.length() >= 255) {
+                errorMessage = "Full name must be less than 255 characters.";
+            } else if (email.length() >= 255) {
+                errorMessage = "Email must be less than 255 characters.";
+            } else if (address.length() >= 1000) {
+                errorMessage = "Address must be less than 1000 characters.";
+            } else if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
+                errorMessage = "Invalid email format.";
+            } else if (!contactNumber.matches("^60\\d{9,10}$")) {
+                errorMessage = "Contact number must start with 60 and be 11 or 12 digits long.";
+            } else {
+                StaffData existingEmail = staffDataDAO.findByEmail(email);
+                StaffData existingContact = staffDataDAO.findByContactNumber(contactNumber);
+                if ((existingEmail != null && !existingEmail.getStaffId().equals(staff.getStaffId()))) {
+                    errorMessage = "Email address is already in use by another staff.";
+                } else if ((existingContact != null && !existingContact.getStaffId().equals(staff.getStaffId()))) {
+                    errorMessage = "Contact number is already in use by another staff.";
+                }
+            }
 
-            if ((existingEmail != null && !existingEmail.getStaffId().equals(staff.getStaffId()))
-                    || (existingContact != null && !existingContact.getStaffId().equals(staff.getStaffId()))) {
+            if (errorMessage != null) {
+                request.setAttribute("error", errorMessage);
                 if (servletPath.contains("/manager/")) {
-                    response.sendRedirect(contextPath + "/manager/ap_editProfile.jsp?error=duplicate");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/manager/ap_editProfile.jsp");
+                    dispatcher.forward(request, response);
                 } else if (servletPath.contains("/staff/")) {
-                    response.sendRedirect(contextPath + "/staff/ap_editProfile.jsp?error=duplicate");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/ap_editProfile.jsp");
+                    dispatcher.forward(request, response);
                 }
                 return;
             }

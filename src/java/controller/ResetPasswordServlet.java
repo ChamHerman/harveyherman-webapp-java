@@ -38,8 +38,30 @@ public class ResetPasswordServlet extends HttpServlet {
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        if (newPassword == null || !newPassword.equals(confirmPassword) || newPassword.length() < 6) {
-            request.setAttribute("errorMessage", "Password must be at least 6 characters and match confirmation.");
+        if (newPassword == null || newPassword.trim().isEmpty()
+                || confirmPassword == null || confirmPassword.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "All fields are required");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/resetPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("errorMessage", "New password does not match with the confirmation.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/resetPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        if (!newPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&_.\\-+=]).{8,}$")) {
+            request.setAttribute("errorMessage", "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol (!@#$%^&_.-+=).");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/resetPassword.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+        
+        if (newPassword.length() >= 255) {
+            request.setAttribute("errorMessage", "Password must be less than 255 characters.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/resetPassword.jsp");
             dispatcher.forward(request, response);
             return;

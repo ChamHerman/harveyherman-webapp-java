@@ -18,26 +18,39 @@ public class EditStaffsServlet extends HttpServlet {
 
     @EJB
     private StaffDataDAO staffDataDAO;
-    
+
     @EJB
     private StaffLoginDAO staffLoginDAO;
 
+    private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message)
+            throws IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        String contextPath = request.getContextPath();
+        String json;
+
+        if (success) {
+            json = "MESSAGE: " + message.replace("\"", "\\\"");
+        } else {
+            json = "ERROR: " + message.replace("\"", "\\\"");
+        }
+
+        String encodedMessage = java.net.URLEncoder.encode(json, "UTF-8");
+        response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
+    }
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
-        // Check if user is logged in as manager
         StaffData loggedInManager = (StaffData) session.getAttribute("loggedInManager");
         if (loggedInManager == null) {
-            session.setAttribute("errorMessage", "You do not have permission to edit staff members");
-            response.sendRedirect(request.getContextPath() + "/staff/ap_login.jsp");
+            sendJsonResponse(request, response, false, "You do not have permission to edit staff members");
             return;
         }
-        
+
         try {
-            // Get parameters from the form
             String staffId = request.getParameter("staffId");
             String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
@@ -45,76 +58,112 @@ public class EditStaffsServlet extends HttpServlet {
             String address = request.getParameter("address");
             String position = request.getParameter("position");
             String gender = request.getParameter("gender");
-            String dbstatus = request.getParameter("dbstatus");
-            
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            
-            // Validate required fields
-            if (staffId == null || fullname == null || email == null || 
-                position == null || gender == null || username == null) {
-                
-                session.setAttribute("errorMessage", "Missing required fields");
-                response.sendRedirect(request.getContextPath() + "/manager/ap_edit_staff.jsp?staffId=" + staffId);
+
+            if (staffId == null || staffId.trim().isEmpty()
+                    || fullname == null || fullname.trim().isEmpty()
+                    || email == null || email.trim().isEmpty()
+                    || contactNumber == null || contactNumber.trim().isEmpty()
+                    || address == null || address.trim().isEmpty()
+                    || position == null || position.trim().isEmpty()
+                    || gender == null || gender.trim().isEmpty()
+                    || username == null || username.trim().isEmpty()
+                    || password == null || password.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Missing required fields");
                 return;
             }
             
-            // Get the staff data object
+            if (fullname.length() > 255) {
+                sendJsonResponse(request, response, false, "Full name must be less than 255 characters.");
+                return;
+            }
+            
+            if (email.length() > 255) {
+                sendJsonResponse(request, response, false, "Email must be less than 255 characters.");
+                return;
+            }
+            if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
+                sendJsonResponse(request, response, false, "Email format is invalid.");
+                return;
+            }
+            StaffData existingStaffWithEmail = staffDataDAO.findByEmail(email);
+            if (existingStaffWithEmail != null && !existingStaffWithEmail.getStaffId().equals(staffId)) {
+                sendJsonResponse(request, response, false, "Email address is already in use by another staff.");
+                return;
+            }
+
+            if (!contactNumber.matches("^60\\d{9,10}$")) {
+                sendJsonResponse(request, response, false, "Contact number must start with 60 and be 11 or 12 digits long.");
+                return;
+            }
+            StaffData existingStaffWithContact = staffDataDAO.findByContactNumber(contactNumber);
+            if (existingStaffWithContact != null && !existingStaffWithContact.getStaffId().equals(staffId)) {
+                sendJsonResponse(request, response, false, "Contact number is already in use by another staff.");
+                return;
+            }
+
+            if (address.length() > 1000) {
+                sendJsonResponse(request, response, false, "Address must be less than 1000 characters.");
+                return;
+            }
+            
+            if (position.length() > 255) {
+                sendJsonResponse(request, response, false, "Position must be less than 255 characters.");
+                return;
+            }
+            
+            if (username.length() > 255) {
+                sendJsonResponse(request, response, false, "Username must be less than 255 characters.");
+                return;
+            }
+            StaffLogin existingStaffWithUsername = staffLoginDAO.findByUsername(username);
+            if (existingStaffWithUsername != null && !existingStaffWithUsername.getStaffId().getStaffId().equals(staffId)) {
+                sendJsonResponse(request, response, false, "Username is already in use by another staff.");
+                return;
+            }
+            
+            if (password.length() > 255) {
+                sendJsonResponse(request, response, false, "Password must be less than 255 characters.");
+                return;
+            }
+            if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&_.\\-+=]).{8,}$")) {
+                sendJsonResponse(request, response, false, "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol (!@#$%^&_.-+=).");
+                return;
+            }
+
             StaffData staffData = staffDataDAO.findByStaffId(staffId);
             if (staffData == null) {
-                session.setAttribute("errorMessage", "Staff not found");
-                response.sendRedirect(request.getContextPath() + "/manager/ap_staff.jsp");
+                sendJsonResponse(request, response, false, "Staff not found");
                 return;
             }
-            
-            // Get the staff login object
             StaffLogin staffLogin = staffLoginDAO.findByStaffId(staffId);
             if (staffLogin == null) {
-                session.setAttribute("errorMessage", "Staff login not found");
-                response.sendRedirect(request.getContextPath() + "/manager/ap_staff.jsp");
+                sendJsonResponse(request, response, false, "Staff login not found");
                 return;
             }
-            
-            // Update StaffData object
+
             staffData.setFullname(fullname);
             staffData.setEmail(email);
             staffData.setContactNumber(contactNumber);
             staffData.setAddress(address);
             staffData.setPosition(position);
             staffData.setGender(gender);
-            staffData.setDbstatus(dbstatus);
-            
-            // Update StaffLogin object
+
             staffLogin.setUsername(username);
-            
-            // Update password only if it has been changed
+
             String oldPassword = staffLogin.getPassword();
             if (password != null && !password.isEmpty() && !password.equals(oldPassword)) {
                 staffLogin.setPassword(password);
             }
-            
-            // Save changes
+
             staffDataDAO.update(staffData);
             staffLoginDAO.update(staffLogin);
-            
-            // Redirect with success message
-            String successMessage = "Staff updated successfully";
-            response.sendRedirect(request.getContextPath() + "/manager/ap_staff.jsp?message=" + 
-                    java.net.URLEncoder.encode(successMessage, "UTF-8"));
-            
+
+            sendJsonResponse(request, response, true, "Staff updated successfully");
         } catch (Exception e) {
-            // Handle any exceptions
             e.printStackTrace();
-            String errorMessage = "Error updating staff: " + e.getMessage();
-            response.sendRedirect(request.getContextPath() + "/manager/ap_staff.jsp?message=" + 
-                    java.net.URLEncoder.encode(errorMessage, "UTF-8"));
+            sendJsonResponse(request, response, false, "Error updating staff: " + e.getMessage());
         }
     }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Redirect GET requests to the staff list page
-        response.sendRedirect(request.getContextPath() + "/manager/ap_staff.jsp");
-    }
-} 
+}

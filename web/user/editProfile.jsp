@@ -97,25 +97,5 @@
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/custom.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
-        <script>
-            document.querySelector('.profile-edit-form').addEventListener('submit', function (event) {
-                let contact = document.getElementById('contactNumber').value.trim();
-                let contactError = '';
-
-                // Contact number validation
-                const contactPattern = /^\+60\d{8,13}$/;
-                if (!contactPattern.test(contact)) {
-                    contactError = 'Contact number must start with +60 and minimum 8 numbers after it (e.g. +601234567890).';
-                }
-
-                // Show errors if any
-                if (contactError) {
-                    event.preventDefault();
-                    let errorMsg = '';
-                    if (contactError) errorMsg += contactError;
-                    alert(errorMsg);
-                }
-            });
-        </script>
     </body>
 </html>

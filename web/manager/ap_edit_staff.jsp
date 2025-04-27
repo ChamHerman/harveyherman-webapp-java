@@ -160,16 +160,6 @@
                                            value="<%= newStaffData.getPosition() %>" required autocomplete="off">
                                 </div>
                             </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="dbstatus" class="form-label required">Status</label>
-                                    <select class="form-select" id="dbstatus" name="dbstatus" required autocomplete="off">
-                                        <option value="active" <%= "active".equals(newStaffData.getDbstatus()) ? "selected" : "" %>>Active</option>
-                                        <option value="inactive" <%= "inactive".equals(newStaffData.getDbstatus()) ? "selected" : "" %>>Inactive</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     
@@ -225,6 +215,7 @@
         </div>
         
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Toggle password visibility

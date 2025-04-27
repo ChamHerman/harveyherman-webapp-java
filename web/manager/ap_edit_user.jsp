@@ -125,7 +125,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Username</label>
-                                    <input type="text" class="form-control" value="<%= userLogin.getUsername() %>" readonly autocomplete="off">
+                                    <input type="text" class="form-control" id="username" name="username" value="<%= userLogin.getUsername() %>" required autocomplete="off">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="securityQuestion" class="form-label">Security Question</label>

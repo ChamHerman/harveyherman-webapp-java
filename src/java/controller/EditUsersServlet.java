@@ -25,10 +25,10 @@ public class EditUsersServlet extends HttpServlet {
 
     @EJB
     private UserDataDAO userDataDAO;
-    
+
     @EJB
     private UserLoginDAO userLoginDAO;
-    
+
     private static final long serialVersionUID = 1L;
 
     private static final String DEFAULT_PASSWORD = "password";
@@ -57,47 +57,45 @@ public class EditUsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-        request.setCharacterEncoding("UTF-8");
+            request.setCharacterEncoding("UTF-8");
 
             // Check if this is a password reset operation
             String resetPassword = request.getParameter("resetPassword");
             if (resetPassword != null && resetPassword.equals("true")) {
                 handlePasswordReset(request, response);
-            return;
-        }
-            
+                return;
+            }
+
             // Normal user update operation
             String userId = request.getParameter("userId");
             if (userId == null || userId.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "User ID is required.");
-            return;
-        }
+                return;
+            }
 
-            // Get the user data from the database
             UserData userData = userDataDAO.findByUserId(userId);
             if (userData == null) {
                 sendJsonResponse(request, response, false, "User not found.");
-            return;
-        }
-            
-            // Get the user login data from the database
+                return;
+            }
+
             UserLogin userLogin = userLoginDAO.findByUserId(userId);
             if (userLogin == null) {
                 sendJsonResponse(request, response, false, "User login information not found.");
-            return;
-        }
-            
+                return;
+            }
+
             // Validate and get full name
             String fullname = request.getParameter("fullname");
             if (fullname == null || fullname.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Full name is required.");
-            return;
-        }
+                return;
+            }
             if (fullname.length() > 255) {
                 sendJsonResponse(request, response, false, "Full name must be less than 255 characters.");
-            return;
-        }
-            
+                return;
+            }
+
             // Validate and get email
             String email = request.getParameter("email");
             if (email == null || email.trim().isEmpty()) {
@@ -108,43 +106,39 @@ public class EditUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Email must be less than 255 characters.");
                 return;
             }
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
                 sendJsonResponse(request, response, false, "Email format is invalid.");
-            return;
-        }
-            
-            // Check for duplicate email (excluding current user)
+                return;
+            }
             UserData existingUserWithEmail = userDataDAO.findByEmail(email);
             if (existingUserWithEmail != null && !existingUserWithEmail.getUserId().equals(userId)) {
                 sendJsonResponse(request, response, false, "Email address is already in use by another user.");
-            return;
-        }
-            
+                return;
+            }
+
             // Validate and get contact number
             String contactNumber = request.getParameter("contactNumber");
             if (contactNumber == null || contactNumber.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Contact number is required.");
                 return;
             }
-            if (contactNumber.length() > 255) {
-                sendJsonResponse(request, response, false, "Contact number must be less than 255 characters.");
-            return;
-        }
-            
-            // Check for duplicate contact number (excluding current user)
+            if (!contactNumber.matches("^60\\d{9,10}$")) {
+                sendJsonResponse(request, response, false, "Contact number must start with 60 and be 11 or 12 digits long.");
+                return;
+            }
             UserData existingUserWithContact = userDataDAO.findByContactNumber(contactNumber);
             if (existingUserWithContact != null && !existingUserWithContact.getUserId().equals(userId)) {
                 sendJsonResponse(request, response, false, "Contact number is already in use by another user.");
                 return;
             }
-            
-            // Get optional address
+
+            // Validate and get address
             String address = request.getParameter("address");
             if (address != null && address.length() > 1000) {
                 sendJsonResponse(request, response, false, "Address must be less than 1000 characters.");
                 return;
             }
-            
+
             // Validate and parse birth date if provided
             Date birthDate = null;
             String birthDateStr = request.getParameter("birthDate");
@@ -152,7 +146,7 @@ public class EditUsersServlet extends HttpServlet {
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     birthDate = dateFormat.parse(birthDateStr);
-                    
+
                     // Check if birth date is in the future
                     if (birthDate.after(new Date())) {
                         sendJsonResponse(request, response, false, "Birth date cannot be in the future.");
@@ -170,15 +164,26 @@ public class EditUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Gender is required.");
                 return;
             }
-            if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Other")) {
-                sendJsonResponse(request, response, false, "Gender must be 'Male', 'Female', or 'Other'.");
+            
+            String username = request.getParameter("username");
+            if (username == null || username.trim().isEmpty()) {
+                sendJsonResponse(request, response, false, "Username is required.");
                 return;
             }
-            
+            if (username.length() > 255) {
+                sendJsonResponse(request, response, false, "Username must be less than 255 characters.");
+                return;
+            }
+            UserLogin existingUserWithUsername = userLoginDAO.findByUsername(username);
+            if (existingUserWithUsername != null && !existingUserWithUsername.getUserId().getUserId().equals(userId)) {
+                sendJsonResponse(request, response, false, "Username is already in use by another user.");
+                return;
+            }
+
             // Check for security question and answer updates
             String securityQuestion = request.getParameter("securityQuestion");
             String securityAnswer = request.getParameter("securityAnswer");
-            
+
             // Update the user data in the database
             userData.setFullname(fullname);
             userData.setEmail(email);
@@ -186,29 +191,29 @@ public class EditUsersServlet extends HttpServlet {
             userData.setAddress(address);
             userData.setBirthDate(birthDate);
             userData.setGender(gender);
-            
             userDataDAO.update(userData);
-            
+
             // Update security question and answer if provided
             if (securityQuestion != null && !securityQuestion.trim().isEmpty()) {
                 userLogin.setChallengeQuestion(securityQuestion);
             }
-            
+
             if (securityAnswer != null && !securityAnswer.trim().isEmpty()) {
                 userLogin.setAnswer(securityAnswer);
             }
-            
+
+            userLogin.setUsername(username);
             userLoginDAO.update(userLogin);
-            
+
             sendJsonResponse(request, response, true, "User updated successfully.");
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
             sendJsonResponse(request, response, false, "Failed to update user: " + ex.getMessage());
         }
     }
-    
-    private void handlePasswordReset(HttpServletRequest request, HttpServletResponse response) 
+
+    private void handlePasswordReset(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             String userId = request.getParameter("userId");
@@ -216,28 +221,28 @@ public class EditUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "User ID is required for password reset.");
                 return;
             }
-            
+
             UserData userData = userDataDAO.findByUserId(userId);
             if (userData == null) {
                 sendJsonResponse(request, response, false, "User not found.");
                 return;
             }
-            
+
             UserLogin userLogin = userLoginDAO.findByUserId(userId);
             if (userLogin == null) {
                 sendJsonResponse(request, response, false, "User login information not found.");
                 return;
             }
-            
+
             // Reset the password to the default
             userLogin.setPassword(DEFAULT_PASSWORD);
             userLoginDAO.update(userLogin);
 
             sendJsonResponse(request, response, true, "Password reset to '" + DEFAULT_PASSWORD + "' successfully.");
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
             sendJsonResponse(request, response, false, "Failed to reset password: " + ex.getMessage());
         }
     }
-} 
+}

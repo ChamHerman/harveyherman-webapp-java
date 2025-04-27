@@ -5,23 +5,13 @@
 package controller;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.nio.file.Paths;
 import java.io.*;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import javax.ejb.EJB;
-import model.Item;
-import model.ItemDAO;
 import model.UserData;
 import model.UserDataDAO;
 import model.UserLogin;
@@ -31,12 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @WebServlet(name = "AddUsersServlet", urlPatterns = "/manager/AddUsersServlet")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class AddUsersServlet extends HttpServlet {
 
-    @EJB
-    private ItemDAO itemDAO;
-    
     @EJB
     private UserDataDAO userDataDAO;
     
@@ -102,12 +88,6 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Username must be less than 255 characters.");
                 return;
             }
-            if (!username.matches("^[a-zA-Z0-9_-]{3,20}$")) {
-                sendJsonResponse(request, response, false, "Username must be 3-20 characters and can only contain letters, numbers, underscores, and hyphens.");
-                return;
-            }
-            
-            // Check for existing username
             UserLogin existingLogin = userLoginDAO.findByUsername(username);
             if (existingLogin != null) {
                 sendJsonResponse(request, response, false, "Username is already taken. Please choose another one.");
@@ -124,12 +104,10 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Email must be less than 255 characters.");
                 return;
             }
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
                 sendJsonResponse(request, response, false, "Email format is invalid.");
                 return;
             }
-            
-            // Check for duplicate email
             UserData existingUserWithEmail = userDataDAO.findByEmail(email);
             if (existingUserWithEmail != null) {
                 sendJsonResponse(request, response, false, "Email address is already in use.");
@@ -142,12 +120,10 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Contact number is required.");
                 return;
             }
-            if (contactNumber.length() > 255) {
-                sendJsonResponse(request, response, false, "Contact number must be less than 255 characters.");
+            if (!contactNumber.matches("^60\\d{9,10}$")) {
+                sendJsonResponse(request, response, false, "Contact number must start with 60 and be 11 or 12 digits long.");
                 return;
             }
-            
-            // Check for duplicate contact number
             UserData existingUserWithContact = userDataDAO.findByContactNumber(contactNumber);
             if (existingUserWithContact != null) {
                 sendJsonResponse(request, response, false, "Contact number is already in use.");
@@ -186,19 +162,11 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Gender is required.");
                 return;
             }
-            if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Other")) {
-                sendJsonResponse(request, response, false, "Gender must be 'Male', 'Female', or 'Other'.");
-                return;
-            }
             
             // Validate and get security question
             String securityQuestion = request.getParameter("securityQuestion");
             if (securityQuestion == null || securityQuestion.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Security question is required.");
-                return;
-            }
-            if (securityQuestion.length() > 255) {
-                sendJsonResponse(request, response, false, "Security question must be less than 255 characters.");
                 return;
             }
             
@@ -230,10 +198,10 @@ public class AddUsersServlet extends HttpServlet {
             
             // Create UserLogin object
             UserLogin userLogin = new UserLogin();
-            userLogin.setLoginId(null); // Will be auto-generated
+            userLogin.setLoginId(null);
             userLogin.setUserId(userData);
             userLogin.setUsername(username);
-            userLogin.setPassword(DEFAULT_PASSWORD); // Default password
+            userLogin.setPassword(DEFAULT_PASSWORD);
             userLogin.setChallengeQuestion(securityQuestion);
             userLogin.setAnswer(securityAnswer);
             userLogin.setDbstatus("active");

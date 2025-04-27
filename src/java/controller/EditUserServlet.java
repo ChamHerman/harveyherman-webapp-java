@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -37,31 +38,49 @@ public class EditUserServlet extends HttpServlet {
         String userId = request.getParameter("userId");
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
-        // Email validation
-        if (email == null || !email.contains("@")) {
-            errorMessage = "Email must contain '@' symbol.";
-        } else {
-            // Check uniqueness (except for current user)
-            UserData existingUser = userDataDAO.findByEmail(email);
-            if (existingUser != null && !existingUser.getUserId().equals(userId)) {
-                errorMessage = "Email is already in use by another account.";
-            }
-        }
         String contactNumber = request.getParameter("contactNumber");
-        // Contact number validation
-        if (contactNumber != null && !contactNumber.isEmpty()) {
-            if (!contactNumber.matches("^\\+60\\d{8,13}$")) {
-                errorMessage = "Contact number must start with +60 and be up to 15 characters (e.g. +601234567890).";
-            } else {
-                // Check uniqueness (except for current user)
-                UserData existingContact = userDataDAO.findByContactNumber(contactNumber);
-                if (existingContact != null && !existingContact.getUserId().equals(userId)) {
-                    errorMessage = "Contact number is already in use by another account.";
-                }
-            }
-        }
         String address = request.getParameter("address");
         String birthDateStr = request.getParameter("birthDate");
+        Date birthDate = null;
+
+        if (birthDateStr != null && !birthDateStr.trim().isEmpty()) {
+            try {
+                birthDate = parseBirthdate(birthDateStr);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (fullName == null || fullName.trim().isEmpty()
+                || email == null || email.trim().isEmpty()
+                || contactNumber == null || contactNumber.trim().isEmpty()
+                || address == null || address.trim().isEmpty()
+                || birthDateStr == null || birthDateStr.trim().isEmpty()) {
+            errorMessage = "All fields should be completed";
+        } else if (fullName.length() >= 255) {
+            errorMessage = "Full name must be less than 255 characters.";
+        } else if (email.length() >= 255) {
+            errorMessage = "Email must be less than 255 characters.";
+        } else if (address.length() >= 1000) {
+            errorMessage = "Address must be less than 1000 characters.";
+        } else if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
+            errorMessage = "Invalid email format.";
+        } else if (!contactNumber.matches("^60\\d{9,10}$")) {
+            errorMessage = "Contact number must start with 60 and be 11 or 12 digits long.";
+        } else if (birthDate == null) {
+            errorMessage = "Invalid birthdate format.";
+        } else if (birthDate.after(new Date())) {
+            errorMessage = "Birthdate cannot be in the future.";
+        } else {
+            UserData existingUserWithEmail = userDataDAO.findByEmail(email);
+            UserData existingUserWithContact = userDataDAO.findByContactNumber(contactNumber);
+            if (existingUserWithEmail != null && !existingUserWithEmail.getUserId().equals(userId)) {
+                errorMessage = "Email address is already in use by another user.";
+            } else if (existingUserWithContact != null && !existingUserWithContact.getUserId().equals(userId)) {
+                errorMessage = "Contact number is already in use by another user.";
+            }
+        }
 
         if (errorMessage != null) {
             request.setAttribute("errorMessage", errorMessage);
@@ -85,27 +104,28 @@ public class EditUserServlet extends HttpServlet {
             userData.setEmail(email);
             userData.setContactNumber(contactNumber);
             userData.setAddress(address);
-
-            if (birthDateStr != null && !birthDateStr.trim().isEmpty()) {
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date birthDate = dateFormat.parse(birthDateStr);
-                    userData.setBirthDate(birthDate);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            userData.setBirthDate(birthDate);
 
             userDataDAO.update(userData);
             session.setAttribute("loggedInUser", userData);
 
-            session.setAttribute("profileUpdateSuccess", Boolean.TRUE);          
+            session.setAttribute("profileUpdateSuccess", Boolean.TRUE);
             response.sendRedirect(request.getContextPath() + "/user/profile.jsp");
 
         } catch (Exception ex) {
             ex.printStackTrace();
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/editProfile.jsp");
             dispatcher.forward(request, response);
+        }
+    }
+
+    private Date parseBirthdate(String birthdateStr) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.parse(birthdateStr);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 }
