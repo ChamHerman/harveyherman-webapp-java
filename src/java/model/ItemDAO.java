@@ -155,4 +155,11 @@ public class ItemDAO {
         return query.getSingleResult();
     }
 
+    public List<String> getTopSellingItemIds(int limit) {
+        String jpql = "SELECT i.itemId FROM OrderDetails od JOIN od.itemId i GROUP BY i.itemId ORDER BY SUM(od.quantity) DESC";
+        return em.createQuery(jpql, String.class)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 }

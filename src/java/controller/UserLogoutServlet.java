@@ -24,9 +24,19 @@ public class UserLogoutServlet extends HttpServlet {
 
         if (session != null) {
             // Remove set session attributes when log out.
+            // viewOrders's
             session.removeAttribute("loggedInUserOrders");
             session.removeAttribute("orderDetailsMap");
             session.removeAttribute("orderDeliveryMap");
+            // item's
+            session.removeAttribute("searchFilter");
+            session.removeAttribute("categoryFilter");
+            session.removeAttribute("stockFilter");
+            session.removeAttribute("minPriceFilter");
+            session.removeAttribute("maxPriceFilter");
+            session.removeAttribute("sortByFilter");
+            session.removeAttribute("sortOrderFilter");
+            
             session.removeAttribute("loggedInUser");
         }
 

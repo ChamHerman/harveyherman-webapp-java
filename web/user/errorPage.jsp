@@ -47,7 +47,7 @@
             <% if (statusCode != null) { %>
             <% if (statusCode == 404) { %>
             <p>The page you are looking for could not be found.</p>
-            <% } else if (statusCode == 500) { %>
+            <% } else if (statusCode == 500 || statusCode == 405) { %>
             <p>There was an internal server error. Please try again later.</p>
             <% } else {%>
             <p>An unexpected error has occurred. (Error code: <%= statusCode%>)</p>
