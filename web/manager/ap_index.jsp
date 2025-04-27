@@ -52,7 +52,7 @@
             todayS = todayS + 1.0;
         }
         if (yesterdayS == 0.0) {
-            todayS = todayS + 1.0;
+            yesterdayS = yesterdayS + 1.0;
         }
 
         avgS1 = (todayS / yesterdayS) * 100;

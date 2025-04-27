@@ -173,12 +173,12 @@
                             <tr>
                                 <td colspan="4"></td>
                                 <td>Total (RM)</td>
-                                <td><%=totalSalesAmount%></td>
+                                <td><%=String.format("%.2f", totalSalesAmount)%></td>
                             </tr>
                             <tr>
                                 <td colspan="4"></td>
                                 <td>Promotion (RM)</td>
-                                <td><%=promoBetweenTotal%></td>                            </tr>
+                                <td><%=String.format("%.2f", promoBetweenTotal)%></td>                            </tr>
                             </tr>
                             <tr>
                                 <td colspan="4"></td>

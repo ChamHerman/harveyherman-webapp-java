@@ -317,21 +317,31 @@
                 // delete error msg
                 errorMessage.innerText = "";
                 endDateInput.classList.remove("is-invalid");
+                startDateInput.classList.remove("is-invalid");
 
-                if (endDate && endDate < today) {
+                if (startDate && startDate < today) {
+                    errorMessage.innerText = "Start date cannot be in the past.";
+                    startDateInput.classList.add("is-invalid");
+                    saveButton.disabled = true;
+                } else if (endDate && endDate < today) {
                     errorMessage.innerText = "End date cannot be in the past.";
                     endDateInput.classList.add("is-invalid");
+                    saveButton.disabled = true;
                 } else if (startDate && endDate && endDate < startDate) {
                     errorMessage.innerText = "End date cannot be before the start date.";
                     endDateInput.classList.add("is-invalid");
+                    saveButton.disabled = true;
+                } else {
+                    saveButton.disabled = false;
                 }
 
                 // Append error msg
                 if (errorMessage.innerText) {
-                    endDateInput.parentNode.appendChild(errorMessage);
-                    saveButton.disabled = true;
-                } else {
-                    saveButton.disabled = false;
+                    if (startDateInput.classList.contains("is-invalid")) {
+                        startDateInput.parentNode.appendChild(errorMessage);
+                    } else {
+                        endDateInput.parentNode.appendChild(errorMessage);
+                    }
                 }
             }
 
@@ -393,6 +403,7 @@
             startDateInput.addEventListener("change", validateDates);
             endDateInput.addEventListener("change", validateDates);
             validateForm();
+            validateDates(); // Add initial date validation
         });
 
         document.addEventListener("DOMContentLoaded", function () {
