@@ -26,6 +26,8 @@ import model.Item;
 import model.ItemDAO;
 import model.OrderDetails;
 import model.OrderDetailsDAO;
+import model.Promotion;
+import model.PromotionDAO;
 import model.UserData;
 
 @WebServlet(name = "AddOrderServlet", urlPatterns = { "/manager/AddOrderServlet", "/staff/AddOrderServlet",
