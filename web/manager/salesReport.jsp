@@ -116,7 +116,16 @@
         document.querySelector("form").addEventListener("submit", function (event) {
             let startDate = document.getElementById("startDateInput").value;
             let endDate = document.getElementById("endDateInput").value;
-            let today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+            
+            // Create Date objects for proper comparison
+            let today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time part to ensure date-only comparison
+            
+            let startDateObj = new Date(startDate);
+            startDateObj.setHours(0, 0, 0, 0);
+            
+            let endDateObj = new Date(endDate);
+            endDateObj.setHours(0, 0, 0, 0);
 
             if (!startDate || !endDate) {
                 alert("Please select both start and end dates.");
@@ -124,20 +133,23 @@
                 return;
             }
 
-            if (startDate > today) {
+            // Compare dates using getTime() for more reliable comparison
+            if (startDateObj.getTime() > today.getTime()) {
                 alert("Start date cannot be in the future.");
                 event.preventDefault();
+                return;
             }
 
-            if (endDate < startDate) {
+            if (endDateObj.getTime() < startDateObj.getTime()) {
                 alert("End date cannot be before the start date.");
                 event.preventDefault();
                 return;
             }
 
-            if (endDate > today) {
+            if (endDateObj.getTime() > today.getTime()) {
                 alert("End date cannot be in the future.");
                 event.preventDefault();
+                return;
             }
         });
 

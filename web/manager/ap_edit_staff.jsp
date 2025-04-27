@@ -102,7 +102,6 @@
         <div class="main-content flex-grow-1">
             <div class="container">
                 <h2 class="mt-4 mb-4">Edit Staff</h2>
-
                 <form id="editStaffForm" action="<%= request.getContextPath()%>/manager/EditStaffsServlet" method="post" autocomplete="off">
                     <input type="hidden" name="staffId" value="<%= newStaffData.getStaffId()%>" autocomplete="off">
 

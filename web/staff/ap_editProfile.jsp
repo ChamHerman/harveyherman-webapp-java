@@ -23,7 +23,7 @@
             <div class="container">
                 <div class="profile-card">
                     <h2 class="profile-title">Edit Profile</h2>
-                    <% if (request.getParameter("error") != null) {%>
+                    <% if (request.getAttribute("error") != null) {%>
                     <div class="alert alert-danger">
                         <%= request.getAttribute("error")%>
                     </div>
