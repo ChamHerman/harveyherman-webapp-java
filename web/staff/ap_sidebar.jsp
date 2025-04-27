@@ -35,7 +35,7 @@
 
             if (staffData != null) {
                 StaffLogin staffLogin = staffLoginDAO.findByStaffId(staffData.getStaffId());
-                String username = staffLogin != null ? staffLogin.getUsername() : "Unknown";
+                String username = staffLogin != null ? "Staff" : "Unknown";
         %>
         <a href="<%= request.getContextPath()%>/staff/ap_profile.jsp" class="btn btn-outline-primary w-100">
             <span class="fa fa-user"></span> <%= username%>
