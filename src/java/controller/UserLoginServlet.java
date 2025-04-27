@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -53,7 +54,7 @@ public class UserLoginServlet extends HttpServlet {
                 userLogin = userLoginDAO.findByEmail(usernameOrEmail);
             }
 
-            if (userLogin != null && userLogin.getPassword().equals(password)) {
+            if (userLogin != null && userLogin.getPassword().equals(hashPasswordSHA256(password))) {
                 UserData userData = userLogin.getUserId();
                 if (userData != null) {
                     try {

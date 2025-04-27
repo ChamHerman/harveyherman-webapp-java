@@ -176,4 +176,53 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Prevent form submission if there are errors and focus the first error field
+    var form = document.querySelector('form'); // or use document.getElementById('myForm');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            var errorFields = [];
+            // Check all error message divs for visible errors
+            var errorMsgs = form.querySelectorAll('div[id$="-error-msg"], div[id$="-length-error-msg"]');
+            errorMsgs.forEach(function (msg) {
+                if (msg.textContent && msg.textContent.trim() !== "") {
+                    // Find the related input
+                    var relatedInput = null;
+                    // Try to find the input before the error message
+                    if (msg.previousElementSibling && msg.previousElementSibling.tagName === "INPUT") {
+                        relatedInput = msg.previousElementSibling;
+                    } else {
+                        // For password, error is after .password-field-container
+                        var container = msg.previousElementSibling;
+                        if (container && container.classList && container.classList.contains('password-field-container')) {
+                            relatedInput = container.querySelector('input');
+                        }
+                    }
+                    if (relatedInput) {
+                        errorFields.push(relatedInput);
+                    }
+                }
+            });
+
+            // Also check length constraints in case JS validation missed it
+            var addressInput = document.getElementById('address');
+            if (addressInput && addressInput.value.length >= 1000) {
+                errorFields.push(addressInput);
+            }
+            [
+                'fullname', 'email', 'username', 'password', 'answer', 'position'
+            ].forEach(function (id) {
+                var input = document.getElementById(id);
+                if (input && input.value.length >= 255) {
+                    errorFields.push(input);
+                }
+            });
+
+            if (errorFields.length > 0) {
+                e.preventDefault();
+                // Focus the first field with error
+                errorFields[0].focus();
+            }
+        });
+    }
 });

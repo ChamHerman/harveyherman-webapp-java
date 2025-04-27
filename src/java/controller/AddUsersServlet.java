@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -201,7 +202,7 @@ public class AddUsersServlet extends HttpServlet {
             userLogin.setLoginId(null);
             userLogin.setUserId(userData);
             userLogin.setUsername(username);
-            userLogin.setPassword(DEFAULT_PASSWORD);
+            userLogin.setPassword(hashPasswordSHA256(DEFAULT_PASSWORD));
             userLogin.setChallengeQuestion(securityQuestion);
             userLogin.setAnswer(securityAnswer);
             userLogin.setDbstatus("active");

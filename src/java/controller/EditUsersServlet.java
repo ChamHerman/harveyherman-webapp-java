@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -235,7 +236,7 @@ public class EditUsersServlet extends HttpServlet {
             }
 
             // Reset the password to the default
-            userLogin.setPassword(DEFAULT_PASSWORD);
+            userLogin.setPassword(hashPasswordSHA256(DEFAULT_PASSWORD));
             userLoginDAO.update(userLogin);
 
             sendJsonResponse(request, response, true, "Password reset to '" + DEFAULT_PASSWORD + "' successfully.");

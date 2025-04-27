@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -150,7 +151,8 @@ public class UserRegisterServlet extends HttpServlet {
                 errorMsg = "Registration failed: Birthdate cannot be in the future.";
                 return false;
             }
-
+            
+            password = hashPasswordSHA256(password);
             UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);
             Cart cart = createCart(null, user);

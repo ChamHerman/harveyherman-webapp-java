@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -76,8 +77,8 @@ public class ResetPasswordServlet extends HttpServlet {
                 dispatcher.forward(request, response);
                 return;
             }
-
-            userLogin.setPassword(newPassword);
+ 
+            userLogin.setPassword(hashPasswordSHA256(newPassword));
             userLoginDAO.update(userLogin);
             session.removeAttribute("resetPasswordLoginId");
 

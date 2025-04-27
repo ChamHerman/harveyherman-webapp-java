@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -71,13 +72,13 @@ public class ChangePasswordServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/user/changePassword.jsp?error=User+account+not+found");
                 return;
             }
-
-            if (!userLogin.getPassword().equals(currentPassword)) {
+            
+            if (!userLogin.getPassword().equals(hashPasswordSHA256(currentPassword))) {
                 response.sendRedirect(request.getContextPath() + "/user/changePassword.jsp?error=Current+password+is+incorrect");
                 return;
             }
 
-            userLogin.setPassword(newPassword);
+            userLogin.setPassword(hashPasswordSHA256(newPassword));
             userLoginDAO.update(userLogin);
             session.setAttribute("changePasswordSuccess", Boolean.TRUE);
             response.sendRedirect(request.getContextPath() + "/user/profile.jsp");
