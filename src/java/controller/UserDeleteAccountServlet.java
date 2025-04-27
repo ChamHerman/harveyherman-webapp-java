@@ -7,6 +7,7 @@ package controller;
 import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
