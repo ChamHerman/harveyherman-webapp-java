@@ -185,7 +185,8 @@
                                 <td>Total Revenue (RM)</td>
                                 <td><%=String.format("%.2f", totalRevenue)%></td>                            </tr>
                             </tr>
-                            <%} else { %>
+                            <%
+                                } else { %>
                             <tr>
                                 <td colspan="6" class="text-center text-danger">No sales data found for the selected dates.</td>
                             </tr>
@@ -251,7 +252,7 @@
                                         <input type="text" class="form-control" id="reportType" name="reportType" value="<%= reportTypeR%>" readonly>        
                                         <div class="mb-3">
                                             <label for="totalSales" class="form-label">Total Sales (RM)</label>
-                                            <input type="text" class="form-control" id="totalSalesDisplay" name="totalSalesDisplay" value="<%=totalSalesAmount%>" readonly>
+                                            <input type="text" class="form-control" id="totalSalesDisplay" name="totalSalesDisplay" value="<%=String.format("%.2f", totalRevenue)%>" readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="description" class="form-label">Description</label>
@@ -332,10 +333,16 @@
     reportTypeElement.addEventListener('change', calculateStartDate);
 
     endDateElement.addEventListener('input', () => {
+        // Get today's date in the local timezone
         const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time part to ensure date-only comparison
+        
+        // Parse the selected date
         const selectedDate = new Date(endDateElement.value);
-
-        if (selectedDate > today) {
+        selectedDate.setHours(0, 0, 0, 0); // Reset time part to ensure date-only comparison
+        
+        // Compare dates using getTime() for more reliable comparison
+        if (selectedDate.getTime() > today.getTime()) {
             alert("The end date cannot be a future date.");
             endDateElement.value = "";
         }
