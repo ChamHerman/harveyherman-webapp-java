@@ -5,6 +5,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -33,7 +34,7 @@ public class ConfirmDeliveryServlet extends HttpServlet {
         if (deliveryId != null && !deliveryId.isEmpty()) {
             Delivery delivery = deliveryDAO.findByDeliveryId(deliveryId);
             if (delivery != null) {
-                delivery.setDeliveredDate(new java.util.Date());
+                delivery.setDeliveredDate((Timestamp) new java.util.Date());
                 deliveryDAO.update(delivery);
                 
                 // Update order status to 'delivered'
