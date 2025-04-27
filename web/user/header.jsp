@@ -58,52 +58,52 @@
 </nav>
 
 <script>
-(function() {
-    var header = document.getElementById('main-header');
-    var lastScrollY = window.scrollY;
-    var ticking = false;
-    var heroHeight = 0;
-    var body = document.body;
-    function getHeroHeight() {
-        var hero = document.querySelector('.shop-hero, .hero');
-        return hero ? hero.offsetHeight : 0;
-    }
-    function onScroll() {
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                var currentY = window.scrollY;
-                if (currentY > getHeroHeight() - 40) {
-                    body.classList.add('has-fixed-header');
-                    if (currentY < lastScrollY - 10) {
-                        // Scrolling up
-                        header.classList.add('header-visible');
-                        header.classList.remove('header-hidden');
-                    } else if (currentY > lastScrollY + 10) {
-                        // Scrolling down
-                        header.classList.remove('header-visible');
-                        header.classList.add('header-hidden');
+    (function () {
+        var header = document.getElementById('main-header');
+        var lastScrollY = window.scrollY;
+        var ticking = false;
+        var heroHeight = 0;
+        var body = document.body;
+        function getHeroHeight() {
+            var hero = document.querySelector('.shop-hero, .hero');
+            return hero ? hero.offsetHeight : 0;
+        }
+        function onScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(function () {
+                    var currentY = window.scrollY;
+                    if (currentY > getHeroHeight() - 40) {
+                        body.classList.add('has-fixed-header');
+                        if (currentY < lastScrollY - 10) {
+                            // Scrolling up
+                            header.classList.add('header-visible');
+                            header.classList.remove('header-hidden');
+                        } else if (currentY > lastScrollY + 10) {
+                            // Scrolling down
+                            header.classList.remove('header-visible');
+                            header.classList.add('header-hidden');
+                        }
+                    } else {
+                        // At top/hero
+                        header.classList.remove('header-visible', 'header-hidden');
+                        body.classList.remove('has-fixed-header');
                     }
-                } else {
-                    // At top/hero
-                    header.classList.remove('header-visible', 'header-hidden');
-                    body.classList.remove('has-fixed-header');
-                }
-                lastScrollY = currentY;
-                ticking = false;
-            });
-            ticking = true;
+                    lastScrollY = currentY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-    // Show header on page load if not at top
-    window.addEventListener('DOMContentLoaded', function() {
-        heroHeight = getHeroHeight();
-        if (window.scrollY > heroHeight - 40) {
-            body.classList.add('has-fixed-header');
-            header.classList.add('header-visible');
-        }
-    });
-})();
+        window.addEventListener('scroll', onScroll, {passive: true});
+        // Show header on page load if not at top
+        window.addEventListener('DOMContentLoaded', function () {
+            heroHeight = getHeroHeight();
+            if (window.scrollY > heroHeight - 40) {
+                body.classList.add('has-fixed-header');
+                header.classList.add('header-visible');
+            }
+        });
+    })();
 </script>
 
 
