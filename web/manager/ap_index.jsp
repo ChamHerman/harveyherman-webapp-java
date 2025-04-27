@@ -99,6 +99,17 @@
 
     </head>
     <body class="container mt-4">
+        <%
+            String logoutNotice = (String) session.getAttribute("logoutNotice");
+            if (logoutNotice != null) {
+        %>
+        <script>
+            alert("<%= logoutNotice.replace("\"", "\\\"")%>");
+        </script>
+        <%
+                session.removeAttribute("logoutNotice");
+            }
+        %>
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content">
@@ -109,44 +120,44 @@
                 <div class="summary-box">
                     <div class="summary-label">Total Sales</div>
                     <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        accesskey="" title="The total amount of products sold by the company">
+                         accesskey="" title="The total amount of products sold by the company">
                         RM <%= totalSales%>
                     </div>
                 </div>
                 <div class="summary-box">
                     <div class="summary-label">Products Sold</div>
                     <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        accesskey="" title="Products purchased since the company was founded">
+                         accesskey="" title="Products purchased since the company was founded">
                         <%= productSold%>
                     </div>
                 </div>
                 <div class="summary-box">
                     <div class="summary-label">Active Customers</div>
                     <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                           accesskey="" title="Customers who purchased our products in the past month">
+                         accesskey="" title="Customers who purchased our products in the past month">
                         <%= activeUsers%>
                     </div>
                 </div>
                 <div class="summary-box">
                     <div class="summary-label">Contrast</div>
                     <%if (equalS < 0) {%>
-                        <div class="summary-value" style="color: #c0392b;">-<%= String.format("%.2f", avgS2)%>%</div>
-                        <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                           accesskey="" title="Compare today's sales with yesterday's">
-                            Less than yesterday RM<%= equalS%>
-                        </div>
+                    <div class="summary-value" style="color: #c0392b;">-<%= String.format("%.2f", avgS2)%>%</div>
+                    <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                         accesskey="" title="Compare today's sales with yesterday's">
+                        Less than yesterday RM<%= equalS%>
+                    </div>
                     <%} else if (equalS == 0) {%>
-                        <div class="summary-value">0%</div>
-                        <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                           accesskey="" title="Compare today's sales with yesterday's">
-                            No change
-                        </div>
+                    <div class="summary-value">0%</div>
+                    <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                         accesskey="" title="Compare today's sales with yesterday's">
+                        No change
+                    </div>
                     <%} else if (equalS > 0) {%>
-                        <div class="summary-value" style="color: #27ae60;">+<%= String.format("%.2f", avgS1)%>%</div>
-                        <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                           accesskey="" title="Compare today's sales with yesterday's">
-                            More than yesterday RM<%= equalS%>
-                        </div>
+                    <div class="summary-value" style="color: #27ae60;">+<%= String.format("%.2f", avgS1)%>%</div>
+                    <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                         accesskey="" title="Compare today's sales with yesterday's">
+                        More than yesterday RM<%= equalS%>
+                    </div>
                     <%}%>
                 </div>
             </div>
@@ -170,7 +181,7 @@
                     <!-- Bar Chart -->
                     <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
                         <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;" data-bs-toggle="tooltip" data-bs-placement="top"
-                           accesskey="" title="Top 10 best-selling products in the past month">
+                            accesskey="" title="Top 10 best-selling products in the past month">
                             Top 10 Products Chart
                         </h5>
                         <canvas id="salesChart" style="max-width: 400px; max-height: 300px;"></canvas>
@@ -185,87 +196,87 @@
     <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
 
-        //display pie chart
-        var cash = <%= cash%>; // Replace with dynamic data (e.g., the count of "cash" payments)
-        var debitCard = <%= debit%>; // Replace with dynamic data (e.g., the count of "debit_card" payments)
-        var creditCard = <%= credit%>; // Replace with dynamic data (e.g., the count of "credit_card" payments)
-        var eWallet = <%= eWallet%>; // Replace with dynamic data (e.g., the count of "e_wallet" payments)
+            //display pie chart
+            var cash = <%= cash%>; // Replace with dynamic data (e.g., the count of "cash" payments)
+            var debitCard = <%= debit%>; // Replace with dynamic data (e.g., the count of "debit_card" payments)
+            var creditCard = <%= credit%>; // Replace with dynamic data (e.g., the count of "credit_card" payments)
+            var eWallet = <%= eWallet%>; // Replace with dynamic data (e.g., the count of "e_wallet" payments)
 
-        // Total of all payment method counts
-        var total = cash + debitCard + creditCard + eWallet;
+            // Total of all payment method counts
+            var total = cash + debitCard + creditCard + eWallet;
 
-        var ctx = document.getElementById('paymentMethodChart').getContext('2d');
+            var ctx = document.getElementById('paymentMethodChart').getContext('2d');
 
-        var chart = new Chart(ctx, {
-            type: 'pie', // Pie chart type
-            data: {
-                labels: ['Cash', 'Debit Card', 'Credit Card', 'E-wallet'], // Labels for the chart
-                datasets: [{
-                        label: 'Payment Method Distribution',
-                        data: [cash, debitCard, creditCard, eWallet], // Use dynamic data here
-                        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'], // Slice colors
-                    }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            // Tooltip to display percentage
-                            label: function (tooltipItem) {
-                                // Calculate percentage for the tooltip
-                                var percentage = Math.round((tooltipItem.raw / total) * 100);
-                                return tooltipItem.label + ': ' + tooltipItem.raw + ' (' + percentage + '%)';
-                            }
-                        }
-                    },
-                    legend: {
-                        position: 'bottom', // Position labels below the pie chart
-                        labels: {
-                            usePointStyle: true, // Makes the labels display as small colored dots
-                            pointStyle: 'circle',
-                            font: {
-                                size: 14, // Adjust label font size
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        let topSalesData = <%= chartData.toString()%>;
-
-        if (topSalesData.length > 0) {
-            let labels = topSalesData.map(item => item.name);
-            let data = topSalesData.map(item => item.quantity);
-
-            let ctx = document.getElementById("salesChart").getContext("2d");
-            new Chart(ctx, {
-                type: 'bar',
+            var chart = new Chart(ctx, {
+                type: 'pie', // Pie chart type
                 data: {
-                    labels: labels,
+                    labels: ['Cash', 'Debit Card', 'Credit Card', 'E-wallet'], // Labels for the chart
                     datasets: [{
-                            label: "Total Quantity Sold",
-                            data: data,
-                            backgroundColor: "rgba(54, 162, 235, 0.6)",
-                            borderColor: "rgba(54, 162, 235, 1)",
-                            borderWidth: 1
+                            label: 'Payment Method Distribution',
+                            data: [cash, debitCard, creditCard, eWallet], // Use dynamic data here
+                            backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'], // Slice colors
                         }]
                 },
                 options: {
                     responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                // Tooltip to display percentage
+                                label: function (tooltipItem) {
+                                    // Calculate percentage for the tooltip
+                                    var percentage = Math.round((tooltipItem.raw / total) * 100);
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' (' + percentage + '%)';
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'bottom', // Position labels below the pie chart
+                            labels: {
+                                usePointStyle: true, // Makes the labels display as small colored dots
+                                pointStyle: 'circle',
+                                font: {
+                                    size: 14, // Adjust label font size
+                                }
+                            }
                         }
                     }
                 }
             });
-        }
+
+            let topSalesData = <%= chartData.toString()%>;
+
+            if (topSalesData.length > 0) {
+                let labels = topSalesData.map(item => item.name);
+                let data = topSalesData.map(item => item.quantity);
+
+                let ctx = document.getElementById("salesChart").getContext("2d");
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: "Total Quantity Sold",
+                                data: data,
+                                backgroundColor: "rgba(54, 162, 235, 0.6)",
+                                borderColor: "rgba(54, 162, 235, 1)",
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
     </script>
 </html>

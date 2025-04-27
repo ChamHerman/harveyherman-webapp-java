@@ -32,6 +32,10 @@ public class UserLoginServlet extends HttpServlet {
 
         if (userData != null) {
             HttpSession session = request.getSession();
+            if ((session.getAttribute("loggedInUser") != null)) {
+                session.removeAttribute("loggedInUser");
+                session.setAttribute("logoutNotice", "Last logged in has logged out automatically");
+            }
             session.setAttribute("loggedInUser", userData);
             response.sendRedirect(request.getContextPath() + "/user/index.jsp");
         } else {

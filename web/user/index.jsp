@@ -31,6 +31,18 @@
         <!-- Header -->
         <jsp:include page="header.jsp" />
 
+        <%
+            String logoutNotice = (String) session.getAttribute("logoutNotice");
+            if (logoutNotice != null) {
+        %>
+        <script>
+        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
+        </script>
+        <%
+                session.removeAttribute("logoutNotice");
+            }
+        %>
+
         <!-- Start Hero Section -->
         <div class="hero" style="padding: 4.5rem 0;">
             <div class="container">

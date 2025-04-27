@@ -98,6 +98,17 @@
         </style>
     </head>
     <body class="container mt-4">
+        <%
+            String logoutNotice = (String) session.getAttribute("logoutNotice");
+            if (logoutNotice != null) {
+        %>
+        <script>
+        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
+        </script>
+        <%
+                session.removeAttribute("logoutNotice");
+            }
+        %>
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content">
