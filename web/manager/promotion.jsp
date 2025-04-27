@@ -38,7 +38,6 @@
         <!-- Default Head -->
         <jsp:include page="/user/head.jsp" />
         <title>Promotion Management - Manager</title>
-        
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">

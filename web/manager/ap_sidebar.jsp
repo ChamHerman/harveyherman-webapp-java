@@ -1,5 +1,5 @@
-<%@page import="model.StaffLogin"%>
-<%@page import="model.StaffData"%>
+<%@ page import="model.StaffLogin"%>
+<%@ page import="model.StaffData"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     String companyName = application.getInitParameter("companyName");
@@ -28,7 +28,7 @@
             StaffData staffData = (StaffData) session.getAttribute("loggedInManager");
             if (staffData != null) {
                 StaffLogin staffLogin = staffData.getStaffLogin();
-                String username = staffLogin != null ? staffLogin.getUsername() : "Unknown";
+                String username = staffLogin != null ? "Manager" : "Unknown";
         %>
         <a href="<%= request.getContextPath()%>/manager/ap_profile.jsp" class="btn btn-outline-primary w-100">
             <span class="fa fa-user"></span> <%= username%>

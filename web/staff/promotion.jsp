@@ -37,7 +37,7 @@
     <head>
         <!-- Default Head -->
         <jsp:include page="/user/head.jsp" />
-        <title>Promotion Management - staff</title>
+        <title>Promotion Management - Staff</title>
         
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">

@@ -17,7 +17,6 @@ body {
 /* Dashboard Summary Section */
 .dashboard-summary {
     display: flex;
-    justify-content: space-between;
     margin-bottom: 20px;
 }
 
@@ -25,10 +24,13 @@ body {
     background-color: var(--card-bg);
     padding: 15px;
     border-radius: 5px;
-    flex: 1;
-    margin-right: 15px;
+    flex: 1 1 100%;
+    margin-right: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 100%;
+    max-width: 100%;
+    font-weight: bold;
 }
 
 .dashboard-summary .summary-box:last-child {

@@ -88,7 +88,7 @@
                                         <td><%= rowNum++%>.</td>
                                         <!-- Product Image -->
                                         <td>
-                                            <img src="<%= cartItem.getItemId().getImageUrl()%>" alt="Product Image" style="width: 80px; height: 80px;">
+                                            <img src="<%=request.getContextPath()%>/assets/<%= cartItem.getItemId().getImageUrl()%>" alt="Product Image" style="width: 80px; height: 80px;">
                                         </td>
                                         <!-- Product Name -->
                                         <td>
@@ -140,7 +140,7 @@
                     <div class="col-md-6">
                         <div class="row mb-5">
                             <div class="col-md-6">
-                                <a href="item.jsp" class="btn btn-outline-black btn-sm btn-block">Continue Shopping</a>
+                                <a href="items" class="btn btn-outline-black btn-sm btn-block">Continue Shopping</a>
                             </div>
                         </div>
                         <div class="row mb-3">
