@@ -35,7 +35,10 @@
 %>
 <html>
     <head>
-        <title>Manage Promotions</title>
+        <!-- Default Head -->
+        <jsp:include page="/user/head.jsp" />
+        <title>Promotion Management - staff</title>
+        
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -43,8 +46,8 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_index.css">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/assets/css/ap_layout.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
+    
     <body class="container mt-4">
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
@@ -116,14 +119,14 @@
                 </button>
                 <%}%>
                 
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
+                <%--<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
                     Delete Promotion
-                </button>
+                </button>--%>
                 <a href="ap_index.jsp" class="btn btn-secondary">Back to Dashboard</a>
             </div>
 
             <!-- Delete Promotion -->
-            <div class="modal fade" id="deletePromotionModal" tabindex="-1" aria-labelledby="deletePromotionModalLabel" aria-hidden="true">
+            <%--<div class="modal fade" id="deletePromotionModal" tabindex="-1" aria-labelledby="deletePromotionModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -142,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--%>
             
             <%--edit promotion--%>
             <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
@@ -190,10 +193,10 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="discountValue" class="form-label">Discount Value (%)</label>
-                                    <input type="number" class="form-control" id="discountValue" max="100" name="discountValue" required>
+                                    <input type="number" class="form-control" max="100" id="discountValue" name="discountValue" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="minimumPurchase" class="form-label">Minimum Purchase</label>
+                                    <label for="minimumPurchase" class="form-label">Minimum Purchase (RM)</label>
                                     <input type="number" class="form-control" id="minimumPurchase" name="minimumPurchase" required>
                                 </div>
                                 <div class="mb-3">
@@ -244,7 +247,7 @@
                                 <small class="text-danger" id="discountError"></small>
                             </div>
                             <div class="mb-3">
-                                <label class="text-dark">Minimum Purchase:</label>
+                                <label class="text-dark">Minimum Purchase (RM):</label>
                                 <input type="number" step="0.01" min="0" name="minimumPurchase" id="minimumPurchase" value="<%= editPromo.getMinimumPurchase() %>" class="form-control" required>
                                 <small class="text-danger" id="minPurchaseError"></small>
                             </div>
