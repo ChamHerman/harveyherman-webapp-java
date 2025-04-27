@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarsFurni">
             <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item"><a class="nav-link" id="index-link" href="index.jsp">Home</a></li>
-                <li class="nav-item"><a class="nav-link" id="shop-link" href="item.jsp">Shop</a></li>
+                <li class="nav-item"><a class="nav-link" id="shop-link" href="items">Shop</a></li>
                 <li class="nav-item"><a class="nav-link" id="about-link" href="about.jsp">About us</a></li>
                 <li class="nav-item"><a class="nav-link" id="services-link" href="services.jsp">Services</a></li>
                 <li class="nav-item"><a class="nav-link" id="contact-link" href="contact.jsp">Contact us</a></li>

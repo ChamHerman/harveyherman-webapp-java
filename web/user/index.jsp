@@ -42,7 +42,7 @@
                             </h1>
                             <p class="mb-4 animate-fade-in-delay">Discover a curated collection of state-of-the-art home appliances and elegant accessories. Transform your living spaces with innovation, style, and unmatched quality—crafted for modern lifestyles.</p>
                             <p>
-                                <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn btn-secondary me-2 animate-bounce">Shop Now</a>
+                                <a href="<%=request.getContextPath()%>/user/items" class="btn btn-secondary me-2 animate-bounce">Shop Now</a>
                             </p>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                         <h2 class="mb-4 section-title animate-slide-up">Top 3 Best Sellers</h2>
                         <p class="mb-4 animate-fade-in-delay">Discover our most popular products, loved by customers for their quality, performance, and value. These best sellers are proven favorites—see why they're flying off the shelves!</p>
                         <p>
-                            <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn animate-bounce">View All Products</a>
+                            <a href="<%=request.getContextPath()%>/user/items" class="btn animate-bounce">View All Products</a>
                         </p>
                     </div>
                     <!-- End Column 1 -->
@@ -284,7 +284,7 @@
                                 <li>Dedicated after-sales support for lasting satisfaction.</li>
                             </ul>
                             <p>
-                                <a href="<%=request.getContextPath()%>/user/item.jsp" class="btn animate-bounce">Discover More</a>
+                                <a href="<%=request.getContextPath()%>/user/items" class="btn animate-bounce">Discover More</a>
                             </p>
                         </div>
                     </div>
