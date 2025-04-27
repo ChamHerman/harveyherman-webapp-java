@@ -1,4 +1,65 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Length validation for address (less than 1000 characters)
+    var addressInput = document.getElementById('address');
+    if (addressInput) {
+        var addressErrorMsg = document.createElement('div');
+        addressErrorMsg.style.color = 'red';
+        addressErrorMsg.style.fontSize = '0.9em';
+        addressErrorMsg.style.marginTop = '4px';
+        addressErrorMsg.id = 'address-error-msg';
+        addressInput.parentNode.insertBefore(addressErrorMsg, addressInput.nextSibling);
+
+        addressInput.addEventListener('input', function () {
+            if (addressInput.value.length >= 1000) {
+                addressErrorMsg.textContent = "Address must be less than 1000 characters.";
+                addressInput.style.borderColor = 'red';
+            } else {
+                addressErrorMsg.textContent = "";
+                addressInput.style.borderColor = '';
+            }
+        });
+    }
+
+    // Length validation for fields (less than 255 characters)
+    [
+        {id: 'fullname', label: 'Full name'},
+        {id: 'email', label: 'Email'},
+        {id: 'username', label: 'Username'},
+        {id: 'password', label: 'Password'},
+        {id: 'answer', label: 'Answer'},
+        {id: 'position', label: 'Position'}
+    ].forEach(function (field) {
+        var input = document.getElementById(field.id);
+        if (input) {
+            var errorMsg = document.createElement('div');
+            errorMsg.style.color = 'red';
+            errorMsg.style.fontSize = '0.9em';
+            errorMsg.style.marginTop = '4px';
+            errorMsg.id = field.id + '-length-error-msg';
+            // Special handling for password field: insert after .password-field-container
+            if (field.id === 'password') {
+                var passwordContainer = input.closest('.password-field-container');
+                if (passwordContainer) {
+                    passwordContainer.parentNode.insertBefore(errorMsg, passwordContainer.nextSibling);
+                } else {
+                    input.parentNode.insertBefore(errorMsg, input.nextSibling);
+                }
+            } else {
+                input.parentNode.insertBefore(errorMsg, input.nextSibling);
+            }
+
+            input.addEventListener('input', function () {
+                if (input.value.length >= 255) {
+                    errorMsg.textContent = field.label + " must be less than 255 characters.";
+                    input.style.borderColor = 'red';
+                } else {
+                    errorMsg.textContent = "";
+                    input.style.borderColor = '';
+                }
+            });
+        }
+    });
+
     // Email validation
     var emailInput = document.getElementById('email');
     if (emailInput) {
