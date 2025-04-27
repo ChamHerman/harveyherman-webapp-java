@@ -49,8 +49,9 @@
                         <img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="Login">
                     </a>
                 </li>
-                <% }%>
                 <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
+                <% }%>
+                
             </ul>
         </div>
     </div>
