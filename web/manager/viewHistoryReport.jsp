@@ -61,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <%                    if (report != null && !report.isEmpty()) {
+                        <% if (report != null && !report.isEmpty()) {
                                 for (Report re : report) {
                         %>
 
