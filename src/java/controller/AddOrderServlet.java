@@ -28,7 +28,8 @@ import model.OrderDetails;
 import model.OrderDetailsDAO;
 import model.UserData;
 
-@WebServlet(name = "AddOrderServlet", urlPatterns = {"/manager/AddOrderServlet", "/staff/AddOrderServlet", "/user/AddOrderServlet"})
+@WebServlet(name = "AddOrderServlet", urlPatterns = { "/manager/AddOrderServlet", "/staff/AddOrderServlet",
+        "/user/AddOrderServlet" })
 public class AddOrderServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +44,8 @@ public class AddOrderServlet extends HttpServlet {
     private OrderDetailsDAO orderDetailsDAO;
     @EJB
     private ItemDAO itemDAO;
+    @EJB
+    private PromotionDAO promotionDAO;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -72,7 +75,11 @@ public class AddOrderServlet extends HttpServlet {
             String receiverContact = request.getParameter("receiverContact");
             String receiverAddress = request.getParameter("receiverAddress");
             String paymentMethod = request.getParameter("paymentMethod");
-            String promotionId = null;
+            String promoCode = (String) session.getAttribute("appliedPromotionCode");
+            Promotion promotion = null;
+            if (promoCode != null) {
+                promotion = promotionDAO.findByPromotionCode(promoCode);
+            }
 
             // Validate delivery info
             if (receiverName == null || receiverName.trim().isEmpty()
@@ -105,7 +112,7 @@ public class AddOrderServlet extends HttpServlet {
             }
 
             // Create and save Order
-            Orders order = createOrder(user, cartTotal, paymentMethod, promotionId);
+            Orders order = createOrder(user, cartTotal, paymentMethod, promotion);
             orderDAO.create(order);
 
             // Create and save Delivery
@@ -140,15 +147,16 @@ public class AddOrderServlet extends HttpServlet {
             request.setAttribute("error", "An unexpected error occurred. Please try again.");
             request.getRequestDispatcher("/user/CheckOutServlet").forward(request, response);
         }
+
     }
 
-    private Orders createOrder(UserData user, Double total, String paymentMethod, String promotionId) {
+    private Orders createOrder(String orderId, UserData user, Double total, String paymentMethod, Promotion promotion) {
         Orders order = new Orders();
         order.setUserId(user);
         order.setTotalAmount(BigDecimal.valueOf(total));
         order.setPaymentMethod(paymentMethod);
         order.setStatus("packaging");
-//        order.setPromotionId(Promotion.getPromotionId);
+        order.setPromotionId(promotion);
         order.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         order.setDbstatus("active");
         return order;
