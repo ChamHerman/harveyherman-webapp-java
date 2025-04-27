@@ -46,12 +46,9 @@ public class CartItemServlet extends HttpServlet {
             response.getWriter().write("{\"success\":false,\"message\":\"Invalid action.\"}");
         }
 
-        if ("applyPromotion".equals(action)) {
-            handleApplyPromotion(request, response);
-            return;
-        }
+
     }
-    
+
     //increase or decrease item
     private void handleUpdate(HttpServletRequest request, HttpServletResponse response, String cartItemId)
             throws IOException {
@@ -66,7 +63,7 @@ public class CartItemServlet extends HttpServlet {
         cartItem.setSubtotal(cartItem.getUnitPrice().multiply(BigDecimal.valueOf(newQuantity)));
         cartItemDAO.update(cartItem);
 
-        updateCartTotalsAndRespond(response, cartItem);
+        updateCartTotalsAndRespond(request, response, cartItem);
     }
 
     //remove item
@@ -75,15 +72,14 @@ public class CartItemServlet extends HttpServlet {
         CartItem cartItem = cartItemDAO.findById(cartItemId);
         if (cartItem != null) {
             cartItemDAO.softDelete(cartItemId);
-            updateCartTotalsAndRespond(response, cartItem);
+            updateCartTotalsAndRespond(request, response, cartItem);
         } else {
             response.setContentType("application/json");
             response.getWriter().write("{\"success\":false,\"message\":\"Item not found.\"}");
         }
     }
-    
-    
-    private void updateCartTotalsAndRespond(HttpServletResponse response, CartItem cartItem) throws IOException {
+
+    private void updateCartTotalsAndRespond(HttpServletRequest request, HttpServletResponse response, CartItem cartItem) throws IOException {
         Cart cart = cartItem.getCartId();
         String cartId = cart.getCartId();
         List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cartId);
@@ -101,6 +97,15 @@ public class CartItemServlet extends HttpServlet {
         double cartTotal = cartSubtotal + deliveryFee;
         cart.setTotal(BigDecimal.valueOf(cartTotal));
         cartDAO.update(cart);
+
+        //set session pass to check out page
+        HttpSession session = request.getSession();
+        session.setAttribute("cartItems", cartItems);
+        session.setAttribute("cartSubtotal", cartSubtotal);
+        session.setAttribute("deliveryFee", deliveryFee);
+        session.setAttribute("cartTotal", cartTotal);
+        session.setAttribute("cart", cart);
+
         response.setContentType("application/json");
         response.getWriter().write("{"
                 + "\"success\":true,"
@@ -109,62 +114,6 @@ public class CartItemServlet extends HttpServlet {
                 + "\"cartSubtotal\":" + cartSubtotal + ","
                 + "\"deliveryFee\":" + deliveryFee + ","
                 + "\"cartTotal\":" + cartTotal
-                + "}");
-    }
-
-    private void handleApplyPromotion(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String promoCode = request.getParameter("promoCode");
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
-
-        // Get user's active cart and items
-        Cart cart = cartDAO.getActiveCartByUserId(userId);
-        List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
-
-        double cartSubtotal = 0.0;
-        for (CartItem item : cartItems) {
-            cartSubtotal += item.getQuantity() * item.getUnitPrice().doubleValue();
-        }
-
-        double discount = 0.0;
-        String message = "";
-        boolean success = false;
-
-        // Use PromotionDAO to find promotion
-        Promotion promo = promotionDAO.findPromotionByCode(promoCode);
-
-        if (promo == null) {
-            message = "Promotion code not found.";
-        } else if (!"active".equals(promo.getStatus())) {
-            message = "This promotion is not active.";
-        } else {
-            // Check date validity
-            java.util.Date today = new java.util.Date();
-            if ((promo.getStartDate() != null && today.before(promo.getStartDate()))
-                    || (promo.getEndDate() != null && today.after(promo.getEndDate()))) {
-                message = "This promotion is not valid at this time.";
-            } else if (promo.getMinimumPurchase() != null && cartSubtotal < promo.getMinimumPurchase().doubleValue()) {
-                message = "Minimum spend for this promotion is RM " + promo.getMinimumPurchase();
-            } else {
-                discount = promo.getDiscountValue().doubleValue();
-                message = "Promotion applied! Discount: RM " + discount;
-                success = true;
-            }
-        }
-
-        // Delivery fee depends on subtotal (before discount)
-        double deliveryFee = cartSubtotal >= 1000 ? 0.0 : 25.0;
-        double cartTotal = cartSubtotal - discount + deliveryFee;
-
-        response.setContentType("application/json");
-        response.getWriter().write("{"
-                + "\"success\":" + success + ","
-                + "\"discount\":" + discount + ","
-                + "\"cartSubtotal\":" + cartSubtotal + ","
-                + "\"deliveryFee\":" + deliveryFee + ","
-                + "\"cartTotal\":" + cartTotal + ","
-                + "\"message\":\"" + message + "\""
                 + "}");
     }
 

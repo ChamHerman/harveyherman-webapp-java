@@ -34,11 +34,18 @@ public class FilterOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String status = request.getParameter("status");
-        List<Orders> filteredOrders = filterOrdersByStatus(status);
-
         HttpSession session = request.getSession();
+        // Store filter in session
+        session.setAttribute("orderStatusFilter", status);
+        // Clear filter if requested
+        if ("1".equals(request.getParameter("clearFilter"))) {
+            session.removeAttribute("orderStatusFilter");
+//            session.removeAttribute("filteredOrders");
+            session.setAttribute("filteredOrders", orderDAO.getAllOrders());
+        }
+        List<Orders> filteredOrders = filterOrdersByStatus(status);
         session.setAttribute("filteredOrders", filteredOrders);
-         String servletPath = request.getServletPath();
+        String servletPath = request.getServletPath();
         if (servletPath.contains("/manager/")) {
             response.sendRedirect(request.getContextPath() + "/manager/ap_order.jsp");
         } else if (servletPath.contains("/staff/")) {

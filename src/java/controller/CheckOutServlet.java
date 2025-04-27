@@ -63,7 +63,7 @@ public class CheckOutServlet extends HttpServlet {
         }
 
         // Forward to checkout.jsp
-        request.getRequestDispatcher("checkout.jsp").forward(request, response);
+        response.sendRedirect("checkout.jsp");
     }
 
 }

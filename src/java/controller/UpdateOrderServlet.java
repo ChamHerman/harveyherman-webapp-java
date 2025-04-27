@@ -5,12 +5,14 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Orders;
 import model.OrderDAO;
 
@@ -34,6 +36,20 @@ public class UpdateOrderServlet extends HttpServlet {
                 orderDAO.update(order);
             }
         }
+
+        HttpSession session = request.getSession();
+        // Get the current filter from session
+        String statusFilter = (String) session.getAttribute("orderStatusFilter");
+
+        // Update the filteredOrders session attribute
+        List<Orders> filteredOrders;
+        if (statusFilter == null || statusFilter.isEmpty()) {
+            filteredOrders = orderDAO.getAllOrders();
+        } else {
+            filteredOrders = orderDAO.filterOrderByStatus(statusFilter);
+        }
+        session.setAttribute("filteredOrders", filteredOrders);
+
         // Redirect back to the order management page
         String servletPath = request.getServletPath();
         if (servletPath.contains("/manager/")) {

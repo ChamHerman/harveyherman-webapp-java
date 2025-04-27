@@ -81,6 +81,12 @@
                 <div class="row mb-5">
                     <form class="col-md-12" method="post">
                         <div class="site-blocks-table">
+                            <div class="container" style="margin-top: 1rem;">
+                                <div class="alert alert-info d-flex align-items-center justify-content-center p-3 rounded shadow-sm" style="background: linear-gradient(90deg, #d4f5e9 0%, #e8fbe6 100%); color: #22543d; font-size: 1.1rem; font-weight: 500; border: 1px solid #b7e4c7;">
+                                    <i class="fa fa-truck me-2" style="font-size: 1.3em;"></i>
+                                    Enjoy <span style="color:#38a169;font-weight:700;" class="mx-1">FREE delivery</span> on orders of <span style="color:#38a169;font-weight:700;" class="mx-1">RM1000</span> and above! For orders below RM1000, a delivery charge of <span style="color:#38a169;font-weight:700;" class="mx-1">RM25</span> applies.
+                                </div>
+                            </div>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -123,7 +129,11 @@
                                         <td>
                                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="updateQuantity('<%= cartItem.getCartItemId()%>', -1)">-</button>
                                             <span id="qty_<%= cartItem.getCartItemId()%>"><%= cartItem.getQuantity()%></span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="updateQuantity('<%= cartItem.getCartItemId()%>', 1)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity(
+                                                            '<%= cartItem.getCartItemId()%>',
+                                                    <%= cartItem.getQuantity()%>,
+                                                    <%= cartItem.getItemId().getStockQuantity()%>
+                                                    )">+</button>
                                         </td>
                                         <!-- Subtotal -->
                                         <td>
@@ -148,8 +158,6 @@
                                 <%
                                     cartSubtotal = (Double) session.getAttribute("cartSubtotal");
                                 %>
-
-                                Purchase more than RM1000, free delivery !!!
                             </table>
                         </div>
                     </form>
@@ -166,6 +174,10 @@
                             <strong>Promotion Code:</strong>                     
                             <div class="col-md-6">
                                 <input type="text" id="promoCode" class="form-control" placeholder="Enter promotion code">
+                                <!--  display error-->
+                                <div class="col-md-12">
+                                    <span id="promoError" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-primary" onclick="applyPromotion()">Apply</button>
@@ -215,8 +227,9 @@
                                 </div>
 
                                 <div class="row">
-                                    <form action="CheckOutServlet" method="post">
-                                        <button class="btn btn-black btn-lg py-3 btn-block" type="submit">Proceed To Checkout</button>
+                                    <form action="CheckOutServlet" method="post" onsubmit="return validateCheckout();">
+                                        <div id="checkoutError" class="text-danger mb-2"></div>
+                                        <button class="btn btn-black btn-lg py-3 btn-block" id="checkoutBtn" type="submit">Proceed To Checkout</button>
                                     </form>
                                 </div>
                             </div>
@@ -247,14 +260,17 @@
         </div>
 
         <!--        modal to show stock not enough-->
-        <div class="modal fade" id="stockModal" tabindex="-1" role="dialog">
+        <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Stock Not Enough</h5>
+                        <h5 class="modal-title" id="stockModalLabel">Stock Limit</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
-                        <p>Sorry, not enough stock for this item.</p>
+                        You cannot add more than the available stock.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>

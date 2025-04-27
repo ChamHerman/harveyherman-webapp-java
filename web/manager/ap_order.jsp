@@ -31,19 +31,18 @@
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content flex-grow-1">
             <div class="container">
-                <%                    
+                <%
                     OrderDAO orderDAO = null;
                     try {
                         InitialContext context = new InitialContext();
-                        // Adjust the JNDI lookup path as needed depending on your server configuration
                         orderDAO = (OrderDAO) context.lookup("java:global/HarveyHerman/OrderDAO");
                     } catch (NamingException ne) {
                         ne.printStackTrace();
                     }
 
-                    // Use OrderDAO to retrieve order data
-                    List<Orders> ordersList = null;
-                    if (orderDAO != null) {
+                    String sessionStatus = (String) session.getAttribute("orderStatusFilter");
+                    List<Orders> ordersList = (List<Orders>) session.getAttribute("filteredOrders");
+                    if (ordersList == null && orderDAO != null) {
                         ordersList = orderDAO.getAllOrders();
                     }
 
@@ -85,15 +84,16 @@
                     <form action="<%=request.getContextPath()%>/manager/FilterOrderServlet" method="post" class="flex-grow-1 me-2 d-flex align-items-end">
                         <div class="form-group mb-0 me-2">
                             <label for="statusSelect" class="form-label mb-0 me-2">Order Status:</label>
-                            <select name="status" id="statusSelect" class="form-control me-2">
-                                <option value="">All</option>
-                                <option value="Packaging">Packaging</option>
-                                <option value="Shipping">Shipping</option>
-                                <option value="Delivery">Delivery</option>
-                                <option value="Delivered">Delivered</option>
+                            <select name="status" id="statusSelect" class="form-select me-2">
+                                <option value="" <%= (sessionStatus == null || sessionStatus.isEmpty()) ? "selected" : ""%>>All</option>
+                                <option value="Packaging" <%= "Packaging".equals(sessionStatus) ? "selected" : ""%>>Packaging</option>
+                                <option value="Shipping" <%= "Shipping".equals(sessionStatus) ? "selected" : ""%>>Shipping</option>
+                                <option value="Delivery" <%= "Delivery".equals(sessionStatus) ? "selected" : ""%>>Delivery</option>
+                                <option value="Delivered" <%= "Delivered".equals(sessionStatus) ? "selected" : ""%>>Delivered</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="searchButton">Filter</button>
+                        <button type="submit" class="btn btn-primary me-2" id="searchButton">Apply Filter</button>
+                        <button type="submit" name="clearFilter" value="1" class="btn btn-outline-secondary">Clear Filter</button>
                     </form>
                 </div>
 
@@ -114,12 +114,12 @@
                     <tbody>
                         <tr>
                             <%
-    if (ordersList == null && orderDAO != null) {
-        ordersList = orderDAO.getAllOrders();
-    }
-%>
+                                if (ordersList == null && orderDAO != null) {
+                                    ordersList = orderDAO.getAllOrders();
+                                }
+                            %>
                             <%
-                                if (ordersList != null) {
+                                if (ordersList != null && !ordersList.isEmpty()) {
                                     int rowNum = 1;
                                     for (Orders order : ordersList) {
                             %>
@@ -137,10 +137,10 @@
                             <td><%= order.getStatus().toLowerCase()%></td>
                             <td><%= sdf.format(order.getCreatedDate())%></td>
                             <td>
-                                <button class="btn btn-info" onclick="viewOrder('<%= order.getOrderId()%>')">View</button>
+                                <button class="btn btn-view btn-sm" onclick="viewOrder('<%= order.getOrderId()%>')">View</button>
                             </td>
                             <td>
-                                <button class="btn btn-secondary" onclick="confirmDeleteOrder('<%= order.getOrderId()%>')">
+                                <button class="btn btn-delete btn-sm" onclick="confirmDeleteOrder('<%= order.getOrderId()%>')">
                                     Delete
                                 </button>
                             </td>
@@ -156,7 +156,7 @@
                                         <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
                                         <option value="delivered" <%= "delivered".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivered</option>
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-save btn-sm">Save</button>
                                     <input type="hidden" name="oldStatus" value="<%= order.getStatus()%>">
                                 </form>
                             </td>
@@ -166,7 +166,7 @@
                         } else {
                         %>
                         <tr>
-                            <td colspan="9">No orders found.</td>
+                            <td colspan="8">No orders found.</td>
                         </tr>
                         <%
                             }
@@ -175,37 +175,6 @@
                 </table>
             </div>
         </div>
-
-<!--         Search Results Modal 
-        <div class="modal fade" id="statusOrdersModal" tabindex="-1" aria-labelledby="statusOrdersModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="statusOrdersModalLabel">Orders by Status</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>User</th>
-                                    <th>Total Amount</th>
-                                    <th>Status</th>
-                                    <th>Created Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="statusOrdersTableBody">
-                                 Results will be inserted here 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>-->
 
         <!-- View Order Modal -->
         <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">

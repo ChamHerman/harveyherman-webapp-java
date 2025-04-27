@@ -56,18 +56,6 @@ public class AddOrderServlet extends HttpServlet {
         String paymentMethod = request.getParameter("paymentMethod");
         String promotionId = null;
 
-        // If card, validate details (already done by HTML, but double-check)
-        if ("debit_card".equals(paymentMethod) || "credit_card".equals(paymentMethod)) {
-            String cardNumber = request.getParameter("cardNumber");
-            String expiryDate = request.getParameter("expiryDate");
-            String cvv = request.getParameter("cvv");
-            if (!cardNumber.matches("\\d{16}") || !expiryDate.matches("\\d{2}/\\d{2}") || !cvv.matches("\\d{3}")) {
-                request.setAttribute("error", "Invalid card details.");
-                request.getRequestDispatcher("checkout.jsp").forward(request, response);
-                return;
-            }
-        }
-
         Orders order = createOrder(null, user, cartTotal, paymentMethod, promotionId);
         orderDAO.create(order);
 
