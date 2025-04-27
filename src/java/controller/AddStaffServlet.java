@@ -5,7 +5,6 @@
 package controller;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +16,8 @@ import model.StaffData;
 import model.StaffDataDAO;
 import model.StaffLogin;
 import model.StaffLoginDAO;
-import java.util.Date;
 
 @WebServlet(name = "AddStaffServlet", urlPatterns = {"/manager/AddStaffServlet"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class AddStaffServlet extends HttpServlet {
     
     @EJB
@@ -66,8 +63,7 @@ public class AddStaffServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
-            
-            // Get form parameters
+
             String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
             String contactNumber = request.getParameter("contactNumber");
@@ -106,18 +102,45 @@ public class AddStaffServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Username is required.");
                 return;
             }
-            
-            // Check for existing username
+
             StaffLogin existingLogin = staffLoginDAO.findByUsername(username);
             if (existingLogin != null) {
                 sendJsonResponse(request, response, false, "Username is already taken. Please choose another one.");
                 return;
             }
-            
-            // Check for duplicate email
+
             StaffData existingStaffWithEmail = staffDataDAO.findByEmail(email);
             if (existingStaffWithEmail != null) {
                 sendJsonResponse(request, response, false, "Email address is already in use.");
+                return;
+            }
+            
+            if (fullname.length() >= 255) {
+                sendJsonResponse(request, response, false, "Full name must be less than 255 characters.");
+                return;
+            }
+            if (email.length() >= 255) {
+                sendJsonResponse(request, response, false, "Email must be less than 255 characters.");
+                return ;
+            }
+            if (address.length() >= 1000) {
+                sendJsonResponse(request, response, false, "Address must be less than 1000 characters.");
+                return;
+            }
+            if (position.length() >= 255) {
+                sendJsonResponse(request, response, false, "Position must be less than 255 characters.");
+                return;
+            }
+            if (username.length() >= 255) {
+                sendJsonResponse(request, response, false, "Username must be less than 255 characters.");
+                return;
+            }
+            if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
+                sendJsonResponse(request, response, false, "Invalid email format.");
+                return;
+            }
+            if (!contactNumber.matches("^60\\d{9,10}$")) {
+                sendJsonResponse(request, response, false, "Contact number must start with 60 and be 11 or 12 digits long.");
                 return;
             }
             
@@ -132,7 +155,6 @@ public class AddStaffServlet extends HttpServlet {
             staffData.setDbstatus("active");
             staffData.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
             
-            // Save the StaffData first to get the generated ID
             staffDataDAO.create(staffData);
             
             // Create StaffLogin object
@@ -143,7 +165,6 @@ public class AddStaffServlet extends HttpServlet {
             staffLogin.setRole("staff");
             staffLogin.setDbstatus("active");
             
-            // Save the StaffLogin
             staffLoginDAO.create(staffLogin);
             
             sendJsonResponse(request, response, true, "Staff created successfully. Default password is: " + DEFAULT_PASSWORD);
@@ -151,12 +172,5 @@ public class AddStaffServlet extends HttpServlet {
             ex.printStackTrace();
             sendJsonResponse(request, response, false, "Failed to create staff. Error: " + ex.getMessage());
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Redirect GET requests to the add staff form
-        response.sendRedirect(request.getContextPath() + "/manager/ap_add_staff.jsp");
     }
 } 

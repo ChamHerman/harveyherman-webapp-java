@@ -68,15 +68,16 @@ public class CartServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        UserData userData = (UserData) session.getAttribute("loggedInUser");
-        String userId = userData.getUserId();
-        String itemId = request.getParameter("itemId");
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
         String action = request.getParameter("action");
         if ("applyPromotion".equals(action)) {
             handleApplyPromotion(request, response);
             return;
         }
+        UserData userData = (UserData) session.getAttribute("loggedInUser");
+        String userId = userData.getUserId();
+        String itemId = request.getParameter("itemId");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
         Item item = itemDAO.getItemById(itemId);
         int stock = item.getStockQuantity();
         Cart cart = cartDAO.getActiveCartByUserId(userId);
@@ -156,6 +157,7 @@ public class CartServlet extends HttpServlet {
                 discount = promo.getDiscountValue().doubleValue();
                 message = "Promotion applied! Discount: RM " + discount;
                 success = true;
+                session.setAttribute("appliedPromotionCode", promo.getPromotionCode());
             }
         }
         double deliveryFee = cartSubtotal >= 1000 ? 0.0 : 25.0;

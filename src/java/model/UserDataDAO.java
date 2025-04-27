@@ -1,3 +1,7 @@
+/**
+ *
+ * @author weikang
+ */
 package model;
 
 import controller.CustomIdGenerator;

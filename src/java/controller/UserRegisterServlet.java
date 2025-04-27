@@ -4,6 +4,7 @@
  */
 package controller;
 
+import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -64,32 +65,89 @@ public class UserRegisterServlet extends HttpServlet {
 
     private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String challengeQuestion, String answer) {
         try {
-            // Check for duplicate email
+            if (fullName == null || fullName.trim().isEmpty()
+                    || email == null || email.trim().isEmpty()
+                    || contactNumber == null || contactNumber.trim().isEmpty()
+                    || address == null || address.trim().isEmpty()
+                    || username == null || username.trim().isEmpty()
+                    || birthdateStr == null || birthdateStr.trim().isEmpty()
+                    || gender == null || gender.trim().isEmpty()
+                    || password == null || password.trim().isEmpty()
+                    || challengeQuestion == null || challengeQuestion.trim().isEmpty()
+                    || answer == null || answer.trim().isEmpty()) {
+                errorMsg = "Registration failed: All fields should be completed";
+                return false;
+            }
+
             if (userDataDAO.findByEmail(email) != null) {
-                errorMsg = "Registration failed: Duplicate Email Used!";
+                errorMsg = "Registration failed: Email address is already in use by another user.";
                 return false;
             }
 
-            // Check for duplicate contact number
             if (userDataDAO.findByContactNumber(contactNumber) != null) {
-                errorMsg = "Registration failed: Duplicate Contact Number!";
+                errorMsg = "Registration failed: Contact number is already in use by another user.";
                 return false;
             }
 
-            // Check for duplicate username
             if (userLoginDAO.findByUsername(username) != null) {
-                errorMsg = "Registration failed: Duplicate Username!";
+                errorMsg = "Registration failed: Username is already in use by another user.";
+                return false;
+            }
+
+            if (fullName.length() >= 255) {
+                errorMsg = "Registration failed: Full name must be less than 255 characters.";
+                return false;
+            }
+            if (email.length() >= 255) {
+                errorMsg = "Registration failed: Email must be less than 255 characters.";
+                return false;
+            }
+            if (address.length() >= 1000) {
+                errorMsg = "Registration failed: Address must be less than 1000 characters.";
+                return false;
+            }
+            if (username.length() >= 255) {
+                errorMsg = "Registration failed: Username must be less than 255 characters.";
+                return false;
+            }
+            if (password.length() >= 255) {
+                errorMsg = "Registration failed: Password must be less than 255 characters.";
+                return false;
+            }
+            if (answer.length() >= 255) {
+                errorMsg = "Registration failed: Challenge question answer must be less than 255 characters.";
+                return false;
+            }
+
+            if (!email.matches("^[a-z0-9@._+\\-]+$") || !email.matches("^[a-z0-9._+\\-]+@[a-z0-9._+\\-]+\\.[a-z]{2,}$")) {
+                errorMsg = "Registration failed: Invalid email format.";
+                return false;
+            }
+
+            if (!contactNumber.matches("^60\\d{9,10}$")) {
+                errorMsg = "Registration failed: Contact number must start with 60 and be 11 or 12 digits long.";
+                return false;
+            }
+
+            if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&_.\\-+=]).{8,}$")) {
+                errorMsg = "Registration failed: Password must be at least 8 characters and include uppercase, lowercase, number, and symbol (!@#$%^&_.-+=).";
                 return false;
             }
 
             Date birthdate = parseBirthdate(birthdateStr);
             if (birthdate == null) {
+                errorMsg = "Registration failed: Invalid birthdate format.";
                 return false;
             }
-
+            if (birthdate.after(new Date())) {
+                errorMsg = "Registration failed: Birthdate cannot be in the future.";
+                return false;
+            }
+            
+            password = hashPasswordSHA256(password);
             UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);
-            Cart cart = createCart(null,user);
+            Cart cart = createCart(null, user);
 
             userDataDAO.create(user);
             userLoginDAO.create(userLogin);

@@ -64,7 +64,7 @@
                     <!-- Quantity Left -->
                     <div class="item-quantity-left"><span class="item-quantity-label">Quantity Left:</span> <%=item.getStockQuantity()%></div>
 
-                    <!--show over stock error-->
+                    <!-- Show over stock error -->
                     <% String error = (String) request.getAttribute("error"); %>
                     <% if (error != null) {%>
                     <div class="alert alert-danger"><%= error%></div>
@@ -88,7 +88,7 @@
                             <i class="fas fa-times-circle"></i> Out of Stock
                         </button>
                         <% } else {%>
-                        <button type="submit" class="btn btn-success" onclick="addToCart('<%= item.getItemId()%>', item.getStockQuantity())">
+                        <button type="submit" class="btn btn-success">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                         <% } %>

@@ -2,7 +2,6 @@
  *
  * @author weikang
  */
-
 package controller;
 
 import javax.ejb.EJB;
