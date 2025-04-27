@@ -38,7 +38,6 @@ public class AddStaffServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
         
-        String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
 
         String json;
@@ -50,12 +49,7 @@ public class AddStaffServlet extends HttpServlet {
         }
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-
-        if (servletPath.contains("/manager/")) {
-            response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
-        } else if (servletPath.contains("/staff/")) {
-            response.sendRedirect(contextPath + "/staff/ap_staff.jsp?message=" + encodedMessage);
-        }
+        response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
     }
 
     @Override

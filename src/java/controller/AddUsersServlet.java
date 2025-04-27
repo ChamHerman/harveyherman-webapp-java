@@ -41,8 +41,7 @@ public class AddUsersServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-        
-        String servletPath = request.getServletPath();
+
         String contextPath = request.getContextPath();
 
         String json;
@@ -54,12 +53,8 @@ public class AddUsersServlet extends HttpServlet {
         }
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-
-        if (servletPath.contains("/manager/")) {
-            response.sendRedirect(contextPath + "/manager/ap_user.jsp?message=" + encodedMessage);
-        } else if (servletPath.contains("/staff/")) {
-            response.sendRedirect(contextPath + "/staff/ap_user.jsp?message=" + encodedMessage);
-        }
+        response.sendRedirect(contextPath + "/manager/ap_user.jsp?message=" + encodedMessage);
+        
     }
 
     @Override
