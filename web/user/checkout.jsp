@@ -163,7 +163,7 @@
                             <div id="cardInfo" style="display:none;">
                                 <div class="form-group mt-3">
                                     <label>Card Holder Name</label>
-                                    <input type="text" name="cardHolder" id="cardHolder" class="form-control" maxlength="50" required>
+                                    <input type="text" name="cardHolder" id="cardHolder" class="form-control" maxlength="50" autocomplete="off" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Card Number</label>
