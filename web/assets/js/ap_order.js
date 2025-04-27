@@ -11,34 +11,28 @@ function confirmDeleteOrder(orderId) {
 
 document.getElementById('confirmDeleteOrder').addEventListener('click', function () {
     // Redirect to DeleteOrderServlet with orderId parameter
-    window.location.href = 'DeleteOrderServlet?orderId=' + deleteOrderId;
+    fetch('DeleteOrderServlet', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'orderId=' + encodeURIComponent(deleteOrderId)
+    }).then(() => {
+        window.location.reload(); // or redirect as needed
+    });
 });
 
-////add order
-//document.getElementById('addOrderForm').addEventListener('submit', function(e) {
-//  const userId = document.getElementById('userId').value.trim();
-//  const promotionId = document.getElementById('promotionId').value.trim();
-//  const errorDiv = document.getElementById('addOrderError');
-//  errorDiv.classList.add('d-none');
-//  errorDiv.textContent = '';
-//
-//  if (!/^U\d{3}$/.test(userId)) {
-//    e.preventDefault();
-//    errorDiv.textContent = 'User ID must be in format U??? (e.g. U001)';
-//    errorDiv.classList.remove('d-none');
-//    return;
-//  }
-//  if (promotionId && !/^P\d{3}$/.test(promotionId)) {
-//    e.preventDefault();
-//    errorDiv.textContent = 'Promotion ID must be in format P??? (e.g. P001)';
-//    errorDiv.classList.remove('d-none');
-//    return;
-//  }
-//});
+//clear filter button
+document.querySelector('button[name="clearFilter"]').addEventListener('click', function(e) {
+    // Set the dropdown to "All" before submitting
+    document.getElementById('statusSelect').value = '';
+});
 
 //view  order
 function viewOrder(orderId) {
-    fetch('OrderDetailsServlet?orderId=' + encodeURIComponent(orderId))
+    fetch('OrderDetailsServlet', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'orderId=' + encodeURIComponent(orderId)
+    })
             .then(response => response.json())
             .then(data => {
                 let html = `
@@ -52,7 +46,7 @@ function viewOrder(orderId) {
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>Item ID</th>
+              <th>Item Name</th>
               <th>Quantity</th>
               <th>Price Per Item</th>
               <th>Subtotal</th>
@@ -64,15 +58,27 @@ function viewOrder(orderId) {
                     let subtotal = detail.quantity * detail.pricePerItem;
                     html += `
           <tr>
-            <td>${detail.itemId}</td>
+            <td>${detail.itemName}</td>
             <td>${detail.quantity}</td>
             <td>${detail.pricePerItem.toFixed(2)}</td>
             <td>${subtotal.toFixed(2)}</td>
           </tr>
         `;
                 });
-                // Last row: total amount from orders table
+                // Add subtotal, delivery, discount, and total rows
                 html += `
+          <tr>
+            <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
+            <td><strong>RM ${parseFloat(data.subtotal).toFixed(2)}</strong></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-end"><strong>Delivery Fee:</strong></td>
+            <td><strong>RM ${parseFloat(data.delivery).toFixed(2)}</strong></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-end"><strong>Discount:</strong></td>
+            <td><strong>RM ${parseFloat(data.discount).toFixed(2)}</strong></td>
+          </tr>
           <tr>
             <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
             <td><strong>RM ${parseFloat(data.totalAmount).toFixed(2)}</strong></td>
@@ -85,45 +91,6 @@ function viewOrder(orderId) {
                 modal.show();
             });
 }
-
-////search item by status
-//document.getElementById('searchButton').addEventListener('click', function (e) {
-//    e.preventDefault(); // Prevent form submit
-//    const status = document.getElementById('statusSelect').value;
-//
-//    fetch(`FilterOrderServlet?status=${encodeURIComponent(status)}`)
-//            .then(response => response.json())
-//            .then(data => {
-//                const tableBody = document.getElementById('statusOrdersTableBody');
-//                tableBody.innerHTML = '';
-//
-//                if (data.length === 0 || !data[0].orderId) {
-//                    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found.</td></tr>';
-//                } else {
-//                    data.forEach(order => {
-//                        const row = `
-//                        <tr>
-//                            <td>${order.orderId}</td>
-//                            <td>${order.user}</td>
-//                            <td>RM ${parseFloat(order.totalAmount).toFixed(2)}</td>
-//                            <td>${order.status}</td>
-//                            <td>${order.createdDate}</td>
-//                        </tr>
-//                    `;
-//                        tableBody.insertAdjacentHTML('beforeend', row);
-//                    });
-//                }
-//
-//                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
-//                modal.show();
-//            })
-//            .catch(error => {
-//                const tableBody = document.getElementById('statusOrdersTableBody');
-//                tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error fetching orders.</td></tr>';
-//                const modal = new bootstrap.Modal(document.getElementById('statusOrdersModal'));
-//                modal.show();
-//            });
-//});
 
 //ask user confirm to edit
 let pendingForm = null;

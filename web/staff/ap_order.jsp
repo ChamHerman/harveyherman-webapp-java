@@ -32,18 +32,18 @@
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content flex-grow-1">
             <div class="container">
-                <%                    OrderDAO orderDAO = null;
+                <%
+                    OrderDAO orderDAO = null;
                     try {
                         InitialContext context = new InitialContext();
-                        // Adjust the JNDI lookup path as needed depending on your server configuration
                         orderDAO = (OrderDAO) context.lookup("java:global/HarveyHerman/OrderDAO");
                     } catch (NamingException ne) {
                         ne.printStackTrace();
                     }
 
-                    // Use OrderDAO to retrieve order data
-                    List<Orders> ordersList = null;
-                    if (orderDAO != null) {
+                    String sessionStatus = (String) session.getAttribute("orderStatusFilter");
+                    List<Orders> ordersList = (List<Orders>) session.getAttribute("filteredOrders");
+                    if (ordersList == null && orderDAO != null) {
                         ordersList = orderDAO.getAllOrders();
                     }
 
@@ -56,7 +56,7 @@
                     long deliveredCount = orderDAO.countOrdersByStatus("delivered");
                 %>
                 <!-- Dashboard Overview Section -->
-                <h2>Order Dashboard</h2>
+                <h2 style="text-align: center; margin-bottom: 2rem;">Order Management</h2>
                 <div class="total-order-box">
                     <div class="total-orders">
                         <p>Total Orders: <%= totalOrders%></p>
@@ -82,18 +82,19 @@
 
                 <!-- Search Function -->
                 <div class="order-controls d-flex align-items-end mb-3">
-                    <form action="FilterOrderServlet" method="get" class="flex-grow-1 me-2 d-flex align-items-end">
+                    <form action="FilterOrderServlet" method="post" class="flex-grow-1 me-2 d-flex align-items-end">
                         <div class="form-group mb-0 me-2">
                             <label for="statusSelect" class="form-label mb-0 me-2">Order Status:</label>
-                            <select name="status" id="statusSelect" class="form-control me-2">
-                                <option value="">All</option>
-                                <option value="Packaging">Packaging</option>
-                                <option value="Shipping">Shipping</option>
-                                <option value="Delivery">Delivery</option>
-                                <option value="Delivered">Delivered</option>
+                            <select name="status" id="statusSelect" class="form-select me-2">
+                                <option value="" <%= (sessionStatus == null || sessionStatus.isEmpty()) ? "selected" : ""%>>All</option>
+                                <option value="Packaging" <%= "Packaging".equals(sessionStatus) ? "selected" : ""%>>Packaging</option>
+                                <option value="Shipping" <%= "Shipping".equals(sessionStatus) ? "selected" : ""%>>Shipping</option>
+                                <option value="Delivery" <%= "Delivery".equals(sessionStatus) ? "selected" : ""%>>Delivery</option>
+                                <option value="Delivered" <%= "Delivered".equals(sessionStatus) ? "selected" : ""%>>Delivered</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
+                        <button type="submit" class="btn btn-primary me-2" id="searchButton">Apply Filter</button>
+                        <button type="submit" name="clearFilter" value="1" class="btn btn-outline-secondary">Clear Filter</button>
                     </form>
                 </div>
 
@@ -108,18 +109,17 @@
                             <th>Payment method</th>
                             <th>Status</th>
                             <th>Created Date</th>
-                            <th colspan="3" >Actions</th>
+                            <th colspan="2" >Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <%
-    List<Orders> orders = (List<Orders>) session.getAttribute("filteredOrders");
-    if (orders == null) {
-        // fallback: load all orders if not filtered
-        orders = ... // call your DAO or whatever you did before
-    }
-%>
+                                List<Orders> orders = (List<Orders>) session.getAttribute("filteredOrders");
+                                if (orders == null) {
+
+                                }
+                            %>
                             <%
                                 if (ordersList != null) {
                                     int rowNum = 1;
@@ -139,12 +139,7 @@
                             <td><%= order.getStatus().toLowerCase()%></td>
                             <td><%= sdf.format(order.getCreatedDate())%></td>
                             <td>
-                                <button class="btn btn-info" onclick="viewOrder('<%= order.getOrderId()%>')">View</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-secondary" onclick="confirmDeleteOrder('<%= order.getOrderId()%>')">
-                                    Delete
-                                </button>
+                                <button class="btn btn-view" onclick="viewOrder('<%= order.getOrderId()%>')">View</button>
                             </td>
 
 
@@ -164,7 +159,7 @@
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                                         <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-save btn-primary">Save</button>
                                     <%
                                     } else if ("shipping".equals(status)) {
                                     %>
@@ -172,7 +167,7 @@
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                                         <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-save btn-primary">Save</button>
                                     <%
                                     } else if ("delivery".equals(status)) {
                                     %>        <select name="status" class="form-select form-select-sm me-2" disabled>
@@ -181,7 +176,7 @@
                                     <%
                                         }
                                     %>
-                                    
+
                                 </form>
                             </td>
                         </tr>
@@ -190,7 +185,7 @@
                         } else {
                         %>
                         <tr>
-                            <td colspan="9">No orders found.</td>
+                            <td colspan="8">No orders found.</td>
                         </tr>
                         <%
                             }

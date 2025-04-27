@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.UserData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<jsp:useBean id="loggedInUser" class="model.UserData" scope="session" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,9 +31,11 @@
                         <div class="profile-card">
                             <h2 class="profile-title">Edit Profile</h2>
 
-                            <% if (loggedInUser != null) {
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                String birthDateStr = loggedInUser.getBirthDate() != null ? dateFormat.format(loggedInUser.getBirthDate()) : "";
+                            <%
+                                UserData user = (UserData) session.getAttribute("loggedInUser");
+                                if (user != null) {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    String birthDateStr = user.getBirthDate() != null ? dateFormat.format(user.getBirthDate()) : "";
                             %>
                             <% if (request.getAttribute("errorMessage") != null) {%>
                             <div class="alert alert-danger text-center mb-4">
@@ -43,28 +44,28 @@
                             <% }%>
 
                             <form action="<%=request.getContextPath()%>/user/EditUserServlet" method="post" class="profile-edit-form" autocomplete="off">
-                                <input type="hidden" name="userId" value="${loggedInUser.userId}">
+                                <input type="hidden" name="userId" value="<%= user.getUserId()%>">
 
                                 <div class="profile-info">
                                     <div class="profile-details">
                                         <div class="profile-item">
                                             <label for="fullName">Full Name</label>
-                                            <input type="text" id="fullName" name="fullName" class="form-control" value="${loggedInUser.fullname}" autocomplete="off" required>
+                                            <input type="text" id="fullName" name="fullName" class="form-control" value="<%= user.getFullname()%>" autocomplete="off" required>
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="email">Email</label>
-                                            <input type="email" id="email" name="email" class="form-control" value="${loggedInUser.email}" autocomplete="off" required>
+                                            <input type="email" id="email" name="email" class="form-control" value="<%= user.getEmail()%>" autocomplete="off" required>
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="contactNumber">Contact Number</label>
-                                            <input type="tel" id="contactNumber" name="contactNumber" class="form-control" value="<%= loggedInUser.getContactNumber() != null ? loggedInUser.getContactNumber() : ""%>" autocomplete="off">
+                                            <input type="tel" id="contactNumber" name="contactNumber" class="form-control" value="<%= user.getContactNumber() != null ? user.getContactNumber() : ""%>" autocomplete="off">
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="address">Address</label>
-                                            <textarea id="address" name="address" class="form-control" rows="3"><%= loggedInUser.getAddress() != null ? loggedInUser.getAddress() : ""%></textarea>
+                                            <textarea id="address" name="address" class="form-control" rows="3"><%= user.getAddress() != null ? user.getAddress() : ""%></textarea>
                                         </div>
 
                                         <div class="profile-item">
@@ -103,7 +104,7 @@
                 let contactError = '';
 
                 // Contact number validation
-                const contactPattern = /^\+60\d{8,13}$/;
+                const contactPattern = /^\+60\d{10,13}$/;
                 if (!contactPattern.test(contact)) {
                     contactError = 'Contact number must start with +60 and minimum 8 numbers after it (e.g. +601234567890).';
                 }

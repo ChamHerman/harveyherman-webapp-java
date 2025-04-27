@@ -1,6 +1,6 @@
-/**
- *
- * @author kaibin
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller;
 
@@ -11,32 +11,32 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.EJB;
-import model.Cart;
-import model.CartItem;
-import model.Delivery;
 import model.OrderDAO;
 import model.Orders;
-import model.DeliveryDAO;
-import model.OrderDetails;
-import model.OrderDetailsDAO;
+import javax.servlet.http.HttpSession;
 import model.UserData;
+import model.*;
 
 /**
  *
  * @author user
  */
-@WebServlet(name = "AddOrderServlet", urlPatterns = {"/manager/AddOrderServlet", "/staff/AddOrderServlet", "/user/AddOrderServlet"})
+@WebServlet(name = "AddOrderServlet", urlPatterns = {"/user/AddOrderServlet"})
 public class AddOrderServlet extends HttpServlet {
 
     @EJB
     private OrderDAO orderDAO;
     private static final long serialVersionUID = 1L;
+
     @EJB
-    private DeliveryDAO deliveryDAO;
+    private CartItemDAO cartItemDAO;
+
+    @EJB
+    private ItemDAO itemDAO;
+
     @EJB
     private OrderDetailsDAO orderDetailsDAO;
 
@@ -127,7 +127,43 @@ public class AddOrderServlet extends HttpServlet {
             ex.printStackTrace();
             request.setAttribute("error", "An unexpected error occurred. Please try again.");
             request.getRequestDispatcher("/user/CheckOutServlet").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
+
+        UserData user = (UserData) session.getAttribute("loggedInUser");
+        Cart cart = (Cart) session.getAttribute("cart");
+        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
+        Double cartTotal = (Double) session.getAttribute("cartTotal");
+        String paymentMethod = request.getParameter("paymentMethod");
+        String promotionId = null;
+
+        Orders order = createOrder(null, user, cartTotal, paymentMethod, promotionId);
+        orderDAO.create(order);
+
+        for (CartItem cartItem : cartItems) {
+            OrderDetails detail = createOrderDetail(null, order, cartItem);
+            orderDetailsDAO.create(detail);
+
+            // Decrease stock
+            Item item = cartItem.getItemId();
+            int newStock = item.getStockQuantity() - cartItem.getQuantity();
+            item.setStockQuantity(newStock);
+            itemDAO.update(item);
+            
+            cartItemDAO.softDelete(cartItem.getCartItemId());
+        }
+
+        session.removeAttribute("cart");
+        session.removeAttribute("cartItems");
+        session.removeAttribute("cartSubtotal");
+        session.removeAttribute("deliveryFee");
+        session.removeAttribute("discount");
+        session.removeAttribute("cartTotal");
+
+        response.sendRedirect("thankyou.jsp");
     }
 
     private Orders createOrder(UserData user, Double total, String paymentMethod, String promotionId) {
@@ -150,16 +186,6 @@ public class AddOrderServlet extends HttpServlet {
         detail.setPricePerItem(cartItem.getUnitPrice());
         detail.setDbstatus("active");
         return detail;
-    }
-
-    private Delivery createDelivery(String receiverName, String receiverContact, String receiverAddress, Orders order) {
-        Delivery delivery = new Delivery();
-        delivery.setReceiverName(receiverName);
-        delivery.setReceiverContact(receiverContact);
-        delivery.setReceiverAddress(receiverAddress);
-        delivery.setDbstatus("active");
-        delivery.setOrderId(order);
-        return delivery;
     }
 
 }

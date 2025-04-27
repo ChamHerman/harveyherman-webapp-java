@@ -61,8 +61,9 @@
         <% }%>
         <div class="untree_co-section">
             <div class="container">
-                <div class="row">
-                    <form id="checkoutForm" action="AddOrderServlet" method="post">
+
+                <form id="checkoutForm" action="AddOrderServlet" method="post">
+                    <div class="row">
                         <!-- left -->
                         <div class="col-md-5">
                             <!-- Billing Details -->
@@ -84,7 +85,7 @@
                         </div>
 
 
-                        <div class="col-md-5">
+                        <div class="col-md-7">
                             <!-- Your Order -->
                             <div class="order-section">
                                 <h3>Your Order</h3>
@@ -141,7 +142,7 @@
                             <div class="payment-section mt-4">
                                 <h3>Payment Method</h3>
                                 <div>
-                                    <input type="radio" name="paymentMethod" value="cash" id="cash" checked onclick="toggleCardForm(false)">
+                                    <input type="radio" name="paymentMethod" value="cash" id="cash" onclick="toggleCardForm(false)">
                                     <label for="cash">Cash on Delivery</label>
                                 </div>
                                 <div>
@@ -161,24 +162,30 @@
                             <!-- Card Info Modal -->
                             <div id="cardInfo" style="display:none;">
                                 <div class="form-group mt-3">
+                                    <label>Card Holder Name</label>
+                                    <input type="text" name="cardHolder" id="cardHolder" class="form-control" maxlength="50" required>
+                                </div>
+                                <div class="form-group">
                                     <label>Card Number</label>
-                                    <input type="text" name="cardNumber" class="form-control" pattern="\\d{16}" title="16 digits" required>
+                                    <input type="text" name="cardNumber" id="cardNumber" class="form-control" maxlength="19" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="cc-number" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Expiry Date</label>
-                                    <input type="text" name="expiryDate" class="form-control" pattern="\\d{2}/\\d{2}" maxlength="5" title="MM/YY" required>
+                                    <input type="text" name="expiryDate" id="expiryDate" class="form-control" maxlength="5" placeholder="MM-YY" autocomplete="cc-exp" required>
                                 </div>
                                 <div class="form-group">
                                     <label>CVV</label>
-                                    <input type="text" name="cvv" class="form-control" pattern="\\d{3}" maxlength="3" minlength="3" title="3 digits" required>
+                                    <input type="text" name="cvv" id="cvv" class="form-control" maxlength="3" placeholder="CVV" autocomplete="cc-csc" required>
                                 </div>
+                                <div id="cardError" class="text-danger"></div>
                             </div>
-
-                            <button type="submit" class="btn btn-primary btn-block mt-4">Place Order</button>
-
                         </div>
-                    </form>
-                </div>
+                        <!--place order button-->
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Place Order</button>
+                        </div>
+                    </div>
+                </form>
             </div>
 
         </div>
@@ -193,4 +200,5 @@
     <script src="<%= request.getContextPath()%>/assets/js/tiny-slider.js"></script>
     <script src="<%= request.getContextPath()%>/assets/js/custom.js"></script>
     <script src="<%= request.getContextPath()%>/assets/js/cart.js"></script>
+    <script src="<%= request.getContextPath()%>/assets/js/card-format.js"></script>
 </html>
