@@ -48,10 +48,11 @@ public class UserRegisterServlet extends HttpServlet {
         String birthdateStr = request.getParameter("birthdate");
         String gender = request.getParameter("gender");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
         String challengeQuestion = request.getParameter("challenge_question");
         String answer = request.getParameter("answer");
 
-        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, challengeQuestion, answer);
+        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, confirmPassword, challengeQuestion, answer);
 
         if (success) {
             request.getSession().setAttribute("registerSuccess", Boolean.TRUE);
@@ -72,7 +73,7 @@ public class UserRegisterServlet extends HttpServlet {
         }
     }
 
-    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String challengeQuestion, String answer) {
+    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String confirmPassword, String challengeQuestion, String answer) {
         try {
             if (fullName == null || fullName.trim().isEmpty()
                     || email == null || email.trim().isEmpty()
@@ -82,6 +83,7 @@ public class UserRegisterServlet extends HttpServlet {
                     || birthdateStr == null || birthdateStr.trim().isEmpty()
                     || gender == null || gender.trim().isEmpty()
                     || password == null || password.trim().isEmpty()
+                    || confirmPassword == null || confirmPassword.trim().isEmpty()
                     || challengeQuestion == null || challengeQuestion.trim().isEmpty()
                     || answer == null || answer.trim().isEmpty()) {
                 errorMsg = "Registration failed: All fields should be completed";
@@ -140,6 +142,11 @@ public class UserRegisterServlet extends HttpServlet {
 
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&_.\\-+=]).{8,}$")) {
                 errorMsg = "Registration failed: Password must be at least 8 characters and include uppercase, lowercase, number, and symbol (!@#$%^&_.-+=).";
+                return false;
+            }
+            
+            if (!confirmPassword.equals(password) ) {
+                errorMsg = "Registration failed: Confirm password does not match with password.";
                 return false;
             }
 
