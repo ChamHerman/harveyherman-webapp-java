@@ -52,7 +52,7 @@
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content">
-            <h2 class="text-center text-primary">Manage Promotions</h2>
+            <h2 style="text-align: center; margin-bottom: 1rem;">Manage Promotions</h2>
             <%                
                 String successMessage = (String) request.getAttribute("successMessage");
                 String errorMessage = (String) request.getAttribute("errorMessage");
