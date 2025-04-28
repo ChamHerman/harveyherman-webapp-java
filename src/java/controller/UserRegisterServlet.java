@@ -48,22 +48,32 @@ public class UserRegisterServlet extends HttpServlet {
         String birthdateStr = request.getParameter("birthdate");
         String gender = request.getParameter("gender");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
         String challengeQuestion = request.getParameter("challenge_question");
         String answer = request.getParameter("answer");
 
-        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, challengeQuestion, answer);
+        boolean success = registerUser(fullName, email, contactNumber, address, username, birthdateStr, gender, password, confirmPassword, challengeQuestion, answer);
 
         if (success) {
             request.getSession().setAttribute("registerSuccess", Boolean.TRUE);
             response.sendRedirect(request.getContextPath() + "/user/login.jsp");
         } else {
             request.setAttribute("errorMessage", errorMsg);
+            request.setAttribute("reg_fullname", fullName);
+            request.setAttribute("reg_email", email);
+            request.setAttribute("reg_contactNumber", contactNumber);
+            request.setAttribute("reg_address", address);
+            request.setAttribute("reg_username", username);
+            request.setAttribute("reg_birthdate", birthdateStr);
+            request.setAttribute("reg_gender", gender);
+            request.setAttribute("reg_challengeQuestion", challengeQuestion);
+            request.setAttribute("reg_answer", answer);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/register.jsp");
             dispatcher.forward(request, response);
         }
     }
 
-    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String challengeQuestion, String answer) {
+    private boolean registerUser(String fullName, String email, String contactNumber, String address, String username, String birthdateStr, String gender, String password, String confirmPassword, String challengeQuestion, String answer) {
         try {
             if (fullName == null || fullName.trim().isEmpty()
                     || email == null || email.trim().isEmpty()
@@ -73,6 +83,7 @@ public class UserRegisterServlet extends HttpServlet {
                     || birthdateStr == null || birthdateStr.trim().isEmpty()
                     || gender == null || gender.trim().isEmpty()
                     || password == null || password.trim().isEmpty()
+                    || confirmPassword == null || confirmPassword.trim().isEmpty()
                     || challengeQuestion == null || challengeQuestion.trim().isEmpty()
                     || answer == null || answer.trim().isEmpty()) {
                 errorMsg = "Registration failed: All fields should be completed";
@@ -133,6 +144,11 @@ public class UserRegisterServlet extends HttpServlet {
                 errorMsg = "Registration failed: Password must be at least 8 characters and include uppercase, lowercase, number, and symbol (!@#$%^&_.-+=).";
                 return false;
             }
+            
+            if (!confirmPassword.equals(password) ) {
+                errorMsg = "Registration failed: Confirm password does not match with password.";
+                return false;
+            }
 
             Date birthdate = parseBirthdate(birthdateStr);
             if (birthdate == null) {
@@ -143,7 +159,7 @@ public class UserRegisterServlet extends HttpServlet {
                 errorMsg = "Registration failed: Birthdate cannot be in the future.";
                 return false;
             }
-            
+
             password = hashPasswordSHA256(password);
             UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);

@@ -32,12 +32,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="fullname" placeholder="Full Name" autocomplete="off" required>
+                                    <input type="text" class="form-control" name="fullname" placeholder="Full Name" autocomplete="off" required
+                                           value="<%= request.getAttribute("reg_fullname") != null ? request.getAttribute("reg_fullname") : ""%>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off" required
+                                           value="<%= request.getAttribute("reg_email") != null ? request.getAttribute("reg_email") : ""%>">
                                 </div>
                             </div>
                         </div>
@@ -45,18 +47,20 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="contactNumber" name="contact_number" placeholder="Contact Number" autocomplete="off" required>
+                                    <input type="text" class="form-control" id="contactNumber" name="contact_number" placeholder="Contact Number" autocomplete="off" required
+                                           value="<%= request.getAttribute("reg_contactNumber") != null ? request.getAttribute("reg_contactNumber") : ""%>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off" required>
+                                    <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off" required
+                                           value="<%= request.getAttribute("reg_username") != null ? request.getAttribute("reg_username") : ""%>">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <textarea class="form-control" name="address" placeholder="Address" rows="3" autocomplete="off" required></textarea>
+                            <textarea class="form-control" name="address" placeholder="Address" rows="3" autocomplete="off" required><%= request.getAttribute("reg_address") != null ? request.getAttribute("reg_address") : ""%></textarea>
                         </div>
 
                         <div class="row">
@@ -67,9 +71,31 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <div class="form-group password-field-container">
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" autocomplete="off" required>
+                                    <i class="password-toggle-icon fas fa-eye" id="toggleConfirmPassword"></i>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="birthDate" name="birthdate" autocomplete="off" required placeholder="Birthdate"
-                                           onfocus="(this.type = 'date')" onblur="if (this.value === ''){this.type = 'text';}">
+                                           onfocus="(this.type = 'date')" onblur="if (this.value === '') {
+                                                       this.type = 'text';
+                                                   }"
+                                           value="<%= request.getAttribute("reg_birthdate") != null ? request.getAttribute("reg_birthdate") : ""%>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select class="form-control" name="gender" autocomplete="off" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male" <%= "Male".equals(request.getAttribute("reg_gender")) ? "selected" : ""%>>Male</option>
+                                        <option value="Female" <%= "Female".equals(request.getAttribute("reg_gender")) ? "selected" : ""%>>Female</option>
+                                        <option value="Other" <%= "Other".equals(request.getAttribute("reg_gender")) ? "selected" : ""%>>Other</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -77,28 +103,20 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <select class="form-control" name="gender" autocomplete="off" required>
-                                        <option value="">Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
+                                    <select class="form-control" name="challenge_question" autocomplete="off" required>
+                                        <option value="">Select Security Question</option>
+                                        <option value="What is your favourite colors?" <%= "What is your favourite colors?".equals(request.getAttribute("reg_challengeQuestion")) ? "selected" : ""%>>What is your favorite colors?</option>
+                                        <option value="What is your nickname?" <%= "What is your nickname?".equals(request.getAttribute("reg_challengeQuestion")) ? "selected" : ""%>>What is your nickname?</option>
+                                        <option value="Which animal do you like?" <%= "Which animal do you like?".equals(request.getAttribute("reg_challengeQuestion")) ? "selected" : ""%>>Which animal do you like?</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <select class="form-control" name="challenge_question" autocomplete="off" required>
-                                        <option value="">Select Security Question</option>
-                                        <option value="What is your favourite colors?">What is your favorite colors?</option>
-                                        <option value="What is your nickname?">What is your nickname?</option>
-                                        <option value="Which animal do you like?">Which animal do you like?</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="answer" placeholder="Your Answer" autocomplete="off" required
+                                           value="<%= request.getAttribute("reg_answer") != null ? request.getAttribute("reg_answer") : ""%>">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="answer" placeholder="Your Answer" autocomplete="off" required>
                         </div>
 
                         <div class="form-group">
@@ -123,15 +141,57 @@
         // Password toggle functionality
         const togglePassword = document.querySelector('#togglePassword');
         const password = document.querySelector('#password');
+        if (togglePassword && password) {
+            togglePassword.addEventListener('click', function () {
+                // Toggle the type attribute
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
 
-        togglePassword.addEventListener('click', function () {
-            // Toggle the type attribute
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
+                // Toggle the eye / eye slash icon
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
 
-            // Toggle the eye / eye slash icon
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
+        // Confirm Password toggle functionality
+        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+        const confirmPassword = document.querySelector('#confirmPassword');
+        if (toggleConfirmPassword && confirmPassword) {
+            toggleConfirmPassword.addEventListener('click', function () {
+                // Toggle the type attribute
+                const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPassword.setAttribute('type', type);
+
+                // Toggle the eye / eye slash icon
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var confirmPasswordInput = document.getElementById('confirmPassword');
+            if (confirmPasswordInput) {
+                var passwordContainer = confirmPasswordInput.closest('.password-field-container');
+                var confirmErrorMsg = document.createElement('div');
+                confirmErrorMsg.style.color = 'red';
+                confirmErrorMsg.style.fontSize = '0.9em';
+                confirmErrorMsg.style.marginTop = '4px';
+                confirmErrorMsg.id = 'confirm-password-error-msg';
+                // Insert after the container, not inside
+                passwordContainer.parentNode.insertBefore(confirmErrorMsg, passwordContainer.nextSibling);
+
+                function checkMatch() {
+                    var passwordInput = document.getElementById('password');
+                    if (confirmPasswordInput.value !== passwordInput.value) {
+                        confirmErrorMsg.textContent = "Passwords do not match.";
+                        confirmPasswordInput.style.borderColor = 'red';
+                    } else {
+                        confirmErrorMsg.textContent = "";
+                        confirmPasswordInput.style.borderColor = '';
+                    }
+                }
+                confirmPasswordInput.addEventListener('input', checkMatch);
+                document.getElementById('password').addEventListener('input', checkMatch);
+            }
         });
     </script>
 
