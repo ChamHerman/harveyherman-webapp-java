@@ -348,8 +348,7 @@
             <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <form id="addItemForm" method="post" enctype="multipart/form-data" action="AddItemsServlet"
-                              onsubmit="return validateAddItemForm();" autocomplete="off">
+                        <form id="addItemForm" method="post" enctype="multipart/form-data" action="AddItemsServlet" autocomplete="off">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -400,7 +399,7 @@
                                         }
                                     %>
                                     <label class="form-label">Category</label> <select class="form-control" name="category"
-                                                                                       id="category" onchange="toggleCustomCategory();" required>
+                                                                                       id="category" style="cursor: pointer;" onchange="toggleCustomCategory();" required>
                                         <option value="">Select category...</option>
                                         <% for (String cat : mergedCategories) {%>
                                         <option value="<%=cat%>"><%=cat%></option>
@@ -505,6 +504,7 @@
         <!-- Set default context path (staff/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>
+        <script src="<%= request.getContextPath()%>/assets/js/ap_item_validate.js"></script>
         <!-- /JavaScript Import -->
     </body>
 </html>
