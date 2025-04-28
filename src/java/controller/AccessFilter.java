@@ -44,7 +44,6 @@ public class AccessFilter implements Filter {
             "/user/details",
             "/user/login.jsp",
             "/user/register.jsp",
-            "/user/resetPassword.jsp",
             "/user/services.jsp",
             "/user/ResetPasswordServlet",
             "/user/UserLoginServlet",
@@ -101,6 +100,23 @@ public class AccessFilter implements Filter {
                 httpResponse.sendRedirect(contextPath + "/staff/ap_login.jsp");
                 return;
             }
+        }
+
+        // Special case: Allow access to resetPassword.jsp only if user passed challenge question
+        if (relativePath.equals("/user/resetPassword.jsp")) {
+            boolean passedChallengeQuestion = false;
+
+            if (session != null && session.getAttribute("resetPasswordLoginId") != null) {
+                passedChallengeQuestion = true;
+            }
+
+            if (!passedChallengeQuestion) {
+                httpResponse.sendRedirect(contextPath + "/user/challengeQuestion.jsp");
+                return;
+            }
+
+            chain.doFilter(request, response);
+            return;
         }
 
         if (relativePath.startsWith("/user/")) {
