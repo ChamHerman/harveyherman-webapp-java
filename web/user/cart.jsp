@@ -140,7 +140,7 @@
                     <div class="col-md-6">
                         <div class="row mb-5">
                             <div class="col-md-6">
-                                <a href="item.jsp" class="btn btn-outline-black btn-sm btn-block">Continue Shopping</a>
+                                <a href="items" class="btn btn-outline-black btn-sm btn-block">Continue Shopping</a>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -170,12 +170,12 @@
                                         <span class="text-black">Subtotal</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">RM <span id="cartSubtotal"><%= cartSubtotal%></span></strong>
+                                        <strong class="text-black">RM <span id="cartSubtotal"><%= String.format("%.2f", cartSubtotal)%></span></strong>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-black">Delivery Fee</span>
+                                        <span class="text-black">(+) Delivery Fee</span>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <strong class="text-black">RM <span id="deliveryFee"><%= deliveryFee%></span></strong>
@@ -183,10 +183,25 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-black">Discount</span>
+                                        <span class="text-black">(-) Discount (%)</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">RM <span id="discount"><%= discount%></span></strong> 
+                                        <strong class="text-black">RM <span id="discount"><%= String.format("%.2f", discount)%></span> 
+                                            <%
+                                                Double discountPercent = 0.0;
+                                                String promoCode = (String) session.getAttribute("appliedPromotionCode");
+                                                if (promoCode != null) {
+                                                    model.PromotionDAO promoDAO = new model.PromotionDAO();
+                                                    model.Promotion promo = promoDAO.findByPromotionCode(promoCode);
+                                                    if (promo != null) {
+                                                        discountPercent = promo.getDiscountValue().doubleValue();
+                                                    }
+                                                }
+                                            %>
+                                            <% if (discountPercent > 0) {%>
+                                            (<%= discountPercent%>%)
+                                            <% }%>
+                                        </strong>
                                     </div>
                                 </div>
 
@@ -195,7 +210,7 @@
                                         <span class="text-black">Total</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">RM <span id="cartTotal"><%= cartTotal%></span></strong>
+                                        <strong class="text-black">RM <span id="cartTotal"><%= String.format("%.2f", cartTotal)%></span></strong>
                                     </div>
                                 </div>
 
