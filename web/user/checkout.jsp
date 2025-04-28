@@ -71,15 +71,15 @@
                                 <h3>Delivery Details</h3>
                                 <div class="form-group mb-4">
                                     <label>Receiver Name</label>
-                                    <input type="text" name="receiverName" class="form-control" maxlength="50" autocomplete="off" value="<%= user.getFullname()%>">
+                                    <input type="text" name="receiverName" class="form-control" maxlength="50" autocomplete="off" value="<%= user.getFullname()%>" required>
                                 </div>
                                 <div class="form-group mb-4">
                                     <label>Contact Number</label>
-                                    <input type="text" id="contactNumber" name="receiverContact" maxlength="12" class="form-control" autocomplete="off" value="<%= user.getContactNumber()%>">
+                                    <input type="text" id="contactNumber" name="receiverContact" maxlength="12" class="form-control" autocomplete="off" value="<%= user.getContactNumber()%>" required>
                                 </div> 
                                 <div class="form-group mb-4">
                                     <label>Address</label>
-                                    <input type="text" id="address" name="receiverAddress" class="form-control" maxlength="100" autocomplete="off" value="<%= user.getAddress()%>">
+                                    <input type="text" id="address" name="receiverAddress" class="form-control" maxlength="100" autocomplete="off" value="<%= user.getAddress()%>" required>
                                 </div>
                             </div>
                         </div>
@@ -141,6 +141,7 @@
 
                             <div class="payment-section mt-4">
                                 <h3>Payment Method</h3>
+                                <div id="paymentError" class="text-danger mb-2"></div>
                                 <div>
                                     <input type="radio" name="paymentMethod" value="cash" id="cash" onclick="toggleCardForm(false)">
                                     <label for="cash">Cash on Delivery</label>
@@ -158,6 +159,7 @@
                                     <label for="ewallet">E-Wallet</label>
                                 </div>
                             </div>
+                            
 
                             <!-- Card Info Modal -->
                             <div id="cardInfo" style="display:none;">
@@ -201,23 +203,5 @@
     <script src="<%= request.getContextPath()%>/assets/js/custom.js"></script>
     <script src="<%= request.getContextPath()%>/assets/js/cart.js"></script>
     <script src="<%= request.getContextPath()%>/assets/js/checkoutForm.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form'); // Adjust selector if needed
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                const nameInput = form.querySelector('input[name="receiverName"]');
-                let error = '';
-                if (nameInput.value.length > 50) {
-                    error = 'Full name cannot exceed 50 characters.';
-                }
-                if (error) {
-                    // Show error in a custom div if you have one, else use alert
-                    alert(error);
-                    e.preventDefault();
-                }
-            });
-        }
-    });
-    </script>
+  
 </html>

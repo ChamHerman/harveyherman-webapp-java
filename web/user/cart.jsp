@@ -183,24 +183,11 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
+                                        
                                         <span class="text-black">(-) Discount (%)</span>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <strong class="text-black">RM <span id="discount"><%= String.format("%.2f", discount)%></span> 
-                                            <%
-                                                Double discountPercent = 0.0;
-                                                String promoCode = (String) session.getAttribute("appliedPromotionCode");
-                                                if (promoCode != null) {
-                                                    model.PromotionDAO promoDAO = new model.PromotionDAO();
-                                                    model.Promotion promo = promoDAO.findByPromotionCode(promoCode);
-                                                    if (promo != null) {
-                                                        discountPercent = promo.getDiscountValue().doubleValue();
-                                                    }
-                                                }
-                                            %>
-                                            <% if (discountPercent > 0) {%>
-                                            (<%= discountPercent%>%)
-                                            <% }%>
                                         </strong>
                                     </div>
                                 </div>

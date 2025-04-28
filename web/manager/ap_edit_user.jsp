@@ -58,6 +58,10 @@
             .form-label {
                 color: #000000;
             }
+            .card-header {
+                color: #b5e7a0;
+                background-color: #222222;
+            }
         </style>
     </head>
     <body>
