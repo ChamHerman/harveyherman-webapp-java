@@ -44,7 +44,7 @@ public class ViewItemsServlet extends HttpServlet {
                 response.sendRedirect(contextPath + "/staff/ap_item.jsp?viewData=" + encodedMessage);
             }
         } else {
-            json = "ERROR: " + message.replace("\"", "\\\"");
+            json = "Error: " + message.replace("\"", "\\\"");
             encodedMessage = URLEncoder.encode(json, "UTF-8");
             if (servletPath.contains("/manager/")) {
                 response.sendRedirect(contextPath + "/manager/ap_item.jsp?message=" + encodedMessage);

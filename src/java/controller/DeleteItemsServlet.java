@@ -34,9 +34,9 @@ public class DeleteItemsServlet extends HttpServlet {
         String json;
 
         if (success) {
-            json = "MESSAGE: " + message.replace("\"", "\\\"");
+            json = "Message: " + message.replace("\"", "\\\"");
         } else {
-            json = "ERROR: " + message.replace("\"", "\\\"");
+            json = "Error: " + message.replace("\"", "\\\"");
         }
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
