@@ -232,10 +232,6 @@
                                 <div class="col-sm-8" id="viewChallengeQuestion"></div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-sm-4 text-end fw-bold">Answer:</div>
-                                <div class="col-sm-8" id="viewAnswer"></div>
-                            </div>
-                            <div class="row mb-2">
                                 <div class="col-sm-4 text-end fw-bold">Last Login:</div>
                                 <div class="col-sm-8" id="viewLastLogin"></div>
                             </div>

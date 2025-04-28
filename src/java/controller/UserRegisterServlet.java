@@ -58,6 +58,15 @@ public class UserRegisterServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/user/login.jsp");
         } else {
             request.setAttribute("errorMessage", errorMsg);
+            request.setAttribute("reg_fullname", fullName);
+            request.setAttribute("reg_email", email);
+            request.setAttribute("reg_contactNumber", contactNumber);
+            request.setAttribute("reg_address", address);
+            request.setAttribute("reg_username", username);
+            request.setAttribute("reg_birthdate", birthdateStr);
+            request.setAttribute("reg_gender", gender);
+            request.setAttribute("reg_challengeQuestion", challengeQuestion);
+            request.setAttribute("reg_answer", answer);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/register.jsp");
             dispatcher.forward(request, response);
         }
@@ -143,7 +152,7 @@ public class UserRegisterServlet extends HttpServlet {
                 errorMsg = "Registration failed: Birthdate cannot be in the future.";
                 return false;
             }
-            
+
             password = hashPasswordSHA256(password);
             UserData user = createUserData(null, fullName, email, contactNumber, address, birthdate, gender);
             UserLogin userLogin = createUserLogin(null, username, password, user, challengeQuestion, answer);

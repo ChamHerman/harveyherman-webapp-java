@@ -102,7 +102,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="address" class="form-label">Address</label>
-                                    <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"></textarea>
+                                    <textarea class="form-control" id="address" name="address" rows="3" required autocomplete="off"></textarea>
                                 </div>
                             </div>
                             
