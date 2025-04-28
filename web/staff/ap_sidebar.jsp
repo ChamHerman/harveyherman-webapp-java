@@ -20,6 +20,7 @@
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/staff/ap_item.jsp" id="item-management-link">Item Management</a></li>
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/staff/ap_order.jsp" id="order-management-link">Update Order Status</a></li>
         <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/staff/ap_user.jsp" id="user-management-link">View User Records</a></li>
+        <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath()%>/staff/promotion.jsp" id="promotion-management-link">Promotion Management</a></li>
     </ul>
     <div class="sidebar-profile">
         <%
@@ -54,7 +55,8 @@
             "ap_index.jsp": "dashboard-link",
             "ap_item.jsp": "item-management-link",
             "ap_order.jsp": "order-management-link",
-            "ap_user.jsp": "user-management-link"
+            "ap_user.jsp": "user-management-link",
+            "promotion.jsp": "promotion-management-link"
         };
         if (pageMap[path]) {
             document.getElementById(pageMap[path]).classList.add("active");

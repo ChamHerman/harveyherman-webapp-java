@@ -113,7 +113,7 @@
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content">
             <div class="dashboard-title">Staff Dashboard</div>
-            <div class="dashboard-desc">Welcome to the Staff Dashboard. Use the options below to manage and view sales reports.</div>
+            <div class="dashboard-desc">Welcome to the Staff Dashboard. Below are the summary of our sales.</div>
 
             <div class="dashboard-summary">
                 <div class="summary-box">
