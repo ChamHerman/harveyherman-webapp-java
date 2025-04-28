@@ -65,10 +65,10 @@ function removeCartItem(cartItemId) {
 function applyPromotion() {
     var promoCode = document.getElementById('promoCode').value;
     fetch('CartServlet', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: 'action=applyPromotion&promoCode=' + encodeURIComponent(promoCode)
-})
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'action=applyPromotion&promoCode=' + encodeURIComponent(promoCode)
+    })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -89,9 +89,10 @@ function toggleCardForm(show) {
         cardInfo.style.display = show ? 'block' : 'none';
         // Set required attributes for card fields only if showing
         var requiredFields = ['cardHolder', 'cardNumber', 'expiryDate', 'cvv'];
-        requiredFields.forEach(function(id) {
+        requiredFields.forEach(function (id) {
             var field = document.getElementById(id);
-            if (field) field.required = show;
+            if (field)
+                field.required = show;
         });
     }
 }

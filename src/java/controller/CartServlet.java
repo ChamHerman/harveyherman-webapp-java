@@ -154,8 +154,8 @@ public class CartServlet extends HttpServlet {
             } else if (promo.getMinimumPurchase() != null && cartSubtotal < promo.getMinimumPurchase().doubleValue()) {
                 message = "Minimum spend for this promotion is RM " + promo.getMinimumPurchase();
             } else {
-                discount = promo.getDiscountValue().doubleValue();
-                message = "Promotion applied! Discount: RM " + discount;
+                discount = cartSubtotal * (promo.getDiscountValue().doubleValue() / 100.0);
+                message = "Promotion applied! Discount: " + promo.getDiscountValue().doubleValue() + "%";
                 success = true;
                 session.setAttribute("appliedPromotionCode", promo.getPromotionCode());
             }
