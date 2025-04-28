@@ -112,6 +112,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkoutForm = document.getElementById('checkoutForm');
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function (e) {
+            // Payment method validation
+            const paymentMethods = checkoutForm.querySelectorAll('input[name="paymentMethod"]');
+            let paymentSelected = false;
+            paymentMethods.forEach(function (pm) {
+                if (pm.checked) paymentSelected = true;
+            });
+            const paymentErrorDiv = document.getElementById('paymentError');
+            if (!paymentSelected) {
+                if (paymentErrorDiv) paymentErrorDiv.innerText = 'Please select a payment method.';
+                e.preventDefault();
+                return;
+            } else {
+                if (paymentErrorDiv) paymentErrorDiv.innerText = '';
+            }
             const cardInfo = document.getElementById('cardInfo');
             if (cardInfo && cardInfo.style.display !== 'none') {
                 const cardHolder = cardHolderInput.value.trim();
