@@ -21,7 +21,7 @@ document.getElementById('confirmDeleteOrder').addEventListener('click', function
 });
 
 //clear filter button
-document.querySelector('button[name="clearFilter"]').addEventListener('click', function(e) {
+document.querySelector('button[name="clearFilter"]').addEventListener('click', function (e) {
     // Set the dropdown to "All" before submitting
     document.getElementById('statusSelect').value = '';
 });
@@ -35,6 +35,11 @@ function viewOrder(orderId) {
     })
             .then(response => response.json())
             .then(data => {
+                let subtotal = data.subtotal;
+                let delivery = data.delivery;
+                let total = data.totalAmount;
+                let discount = subtotal + delivery - total;
+                
                 let html = `
         <div><strong>Order ID:</strong> ${data.orderId}</div>
         <div><strong>User ID:</strong> ${data.userId}</div>
@@ -69,19 +74,19 @@ function viewOrder(orderId) {
                 html += `
           <tr>
             <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
-            <td><strong>RM ${parseFloat(data.subtotal).toFixed(2)}</strong></td>
+            <td><strong>RM ${subtotal.toFixed(2)}</strong></td>
           </tr>
           <tr>
             <td colspan="3" class="text-end"><strong>Delivery Fee:</strong></td>
-            <td><strong>RM ${parseFloat(data.delivery).toFixed(2)}</strong></td>
+            <td><strong>RM ${delivery.toFixed(2)}</strong></td>
           </tr>
           <tr>
             <td colspan="3" class="text-end"><strong>Discount:</strong></td>
-            <td><strong>RM ${parseFloat(data.discount).toFixed(2)}</strong></td>
+            <td><strong>RM ${discount.toFixed(2)}</strong></td>
           </tr>
           <tr>
             <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
-            <td><strong>RM ${parseFloat(data.totalAmount).toFixed(2)}</strong></td>
+            <td><strong>RM ${total.toFixed(2)}</strong></td>
           </tr>
         </tbody>
       </table>

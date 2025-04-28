@@ -57,6 +57,16 @@ public class CartServlet extends HttpServlet {
         session.setAttribute("cartTotal", cartTotal);
         session.setAttribute("cartItems", cartItems);
         session.setAttribute("cart", cart);
+        // Set discount percent for JSP display
+        String discountPercentStr = "";
+        String promoCode = (String) session.getAttribute("appliedPromotionCode");
+        if (promoCode != null) {
+            Promotion promo = promotionDAO.findByPromotionCode(promoCode);
+            if (promo != null) {
+                discountPercentStr = String.valueOf(promo.getDiscountValue().doubleValue());
+            }
+        }
+        request.setAttribute("discountPercent", discountPercentStr);
         response.sendRedirect("cart.jsp");
     }
 
