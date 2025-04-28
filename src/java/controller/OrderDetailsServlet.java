@@ -5,11 +5,8 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +16,6 @@ import model.OrderDetails;
 import model.OrderDetailsDAO;
 import model.Orders;
 
-/**
- *
- * @author user
- */
 @WebServlet(name = "OrderDetailsServlet", urlPatterns = {"/manager/OrderDetailsServlet", "/staff/OrderDetailsServlet"})
 public class OrderDetailsServlet extends HttpServlet {
 

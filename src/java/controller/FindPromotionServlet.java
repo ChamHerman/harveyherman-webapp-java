@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author kaisheng
  */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,20 +14,13 @@ import model.Promotion;
 import model.PromotionDAO;
 import javax.ejb.EJB;
 
-/**
- *
- * @author User
- */
 @WebServlet(name="FindPromotionServlet",urlPatterns={"/manager/FindPromotionServlet","/staff/FindPromotionServlet"})
 public class FindPromotionServlet extends HttpServlet {
 
     @EJB
     private PromotionDAO promotionDAO;
-    
-    // Remove the direct EntityManager usage
-    // @PersistenceContext(unitName = "HarveyHermanPU")
-    // private EntityManager em;
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         

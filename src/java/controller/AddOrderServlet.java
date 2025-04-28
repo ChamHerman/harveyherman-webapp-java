@@ -30,8 +30,7 @@ import model.Promotion;
 import model.PromotionDAO;
 import model.UserData;
 
-@WebServlet(name = "AddOrderServlet", urlPatterns = { "/manager/AddOrderServlet", "/staff/AddOrderServlet",
-        "/user/AddOrderServlet" })
+@WebServlet(name = "AddOrderServlet", urlPatterns = {"/user/AddOrderServlet"})
 public class AddOrderServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
