@@ -25,15 +25,6 @@
                 </div>
                 <% } %>
 
-                <%
-                    // Check if user is verified
-                    String loginId = (String) session.getAttribute("resetPasswordLoginId");
-                    if (loginId == null) {
-                        response.sendRedirect(request.getContextPath() + "/user/challengeQuestion.jsp");
-                        return;
-                    }
-                %>
-
                 <form action="<%= request.getContextPath()%>/user/ResetPasswordServlet" method="post" id="resetPasswordForm">
                     <div class="form-group password-field-container">
                         <label for="newPassword">New Password</label>

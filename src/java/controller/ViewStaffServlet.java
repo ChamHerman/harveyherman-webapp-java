@@ -19,15 +19,15 @@ import model.StaffDataDAO;
 import model.StaffLogin;
 import model.StaffLoginDAO;
 
-@WebServlet(name = "ViewStaffServlet", urlPatterns = {"/manager/ViewStaffServlet", "/staff/ViewStaffServlet"})
+@WebServlet(name = "ViewStaffServlet", urlPatterns = {"/manager/ViewStaffServlet"})
 public class ViewStaffServlet extends HttpServlet {
 
     @EJB
     private StaffDataDAO staffDataDAO;
-    
+
     @EJB
     private StaffLoginDAO staffLoginDAO;
-    
+
     private static final long serialVersionUID = 1L;
 
     private void sendJsonResponse(HttpServletRequest request, HttpServletResponse response, boolean success, String message, String viewData)
@@ -36,27 +36,18 @@ public class ViewStaffServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        // Determine which URL pattern was used
-        String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
         String json;
         String encodedMessage;
         if (success && viewData != null) {
             json = viewData;
             encodedMessage = URLEncoder.encode(json, "UTF-8");
-            if (servletPath.contains("/manager/")) {
-                response.sendRedirect(contextPath + "/manager/ap_staff.jsp?viewData=" + encodedMessage);
-            } else if (servletPath.contains("/staff/")) {
-                response.sendRedirect(contextPath + "/staff/ap_staff.jsp?viewData=" + encodedMessage);
-            }
+            response.sendRedirect(contextPath + "/manager/ap_staff.jsp?viewData=" + encodedMessage);
+
         } else {
             json = "Error: " + message.replace("\"", "\\\"");
             encodedMessage = URLEncoder.encode(json, "UTF-8");
-            if (servletPath.contains("/manager/")) {
-                response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
-            } else if (servletPath.contains("/staff/")) {
-                response.sendRedirect(contextPath + "/staff/ap_staff.jsp?message=" + encodedMessage);
-            }
+            response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
         }
     }
 
@@ -81,19 +72,19 @@ public class ViewStaffServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Staff not found.", null);
                 return;
             }
-            
+
             StaffLogin staffLogin = staffLoginDAO.findByStaffId(staffId);
             if (staffLogin == null) {
                 sendJsonResponse(request, response, false, "Staff login information not found.", null);
                 return;
             }
-            
+
             // Format dates
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
             sdf.setTimeZone(TimeZone.getDefault());
             String createdDateStr = (staffData.getCreatedDate() != null) ? sdf.format(staffData.getCreatedDate()) : "";
             String lastLoginStr = (staffLogin.getLastLogin() != null) ? sdf.format(staffLogin.getLastLogin()) : "";
-            
+
             // Build a JSON string with necessary fields.
             StringBuilder sb = new StringBuilder();
             sb.append("{");
@@ -118,4 +109,4 @@ public class ViewStaffServlet extends HttpServlet {
             sendJsonResponse(request, response, false, "Error retrieving staff information: " + ex.getMessage(), null);
         }
     }
-} 
+}
