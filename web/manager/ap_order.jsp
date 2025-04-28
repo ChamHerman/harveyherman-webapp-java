@@ -153,7 +153,6 @@
                                         <option value="packaging" <%= "packaging".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Packaging</option>
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                                         <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
-                                        <option value="delivered" <%= "delivered".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivered</option>
                                     </select>
                                     <button type="submit" class="btn btn-save btn-sm">Save</button>
                                     <input type="hidden" name="oldStatus" value="<%= order.getStatus()%>">
