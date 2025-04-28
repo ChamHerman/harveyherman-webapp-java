@@ -71,15 +71,15 @@
                                 <h3>Delivery Details</h3>
                                 <div class="form-group mb-4">
                                     <label>Receiver Name</label>
-                                    <input type="text" name="receiverName" class="form-control" value="<%= user.getFullname()%>">
+                                    <input type="text" name="receiverName" class="form-control" maxlength="50" autocomplete="off" value="<%= user.getFullname()%>">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label>Contact Number</label>
-                                    <input type="text" name="receiverContact" class="form-control" value="<%= user.getContactNumber()%>">
-                                </div>
+                                    <input type="text" id="contactNumber" name="receiverContact" maxlength="12" class="form-control" autocomplete="off" value="<%= user.getContactNumber()%>">
+                                </div> 
                                 <div class="form-group mb-4">
                                     <label>Address</label>
-                                    <input type="text" name="receiverAddress" class="form-control" value="<%= user.getAddress()%>">
+                                    <input type="text" id="address" name="receiverAddress" class="form-control" maxlength="100" autocomplete="off" value="<%= user.getAddress()%>">
                                 </div>
                             </div>
                         </div>
@@ -200,5 +200,24 @@
     <script src="<%= request.getContextPath()%>/assets/js/tiny-slider.js"></script>
     <script src="<%= request.getContextPath()%>/assets/js/custom.js"></script>
     <script src="<%= request.getContextPath()%>/assets/js/cart.js"></script>
-    <script src="<%= request.getContextPath()%>/assets/js/card-format.js"></script>
+    <script src="<%= request.getContextPath()%>/assets/js/checkoutForm.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form'); // Adjust selector if needed
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                const nameInput = form.querySelector('input[name="receiverName"]');
+                let error = '';
+                if (nameInput.value.length > 50) {
+                    error = 'Full name cannot exceed 50 characters.';
+                }
+                if (error) {
+                    // Show error in a custom div if you have one, else use alert
+                    alert(error);
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+    </script>
 </html>
