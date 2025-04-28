@@ -9,8 +9,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <title>Customer Management - Manager</title>
+        <jsp:include page="/user/head.jsp" />
+        <title>User Records - Staff</title>
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="<%= request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
@@ -85,7 +85,7 @@
                     int endIdx = Math.min(startIdx + rowCount, totalUsers);
                     List<UserData> limitedUsers = (startIdx < endIdx) ? filteredUsers.subList(startIdx, endIdx) : new ArrayList<UserData>();
                 %>
-
+                <h2 style="text-align: center; margin-bottom: 2rem;">User Management</h2>
                 <!-- Dashboard Overview -->
                 <div class="dashboard-summary">
                     <div class="summary-box fs-6">Total Users: <%= allUsers.size()%></div>

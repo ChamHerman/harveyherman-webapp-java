@@ -38,24 +38,18 @@ public class AddStaffServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
         
-        String servletPath = request.getServletPath();
         String contextPath = request.getContextPath();
 
         String json;
 
         if (success) {
-            json = "MESSAGE: " + message.replace("\"", "\\\"");
+            json = "Message: " + message.replace("\"", "\\\"");
         } else {
-            json = "ERROR: " + message.replace("\"", "\\\"");
+            json = "Error: " + message.replace("\"", "\\\"");
         }
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
-
-        if (servletPath.contains("/manager/")) {
-            response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
-        } else if (servletPath.contains("/staff/")) {
-            response.sendRedirect(contextPath + "/staff/ap_staff.jsp?message=" + encodedMessage);
-        }
+        response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);
     }
 
     @Override
@@ -105,13 +99,19 @@ public class AddStaffServlet extends HttpServlet {
 
             StaffLogin existingLogin = staffLoginDAO.findByUsername(username);
             if (existingLogin != null) {
-                sendJsonResponse(request, response, false, "Username is already taken. Please choose another one.");
+                sendJsonResponse(request, response, false, "Username is already taken. Please check on the record and try again.");
                 return;
             }
 
             StaffData existingStaffWithEmail = staffDataDAO.findByEmail(email);
             if (existingStaffWithEmail != null) {
-                sendJsonResponse(request, response, false, "Email address is already in use.");
+                sendJsonResponse(request, response, false, "Email address is already in use. Please check on the record and try again.");
+                return;
+            }
+            
+            StaffData existingStaffWithContact = staffDataDAO.findByContactNumber(contactNumber);
+            if (existingStaffWithContact != null) {
+                sendJsonResponse(request, response, false, "Contact number is already in use. Please check on the record and try again.");
                 return;
             }
             

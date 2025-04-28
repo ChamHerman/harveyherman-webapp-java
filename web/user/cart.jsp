@@ -88,7 +88,7 @@
                                         <td><%= rowNum++%>.</td>
                                         <!-- Product Image -->
                                         <td>
-                                            <img src="<%= cartItem.getItemId().getImageUrl()%>" alt="Product Image" style="width: 80px; height: 80px;">
+                                            <img src="<%=request.getContextPath()%>/assets/<%= cartItem.getItemId().getImageUrl()%>" alt="Product Image" style="width: 80px; height: 80px;">
                                         </td>
                                         <!-- Product Name -->
                                         <td>

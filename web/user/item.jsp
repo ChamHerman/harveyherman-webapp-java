@@ -68,10 +68,28 @@
                                     <option value="InStock" <%= "InStock".equals(request.getAttribute("stock")) ? "selected" : ""%>>In Stock</option>
                                     <option value="OutOfStock" <%= "OutOfStock".equals(request.getAttribute("stock")) ? "selected" : ""%>>Out of Stock</option>
                                 </select>
+                                <%
+                                    // Get current min/max price from request or use defaults
+                                    String minPriceStr = (String) request.getAttribute("minPrice");
+                                    String maxPriceStr = (String) request.getAttribute("maxPrice");
+                                    int minsSliderPrice = (minPriceStr != null && !minPriceStr.isEmpty()) ? Integer.parseInt(minPriceStr) : 0;
+                                    int maxSliderPrice = (maxPriceStr != null && !maxPriceStr.isEmpty()) ? Integer.parseInt(maxPriceStr) : 10000;
+                                    int sliderMin = 0; // absolute min
+                                    int sliderMax = 20000; // absolute max
+                                %>
                                 <h5 class="mt-3">Price Range</h5>
-                                <div class="d-flex gap-2">
-                                    <input type="number" class="form-control" name="minPrice" placeholder="Min" min="0" step="0.01" value="<%= request.getAttribute("minPrice") != null ? request.getAttribute("minPrice") : ""%>">
-                                    <input type="number" class="form-control" name="maxPrice" placeholder="Max" min="0" step="0.01" value="<%= request.getAttribute("maxPrice") != null ? request.getAttribute("maxPrice") : ""%>">
+                                <div class="mb-2 d-flex align-items-center gap-2">
+                                    <input type="number" class="form-control" id="minPriceInput" name="minPrice"
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=minsSliderPrice%>" style="width: 125px;">
+                                    <span>&mdash;</span>
+                                    <input type="number" class="form-control" id="maxPriceInput" name="maxPrice"
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=maxSliderPrice%>" style="width: 125px;">
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="range" class="form-range" id="minPriceSlider"
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=minsSliderPrice%>">
+                                    <input type="range" class="form-range" id="maxPriceSlider"
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=maxSliderPrice%>">
                                 </div>
                                 <h5 class="mt-3">Sort By</h5>
                                 <div class="d-flex gap-2">
@@ -183,6 +201,46 @@
         <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/tiny-slider.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/index.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var minSlider = document.getElementById('minPriceSlider');
+                var maxSlider = document.getElementById('maxPriceSlider');
+                var minInput = document.getElementById('minPriceInput');
+                var maxInput = document.getElementById('maxPriceInput');
+
+                function syncFromSlider() {
+                    var minVal = parseInt(minSlider.value);
+                    var maxVal = parseInt(maxSlider.value);
+                    if (minVal > maxVal) {
+                        var temp = minVal;
+                        minVal = maxVal;
+                        maxVal = temp;
+                    }
+                    minInput.value = minVal;
+                    maxInput.value = maxVal;
+                }
+
+                function syncFromInput() {
+                    var minVal = parseInt(minInput.value) || 0;
+                    var maxVal = parseInt(maxInput.value) || 0;
+                    if (minVal > maxVal) {
+                        var temp = minVal;
+                        minVal = maxVal;
+                        maxVal = temp;
+                    }
+                    minSlider.value = minVal;
+                    maxSlider.value = maxVal;
+                }
+
+                minSlider.addEventListener('input', syncFromSlider);
+                maxSlider.addEventListener('input', syncFromSlider);
+                minInput.addEventListener('input', syncFromInput);
+                maxInput.addEventListener('input', syncFromInput);
+
+                // Initial sync
+                syncFromSlider();
+            });
+        </script>
     </body>
 </html>
 

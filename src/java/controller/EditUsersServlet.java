@@ -45,9 +45,9 @@ public class EditUsersServlet extends HttpServlet {
         String json;
 
         if (success) {
-            json = "MESSAGE: " + message.replace("\"", "\\\"");
+            json = "Message: " + message.replace("\"", "\\\"");
         } else {
-            json = "ERROR: " + message.replace("\"", "\\\"");
+            json = "Error: " + message.replace("\"", "\\\"");
         }
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
@@ -111,7 +111,7 @@ public class EditUsersServlet extends HttpServlet {
             }
             UserData existingUserWithEmail = userDataDAO.findByEmail(email);
             if (existingUserWithEmail != null && !existingUserWithEmail.getUserId().equals(userId)) {
-                sendJsonResponse(request, response, false, "Email address is already in use by another user.");
+                sendJsonResponse(request, response, false, "Email address is already in use by another user. Please check on the record and try again.");
                 return;
             }
 
@@ -126,7 +126,7 @@ public class EditUsersServlet extends HttpServlet {
             }
             UserData existingUserWithContact = userDataDAO.findByContactNumber(contactNumber);
             if (existingUserWithContact != null && !existingUserWithContact.getUserId().equals(userId)) {
-                sendJsonResponse(request, response, false, "Contact number is already in use by another user.");
+                sendJsonResponse(request, response, false, "Contact number is already in use by another user. Please check on the record and try again.");
                 return;
             }
 
@@ -170,7 +170,7 @@ public class EditUsersServlet extends HttpServlet {
             }
             UserLogin existingUserWithUsername = userLoginDAO.findByUsername(username);
             if (existingUserWithUsername != null && !existingUserWithUsername.getUserId().getUserId().equals(userId)) {
-                sendJsonResponse(request, response, false, "Username is already in use by another user.");
+                sendJsonResponse(request, response, false, "Username is already in use by another user. Please check on the record and try again.");
                 return;
             }
 

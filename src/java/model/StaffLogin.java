@@ -57,7 +57,7 @@ public class StaffLogin implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 7)
-    @Column(name = "role")
+    @Column(name = "staff_role")
     private String role;
     @Size(max = 7)
     @Column(name = "dbstatus")

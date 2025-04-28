@@ -12,8 +12,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <jsp:include page="/user/head.jsp" />
         <title>Item Management - Staff</title>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -204,7 +203,7 @@
                             <div class="col-md-3">
                                 <!-- Category Filter -->
                                 <label>Category:</label>
-                                <select id="categoryFilter" name="category" class="form-select">
+                                <select id="categoryFilter" name="category" class="form-select" onchange="this.form.submit()">
                                     <option value="All" <%= "All".equals(sessionCategory) ? "selected" : ""%>>All</option>
                                     <% for (String category : allCategories) {%>
                                     <option value="<%= category%>" <%= category.equals(sessionCategory) ? "selected" : ""%>><%= category%></option>
@@ -214,7 +213,7 @@
                             <div class="col-md-3">
                                 <!-- Stock Filter -->
                                 <label>Stock:</label>
-                                <select id="stockFilter" name="stock" class="form-select">
+                                <select id="stockFilter" name="stock" class="form-select" onchange="this.form.submit()">
                                     <option value="All" <%= "All".equals(sessionStock) ? "selected" : ""%>>All</option>
                                     <option value="InStock" <%= "InStock".equals(sessionStock) ? "selected" : ""%>>In Stock</option>
                                     <option value="OutOfStock" <%= "OutOfStock".equals(sessionStock) ? "selected" : ""%>>Out of Stock</option>
@@ -223,7 +222,7 @@
                             <div class="col-md-3">
                                 <!-- Rows Filter -->
                                 <label>Show Rows:</label>
-                                <select id="rowCount" name="rows" class="form-select">
+                                <select id="rowCount" name="rows" class="form-select" onchange="this.form.submit()">
                                     <option value="15" <%= "15".equals(sessionRows) ? "selected" : ""%>>15</option>
                                     <option value="30" <%= "30".equals(sessionRows) ? "selected" : ""%>>30</option>
                                     <option value="50" <%= "50".equals(sessionRows) ? "selected" : ""%>>50</option>
@@ -349,8 +348,7 @@
             <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <form id="addItemForm" method="post" enctype="multipart/form-data" action="AddItemsServlet"
-                              onsubmit="return validateAddItemForm();" autocomplete="off">
+                        <form id="addItemForm" method="post" enctype="multipart/form-data" action="AddItemsServlet" autocomplete="off">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -401,7 +399,7 @@
                                         }
                                     %>
                                     <label class="form-label">Category</label> <select class="form-control" name="category"
-                                                                                       id="category" onchange="toggleCustomCategory();" required>
+                                                                                       id="category" style="cursor: pointer;" onchange="toggleCustomCategory();" required>
                                         <option value="">Select category...</option>
                                         <% for (String cat : mergedCategories) {%>
                                         <option value="<%=cat%>"><%=cat%></option>
@@ -506,6 +504,7 @@
         <!-- Set default context path (staff/) -->
         <script> var contextPath = "<%=request.getContextPath()%>";</script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>
+        <script src="<%= request.getContextPath()%>/assets/js/ap_item_validate.js"></script>
         <!-- /JavaScript Import -->
     </body>
 </html>

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Map page names to their corresponding sidebar link IDs.
     var pageMap = {
         "index.jsp": "index-link",
-        "item.jsp": "shop-link",
+        "items": "shop-link",
         "about.jsp": "about-link",
         "services.jsp": "services-link",
         "contact.jsp": "contact-link"

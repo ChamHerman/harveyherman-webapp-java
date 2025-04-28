@@ -13,9 +13,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order Management - HarveyHerman</title>
+        <jsp:include page="/user/head.jsp" />
+        <title>Order Management - Staff</title>
 
         <!-- Bootstrap CSS Side -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">

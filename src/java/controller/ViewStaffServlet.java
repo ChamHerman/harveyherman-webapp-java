@@ -50,7 +50,7 @@ public class ViewStaffServlet extends HttpServlet {
                 response.sendRedirect(contextPath + "/staff/ap_staff.jsp?viewData=" + encodedMessage);
             }
         } else {
-            json = "ERROR: " + message.replace("\"", "\\\"");
+            json = "Error: " + message.replace("\"", "\\\"");
             encodedMessage = URLEncoder.encode(json, "UTF-8");
             if (servletPath.contains("/manager/")) {
                 response.sendRedirect(contextPath + "/manager/ap_staff.jsp?message=" + encodedMessage);

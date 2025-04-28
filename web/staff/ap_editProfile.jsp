@@ -4,8 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <jsp:include page="/user/head.jsp" />
         <title>Edit Profile - Staff</title>
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -18,48 +17,48 @@
     <body>
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
-        
+
         <!-- Main Content -->
         <div class="main-content">
             <div class="container">
                 <div class="profile-card">
                     <h2 class="profile-title">Edit Profile</h2>
-                    <% if (request.getParameter("error") != null) { %>
+                    <% if (request.getAttribute("error") != null) {%>
                     <div class="alert alert-danger">
                         <%= request.getAttribute("error")%>
                     </div>
                     <% } %>
-                    
+
                     <%
                         if (loggedInStaff != null) {
                     %>
                     <form action="<%= request.getContextPath()%>/staff/EditStaffServlet" method="post" autocomplete="off">
                         <div class="form-group">
                             <label for="fullname">Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= loggedInStaff.getFullname() %>" required autocomplete="off">
+                            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= loggedInStaff.getFullname()%>" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<%= loggedInStaff.getEmail() %>" required autocomplete="off">
+                            <input type="email" class="form-control" id="email" name="email" value="<%= loggedInStaff.getEmail()%>" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="contactNumber">Contact Number</label>
-                            <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= loggedInStaff.getContactNumber() != null ? loggedInStaff.getContactNumber() : "" %>" autocomplete="off">
+                            <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= loggedInStaff.getContactNumber() != null ? loggedInStaff.getContactNumber() : ""%>" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"><%= loggedInStaff.getAddress() != null ? loggedInStaff.getAddress() : "" %></textarea>
+                            <textarea class="form-control" id="address" name="address" rows="3" autocomplete="off"><%= loggedInStaff.getAddress() != null ? loggedInStaff.getAddress() : ""%></textarea>
                         </div>
                         <div class="form-group">
                             <label for="position">Position</label>
-                            <input type="text" class="form-control" id="position" name="position" value="<%= loggedInStaff.getPosition() %>" readonly autocomplete="off">
+                            <input type="text" class="form-control" id="position" name="position" value="<%= loggedInStaff.getPosition()%>" readonly autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="gender">Gender</label>
                             <select class="form-control" id="gender" name="gender" autocomplete="off">
-                                <option value="Male" <%= "Male".equals(loggedInStaff.getGender()) ? "selected" : "" %>>Male</option>
-                                <option value="Female" <%= "Female".equals(loggedInStaff.getGender()) ? "selected" : "" %>>Female</option>
-                                <option value="Other" <%= "Other".equals(loggedInStaff.getGender()) ? "selected" : "" %>>Other</option>
+                                <option value="Male" <%= "Male".equals(loggedInStaff.getGender()) ? "selected" : ""%>>Male</option>
+                                <option value="Female" <%= "Female".equals(loggedInStaff.getGender()) ? "selected" : ""%>>Female</option>
+                                <option value="Other" <%= "Other".equals(loggedInStaff.getGender()) ? "selected" : ""%>>Other</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -67,15 +66,15 @@
                             <a href="<%= request.getContextPath()%>/staff/ap_profile.jsp" class="btn btn-outline-secondary">Cancel</a>
                         </div>
                     </form>
-                    <% } else { %>
+                    <% } else {%>
                     <div class="alert alert-danger">
                         You are not logged in. Please <a href="<%= request.getContextPath()%>/staff/ap_login.jsp">login</a> to edit your profile.
                     </div>
-                    <% } %>
+                    <% }%>
                 </div>
             </div>
         </div>
-        
+
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%=request.getContextPath()%>/assets/js/validateForm.js"></script>
     </body>

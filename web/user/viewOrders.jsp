@@ -77,7 +77,7 @@
         <!-- /Hero Section -->
 
         <!-- Delivery Orders -->
-        <div class="container mt-4">
+        <div class="container mt-4" style="margin-bottom: 10rem;">
 
             <%
                 List<Orders> displayOrders = new ArrayList<>();
@@ -146,7 +146,7 @@
                         %>
                         <tr>
                             <td style="display: flex; align-items: center;">
-                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Item Image" style="width: 30%; height: 30%; object-fit: cover; border-radius: 8px; margin-right: 2rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.13); ">
+                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Item Image" style="max-width: 20%; max-height: 20%; object-fit: cover; margin-right: 2rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.2); ">
                                 <a class="item-link" href="details?itemId=<%=item.getItemId()%>">
                                     <%= item.getName()%>
                                 </a>
@@ -162,8 +162,32 @@
                     </tbody>
                     <tfoot>
                         <tr class="order-total-row">
-                            <td colspan="3" style="text-align:right;">Total:</td>
+                            <td colspan="3" style="text-align:right;">Subtotal:</td>
                             <td style="text-align: center;">RM <%= String.format("%.2f", total)%></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:right;">Shipping Fee:</td>
+                            <td style="text-align: center;">
+                                <%
+                                    double shippingFee = total < 1000.0 ? 25.0 : 0.0;
+                                %>
+                                RM <%= String.format("%.2f", shippingFee) %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:right;">Discount:</td>
+                            <td style="text-align: center;">
+                                <%
+                                    // The order total stored in DB already includes shipping and discount
+                                    double orderTotal = order.getTotalAmount().doubleValue();
+                                    double discount = (total + shippingFee) - orderTotal;
+                                %>
+                                -RM <%= String.format("%.2f", discount) %>
+                            </td>
+                        </tr>
+                        <tr class="order-total-row">
+                            <td colspan="3" style="text-align:right;">Total:</td>
+                            <td style="text-align: center;">RM <%= String.format("%.2f", orderTotal)%></td>
                         </tr>
                     </tfoot>
                 </table>

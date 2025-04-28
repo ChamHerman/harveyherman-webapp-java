@@ -10,10 +10,12 @@
 <html lang="en">
     <head>
         <jsp:include page="/user/head.jsp" />
-        <title>Customer Management - Manager</title>
+        <title>User Management - Manager</title>
+        <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="<%= request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/ap_index.css" rel="stylesheet">
         <link href="<%= request.getContextPath()%>/assets/css/ap_user.css" rel="stylesheet">
     </head>
@@ -85,7 +87,7 @@
                     int endIdx = Math.min(startIdx + rowCount, totalUsers);
                     List<UserData> limitedUsers = (startIdx < endIdx) ? filteredUsers.subList(startIdx, endIdx) : new ArrayList<UserData>();
                 %>
-
+                <h2 style="text-align: center; margin-bottom: 2rem;">User Management</h2>
                 <!-- Dashboard Overview -->
                 <div class="dashboard-summary">
                     <div class="summary-box fs-6">Total Users: <%= allUsers.size()%></div>
@@ -151,7 +153,7 @@
                             </td>
                         </tr>
                         <% }
-                    } %>
+                            } %>
                     </tbody>
                 </table>
 
@@ -178,7 +180,7 @@
 
             </div>
         </div>
-        
+
         <!-- View User Modal -->
         <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -222,7 +224,7 @@
                                 <div class="col-sm-4 text-end fw-bold">Created Date:</div>
                                 <div class="col-sm-8" id="viewCreatedDate"></div>
                             </div>
-                            
+
                             <h4 class="mb-4 mt-4 text-center">Login Information</h4>
                             <div class="row mb-2">
                                 <div class="col-sm-4 text-end fw-bold">Login ID:</div>
@@ -252,7 +254,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Result Message Modal -->
         <div class="modal fade" id="userResultMessageModal" tabindex="-1" aria-labelledby="userResultMessageModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -270,7 +272,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Loading Modal -->
         <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -284,7 +286,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Delete User Confirmation Modal -->
         <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -295,7 +297,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Are you sure you want to delete this user? This action cannot be undone.</p>
-                        <form id="deleteUserForm" method="post" action="<%= request.getContextPath() %>/manager/DeleteUsersServlet" autocomplete="off">
+                        <form id="deleteUserForm" method="post" action="<%= request.getContextPath()%>/manager/DeleteUsersServlet" autocomplete="off">
                             <input type="hidden" id="deleteUserId" name="userId" value="" autocomplete="off">
                         </form>
                     </div>
@@ -306,9 +308,9 @@
                 </div>
             </div>
         </div>
-        
+
         <script>
-            var contextPath = '<%= request.getContextPath() %>';
+            var contextPath = '<%= request.getContextPath()%>';
         </script>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_user.js"></script>

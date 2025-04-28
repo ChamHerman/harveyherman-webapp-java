@@ -11,9 +11,11 @@
     <head>
         <jsp:include page="/user/head.jsp" />
         <title>Staff Management - Manager</title>
+        <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="<%= request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/ap_index.css" rel="stylesheet">
         <link href="<%= request.getContextPath()%>/assets/css/ap_staff.css" rel="stylesheet">
     </head>
@@ -22,7 +24,7 @@
         <div class="main-content flex-grow-1">
             <div class="container">
 
-                <%            
+                <%
                     StaffDataDAO staffDataDAO = null;
                     try {
                         InitialContext context = new InitialContext();
@@ -86,12 +88,11 @@
                     int endIdx = Math.min(startIdx + rowCount, totalStaff);
                     List<StaffData> limitedStaff = (startIdx < endIdx) ? filteredStaff.subList(startIdx, endIdx) : new ArrayList<StaffData>();
                 %>
-
+                <h2 style="text-align: center; margin-bottom: 2rem;">Staff Management</h2>
                 <!-- Dashboard Overview -->
-                <div class="dashboard-summary">
-                    <div class="summary-box fs-6">Total Staff: <%= allStaff.size()%></div>
+                <div class="dashboard-summary row">
+                    <div class="summary-box fs-6 col-12">Total Staff: <%= allStaff.size()%></div>
                 </div>
-
                 <!-- Filter/Search -->
                 <form method="GET" action="ap_staff.jsp">
                     <div class="filter-section row mb-3">
@@ -154,7 +155,7 @@
                             </td>
                         </tr>
                         <% }
-                    } %>
+                            } %>
                     </tbody>
                 </table>
 
@@ -181,7 +182,7 @@
 
             </div>
         </div>
-        
+
         <!-- View Staff Modal -->
         <div class="modal fade" id="viewStaffModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -225,7 +226,7 @@
                                 <div class="col-sm-4 text-end fw-bold">Created Date:</div>
                                 <div class="col-sm-8" id="viewCreatedDate"></div>
                             </div>
-                            
+
                             <h4 class="mb-4 mt-4 text-center">Login Information</h4>
                             <div class="row mb-2">
                                 <div class="col-sm-4 text-end fw-bold">Login ID:</div>
@@ -255,7 +256,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Result Message Modal -->
         <div class="modal fade" id="staffResultMessageModal" tabindex="-1" aria-labelledby="staffResultMessageModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -273,7 +274,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Loading Modal -->
         <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -287,7 +288,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Delete Staff Confirmation Modal -->
         <div class="modal fade" id="deleteStaffModal" tabindex="-1" aria-labelledby="deleteStaffModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -298,7 +299,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Are you sure you want to delete this staff member? This action cannot be undone.</p>
-                        <form id="deleteStaffForm" method="post" action="<%= request.getContextPath() %>/manager/DeleteStaffServlet">
+                        <form id="deleteStaffForm" method="post" action="<%= request.getContextPath()%>/manager/DeleteStaffServlet">
                             <input type="hidden" id="deleteStaffId" name="staffId" value="">
                         </form>
                     </div>
@@ -309,9 +310,9 @@
                 </div>
             </div>
         </div>
-        
+
         <script>
-            var contextPath = '<%= request.getContextPath() %>';
+            var contextPath = '<%= request.getContextPath()%>';
         </script>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_staff.js"></script>
