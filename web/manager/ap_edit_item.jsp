@@ -62,7 +62,7 @@
                         }
                     }
                 %>
-                <form id="editItemForm" method="post" enctype="multipart/form-data" action="<%= request.getContextPath()%>/manager/EditItemsServlet" onsubmit="return validateEditItemForm();">
+                <form id="editItemForm" method="post" enctype="multipart/form-data" action="<%= request.getContextPath()%>/manager/EditItemsServlet">
                     <input type="hidden" name="itemId" value="<%= item.getItemId()%>">
                     <!-- Show Item ID above the form -->
                     <div class="mb-3">
@@ -107,7 +107,7 @@
                     <!-- Category -->
                     <div class="mb-3">
                         <label class="form-label">Category</label>
-                        <select class="form-select" name="category" id="category" onchange="toggleCustomCategory();">
+                        <select class="form-select" name="category" id="category" style="cursor: pointer;" onchange="toggleCustomCategory();">
                             <option value="">Select category...</option>
                             <%
                                 for (String cat : defaultCategories) {
@@ -140,5 +140,6 @@
         </div>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_item.js"></script>
+        <script src="<%= request.getContextPath()%>/assets/js/ap_item_validate.js"></script>
     </body>
 </html>
