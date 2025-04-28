@@ -173,6 +173,11 @@
                                         <option value="delivery" selected>Delivery</option>
                                     </select>
                                     <%
+                                    } else if ("delivered".equals(status)) {
+                                    %>        <select name="status" class="form-select form-select-sm me-2" disabled>
+                                        <option value="delivered" selected>Delivered</option>
+                                    </select>
+                                    <%
                                         }
                                     %>
 

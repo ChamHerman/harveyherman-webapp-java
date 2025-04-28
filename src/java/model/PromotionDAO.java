@@ -39,6 +39,7 @@ public class PromotionDAO {
             return em.createQuery("SELECT p FROM Promotion p WHERE p.promotionCode = :promotionCode AND p.dbstatus= 'active'", Promotion.class)
                     .setParameter("promotionCode", code)
                     .getSingleResult();
+            
         } catch (NoResultException e) {
             return null;
         }

@@ -170,12 +170,12 @@
                                         <span class="text-black">Subtotal</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">RM <span id="cartSubtotal"><%= cartSubtotal%></span></strong>
+                                        <strong class="text-black">RM <span id="cartSubtotal"><%= String.format("%.2f", cartSubtotal)%></span></strong>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-black">Delivery Fee</span>
+                                        <span class="text-black">(+) Delivery Fee</span>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <strong class="text-black">RM <span id="deliveryFee"><%= deliveryFee%></span></strong>
@@ -183,10 +183,12 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-black">Discount</span>
+                                        
+                                        <span class="text-black">(-) Discount (%)</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">RM <span id="discount"><%= discount%></span></strong> 
+                                        <strong class="text-black">RM <span id="discount"><%= String.format("%.2f", discount)%></span> 
+                                        </strong>
                                     </div>
                                 </div>
 
@@ -195,7 +197,7 @@
                                         <span class="text-black">Total</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">RM <span id="cartTotal"><%= cartTotal%></span></strong>
+                                        <strong class="text-black">RM <span id="cartTotal"><%= String.format("%.2f", cartTotal)%></span></strong>
                                     </div>
                                 </div>
 

@@ -85,7 +85,7 @@
                     int endIdx = Math.min(startIdx + rowCount, totalUsers);
                     List<UserData> limitedUsers = (startIdx < endIdx) ? filteredUsers.subList(startIdx, endIdx) : new ArrayList<UserData>();
                 %>
-
+                <h2 style="text-align: center; margin-bottom: 2rem;">User Management</h2>
                 <!-- Dashboard Overview -->
                 <div class="dashboard-summary">
                     <div class="summary-box fs-6">Total Users: <%= allUsers.size()%></div>
