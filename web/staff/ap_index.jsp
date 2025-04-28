@@ -18,6 +18,17 @@
         int productSold = mdDAO.getProductSold();
         int activeUsers = mdDAO.getActiveUser();
         double reviewRating = 5;
+        
+        String displayTotalSales;
+        if (totalSales >= 1000000000.0 ) { 
+            double bil = totalSales / 1000000000;
+            displayTotalSales = "RM " + String.format("%.2f", bil) + " billion";
+        } else if (totalSales >= 1000000.0 && totalSales < 1000000000.0) {
+            double mil = totalSales / 1000000 ;
+            displayTotalSales = "RM "+ String.format("%.2f", mil) + " million";
+        } else { 
+            displayTotalSales = "RM " + totalSales;
+        }
 
         int cash = mdDAO.getPaymentMethodCash();
         int debit = mdDAO.getPaymentMethodDebit();
@@ -120,7 +131,7 @@
                     <div class="summary-label">Total Sales</div>
                     <div class="summary-value" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         accesskey="" title="The total amount of products sold by the company">
-                        RM <%= totalSales%>
+                        <%= displayTotalSales %>
                     </div>
                 </div>
                 <div class="summary-box">
