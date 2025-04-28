@@ -1,11 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
     <head>
@@ -18,6 +11,71 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <style>
+            .shop-hero {
+                background: linear-gradient(120deg, #3b5d50 60%, #f9bf29 100%);
+                padding: 5rem 0 3rem 0;
+                position: relative;
+                overflow: hidden;
+                margin-top: 120px;
+            }
+            .shop-hero h1 {
+                color: #fff !important;
+                font-weight: 800;
+                letter-spacing: 0.01em;
+                margin-bottom: 0.7rem;
+            }
+            .shop-hero .shop-hero-words {
+                color: #fff;
+                font-size: 1.25rem;
+                font-weight: 500;
+                margin-bottom: 1.5rem;
+                letter-spacing: 0.03em;
+                opacity: 0.92;
+                animation: shopFadeInUp 1.2s cubic-bezier(.23,1.01,.32,1) 0.2s;
+            }
+            .shop-hero .shop-hero-anim {
+                position: absolute;
+                right: 40px;
+                width: 60%;
+                max-width: 300px;
+                min-width: 300px;
+                height: auto;
+                opacity: 0.20;
+                z-index: 1;
+                animation: shopFloat 4s ease-in-out infinite alternate;
+                pointer-events: none;
+            }
+            @keyframes shopFadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes shopFloat {
+                from {
+                    transform: translateY(-80px);
+                }
+                to {
+                    transform: translateY(-100px);
+                }
+            }
+            @media (max-width: 991px) {
+                .shop-hero .shop-hero-anim {
+                    right: 10px;
+                    top: 60%;
+                    width: 55%;
+                    max-width: 180px;
+                    min-width: 90px;
+                    opacity: 0.13;
+                }
+            }
+        </style>
     </head>
 
     <body>
@@ -25,28 +83,25 @@
         <!-- Header -->
         <jsp:include page="header.jsp" />
 
-        <!-- Start Hero Section -->
-        <div class="hero" style="padding: 2rem 0;">
+        <!-- Hero Section (Services Page) -->
+        <div class="shop-hero" style="margin-top: 120px;">
             <div class="container">
-                <div class="row justify-content-between align-items-center" style="min-height: 420px;">
+                <div class="row justify-content-between align-items-center">
                     <div class="col-lg-6">
                         <div class="intro-excerpt">
                             <h1>Our Services</h1>
-                            <p class="mb-4">At HarveyHerman, we go beyond just selling home appliances and accessories. Our comprehensive services are designed to ensure a seamless, worry-free experience from the moment you browse our store to long after your purchase. We are committed to making your home more comfortable, stylish, and efficient.</p>
-                            <p><a href="<%=request.getContextPath()%>/user/item.jsp" class="btn btn-secondary me-2">Shop Now</a><a href="<%=request.getContextPath()%>/user/contact.jsp" class="btn btn-white-outline">Contact Support</a></p>
+                            <div class="shop-hero-words">
+                                Our comprehensive services are designed to ensure a seamless, worry-free experience from the moment you browse our store to long after your purchase. We are committed to making your home more comfortable, stylish, and efficient.
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 d-flex align-items-center justify-content-center" style="height: 100%;">
-                        <div class="hero-img-wrap d-flex align-items-center justify-content-center w-100" style="height: 100%; min-height: 150px;">
-                            <img src="<%=request.getContextPath()%>/assets/images/services-hero.png" class="img-fluid" alt="Our Services" style="max-width: 80%; height: auto; display: block; margin-right: 2rem; box-shadow: 0 8px 32px rgba(34,84,61,0.08); border-radius: 18px; background: #e8fbe6; padding: 1rem;">
-                        </div>
+                    <div class="col-lg-6 d-none d-lg-block position-relative">
+                        <img src="<%=request.getContextPath()%>/assets/images/services-hero.svg" class="shop-hero-anim" alt="Services Animation" />
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End Hero Section -->
-
-
+        <!-- /Hero Section -->
 
         <!-- Start Why Choose Us Section -->
         <div class="why-choose-section">

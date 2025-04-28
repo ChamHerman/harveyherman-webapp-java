@@ -37,6 +37,16 @@
                 <li class="user-dropdown-container">
                     <a class="nav-link" href="CartServlet">
                         <img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart">
+                        <%
+                            // Get cart item count from session
+                            int cartCount = 0;
+                            java.util.List cartItems = (java.util.List) session.getAttribute("cartItems");
+                            if (cartItems != null) {
+                                cartCount = cartItems.size();
+                            }
+                            String displayCount = cartCount > 99 ? "99+" : String.valueOf(cartCount);
+                        %>
+                        <span class="cart-badge" id="cart-badge"><%= cartCount > 0 ? displayCount : "0"%></span>
                     </a>
                     <div class="user-dropdown">
                         <a href="CartServlet">Cart</a>
@@ -50,8 +60,8 @@
                     </a>
                 </li>
                 <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
-                <% }%>
-                
+                        <% }%>
+
             </ul>
         </div>
     </div>
