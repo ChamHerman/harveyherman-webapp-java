@@ -12,14 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
 import model.Orders;
 import model.OrderDAO;
 
-/**
- *
- * @author user
- */
 @WebServlet(name = "OrderServlet", urlPatterns = {"/manager/OrderServlet", "/staff/OrderServlet"})
 public class OrderServlet extends HttpServlet {
 

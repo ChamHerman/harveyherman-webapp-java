@@ -15,14 +15,9 @@ import java.util.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.ejb.EJB;
-import model.ReportDAO;
 
 @WebServlet(name="GeneratingReportServlet",urlPatterns={"/manager/GeneratingReportServlet"})
 public class GeneratingReportServlet extends HttpServlet {
-    
-    //@EJB
-    //private ReportDAO reportDAO;
     
     @PersistenceContext(unitName = "HarveyHermanPU")
     private EntityManager em;

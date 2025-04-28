@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author kaisheng
  */
 package controller;
 
@@ -14,10 +14,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.Promotion;
-/**
- *
- * @author User
- */
+
 @WebServlet(name="UpdatePromotionServlet",urlPatterns={"/manager/UpdatePromotionServlet","/staff/UpdatePromotionServlet"})
 public class UpdatePromotionServlet extends HttpServlet {
     @EJB
