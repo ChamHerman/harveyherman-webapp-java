@@ -1,5 +1,8 @@
--- Host: localhost    Database: harveyhermandb
--- Server version	8.4.4
+-- Host: localhost:3306    
+-- Server: MySQL 8.4.4
+-- username: root
+-- password: root
+-- Database: harveyhermandb
 
 DROP DATABASE IF EXISTS harveyhermandb;
 CREATE DATABASE harveyhermandb;
@@ -15,7 +18,8 @@ CREATE TABLE UserData (
     address TEXT,
     birth_date DATE,
 	gender VARCHAR(255) NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active'
 );
 
 -- UserLogin: Stores customer login credentials
@@ -27,6 +31,7 @@ CREATE TABLE UserLogin (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     last_login TIMESTAMP DEFAULT NULL,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
 );
 
@@ -40,7 +45,8 @@ CREATE TABLE Item (
     category VARCHAR(255),
     image_url VARCHAR(255),
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active'
 );
 
 -- Promotion: Stores promotional codes and discounts
@@ -52,7 +58,8 @@ CREATE TABLE Promotion (
     minimum_purchase DECIMAL(25,2),
     description TEXT,
     start_date DATE,
-    end_date DATE
+    end_date DATE,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active'
 );
 
 -- Orders: Tracks customer orders
@@ -64,6 +71,7 @@ CREATE TABLE Orders (
     status ENUM('packaging', 'shipping', 'delivery', 'delivered') DEFAULT 'packaging',
     promotion_id VARCHAR(255) DEFAULT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE,
     FOREIGN KEY (promotion_id) REFERENCES Promotion(promotion_id) ON DELETE SET NULL
 );
@@ -75,6 +83,7 @@ CREATE TABLE OrderDetails (
     item_id VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
     price_per_item DECIMAL(25,2) NOT NULL,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
 );
@@ -88,6 +97,7 @@ CREATE TABLE Delivery (
     receiver_address TEXT NOT NULL,
 	delivered_date TIMESTAMP NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE
 );
 
@@ -98,6 +108,7 @@ CREATE TABLE Cart (
     user_id VARCHAR(255) NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
 );
 
@@ -109,6 +120,7 @@ CREATE TABLE Cart_Item (
     subtotal DECIMAL(25,2) NOT NULL,
     cart_id VARCHAR(255) NOT NULL,
     item_id VARCHAR(255) NOT NULL,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (cart_id) REFERENCES Cart(cart_id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES Item(item_id) ON DELETE CASCADE
 );
@@ -122,7 +134,8 @@ CREATE TABLE StaffData (
     address TEXT,
     position VARCHAR(255) NOT NULL,
 	gender VARCHAR(255) NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active'
 );
 
 -- StaffLogin: Stores admin portal login information
@@ -133,6 +146,7 @@ CREATE TABLE StaffLogin (
     last_login TIMESTAMP DEFAULT NULL,
     staff_role ENUM('staff', 'manager') NOT NULL,
 	staff_id VARCHAR(255) UNIQUE,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active',
     FOREIGN KEY (staff_id) REFERENCES StaffData(staff_id) ON DELETE CASCADE
 );
 
@@ -142,24 +156,12 @@ CREATE TABLE Report (
     report_date DATE NOT NULL,
     report_type VARCHAR(255) NOT NULL,
     total_sales DECIMAL(25,2) DEFAULT 0.00,
-    description TEXT
+    description TEXT,
+	dbstatus ENUM('active', 'deleted') DEFAULT 'active'
 );
 
-ALTER TABLE UserData ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE UserLogin ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Item ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Promotion ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Orders ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE OrderDetails ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Delivery ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Cart ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Cart_Item ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE StaffData ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE StaffLogin ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-ALTER TABLE Report ADD COLUMN dbstatus ENUM('active', 'deleted') DEFAULT 'active';
-
+-- Default manager login details
+-- username: admin
+-- password: admin
 INSERT INTO `staffdata` (`staff_id`,`fullname`,`email`,`contact_number`,`address`,`position`,`gender`) VALUES ('S000','Manager','manager@harveyherman.my','60116969232','721 Mya Brook, Donavonfurt, Alaska - 03304, Dominica','manager','Other');
 INSERT INTO `stafflogin` (`login_id`,`username`,`password`,`last_login`,`staff_role`,`staff_id`,`dbstatus`) VALUES ('L000','admin','admin',NULL,'manager','S000','active');
-
-
-dbstatus ENUM('active', 'deleted') DEFAULT 'active',
