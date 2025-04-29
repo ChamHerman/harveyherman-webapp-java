@@ -58,8 +58,7 @@ public class UserDeleteAccountServlet extends HttpServlet {
             session.removeAttribute("loggedInUser");
 
             session.setAttribute("deleteSuccess", Boolean.TRUE);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/user/login.jsp");
 
         } catch (Exception e) {
             System.out.println("Error deleting account: " + e.getMessage());
