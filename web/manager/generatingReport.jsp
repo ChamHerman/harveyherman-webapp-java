@@ -88,7 +88,7 @@
             <!-- Side Bar -->
             <%@ include file="ap_sidebar.jsp" %>
             <div class="main-content">
-                <h2 class="text-center text-primary">Generate Sales Report</h2>
+                <h2 style="text-align: center; margin-bottom: 1rem;">Generate Sales Reports</h2>
                 <p class="text-center">Select a report type and an end date to generate the report. The start date will be auto-calculated.</p>
                 <%            String successMessage = (String) request.getAttribute("successMessage");
                     String errorMessage = (String) request.getAttribute("errorMessage");

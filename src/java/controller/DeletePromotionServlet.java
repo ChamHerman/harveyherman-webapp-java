@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author kaisheng
  */
 package controller;
 
@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
 
 @WebServlet(name="DeletePromotionServlet",urlPatterns={"/manager/DeletePromotionServlet","/staff/DeletePromotionServlet"})
 public class DeletePromotionServlet extends HttpServlet {
@@ -18,6 +17,7 @@ public class DeletePromotionServlet extends HttpServlet {
     @EJB
     private PromotionDAO promotionDAO;
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String servletPath = request.getServletPath();

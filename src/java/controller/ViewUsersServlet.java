@@ -110,7 +110,9 @@ public class ViewUsersServlet extends HttpServlet {
             sb.append("\"loginId\": \"").append(userLogin.getLoginId()).append("\",");
             sb.append("\"username\": \"").append(userLogin.getUsername().replace("\"", "\\\"")).append("\",");
             sb.append("\"challengeQuestion\": \"").append(userLogin.getChallengeQuestion().replace("\"", "\\\"")).append("\",");
-            sb.append("\"answer\": \"").append(userLogin.getAnswer().replace("\"", "\\\"")).append("\",");
+            if (request.getServletPath().contains("/manager/")) {
+                sb.append("\"answer\": \"").append(userLogin.getAnswer().replace("\"", "\\\"")).append("\",");
+            }
             sb.append("\"lastLogin\": \"").append(lastLoginStr).append("\"");
             sb.append("}");
             sendJsonResponse(request, response, true, null, sb.toString());

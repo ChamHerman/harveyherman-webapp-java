@@ -66,6 +66,11 @@ public class DeleteStaffServlet extends HttpServlet {
             
             StaffLogin staffLogin = staffLoginDAO.findByStaffId(staffId);
             
+            if (staffLogin.getLoginId().equalsIgnoreCase("L000")) {
+                sendJsonResponse(request, response, false, "You cannot delete a default account");
+                return;
+            }
+            
             if (staffLogin != null) {
                 staffLoginDAO.delete(staffLogin.getLoginId());
             }

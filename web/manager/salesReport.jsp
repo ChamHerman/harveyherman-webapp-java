@@ -21,7 +21,7 @@
             <!-- Side Bar -->
             <%@ include file="ap_sidebar.jsp" %>
             <div class="main-content">
-                <h2 class="text-center text-primary">Top 10 Sales Report</h2>
+                <h2 style="text-align: center; margin-bottom: 1rem;">Top 10 Sales Report</h2>
                 <p class="text-center">Select a date range to view the top 10 best-selling products.</p>
 
                 <!-- Date Selection Form -->

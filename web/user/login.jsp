@@ -65,10 +65,10 @@
     </body>
     <!-- Notification Popup -->
     <%
-        Boolean resetPasswordSuccess = (Boolean) request.getAttribute("resetPasswordSuccess");
-        Boolean registerSuccess = (Boolean) request.getAttribute("registerSuccess");
-        Boolean deleteSuccess = (Boolean) request.getAttribute("deleteSuccess");
-        
+        Boolean resetPasswordSuccess = (Boolean) session.getAttribute("resetPasswordSuccess");
+        Boolean registerSuccess = (Boolean) session.getAttribute("registerSuccess");
+        Boolean deleteSuccess = (Boolean) session.getAttribute("deleteSuccess");
+
         if (resetPasswordSuccess != null && resetPasswordSuccess) {
     %>
     <div id="notification-popup">
@@ -89,7 +89,7 @@
     <%
         }
 
-        session.removeAttribute("registerSuccess");
+        session.removeAttribute("resetPasswordSuccess");
         session.removeAttribute("registerSuccess");
         session.removeAttribute("deleteSuccess");
     %>
@@ -110,7 +110,7 @@
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });
-        
+
         document.addEventListener('DOMContentLoaded', function () {
             var popup = document.getElementById('notification-popup');
             if (popup) {

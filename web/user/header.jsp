@@ -28,7 +28,7 @@
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <% if (session.getAttribute("loggedInUser") != null) {%>
                 <li class="user-dropdown-container">
-                    <a class="nav-link" href="#"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
+                    <a class="nav-link" href="profile.jsp"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
                     <div class="user-dropdown">
                         <a href="profile.jsp">View User Details</a>
                         <a href="UserLogoutServlet">Log Out</a>
@@ -37,6 +37,16 @@
                 <li class="user-dropdown-container">
                     <a class="nav-link" href="CartServlet">
                         <img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart">
+                        <%
+                            // Get cart item count from session
+                            int cartCount = 0;
+                            java.util.List cartItems = (java.util.List) session.getAttribute("cartItems");
+                            if (cartItems != null) {
+                                cartCount = cartItems.size();
+                            }
+                            String displayCount = cartCount > 99 ? "99+" : String.valueOf(cartCount);
+                        %>
+                        <span class="cart-badge" id="cart-badge"><%= cartCount > 0 ? displayCount : "0"%></span>
                     </a>
                     <div class="user-dropdown">
                         <a href="CartServlet">Cart</a>
@@ -50,8 +60,8 @@
                     </a>
                 </li>
                 <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
-                <% }%>
-                
+                        <% }%>
+
             </ul>
         </div>
     </div>
@@ -104,6 +114,26 @@
             }
         });
     })();
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var path = window.location.pathname.split("/").pop().split("?")[0];
+
+        // Map page names to their corresponding sidebar link IDs.
+        var pageMap = {
+            "index.jsp": "index-link",
+            "items": "shop-link",
+            "about.jsp": "about-link",
+            "services.jsp": "services-link",
+            "contact.jsp": "contact-link"
+        };
+
+        var link = document.getElementById(pageMap[path]);
+        if (link) {
+            link.parentElement.classList.add("active");
+        }
+    });
 </script>
 
 

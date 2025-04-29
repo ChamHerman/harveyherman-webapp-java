@@ -129,7 +129,6 @@ public class ItemsServlet extends HttpServlet {
         List<Item> itemsToShow = new ArrayList<>();
         if ("topSelling".equals(sortBy)) {
             List<String> topSellingIds = itemDAO.getTopSellingItemIds(50);
-            System.out.println("Top selling IDs: " + topSellingIds);
             Set<String> added = new HashSet<>();
             for (String id : topSellingIds) {
                 for (Item i : items) {
@@ -146,7 +145,6 @@ public class ItemsServlet extends HttpServlet {
                     unsold.add(i);
                 }
             }
-            System.out.println("Unsold items size: " + unsold.size());
             unsold.sort((a, b) -> {
                 if (a.getStockQuantity() > 0 && b.getStockQuantity() <= 0) {
                     return -1;
@@ -213,7 +211,7 @@ public class ItemsServlet extends HttpServlet {
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("totalItems", totalItems);
-        // Also pass filters back for UI
+        // Also pass filters back
         request.setAttribute("search", search);
         request.setAttribute("categories", categories);
         request.setAttribute("stock", stock);
@@ -221,7 +219,7 @@ public class ItemsServlet extends HttpServlet {
         request.setAttribute("maxPrice", maxPrice);
         request.setAttribute("sortBy", sortBy);
         request.setAttribute("sortOrder", sortOrder);
-        // Pass all categories for filter rendering
+        // Pass all categories
         List<String> allCategories = itemDAO.getAllCategories();
         request.setAttribute("allCategories", allCategories);
         // Forward to JSP

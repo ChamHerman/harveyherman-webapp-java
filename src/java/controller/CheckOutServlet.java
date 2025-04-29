@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/**
+ *
+ * @author kaibin
  */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,16 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Cart;
-import model.CartDAO;
 import model.CartItem;
-import model.CartItemDAO;
 import model.UserData;
-import model.UserDataDAO;
 
-/**
- *
- * @author user
- */
 @WebServlet(name = "CheckOutServlet", urlPatterns = {"/user/CheckOutServlet"})
 public class CheckOutServlet extends HttpServlet {
 

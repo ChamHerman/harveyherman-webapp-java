@@ -1,14 +1,14 @@
 .order-card {
     background: #f8f9fa;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     margin-bottom: 2rem;
-    padding: 1.5rem 2rem;
-    border-left: 5px solid #ffd700;
+    padding: 1.5rem 1.5rem;
+    border-left: 5px solid #3b5d50;
     transition: box-shadow 0.2s;
 }
 .order-card:hover {
-    box-shadow: 0 4px 16px rgba(56,161,105,0.13);
+    box-shadow: 0 4px 16px rgba(56,161,105,0.2);
 }
 
 .order-header-table,
@@ -41,7 +41,7 @@
 }
 .order-meta-table .meta-value {
     font-weight: 400;
-    color: #555;
+    color: rgba(0,0,0,0.8);
 }
 .order-meta-table .order-status {
     font-weight: bold;
@@ -94,6 +94,7 @@
     border-spacing: 0;
     box-shadow: 0 1px 4px rgba(0,0,0,0.03);
     font-size: 1rem;
+    border: 1px solid #3b5d50;
 }
 
 .order-table th, .order-table td {
@@ -105,7 +106,7 @@
     background: #3b5d50;
     color: #fff;
     font-weight: 600;
-    border-bottom: 2px solid #3b5d50;
+    border-bottom: 1px solid #3b5d50;
 }
 
 .order-table th.item-col {
@@ -128,8 +129,9 @@
 
 
 .order-table td {
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid rgba(59,93,80,0.2);
     vertical-align: middle;
+    color: rgba(0,0,0,0.8);
 }
 
 .order-total-row td {

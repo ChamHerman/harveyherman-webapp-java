@@ -44,14 +44,14 @@ public class AccessFilter implements Filter {
             "/user/details",
             "/user/login.jsp",
             "/user/register.jsp",
-            "/user/resetPassword.jsp",
             "/user/services.jsp",
             "/user/ResetPasswordServlet",
             "/user/UserLoginServlet",
             "/user/UserRegisterServlet",
             "/user/VerifyChallengeServlet",
             "/user/privacyPolicy.jsp",
-            "/user/termsConditions.jsp"
+            "/user/termsConditions.jsp",
+            "/user/whoareyou.jsp"
     );
 
     @Override
@@ -103,6 +103,23 @@ public class AccessFilter implements Filter {
             }
         }
 
+        // Special case: Allow access to resetPassword.jsp only if user passed challenge question
+        if (relativePath.equals("/user/resetPassword.jsp")) {
+            boolean passedChallengeQuestion = false;
+
+            if (session != null && session.getAttribute("resetPasswordLoginId") != null) {
+                passedChallengeQuestion = true;
+            }
+
+            if (!passedChallengeQuestion) {
+                httpResponse.sendRedirect(contextPath + "/user/challengeQuestion.jsp");
+                return;
+            }
+
+            chain.doFilter(request, response);
+            return;
+        }
+
         if (relativePath.startsWith("/user/")) {
             boolean isLoggedInAsUser = false;
 
@@ -114,7 +131,7 @@ public class AccessFilter implements Filter {
             }
 
             if (!isLoggedInAsUser) {
-                httpResponse.sendRedirect(contextPath + "/user/login.jsp");
+                httpResponse.sendRedirect(contextPath + "/user/whoareyou.jsp");
                 return;
             }
         }

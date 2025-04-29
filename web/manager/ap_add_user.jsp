@@ -17,7 +17,7 @@
             }
             .card-header {
                 color: #b5e7a0;
-                background-color: #1a1a1a;
+                background-color: #222222;
             }
         </style>
     </head>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="birthDate" class="form-label">Birth Date</label>
-                                    <input type="date" class="form-control" id="birthDate" name="birthDate" autocomplete="off">
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate" required autocomplete="off">
                                 </div>
                             </div>
 
@@ -72,7 +72,7 @@
 
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="2" autocomplete="off"></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="2" required autocomplete="off"></textarea>
                             </div>
 
                             <!-- Account Information Section -->

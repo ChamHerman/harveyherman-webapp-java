@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 d-none d-lg-block position-relative">
-                        <img src="<%=request.getContextPath()%>/assets/images/hero-anim.svg" class="shop-hero-anim" alt="Shop Animation" />
+                        <img src="<%=request.getContextPath()%>/assets/images/item-hero.svg" class="shop-hero-anim" alt="Shop Animation" />
                     </div>
                 </div>
             </div>

@@ -18,7 +18,6 @@ import model.Cart;
 import model.CartDAO;
 import model.CartItem;
 import model.CartItemDAO;
-import model.Promotion;
 import model.PromotionDAO;
 
 @WebServlet(name = "CartItemServlet", urlPatterns = {"/user/CartItemServlet"})

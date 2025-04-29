@@ -44,6 +44,69 @@
                 transform: translateX(-50%) translateY(100px);
                 bottom: 0;
             }
+
+            .shop-hero {
+                background: linear-gradient(120deg, #3b5d50 60%, #f9bf29 100%);
+                padding: 5rem 0 3rem 0;
+                position: relative;
+                overflow: hidden;
+                margin-top: 120px;
+            }
+            .shop-hero h1 {
+                color: #fff !important;
+                font-weight: 800;
+                letter-spacing: 0.01em;
+                margin-bottom: 0.7rem;
+            }
+            .shop-hero .shop-hero-words {
+                color: #fff;
+                font-size: 1.25rem;
+                font-weight: 500;
+                margin-bottom: 1.5rem;
+                letter-spacing: 0.03em;
+                opacity: 0.92;
+                animation: shopFadeInUp 1.2s cubic-bezier(.23,1.01,.32,1) 0.2s;
+            }
+            .shop-hero .shop-hero-anim {
+                position: absolute;
+                right: 40px;
+                width: 60%;
+                max-width: 300px;
+                min-width: 300px;
+                height: auto;
+                opacity: 0.20;
+                z-index: 1;
+                animation: shopFloat 4s ease-in-out infinite alternate;
+                pointer-events: none;
+            }
+            @keyframes shopFadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes shopFloat {
+                from {
+                    transform: translateY(-80px);
+                }
+                to {
+                    transform: translateY(-100px);
+                }
+            }
+            @media (max-width: 991px) {
+                .shop-hero .shop-hero-anim {
+                    right: 10px;
+                    top: 60%;
+                    width: 55%;
+                    max-width: 180px;
+                    min-width: 90px;
+                    opacity: 0.13;
+                }
+            }
         </style>
     </head>
 
@@ -52,26 +115,25 @@
         <!-- Header -->
         <jsp:include page="header.jsp" />
 
-        <!-- Start Hero Section -->
-        <div class="hero">
+        <!-- Hero Section (Contact Us Page) -->
+        <div class="shop-hero" style="margin-top: 120px;">
             <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-5">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-lg-6">
                         <div class="intro-excerpt">
                             <h1>Contact Us</h1>
-                            <p class="mb-4">We'd love to hear from you! Whether you have a question about our products, need support, or just want to share your feedback, our team is here to help. Reach out and we'll get back to you as soon as possible.</p>
-                            <p><a href="<%=request.getContextPath()%>/user/item.jsp" class="btn btn-secondary me-2">Shop Now</a><a href="#contact-form" class="btn btn-white-outline">Send a Message</a></p>
+                            <div class="shop-hero-words">
+                                We'd love to hear from you! Whether you have a question about our products, need support, or just want to share your feedback, our team is here to help. Reach out and we'll get back to you as soon as possible.
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-7">
-                        <div class="hero-img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/hero-index.png" class="img-fluid" alt="Contact HarveyHerman">
-                        </div>
+                    <div class="col-lg-6 d-none d-lg-block position-relative">
+                        <img src="<%=request.getContextPath()%>/assets/images/contact-hero.svg" class="shop-hero-anim" alt="Contact Us Animation" />
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End Hero Section -->
+        <!-- /Hero Section -->
 
 
         <!-- Start Contact Form -->

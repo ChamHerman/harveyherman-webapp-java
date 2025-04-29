@@ -1,18 +1,22 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
+    var popup = document.getElementById('index-popup');
+    if (popup) {
+        // Slide in
+        setTimeout(function () {
+            popup.classList.add('show');
+        }, 100); // slight delay for transition
 
-    var path = window.location.pathname.split("/").pop().split("?")[0];
+        // Slide out after 3 seconds
+        setTimeout(function () {
+            popup.classList.remove('show');
+            popup.classList.add('hide');
+        }, 3100);
 
-    // Map page names to their corresponding sidebar link IDs.
-    var pageMap = {
-        "index.jsp": "index-link",
-        "items": "shop-link",
-        "about.jsp": "about-link",
-        "services.jsp": "services-link",
-        "contact.jsp": "contact-link"
-    };
-
-    var link = document.getElementById(pageMap[path]);
-    if (link) {
-        link.parentElement.classList.add("active");
+        // Remove from DOM after animation
+        setTimeout(function () {
+            if (popup.parentNode) {
+                popup.parentNode.removeChild(popup);
+            }
+        }, 3700);
     }
 });

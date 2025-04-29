@@ -1,16 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.UserData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<jsp:useBean id="loggedInUser" class="model.UserData" scope="session" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="author" content="HarveyHerman">
-        <link rel="shortcut icon" href="favicon.png">
-
-        <meta name="description" content="" />
-        <meta name="keywords" content="bootstrap, bootstrap4" />
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
+        <title>Edit Profile - HarveyHerman</title>
 
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +15,7 @@
         <link href="<%=request.getContextPath()%>/assets/css/tiny-slider.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <link href="<%=request.getContextPath()%>/assets/css/profile.css" rel="stylesheet">
-        <title>Edit Profile - HarveyHerman</title>
+
     </head>
 
     <body>
@@ -32,10 +29,9 @@
                             <h2 class="profile-title">Edit Profile</h2>
 
                             <%
-                                UserData user = (UserData) session.getAttribute("loggedInUser");
-                                if (user != null) {
+                                if (loggedInUser != null) {
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                    String birthDateStr = user.getBirthDate() != null ? dateFormat.format(user.getBirthDate()) : "";
+                                    String birthDateStr = loggedInUser.getBirthDate() != null ? dateFormat.format(loggedInUser.getBirthDate()) : "";
                             %>
                             <% if (request.getAttribute("errorMessage") != null) {%>
                             <div class="alert alert-danger text-center mb-4">
@@ -44,28 +40,28 @@
                             <% }%>
 
                             <form action="<%=request.getContextPath()%>/user/EditUserServlet" method="post" class="profile-edit-form" autocomplete="off">
-                                <input type="hidden" name="userId" value="<%= user.getUserId()%>">
+                                <input type="hidden" name="userId" value="${loggedInUser.userId}">
 
                                 <div class="profile-info">
                                     <div class="profile-details">
                                         <div class="profile-item">
                                             <label for="fullName">Full Name</label>
-                                            <input type="text" id="fullName" name="fullName" class="form-control" value="<%= user.getFullname()%>" autocomplete="off" required>
+                                            <input type="text" id="fullName" name="fullName" class="form-control" value="${loggedInUser.fullname}" autocomplete="off" required>
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="email">Email</label>
-                                            <input type="email" id="email" name="email" class="form-control" value="<%= user.getEmail()%>" autocomplete="off" required>
+                                            <input type="email" id="email" name="email" class="form-control" value="${loggedInUser.email}" autocomplete="off" required>
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="contactNumber">Contact Number</label>
-                                            <input type="tel" id="contactNumber" name="contactNumber" class="form-control" value="<%= user.getContactNumber() != null ? user.getContactNumber() : ""%>" autocomplete="off">
+                                            <input type="tel" id="contactNumber" name="contactNumber" class="form-control" value="${loggedInUser.contactNumber}" autocomplete="off">
                                         </div>
 
                                         <div class="profile-item">
                                             <label for="address">Address</label>
-                                            <textarea id="address" name="address" class="form-control" rows="3"><%= user.getAddress() != null ? user.getAddress() : ""%></textarea>
+                                            <textarea id="address" name="address" class="form-control" rows="3">${loggedInUser.address}</textarea>
                                         </div>
 
                                         <div class="profile-item">
@@ -74,11 +70,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="profile-actions">
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        <a href="profile.jsp" class="btn btn-secondary">Discard Changes</a>
-                                    </div>
-                                </form>
+                                <div class="profile-actions">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <a href="profile.jsp" class="btn btn-secondary">Discard Changes</a>
+                                </div>
+                            </form>
                             </form
 
                             <% } else { %>
