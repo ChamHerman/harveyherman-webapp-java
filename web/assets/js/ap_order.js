@@ -1,4 +1,4 @@
-//delete
+//delete modal
 var deleteOrderId = '';
 function confirmDeleteOrder(orderId) {
     deleteOrderId = orderId;
@@ -9,6 +9,7 @@ function confirmDeleteOrder(orderId) {
     deleteModal.show();
 }
 
+//confirm delete
 document.getElementById('confirmDeleteOrder').addEventListener('click', function () {
     // Redirect to DeleteOrderServlet with orderId parameter
     fetch('DeleteOrderServlet', {
@@ -97,7 +98,7 @@ function viewOrder(orderId) {
             });
 }
 
-//ask user confirm to edit
+//ask user confirm to edit modal
 let pendingForm = null;
 function confirmStatusChange(form, orderId) {
     const oldStatus = form.oldStatus.value;
@@ -113,6 +114,7 @@ function confirmStatusChange(form, orderId) {
     return false; // Prevent form submit until confirmed
 }
 
+//edit order status
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('confirmStatusBtn').onclick = function () {
         if (pendingForm) {
