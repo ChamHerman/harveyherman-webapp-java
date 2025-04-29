@@ -81,7 +81,7 @@ public class ResetPasswordServlet extends HttpServlet {
             userLogin.setPassword(hashPasswordSHA256(newPassword));
             userLoginDAO.update(userLogin);
             session.removeAttribute("resetPasswordLoginId");
-            request.setAttribute("resetPasswordSuccess", Boolean.TRUE);
+            session.setAttribute("resetPasswordSuccess", Boolean.TRUE);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
             dispatcher.forward(request, response);
 
