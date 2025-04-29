@@ -438,7 +438,7 @@
         if (loginSuccess != null && loginSuccess && user != null) {
     %>
     <div id="index-popup">
-        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Welcome back ! <%= user.getFullname()%>
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Welcome! <%= user.getFullname()%>
     </div>
     <%
         }

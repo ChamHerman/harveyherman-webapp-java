@@ -54,6 +54,14 @@
                 animation: shopFloat 4s ease-in-out infinite alternate;
                 pointer-events: none;
             }
+            #cart-item-name {
+                max-width: 280px;
+                min-width: 120px;
+                word-break: break-word;
+                white-space: normal;
+                overflow-wrap: break-word;
+            }
+
             @keyframes shopFadeInUp {
                 from {
                     opacity: 0;
@@ -151,7 +159,7 @@
                                             <img src="<%=request.getContextPath()%>/assets/<%= cartItem.getItemId().getImageUrl()%>" alt="Product Image" style="width: 80px; height: 80px;">
                                         </td>
                                         <!-- Product Name -->
-                                        <td>
+                                        <td id="cart-item-name">
                                             <%= cartItem.getItemId().getName()%>
                                         </td>
                                         <!-- Unit Price -->

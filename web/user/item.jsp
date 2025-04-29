@@ -73,23 +73,23 @@
                                     String minPriceStr = (String) request.getAttribute("minPrice");
                                     String maxPriceStr = (String) request.getAttribute("maxPrice");
                                     int minsSliderPrice = (minPriceStr != null && !minPriceStr.isEmpty()) ? Integer.parseInt(minPriceStr) : 0;
-                                    int maxSliderPrice = (maxPriceStr != null && !maxPriceStr.isEmpty()) ? Integer.parseInt(maxPriceStr) : 10000;
+                                    int maxSliderPrice = (maxPriceStr != null && !maxPriceStr.isEmpty()) ? Integer.parseInt(maxPriceStr) : 10000000;
                                     int sliderMin = 0; // absolute min
-                                    int sliderMax = 20000; // absolute max
+                                    int sliderMax = 10000000; // absolute max
                                 %>
                                 <h5 class="mt-3">Price Range</h5>
                                 <div class="mb-2 d-flex align-items-center gap-2">
                                     <input type="number" class="form-control" id="minPriceInput" name="minPrice"
-                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=minsSliderPrice%>" style="width: 125px;">
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=minsSliderPrice%>" style="width: 125px;">
                                     <span>&mdash;</span>
                                     <input type="number" class="form-control" id="maxPriceInput" name="maxPrice"
-                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=maxSliderPrice%>" style="width: 125px;">
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=maxSliderPrice%>" style="width: 125px;">
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
                                     <input type="range" class="form-range" id="minPriceSlider"
-                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=minsSliderPrice%>">
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=minsSliderPrice%>">
                                     <input type="range" class="form-range" id="maxPriceSlider"
-                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="10" value="<%=maxSliderPrice%>">
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=maxSliderPrice%>">
                                 </div>
                                 <h5 class="mt-3">Sort By</h5>
                                 <div class="d-flex gap-2">
