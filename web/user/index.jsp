@@ -88,7 +88,7 @@
                             <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="<%=request.getContextPath()%>/assets/images/smartoven.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
+                                        <img src="<%=request.getContextPath()%>/assets/images/newarrival.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
                                         <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
                                             <h4>New Arrival: Smart Oven</h4>
                                             <p>Early Bird Discount: 20% off for the first 50 customers!</p>
@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="<%=request.getContextPath()%>/assets/images/mothersales.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
+                                        <img src="<%=request.getContextPath()%>/assets/images/motherday.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
                                         <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
                                             <h4>Flash Sale: 48 Hours Only!</h4>
                                             <p>Up to 40% off selected items. Don’t miss out!</p>
