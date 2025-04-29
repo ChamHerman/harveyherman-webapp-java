@@ -37,9 +37,9 @@ public class UserDataDAO {
     }
 
     public void update(UserData userData) {
-        userData = em.merge(userData);
+        UserData updatedUserData = em.merge(userData);
         em.flush();
-        em.refresh(userData);
+        em.refresh(updatedUserData);
     }
 
     public void delete(String userId) {
@@ -48,6 +48,7 @@ public class UserDataDAO {
             user.setDbstatus("deleted");
             em.merge(user);
             em.flush();
+            em.refresh(user);
         }
     }
 

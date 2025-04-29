@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
             today.setHours(0, 0, 0, 0);
 
             if (birthDateInput.value && selectedDate > today) {
-                birthDateErrorMsg.textContent = "Birthdate cannot be in the future.";
+                birthDateErrorMsg.textContent = "Birthdate cannot be in the future and today.";
                 birthDateInput.style.borderColor = 'red';
             } else {
                 birthDateErrorMsg.textContent = "";

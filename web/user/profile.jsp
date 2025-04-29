@@ -89,11 +89,11 @@
                                             <form action="<%=request.getContextPath()%>/user/UserDeleteAccountServlet" method="post" id="deleteAccountForm">
                                                 <div class="mb-3 password-field-container">
                                                     <label for="confirmPassword" class="form-label">Password</label>
-                                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                                                     <span class="password-toggle-icon" id="toggleDeletePassword">
-                                                        <i class="fas fa-eye"></i>
+                                                            <i class="fas fa-eye"></i>
                                                     </span>
-                                                </div>
+                                                    </div>
                                                 <% if (request.getParameter("error") != null) { %>
                                                 <div class="alert alert-danger">
                                                     Incorrect password. Account deletion canceled.
@@ -130,7 +130,7 @@
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Profile updated successfully!
     </div>
     <%
-        } else if (changePasswordSuccess != null && changePasswordSuccess) {
+    } else if (changePasswordSuccess != null && changePasswordSuccess) {
     %>
     <div id="notification-popup">
         <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Password changed successfully!
