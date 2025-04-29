@@ -57,7 +57,7 @@ public class UserDeleteAccountServlet extends HttpServlet {
             userDataDAO.delete(userId);
             session.removeAttribute("loggedInUser");
 
-            request.setAttribute("deleteSuccess", Boolean.TRUE);
+            session.setAttribute("deleteSuccess", Boolean.TRUE);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
             dispatcher.forward(request, response);
 

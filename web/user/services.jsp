@@ -91,7 +91,7 @@
                         <div class="intro-excerpt">
                             <h1>Our Services</h1>
                             <div class="shop-hero-words">
-                                Our comprehensive services are designed to ensure a seamless, worry-free experience from the moment you browse our store to long after your purchase. We are committed to making your home more comfortable, stylish, and efficient.
+                                Our comprehensive services are designed to ensure a seamless, worry-free experience from the moment you browse our store to long after your purchase.
                             </div>
                         </div>
                     </div>

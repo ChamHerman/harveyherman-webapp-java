@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.UserData"%>
 <%@ page import="model.ItemDAO,model.Item,java.util.List,java.util.Collections,javax.naming.InitialContext,javax.naming.NamingException,model.ManagerDashboardDAO" %>
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
 <!doctype html>
 <html lang="en">
     <head>
@@ -24,6 +18,36 @@
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/index_carousel.css" rel="stylesheet">
+        <style>
+            #index-popup {
+                display: block;
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 0;
+                z-index: 9999;
+                background: #3b5d50;
+                color: #fff;
+                padding: 1.2rem 2.2rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(34,84,61,0.18);
+                font-size: 1.1rem;
+                opacity: 0;
+                transition: transform 0.5s cubic-bezier(.4,2,.6,1), opacity 0.5s;
+            }
+
+            #index-popup.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0px);
+                bottom: 40px;
+            }
+
+            #index-popup.hide {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 0;
+            }
+        </style>
 
     </head>
 
@@ -36,7 +60,7 @@
             if (logoutNotice != null) {
         %>
         <script>
-        alert("<%= logoutNotice.replace("\"", "\\\"")%>");
+            alert("<%= logoutNotice.replace("\"", "\\\"")%>");
         </script>
         <%
                 session.removeAttribute("logoutNotice");
@@ -406,7 +430,20 @@
 
 
     </body>
+    <!-- Notification Popup -->
+    <%
+        UserData user = (UserData) session.getAttribute("loggedInUser");
+        Boolean loginSuccess = (Boolean) session.getAttribute("loginSuccess");
 
+        if (loginSuccess != null && loginSuccess && user != null) {
+    %>
+    <div id="index-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Welcome back ! <%= user.getFullname()%>
+    </div>
+    <%
+        }
+        session.removeAttribute("loginSuccess");
+    %>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
 

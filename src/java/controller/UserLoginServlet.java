@@ -38,6 +38,7 @@ public class UserLoginServlet extends HttpServlet {
                 session.setAttribute("logoutNotice", "Last logged in has logged out automatically");
             }
             session.setAttribute("loggedInUser", userData);
+            session.setAttribute("loginSuccess", Boolean.TRUE);
             response.sendRedirect(request.getContextPath() + "/user/index.jsp");
         } else {
             HttpSession session = request.getSession();

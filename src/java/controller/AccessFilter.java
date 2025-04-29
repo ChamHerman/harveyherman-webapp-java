@@ -50,7 +50,8 @@ public class AccessFilter implements Filter {
             "/user/UserRegisterServlet",
             "/user/VerifyChallengeServlet",
             "/user/privacyPolicy.jsp",
-            "/user/termsConditions.jsp"
+            "/user/termsConditions.jsp",
+            "/user/whoareyou.jsp"
     );
 
     @Override
@@ -130,7 +131,7 @@ public class AccessFilter implements Filter {
             }
 
             if (!isLoggedInAsUser) {
-                httpResponse.sendRedirect(contextPath + "/user/login.jsp");
+                httpResponse.sendRedirect(contextPath + "/user/whoareyou.jsp");
                 return;
             }
         }
