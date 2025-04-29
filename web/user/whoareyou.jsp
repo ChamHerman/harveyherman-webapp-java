@@ -16,9 +16,6 @@
                 box-shadow: 0 2px 16px rgba(0,0,0,0.08);
                 text-align: center;
             }
-            .who-icon {
-                font-size: 3rem;
-            }
         </style>
     </head>
     <body>
@@ -26,9 +23,9 @@
         <jsp:include page="header.jsp" />
         <div class="who-card bg-white">
             <div class="who-icon">
-                <img src="<%=request.getContextPath()%>/assets/images/whoareyou.svg" alt="Who Are You Icon" style="width:4rem; height:4rem;">
+                <img src="<%=request.getContextPath()%>/assets/images/whoareyou.svg" alt="Who Are You Icon" style="width:5rem; height:5rem;">
             </div>
-            <h2>Welcome!</h2>
+            <h2 style="color: black;">Welcome!</h2>
             <p>To add items to your cart and complete your purchase, please log in or create an account.</p>
             <div class="d-grid gap-2 mb-3">
                 <a href="login.jsp" class="btn btn-primary btn-lg">Log In</a>
