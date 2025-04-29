@@ -135,130 +135,147 @@
 
                 <form id="checkoutForm" action="AddOrderServlet" method="post">
                     <div class="row">
-                        <!-- left -->
-                        <div class="col-md-5">
-                            <!-- Billing Details -->
-                            <div class="billing-section">
-                                <h3>Delivery Details</h3>
-                                <div class="form-group mb-4">
-                                    <label>Receiver Name</label>
-                                    <input type="text" name="receiverName" class="form-control" maxlength="50" autocomplete="off" value="<%= user.getFullname()%>" required>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label>Contact Number</label>
-                                    <input type="text" id="contactNumber" name="receiverContact" maxlength="12" class="form-control" autocomplete="off" value="<%= user.getContactNumber()%>" required>
-                                </div> 
-                                <div class="form-group mb-4">
-                                    <label>Address</label>
-                                    <input type="text" id="address" name="receiverAddress" class="form-control" maxlength="100" autocomplete="off" value="<%= user.getAddress()%>" required>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-7">
-                            <!-- Your Order -->
-                            <div class="order-section">
-                                <h3>Your Order</h3>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Product</th>
-                                            <th>Unit Price</th>
-                                            <th>Quantity</th>
-                                            <th>Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <%
-                                            int rowNum = 1;
-                                            if (cartItems != null) {
-                                                for (CartItem item : cartItems) {
-                                        %>
-                                        <tr>
-                                            <td><%= rowNum++%></td>
-                                            <td><%= item.getItemId().getName()%></td>
-                                            <td>RM <%= item.getUnitPrice()%></td>
-                                            <td><%= item.getQuantity()%></td>
-                                            <td>RM <%= item.getSubtotal()%></td>
-                                        </tr>
-                                        <%
-                                                }
+                        <hr class="mb-4">
+                        <!-- Your Order -->
+                        <div class="order-section">
+                            <h3 class="mb-4">Your Order</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Product</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                        int rowNum = 1;
+                                        if (cartItems != null) {
+                                            for (CartItem item : cartItems) {
+                                    %>
+                                    <tr>
+                                        <td><%= rowNum++%></td>
+                                        <td><%= item.getItemId().getName()%></td>
+                                        <td>RM <%= item.getUnitPrice()%></td>
+                                        <td><%= item.getQuantity()%></td>
+                                        <td>RM <%= item.getSubtotal()%></td>
+                                    </tr>
+                                    <%
                                             }
-                                        %>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="4">Subtotal</td>
-                                            <td>RM <span id="cartSubtotal"><%= cartSubtotal != null ? String.format("%.2f", cartSubtotal) : "0.00"%></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">Discount</td>
-                                            <td>RM <span id="discount"><%= discount != null ? String.format("%.2f", discount) : "0.00"%></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">Delivery Fee</td>
-                                            <td>RM <span id="deliveryFee"><%= deliveryFee != null ? String.format("%.2f", deliveryFee) : "0.00"%>  </span></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4"><strong>Total</strong></td>
-                                            <td><strong>RM <span id="cartTotal"><%= cartTotal != null ? String.format("%.2f", cartTotal) : "0.00"%></span></strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <!-- Payment Method -->
-
-                            <div class="payment-section mt-4">
-                                <h3>Payment Method</h3>
-                                <div id="paymentError" class="text-danger mb-2"></div>
-                                <div>
-                                    <input type="radio" name="paymentMethod" value="cash" id="cash" onclick="toggleCardForm(false)">
-                                    <label for="cash">Cash on Delivery</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="paymentMethod" value="debit_card" id="debit" onclick="toggleCardForm(true)">
-                                    <label for="debit">Debit Card</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="paymentMethod" value="credit_card" id="credit" onclick="toggleCardForm(true)">
-                                    <label for="credit">Credit Card</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="paymentMethod" value="e-wallet" id="ewallet" onclick="toggleCardForm(false)">
-                                    <label for="ewallet">E-Wallet</label>
-                                </div>
-                            </div>
-
-
-                            <!-- Card Info Modal -->
-                            <div id="cardInfo" style="display:none;">
-                                <div class="form-group mt-3">
-                                    <label>Card Holder Name</label>
-                                    <input type="text" name="cardHolder" id="cardHolder" class="form-control" maxlength="50" autocomplete="off" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Card Number</label>
-                                    <input type="text" name="cardNumber" id="cardNumber" class="form-control" maxlength="19" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="cc-number" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Expiry Date</label>
-                                    <input type="text" name="expiryDate" id="expiryDate" class="form-control" maxlength="5" placeholder="MM-YY" autocomplete="cc-exp" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>CVV</label>
-                                    <input type="text" name="cvv" id="cvv" class="form-control" maxlength="3" placeholder="CVV" autocomplete="cc-csc" required>
-                                </div>
-                                <div id="cardError" class="text-danger"></div>
-                            </div>
+                                        }
+                                    %>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Subtotal</td>
+                                        <td>RM <span id="cartSubtotal"><%= cartSubtotal != null ? String.format("%.2f", cartSubtotal) : "0.00"%></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Delivery Fee</td>
+                                        <td>RM <span id="deliveryFee"><%= deliveryFee != null ? String.format("%.2f", deliveryFee) : "0.00"%>  </span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Discount</td>
+                                        <td>RM <span id="discount"><%= discount != null ? String.format("%.2f", discount) : "0.00"%></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"><strong>Total</strong></td>
+                                        <td><strong>RM <span id="cartTotal"><%= cartTotal != null ? String.format("%.2f", cartTotal) : "0.00"%></span></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
-                        <!--place order button-->
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary btn-block mt-4">Place Order</button>
+                        <hr class="mb-4">
+
+                        <div class="row">
+                            <!-- Delivery Details (left) -->
+                            <div class="col-md-5">
+                                <div class="billing-section">
+                                    <h3>Delivery Details</h3>
+                                    <div class="form-group mb-4">
+                                        <label>Receiver Name</label>
+                                        <input type="text" name="receiverName" class="form-control" maxlength="50" autocomplete="off" value="<%= user.getFullname()%>" required>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label>Contact Number</label>
+                                        <input type="text" id="contactNumber" name="receiverContact" maxlength="12" class="form-control" autocomplete="off" value="<%= user.getContactNumber()%>" required>
+                                    </div> 
+                                    <div class="form-group mb-4">
+                                        <label>Address</label>
+                                        <input type="text" id="address" name="receiverAddress" class="form-control" maxlength="100" autocomplete="off" value="<%= user.getAddress()%>" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Payment Method, Card Details, Place Order (right, stacked) -->
+                            <div class="col-md-7 d-flex flex-column">
+                                <div class="row">
+                                    <div style="padding-left: 4rem"class="col-md-6">
+                                        <h3 class="mb-4">Payment Method</h3> 
+                                        <div class="payment-options mb-3">
+                                            <div class="form-check mb-3 d-flex align-items-center">
+                                                <input type="radio" name="paymentMethod" value="cash" id="cash" class="form-check-input me-2">
+                                                <label for="cash" class="form-check-label me-2"><i class="fa fa-money-bill-wave me-2"></i>Cash on Delivery</label>
+                                            </div>
+                                            <div class="form-check mb-3 d-flex align-items-center">
+                                                <input type="radio" name="paymentMethod" value="debit_card" id="debit" class="form-check-input me-2">
+                                                <label for="debit" class="form-check-label me-2"><i class="fa fa-credit-card me-2"></i>Debit Card</label>
+                                            </div>
+                                            <div class="form-check mb-3 d-flex align-items-center">
+                                                <input type="radio" name="paymentMethod" value="credit_card" id="credit" class="form-check-input me-2">
+                                                <label for="credit" class="form-check-label me-2"><i class="fa fa-credit-card me-2"></i>Credit Card</label>
+                                            </div>
+                                            <div class="form-check mb-3 d-flex align-items-center">
+                                                <input type="radio" name="paymentMethod" value="e-wallet" id="ewallet" class="form-check-input me-2">
+                                                <label for="ewallet" class="form-check-label me-2"><i class="fa fa-mobile-alt me-2"></i>E-Wallet</label>
+                                            </div>
+                                        </div>
+                                        <div id="paymentError" class="alert alert-danger" style="display: none;"></div>
+                                    </div>
+                                    <!-- Card Details (right in right col) -->
+                                    <div class="col-md-6 d-flex justify-content-center align-items-start">
+                                        <div id="cardInfo" class="card-details mb-3 border rounded shadow-sm p-4 bg-white" style="display:none; max-width:400px; width:100%;">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <h3 class="mb-0">Card Details</h3>
+                                            </div>
+                                            <!-- Card Error (text only, no background) -->
+                                            <span id="cardError" class="text-danger mb-2" style="display: none; font-size: 0.95em;"></span>
+                                            <div class="form-group mb-3">
+                                                <label for="cardHolder">Card Holder Name</label>
+                                                <input type="text" name="cardHolder" id="cardHolder" class="form-control" maxlength="50" autocomplete="off" placeholder="Enter card holder name">
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="cardNumber">Card Number</label>
+                                                <input type="text" name="cardNumber" id="cardNumber" class="form-control" maxlength="19" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="cc-number">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label for="expiryDate">Expiry Date</label>
+                                                        <input type="text" name="expiryDate" id="expiryDate" class="form-control" maxlength="5" placeholder="MM-YY" autocomplete="cc-exp">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label for="cvv">CVV</label>
+                                                        <input type="text" name="cvv" id="cvv" class="form-control" maxlength="3" placeholder="CVV" autocomplete="cc-csc">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                        <hr class="mb-4">
+                        <div class="mt-auto d-flex justify-content-end mb-5">
+                            <button type="submit" class="btn btn-primary btn-lg">Place Order</button>
+                        </div>
                 </form>
+
+
             </div>
 
         </div>

@@ -143,7 +143,7 @@
                                         if (cartItems != null && !cartItems.isEmpty()) {
                                             for (CartItem cartItem : cartItems) {
                                     %>
-                                    <tr id="cartItem_<%= cartItem.getCartItemId()%>">
+                                    <tr id="cartItem_<%= cartItem.getCartItemId()%>" data-stock="<%= cartItem.getItemId().getStockQuantity()%>">
                                         <!-- Row Number -->
                                         <td><%= rowNum++%>.</td>
                                         <!-- Product Image -->
@@ -207,9 +207,9 @@
                             <strong>Promotion Code:</strong>                     
                             <div class="col-md-6">
                                 <input type="text" id="promoCode" class="form-control" placeholder="Enter promotion code">
-                                <!--  display error-->
+                                <!--  display message-->
                                 <div class="col-md-12">
-                                    <span id="promoError" class="text-danger"></span>
+                                    <span id="promoMsg" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -243,8 +243,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-
-                                        <span class="text-black">(-) Discount (%)</span>
+                                        <span class="text-black">(-) Discount</span>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <strong class="text-black">RM <span id="discount"><%= String.format("%.2f", discount)%></span> 
