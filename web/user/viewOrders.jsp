@@ -94,7 +94,7 @@
                 <table class="order-header-table">
                     <tr>
                         <td>No: HH-<%= delivery != null ? delivery.getDeliveryId() : "N/A"%></td>
-                        <td>Name: <%= delivery != null ? delivery.getReceiverName() : "N/A"%></td>
+                        <td id="receiver-name-header">Name: <%= delivery != null ? delivery.getReceiverName() : "N/A"%></td>
                         <td>Contact: <%= delivery != null ? delivery.getReceiverContact() : "N/A"%></td>
                         <%
                             String method = "N/A";
@@ -146,10 +146,12 @@
                         %>
                         <tr>
                             <td style="display: flex; align-items: center;">
-                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Item Image" style="max-width: 20%; max-height: 20%; object-fit: cover; margin-right: 2rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.2); ">
-                                <a class="item-link" href="details?itemId=<%=item.getItemId()%>">
-                                    <%= item.getName()%>
-                                </a>
+                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Item Image" style="max-width: 20%; max-height: 20%; object-fit: cover; margin-right: 1rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.2); ">
+                                <div class="item-link-wrapper">
+                                    <a class="item-link" href="details?itemId=<%=item.getItemId()%>">
+                                        <%= item.getName()%>
+                                    </a>
+                                </div>
                             </td>
                             <td style="text-align: center;"><%= qty%></td>
                             <td style="text-align: center;">RM <%= String.format("%.2f", price)%></td>
@@ -171,7 +173,7 @@
                                 <%
                                     double shippingFee = total < 1000.0 ? 25.0 : 0.0;
                                 %>
-                                RM <%= String.format("%.2f", shippingFee) %>
+                                RM <%= String.format("%.2f", shippingFee)%>
                             </td>
                         </tr>
                         <tr>
@@ -182,7 +184,7 @@
                                     double orderTotal = order.getTotalAmount().doubleValue();
                                     double discount = (total + shippingFee) - orderTotal;
                                 %>
-                                -RM <%= String.format("%.2f", discount) %>
+                                -RM <%= String.format("%.2f", discount)%>
                             </td>
                         </tr>
                         <tr class="order-total-row">

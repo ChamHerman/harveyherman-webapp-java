@@ -234,6 +234,25 @@ a.item-link:hover {
     animation: shopFloat 4s ease-in-out infinite alternate;
     pointer-events: none;
 }
+.item-link-wrapper {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-width: 100%;
+}
+#receiver-name-header {
+    max-width: 20rem;
+    min-width: 1rem;
+    word-break: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
 @keyframes shopFadeInUp {
     from {
         opacity: 0;
