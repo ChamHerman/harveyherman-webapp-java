@@ -400,7 +400,7 @@
                                 </div>
                                 <!-- Price -->
                                 <div class="mb-3">
-                                    <label class="form-label">Price <span class="text-muted">(Min: 0.01 | Max: 9999999.99)</span></label>
+                                    <label class="form-label">Price (RM) <span class="text-muted">(Min: 0.01 | Max: 9999999.99)</span></label>
                                     <input type="number" step="0.01" min="0.01" max="9999999.99" class="form-control" name="price" id="price" placeholder="Enter price (0.01 - 9999999.99)" required>
                                 </div>
                                 <!-- Stock Quantity -->

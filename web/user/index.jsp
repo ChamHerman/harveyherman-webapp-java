@@ -95,7 +95,7 @@
                                         </div>
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="<%=request.getContextPath()%>/assets/images/voucher.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 2">
+                                        <img src="<%=request.getContextPath()%>/assets/images/voucher.png" class="d-block w-100 hero-slider-img" alt="Promotion 2">
                                         <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
                                             <h4>Super Valuable! Use Code: <span style="color:#ffd700;">SUPER50</span></h4>
                                             <p>Up to 50% off with minimum spend of RM500. Available now!</p>

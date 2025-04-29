@@ -80,10 +80,10 @@
                                 <h5 class="mt-3">Price Range</h5>
                                 <div class="mb-2 d-flex align-items-center gap-2">
                                     <input type="number" class="form-control" id="minPriceInput" name="minPrice"
-                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=minsSliderPrice%>" style="width: 125px;">
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=minsSliderPrice%>" style="width: 7.5rem;">
                                     <span>&mdash;</span>
                                     <input type="number" class="form-control" id="maxPriceInput" name="maxPrice"
-                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=maxSliderPrice%>" style="width: 125px;">
+                                           min="<%=sliderMin%>" max="<%=sliderMax%>" step="100" value="<%=maxSliderPrice%>" style="width: 7.5rem;">
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
                                     <input type="range" class="form-range" id="minPriceSlider"
