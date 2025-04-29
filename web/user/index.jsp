@@ -89,23 +89,23 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="<%=request.getContextPath()%>/assets/images/newarrival.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
-                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                        <div class="carousel-caption d-block bg-dark rounded p-2 mb-2" style="opacity: 80%;">
                                             <h4>New Arrival: Smart Oven</h4>
-                                            <p>Early Bird Discount: 20% off for the first 50 customers!</p>
+                                            <p class="carousel-details">Perfect for quick meals and efficient reheating in any contemporary kitchen.</p>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
                                         <img src="<%=request.getContextPath()%>/assets/images/voucher.png" class="d-block w-100 hero-slider-img" alt="Promotion 2">
-                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
+                                        <div class="carousel-caption d-block bg-dark rounded p-2 mb-2" style="opacity: 80%;">
                                             <h4>Super Valuable! Use Code: <span style="color:#ffd700;">SUPER50</span></h4>
-                                            <p>Up to 50% off with minimum spend of RM500. Available now!</p>
+                                            <p class="carousel-details">Up to 50% off with minimum spend of RM2000.<br>Valid until 31st Oct 2025.</p>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
                                         <img src="<%=request.getContextPath()%>/assets/images/motherday.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
-                                        <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
-                                            <h4>Flash Sale: 48 Hours Only!</h4>
-                                            <p>Up to 40% off selected items. Don’t miss out!</p>
+                                        <div class="carousel-caption d-block bg-dark rounded p-2 mb-2" style="opacity: 80%;">
+                                            <h4>Mother's Day Sale! CODE: <span style="color:#ffd700;">MOTHER666</span></h4>
+                                            <p class="carousel-details">18% OFF with minimum spend RM250.<br>Valid from 1st May to 31st July 2025.</p>
                                         </div>
                                     </div>
                                 </div>

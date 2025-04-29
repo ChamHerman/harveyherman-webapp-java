@@ -104,48 +104,54 @@
         <!-- /Hero Section -->
 
         <!-- Start Why Choose Us Section -->
-        <div class="why-choose-section">
+        <div class="why-choose-section" id="why-us">
             <div class="container">
-
-
-                <div class="row my-5">
-                    <div class="col-6 col-md-6 col-lg-3 mb-4">
-                        <div class="feature">
-                            <div class="icon">
-                                <img src="<%=request.getContextPath()%>/assets/images/truck.svg" alt="Image" class="imf-fluid">
+                <div class="row justify-content-between">
+                    <div class="col-lg-6">
+                        <h2 class="section-title animate-slide-up">Why Choose Us?</h2>
+                        <p class="animate-fade-in-delay">Experience the difference with our commitment to quality, customer satisfaction, and exclusive after-sales support. Here's why discerning homeowners choose us for their appliance and accessory needs:</p>
+                        <div class="row my-5">
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <img src="<%=request.getContextPath()%>/assets/images/truck.svg" alt="Image" class="imf-fluid">
+                                    </div>
+                                    <h3>Fast &amp; Free Shipping</h3>
+                                    <p>Enjoy complimentary, insured delivery on every order. Your appliances and accessories arrive swiftly and securely, ready to enhance your home.</p>
+                                </div>
                             </div>
-                            <h3>Fast &amp; Free Shipping</h3>
-                            <p>Enjoy complimentary shipping on all orders, delivered quickly and safely to your doorstep. We partner with trusted couriers to ensure your furniture arrives in perfect condition, every time.</p>
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <img src="<%=request.getContextPath()%>/assets/images/bag.svg" alt="Image" class="imf-fluid">
+                                    </div>
+                                    <h3>Easy Shopping Experience</h3>
+                                    <p>Our intuitive platform makes it effortless to find, compare, and purchase the perfect products for your home. Secure checkout and multiple payment options included.</p>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <img src="<%=request.getContextPath()%>/assets/images/support.svg" alt="Image" class="imf-fluid">
+                                    </div>
+                                    <h3>24/7 Expert Support</h3>
+                                    <p>Our knowledgeable team is always available to assist with product advice, installation guidance, and after-sales care—anytime you need us.</p>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <img src="<%=request.getContextPath()%>/assets/images/return.svg" alt="Image" class="imf-fluid">
+                                    </div>
+                                    <h3>Hassle-Free Returns</h3>
+                                    <p>Shop with confidence. If you're not fully satisfied, our straightforward return policy ensures a smooth and worry-free process.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-4">
-                        <div class="feature">
-                            <div class="icon">
-                                <img src="<%=request.getContextPath()%>/assets/images/bag.svg" alt="Image" class="imf-fluid">
-                            </div>
-                            <h3>Easy to Shop</h3>
-                            <p>Our user-friendly website makes it simple to browse, filter, and find the perfect piece for your space. Secure checkout and multiple payment options make shopping a breeze.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-4">
-                        <div class="feature">
-                            <div class="icon">
-                                <img src="<%=request.getContextPath()%>/assets/images/support.svg" alt="Image" class="imf-fluid">
-                            </div>
-                            <h3>24/7 Support</h3>
-                            <p>Questions? Our dedicated support team is available around the clock to assist you with product inquiries, order tracking, and after-sales service.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-4">
-                        <div class="feature">
-                            <div class="icon">
-                                <img src="<%=request.getContextPath()%>/assets/images/return.svg" alt="Image" class="imf-fluid">
-                            </div>
-                            <h3>Hassle Free Returns</h3>
-                            <p>If you're not completely satisfied, our easy return policy ensures you can shop with confidence. We make returns and exchanges straightforward and stress-free.</p>
+                    <div class="col-lg-5">
+                        <div class="img-wrap">
+                            <img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img.svg" alt="Image" class="img-fluid">
                         </div>
                     </div>
                 </div>

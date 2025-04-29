@@ -294,62 +294,6 @@
         </div>
         <!-- End Testimonial Slider -->
 
-        <!-- Start Why Choose Us Section -->
-        <div class="why-choose-section" id="why-us">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-6">
-                        <h2 class="section-title animate-slide-up">Why Choose Us?</h2>
-                        <p class="animate-fade-in-delay">Experience the difference with our commitment to quality, customer satisfaction, and exclusive after-sales support. Here's why discerning homeowners choose us for their appliance and accessory needs:</p>
-                        <div class="row my-5">
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/truck.svg" alt="Image" class="imf-fluid">
-                                    </div>
-                                    <h3>Fast &amp; Free Shipping</h3>
-                                    <p>Enjoy complimentary, insured delivery on every order. Your appliances and accessories arrive swiftly and securely, ready to enhance your home.</p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/bag.svg" alt="Image" class="imf-fluid">
-                                    </div>
-                                    <h3>Easy Shopping Experience</h3>
-                                    <p>Our intuitive platform makes it effortless to find, compare, and purchase the perfect products for your home. Secure checkout and multiple payment options included.</p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/support.svg" alt="Image" class="imf-fluid">
-                                    </div>
-                                    <h3>24/7 Expert Support</h3>
-                                    <p>Our knowledgeable team is always available to assist with product advice, installation guidance, and after-sales care—anytime you need us.</p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <div class="feature">
-                                    <div class="icon">
-                                        <img src="<%=request.getContextPath()%>/assets/images/return.svg" alt="Image" class="imf-fluid">
-                                    </div>
-                                    <h3>Hassle-Free Returns</h3>
-                                    <p>Shop with confidence. If you're not fully satisfied, our straightforward return policy ensures a smooth and worry-free process.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="img-wrap">
-                            <img src="<%=request.getContextPath()%>/assets/images/why-choose-us-img.svg" alt="Image" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Why Choose Us Section -->
-
         <!-- Footer -->
         <jsp:include page="footer.jsp" />
 
