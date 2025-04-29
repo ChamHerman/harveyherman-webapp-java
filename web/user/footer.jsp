@@ -105,7 +105,7 @@
                         <ul class="list-unstyled">
                             <li><a href="/HarveyHerman/user/about.jsp#our-team">Our team</a></li>
                             <li><a href="/HarveyHerman/user/about.jsp#testimonial">Testimonials</a></li>
-                            <li><a href="/HarveyHerman/user/about.jsp#why-us">Why Choose Us</a></li>
+                            <li><a href="/HarveyHerman/user/services.jsp#why-us">Why Choose Us</a></li>
                         </ul>
                     </div>
 
