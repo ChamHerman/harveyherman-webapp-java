@@ -1,9 +1,3 @@
-<%-- 
-    Document   : errorPage
-    Created on : 26 Apr 2025, 11:06:44 PM
-    Author     : herman
---%>
-
 <%@ page isErrorPage="true" contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
