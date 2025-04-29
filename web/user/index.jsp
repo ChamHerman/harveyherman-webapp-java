@@ -88,24 +88,24 @@
                             <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="<%=request.getContextPath()%>/assets/images/promo1.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
+                                        <img src="<%=request.getContextPath()%>/assets/images/newarrival.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 1">
                                         <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
-                                            <h5>New Release: Smart Refrigerator</h5>
-                                            <p>Experience freshness and innovation with our latest smart fridge. Limited time launch offer!</p>
+                                            <h4>New Arrival: Smart Oven</h4>
+                                            <p>Early Bird Discount: 20% off for the first 50 customers!</p>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="<%=request.getContextPath()%>/assets/images/promo2.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 2">
+                                        <img src="<%=request.getContextPath()%>/assets/images/voucher.png" class="d-block w-100 hero-slider-img" alt="Promotion 2">
                                         <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
-                                            <h5>Promotion: Washer & Dryer Combo</h5>
-                                            <p>Save RM300 on our best-selling laundry duo. Free delivery included!</p>
+                                            <h4>Super Valuable! Use Code: <span style="color:#ffd700;">SUPER50</span></h4>
+                                            <p>Up to 50% off with minimum spend of RM500. Available now!</p>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="<%=request.getContextPath()%>/assets/images/promo3.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
+                                        <img src="<%=request.getContextPath()%>/assets/images/motherday.jpg" class="d-block w-100 hero-slider-img" alt="Promotion 3">
                                         <div class="carousel-caption d-block bg-dark bg-opacity-50 rounded p-2 mb-2">
-                                            <h5>Accessory Spotlight: Air Purifier</h5>
-                                            <p>Breathe easy with our advanced air purifier. Special price this week only!</p>
+                                            <h4>Flash Sale: 48 Hours Only!</h4>
+                                            <p>Up to 40% off selected items. Don’t miss out!</p>
                                         </div>
                                     </div>
                                 </div>

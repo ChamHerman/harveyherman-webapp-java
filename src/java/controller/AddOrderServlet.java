@@ -128,6 +128,18 @@ public class AddOrderServlet extends HttpServlet {
             session.removeAttribute("discount");
             session.removeAttribute("cartTotal");
 
+            // Get the current filter from session
+            String statusFilter = (String) session.getAttribute("orderStatusFilter");
+
+            // Update the filteredOrders session attribute
+            List<Orders> filteredOrders;
+            if (statusFilter == null || statusFilter.isEmpty()) {
+                filteredOrders = orderDAO.getAllOrders();
+            } else {
+                filteredOrders = orderDAO.filterOrderByStatus(statusFilter);
+            }
+            session.setAttribute("filteredOrders", filteredOrders);
+            
             response.sendRedirect("thankyou.jsp");
         } catch (Exception ex) {
             ex.printStackTrace();

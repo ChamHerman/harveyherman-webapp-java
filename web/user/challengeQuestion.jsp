@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Password Recovery</title>
+        <!-- Default Head -->
+        <jsp:include page="head.jsp" />
+        <title>Password Recovery - HarveyHerman</title>
         <!-- Bootstrap CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -60,6 +60,19 @@
                 background-color: #2f4a40;
                 border-color: #2f4a40;
             }
+            .back-login a {
+                color: #3b5d50;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                display: inline-block;
+                margin-bottom: 15px;
+            }
+
+            .back-login a:hover {
+                color: #f9bf29;
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body class="bg-light">
@@ -101,7 +114,7 @@
                         <button type="submit" class="btn btn-primary">Verify Identity</button>
                     </div>
 
-                    <div class="mt-3 text-center">
+                    <div class="mt-3 text-center back-login">
                         <a href="login.jsp">Back to Login</a>
                     </div>
                 </form>
@@ -112,6 +125,6 @@
     </body>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
-    
+
     <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
 </html>

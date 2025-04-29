@@ -37,8 +37,9 @@ public class UserLoginDAO {
     }
 
     public void update(UserLogin userLogin) {
-        em.merge(userLogin);
+        UserLogin updatedUserLogin = em.merge(userLogin);
         em.flush();
+        em.refresh(updatedUserLogin);
     }
 
     public void delete(String loginId) {
@@ -47,6 +48,7 @@ public class UserLoginDAO {
             userLogin.setDbstatus("deleted");
             em.merge(userLogin);
             em.flush();
+            em.refresh(userLogin);
         }
     }
 
