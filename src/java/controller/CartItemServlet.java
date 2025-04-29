@@ -55,6 +55,7 @@ public class CartItemServlet extends HttpServlet {
         int change = Integer.parseInt(request.getParameter("change"));
         CartItem cartItem = cartItemDAO.findById(cartItemId);
         int newQuantity = cartItem.getQuantity() + change;
+        //valid quantity cannot less than 1
         if (newQuantity < 1) {
             newQuantity = 1;
         }

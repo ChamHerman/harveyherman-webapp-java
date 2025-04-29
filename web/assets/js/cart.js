@@ -25,7 +25,32 @@ function updateQuantity(cartItemId, change) {
                     document.getElementById('cartSubtotal').innerText = data.cartSubtotal.toFixed(2);
                     document.getElementById('deliveryFee').innerText = data.deliveryFee.toFixed(2);
                     document.getElementById('cartTotal').innerText = data.cartTotal.toFixed(2);
-
+                    
+                    // Check if there's an applied promotion
+                    var promoCode = document.getElementById('promoCode').value;
+                    if (promoCode) {
+                        // Revalidate the promotion with new cart total
+                        fetch('CartServlet', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: 'action=applyPromotion&promoCode=' + encodeURIComponent(promoCode)
+                        })
+                        .then(response => response.json())
+                        .then(promoData => {
+                            if (!promoData.success) {
+                                // If promotion is no longer valid, clear the promo code and message
+                                document.getElementById('promoCode').value = '';
+                                document.getElementById('promoMsg').innerText = promoData.message;
+                                document.getElementById('promoMsg').className = 'text-danger';
+                            }
+                            // Update the discount amount regardless
+                            document.getElementById('discount').innerText = Number(promoData.discount).toFixed(2);
+                            document.getElementById('cartTotal').innerText = Number(promoData.cartTotal).toFixed(2);
+                        });
+                    }
+                    
+                    // Validate checkout after quantity update
+                    validateCheckout();
                 } else {
                     alert(data.message || 'Failed to update cart.');
                 }
@@ -56,6 +81,9 @@ function removeCartItem(cartItemId) {
                         document.getElementById('cartTotal').innerText = '0.00';
                         document.getElementById('discount').innerText = '0.00';
                     }
+                    
+                    // Validate checkout after removing item
+                    validateCheckout();
                 } else {
                     alert(data.message || 'Failed to remove item.');
                 }
@@ -76,9 +104,11 @@ function applyPromotion() {
                     document.getElementById('cartSubtotal').innerText = Number(data.cartSubtotal).toFixed(2);
                     document.getElementById('deliveryFee').innerText = Number(data.deliveryFee).toFixed(2);
                     document.getElementById('cartTotal').innerText = Number(data.cartTotal).toFixed(2);
-                    document.getElementById('promoError').innerText = "";
+                    document.getElementById('promoMsg').innerText = data.message;
+                    document.getElementById('promoMsg').className = 'text-success';
                 } else {
-                    document.getElementById('promoError').innerText = data.message;
+                    document.getElementById('promoMsg').innerText = data.message;
+                    document.getElementById('promoMsg').className = 'text-danger';
                 }
             });
 }
@@ -106,11 +136,44 @@ function isCartEmpty() {
 }
 
 function validateCheckout() {
-    if (isCartEmpty()) {
-        document.getElementById('checkoutError').innerText = 'Your cart is empty. You cannot proceed to checkout.';
+    let cartItems = document.querySelectorAll('tr[id^="cartItem_"]');
+    let hasError = false;
+    let errorMessage = '';
+    let checkoutBtn = document.getElementById('checkoutBtn');
+
+    // If no items in cart, disable checkout button
+    if (cartItems.length === 0) {
+        if (checkoutBtn) {
+            checkoutBtn.disabled = true;
+        }
         return false;
     }
-    document.getElementById('checkoutError').innerText = '';
+
+    cartItems.forEach(item => {
+        let cartItemId = item.id.split('_')[1];
+        let quantity = parseInt(document.getElementById('qty_' + cartItemId).textContent);
+        let stockLimit = parseInt(item.getAttribute('data-stock'));
+        
+        if (quantity > stockLimit) {
+            hasError = true;
+            let itemName = item.querySelector('td:nth-child(3)').textContent.trim();
+            errorMessage += `Not enough stock for ${itemName}. Available: ${stockLimit}\n`;
+        }
+    });
+
+    if (hasError) {
+        document.getElementById('checkoutError').innerHTML = errorMessage;
+        if (checkoutBtn) {
+            checkoutBtn.disabled = true;
+        }
+        return false;
+    }
+
+    // If we get here, there are no stock errors
+    document.getElementById('checkoutError').innerHTML = '';
+    if (checkoutBtn) {
+        checkoutBtn.disabled = false;
+    }
     return true;
 }
 
