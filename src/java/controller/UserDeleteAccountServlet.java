@@ -7,7 +7,6 @@ package controller;
 import static controller.PasswordUtil.hashPasswordSHA256;
 import java.io.IOException;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +41,7 @@ public class UserDeleteAccountServlet extends HttpServlet {
         try {
             String confirmPassword = request.getParameter("confirmPassword");
             UserData userData = (UserData) session.getAttribute("loggedInUser");
-            UserLogin userLogin = userData.getUserLogin();
+            UserLogin userLogin = userLoginDAO.findByUserId(userData.getUserId());
 
             if (userLogin == null || !userLogin.getPassword().equals(hashPasswordSHA256(confirmPassword))) {
                 response.sendRedirect(request.getContextPath() + "/user/profile.jsp?error=password");
