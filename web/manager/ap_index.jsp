@@ -156,7 +156,7 @@
                     <div class="summary-value" style="color: #c0392b;">-<%= String.format("%.2f", avgS2)%>%</div>
                     <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
                          accesskey="" title="Compare today's sales with yesterday's">
-                        Less than yesterday RM<%= equalS%>
+                        Less than yesterday RM<%= String.format("%.2f",equalS)%>
                     </div>
                     <%} else if (equalS == 0) {%>
                     <div class="summary-value">0%</div>
@@ -168,7 +168,7 @@
                     <div class="summary-value" style="color: #27ae60;">+<%= String.format("%.2f", avgS1)%>%</div>
                     <div class="summary-extra" data-bs-toggle="tooltip" data-bs-placement="bottom"
                          accesskey="" title="Compare today's sales with yesterday's">
-                        More than yesterday RM<%= equalS%>
+                        More than yesterday RM<%= String.format("%.2f",equalS)%>
                     </div>
                     <%}%>
                 </div>

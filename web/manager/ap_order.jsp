@@ -37,13 +37,21 @@
 
                     String sessionStatus = (String) session.getAttribute("orderStatusFilter");
                     List<Orders> ordersList = (List<Orders>) session.getAttribute("filteredOrders");
+
+                    //sort the order from new to old
+                    if (ordersList != null) {
+                        java.util.Collections.sort(ordersList, new java.util.Comparator<Orders>() {
+                            public int compare(Orders o1, Orders o2) {
+                                return o2.getCreatedDate().compareTo(o1.getCreatedDate());
+                            }
+                        });
+                    }
                     if (ordersList == null && orderDAO != null) {
                         ordersList = orderDAO.getAllOrders();
                     }
 
                     long totalOrders = orderDAO != null ? orderDAO.countAllOrders() : 0;
-                %>
-                <%
+
                     long packagingCount = orderDAO.countOrdersByStatus("packaging");
                     long shippingCount = orderDAO.countOrdersByStatus("shipping");
                     long deliveryCount = orderDAO.countOrdersByStatus("delivery");
@@ -145,13 +153,19 @@
                             <td>
                                 <form class="status-form d-flex align-items-center" method="post" action="UpdateOrderServlet" onsubmit="return confirmStatusChange(this, '<%= order.getOrderId()%>');">
                                     <input type="hidden" name="orderId" value="<%= order.getOrderId()%>">
-                                    <select name="status" class="form-select form-select-sm me-2">
+                                    <select name="status" class="form-select form-select-sm me-2" <%= "delivered".equalsIgnoreCase(order.getStatus()) ? "disabled" : ""%>>
+                                        <% if ("delivered".equalsIgnoreCase(order.getStatus())) { %>
+                                        <option value="delivered" selected>Delivered</option>
+                                        <% } else {%>
                                         <option value="packaging" <%= "packaging".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Packaging</option>
                                         <option value="shipping" <%= "shipping".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Shipping</option>
                                         <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
+                                        <% } %>
                                     </select>
+                                    <% if (!"delivered".equalsIgnoreCase(order.getStatus())) { %>
                                     <button type="submit" class="btn btn-save btn-sm">Save</button>
                                     <input type="hidden" name="oldStatus" value="<%= order.getStatus()%>">
+                                    <% } %>
                                 </form>
                             </td>
                         </tr>

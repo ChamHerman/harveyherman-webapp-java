@@ -1,6 +1,6 @@
 // Validate Delivery Details and Card Format
 document.addEventListener('DOMContentLoaded', function () {
-// Contact number validation
+    // Contact number validation
     var contactInput = document.getElementById('contactNumber');
     if (contactInput) {
         var contactErrorMsg = document.createElement('div');
@@ -46,7 +46,34 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
+    // Payment method validation
+    const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+    const paymentErrorDiv = document.getElementById('paymentError');
+    const cardInfo = document.getElementById('cardInfo');
+    const cardError = document.getElementById('cardError');
+
+    // Add event listeners to payment method radio buttons
+    paymentMethods.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            // Clear any previous error messages
+            if (paymentErrorDiv) {
+                paymentErrorDiv.style.display = 'none';
+                paymentErrorDiv.textContent = '';
+            }
+            if (cardError) {
+                cardError.style.display = 'none';
+                cardError.textContent = '';
+            }
+
+            // Show/hide card form based on selection
+            if (this.value === 'debit_card' || this.value === 'credit_card') {
+                if (cardInfo) cardInfo.style.display = 'block';
+            } else {
+                if (cardInfo) cardInfo.style.display = 'none';
+            }
+        });
+    });
     
     // Card Number formatting
     const cardNumberInput = document.getElementById('cardNumber');
@@ -62,10 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             e.target.value = formatted;
         });
-        cardNumberInput.addEventListener('keypress', function (e) {
-            if (!/\d/.test(e.key))
-                e.preventDefault();
-        });
     }
 
     // Expiry Date formatting
@@ -79,10 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             e.target.value = value;
         });
-        expiryInput.addEventListener('keypress', function (e) {
-            if (!/\d/.test(e.key))
-                e.preventDefault();
-        });
     }
 
     // CVV formatting
@@ -92,10 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let value = e.target.value.replace(/\D/g, '');
             value = value.substring(0, 3);
             e.target.value = value;
-        });
-        cvvInput.addEventListener('keypress', function (e) {
-            if (!/\d/.test(e.key))
-                e.preventDefault();
         });
     }
 
@@ -108,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    //Add validation on form submit
+    // Add validation on form submit
     const checkoutForm = document.getElementById('checkoutForm');
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function (e) {
@@ -120,13 +135,20 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             const paymentErrorDiv = document.getElementById('paymentError');
             if (!paymentSelected) {
-                if (paymentErrorDiv) paymentErrorDiv.innerText = 'Please select a payment method.';
+                if (paymentErrorDiv) {
+                    paymentErrorDiv.innerText = 'Please select a payment method.';
+                    paymentErrorDiv.style.display = 'block';
+                }
                 e.preventDefault();
                 return;
             } else {
-                if (paymentErrorDiv) paymentErrorDiv.innerText = '';
+                if (paymentErrorDiv) {
+                    paymentErrorDiv.innerText = '';
+                    paymentErrorDiv.style.display = 'none';
+                }
             }
             const cardInfo = document.getElementById('cardInfo');
+            const cardErrorDiv = document.getElementById('cardError');
             if (cardInfo && cardInfo.style.display !== 'none') {
                 const cardHolder = cardHolderInput.value.trim();
                 const cardNumber = cardNumberInput.value.replace(/\D/g, '');
@@ -168,10 +190,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (error) {
-                    document.getElementById('cardError').innerText = error;
+                    if (cardErrorDiv) {
+                        cardErrorDiv.innerText = error;
+                        cardErrorDiv.style.display = 'block';
+                    }
                     e.preventDefault();
                 } else {
-                    document.getElementById('cardError').innerText = '';
+                    if (cardErrorDiv) {
+                        cardErrorDiv.innerText = '';
+                        cardErrorDiv.style.display = 'none';
+                    }
                 }
             }
         });

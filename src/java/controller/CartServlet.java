@@ -47,7 +47,12 @@ public class CartServlet extends HttpServlet {
                 cartSubtotal += item.getQuantity() * item.getUnitPrice().doubleValue();
             }
         }
-        double deliveryFee = (cartSubtotal >= 1000 || cartSubtotal == 0) ? 0.0 : 25.0;
+        double deliveryFee = 0.0;
+        if(cartSubtotal >= 1000 || cartSubtotal == 0){
+            deliveryFee = 0.0;
+        }else{
+            deliveryFee = 25.0;
+        }
         double discount = 0.0;
         double cartTotal = cartSubtotal + deliveryFee - discount;
         session.setAttribute("cartSubtotal", cartSubtotal);
@@ -65,7 +70,7 @@ public class CartServlet extends HttpServlet {
                 discountPercentStr = String.valueOf(promo.getDiscountValue().doubleValue());
             }
         }
-        request.setAttribute("discountPercent", discountPercentStr);
+        session.setAttribute("discountPercent", discountPercentStr);
         response.sendRedirect("cart.jsp");
     }
 
@@ -145,31 +150,33 @@ public class CartServlet extends HttpServlet {
         List<CartItem> cartItems = cartItemDAO.getActiveCartItemsByCartId(cart.getCartId());
         double cartSubtotal = 0.0;
         for (CartItem item : cartItems) {
-            cartSubtotal += item.getQuantity() * item.getUnitPrice().doubleValue();
+            cartSubtotal = cartSubtotal + item.getQuantity() * item.getUnitPrice().doubleValue();
         }
         double discount = 0.0;
         String message = "";
         boolean success = false;
         Promotion promo = promotionDAO.findByPromotionCode(promoCode);
+        
         if (promo == null) {
             message = "Promotion code not found.";
         } else if (!"active".equalsIgnoreCase(promo.getStatus())) {
-            message = "This promotion is not active.";
+            message = "This voucher has expired.";
+        } else if (promo.getMinimumPurchase() != null && cartSubtotal < promo.getMinimumPurchase().doubleValue()) {
+            message = "Minimum spend for this promotion is RM " + promo.getMinimumPurchase();
         } else {
-            java.util.Date today = new java.util.Date();
-            if ((promo.getStartDate() != null && today.before(promo.getStartDate()))
-                    || (promo.getEndDate() != null && today.after(promo.getEndDate()))) {
-                message = "This promotion is not valid at this time.";
-            } else if (promo.getMinimumPurchase() != null && cartSubtotal < promo.getMinimumPurchase().doubleValue()) {
-                message = "Minimum spend for this promotion is RM " + promo.getMinimumPurchase();
-            } else {
-                discount = cartSubtotal * (promo.getDiscountValue().doubleValue() / 100.0);
-                message = "Promotion applied! Discount: " + promo.getDiscountValue().doubleValue() + "%";
-                success = true;
-                session.setAttribute("appliedPromotionCode", promo.getPromotionCode());
-            }
+            discount = cartSubtotal * (promo.getDiscountValue().doubleValue() / 100.0);
+            message = "Promotion applied! Discount: " + promo.getDiscountValue().doubleValue() + "%";
+            success = true;
+            session.setAttribute("appliedPromotionCode", promo.getPromotionCode());
         }
-        double deliveryFee = cartSubtotal >= 1000 ? 0.0 : 25.0;
+        
+        double deliveryFee = 0.0;
+        if(cartSubtotal >= 1000 || cartSubtotal == 0){
+            deliveryFee = 0.0;
+        }else{
+            deliveryFee = 25.0;
+        }
+        
         double cartTotal = cartSubtotal - discount + deliveryFee;
         session.setAttribute("discount", discount);
         session.setAttribute("cartSubtotal", cartSubtotal);
