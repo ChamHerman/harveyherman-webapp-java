@@ -109,6 +109,7 @@ function applyPromotion() {
                 } else {
                     document.getElementById('promoMsg').innerText = data.message;
                     document.getElementById('promoMsg').className = 'text-danger';
+                    document.getElementById('discount').innerText = '0.00';
                 }
             });
 }
