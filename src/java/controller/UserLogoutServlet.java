@@ -28,14 +28,6 @@ public class UserLogoutServlet extends HttpServlet {
             session.removeAttribute("loggedInUserOrders");
             session.removeAttribute("orderDetailsMap");
             session.removeAttribute("orderDeliveryMap");
-            // item's
-            session.removeAttribute("searchFilter");
-            session.removeAttribute("categoryFilter");
-            session.removeAttribute("stockFilter");
-            session.removeAttribute("minPriceFilter");
-            session.removeAttribute("maxPriceFilter");
-            session.removeAttribute("sortByFilter");
-            session.removeAttribute("sortOrderFilter");
             // AddOrderServlet
             session.removeAttribute("filteredOrders");
             // CartItemServlet
