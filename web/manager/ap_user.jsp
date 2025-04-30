@@ -113,7 +113,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <button type="button" id="addUserBtn" class="btn btn-primary w-100">Add Customer</button>
+                            <button type="button" id="addUserBtn" class="btn btn-primary w-100">Add User</button>
                         </div>
                     </div>
                 </form>
