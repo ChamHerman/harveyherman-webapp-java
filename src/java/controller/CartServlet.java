@@ -48,9 +48,9 @@ public class CartServlet extends HttpServlet {
             }
         }
         double deliveryFee = 0.0;
-        if(cartSubtotal >= 1000 || cartSubtotal == 0){
+        if (cartSubtotal >= 1000 || cartSubtotal == 0) {
             deliveryFee = 0.0;
-        }else{
+        } else {
             deliveryFee = 25.0;
         }
         double discount = 0.0;
@@ -71,7 +71,15 @@ public class CartServlet extends HttpServlet {
             }
         }
         session.setAttribute("discountPercent", discountPercentStr);
-        response.sendRedirect("cart.jsp");
+
+        String itemId = (String) session.getAttribute("itemId");
+        if (itemId == null || itemId.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/user/cart.jsp");
+        } else {
+            session.setAttribute("addToCartSuccess", Boolean.TRUE);
+            response.sendRedirect(request.getContextPath() + "/user/details?itemId=" + itemId);
+        }
+
     }
 
     @Override
@@ -129,6 +137,7 @@ public class CartServlet extends HttpServlet {
             cartItemDAO.update(cartItem);
         }
         updateCartTotal(cart, cartItemDAO);
+        session.setAttribute("itemId", itemId);
         response.sendRedirect(request.getContextPath() + "/user/CartServlet");
     }
 
@@ -156,7 +165,7 @@ public class CartServlet extends HttpServlet {
         String message = "";
         boolean success = false;
         Promotion promo = promotionDAO.findByPromotionCode(promoCode);
-        
+
         if (promo == null) {
             message = "Promotion code not found.";
         } else if (!"active".equalsIgnoreCase(promo.getStatus())) {
@@ -169,14 +178,14 @@ public class CartServlet extends HttpServlet {
             success = true;
             session.setAttribute("appliedPromotionCode", promo.getPromotionCode());
         }
-        
+
         double deliveryFee = 0.0;
-        if(cartSubtotal >= 1000 || cartSubtotal == 0){
+        if (cartSubtotal >= 1000 || cartSubtotal == 0) {
             deliveryFee = 0.0;
-        }else{
+        } else {
             deliveryFee = 25.0;
         }
-        
+
         double cartTotal = cartSubtotal - discount + deliveryFee;
         session.setAttribute("discount", discount);
         session.setAttribute("cartSubtotal", cartSubtotal);

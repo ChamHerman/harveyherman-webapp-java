@@ -21,6 +21,36 @@
         <link href="<%=request.getContextPath()%>/assets/css/style.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="<%=request.getContextPath()%>/assets/css/item.css" rel="stylesheet">
+        <style>
+            #details-popup {
+                display: block;
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 0;
+                z-index: 9999;
+                background: #3b5d50;
+                color: #fff;
+                padding: 1.2rem 2.2rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(34,84,61,0.18);
+                font-size: 1.1rem;
+                opacity: 0;
+                transition: transform 0.5s cubic-bezier(.4,2,.6,1), opacity 0.5s;
+            }
+
+            #details-popup.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0px);
+                bottom: 40px;
+            }
+
+            #details-popup.hide {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100px);
+                bottom: 0;
+            }
+        </style>
     </head>
     <body>
 
@@ -101,11 +131,47 @@
             }
         %>
 
-        <!-- Footer -->
-        <jsp:include page="footer.jsp" />
 
-        <!-- Scripts -->
-        <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<%=request.getContextPath()%>/assets/js/cart.js"></script>
     </body>
+    <!-- Notification Popup -->
+    <%
+        Boolean addToCartSuccess = (Boolean) session.getAttribute("addToCartSuccess");
+        if (addToCartSuccess != null && addToCartSuccess) {
+    %>
+    <div id="details-popup">
+        <i class="fa fa-check-circle me-2" style="color:#ffd700;"></i>Add to cart successfully!
+    </div>
+    <%
+        }
+        session.removeAttribute("addToCartSuccess");
+        session.removeAttribute("itemId");
+    %>
+    <!-- Footer -->
+    <jsp:include page="footer.jsp" />
+
+    <!-- Scripts -->
+    <script src="<%=request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/cart.js"></script>
+    <script>
+        var popup = document.getElementById('details-popup');
+        if (popup) {
+            // Slide in
+            setTimeout(function () {
+                popup.classList.add('show');
+            }, 100); // slight delay for transition
+
+            // Slide out after 3 seconds
+            setTimeout(function () {
+                popup.classList.remove('show');
+                popup.classList.add('hide');
+            }, 3100);
+
+            // Remove from DOM after animation
+            setTimeout(function () {
+                if (popup.parentNode) {
+                    popup.parentNode.removeChild(popup);
+                }
+            }, 3700);
+        }
+    </script>
 </html>
