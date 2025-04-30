@@ -28,15 +28,31 @@ public class UserLogoutServlet extends HttpServlet {
             session.removeAttribute("loggedInUserOrders");
             session.removeAttribute("orderDetailsMap");
             session.removeAttribute("orderDeliveryMap");
-            // item's
-            session.removeAttribute("searchFilter");
-            session.removeAttribute("categoryFilter");
-            session.removeAttribute("stockFilter");
-            session.removeAttribute("minPriceFilter");
-            session.removeAttribute("maxPriceFilter");
-            session.removeAttribute("sortByFilter");
-            session.removeAttribute("sortOrderFilter");
-            
+            // AddOrderServlet
+            session.removeAttribute("filteredOrders");
+            // CartItemServlet
+            session.removeAttribute("cart");
+            session.removeAttribute("cartItems");
+            session.removeAttribute("cartSubtotal");
+            session.removeAttribute("deliveryFee");
+            session.removeAttribute("discount");
+            session.removeAttribute("cartTotal");
+            // CartServlet
+            session.removeAttribute("discountPercent");
+            session.removeAttribute("appliedPromotionCode");
+            session.removeAttribute("discount");
+            session.removeAttribute("cartSubtotal");
+            session.removeAttribute("deliveryFee");
+            session.removeAttribute("cartTotal");
+            // CheckoutServlet
+            session.removeAttribute("userData");
+            session.removeAttribute("cart");
+            session.removeAttribute("cartItems");
+            session.removeAttribute("cartSubtotal");
+            session.removeAttribute("deliveryFee");
+            session.removeAttribute("discount");
+            session.removeAttribute("cartTotal");
+
             session.removeAttribute("loggedInUser");
         }
 

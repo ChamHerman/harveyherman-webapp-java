@@ -38,7 +38,7 @@ public class CheckOutServlet extends HttpServlet {
         Double discount = (Double) session.getAttribute("discount");
         Double cartTotal = (Double) session.getAttribute("cartTotal");
 
-        // Set as request attributes for checkout.jsp
+        // Set as session attributes for checkout.jsp
         session.setAttribute("userData", userData);
         session.setAttribute("cart", cart);
         session.setAttribute("cartItems", cartItems);

@@ -23,8 +23,17 @@ public class StaffLogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
+            // ap_item
+            session.removeAttribute("categoryFilter");
+            session.removeAttribute("stockFilter");
+            session.removeAttribute("rowsFilter");
+            session.removeAttribute("pageFilter");
+            session.removeAttribute("sortFilter");
+            session.removeAttribute("orderFilter");
+
             session.removeAttribute("loggedInManager");
             session.removeAttribute("loggedInStaff");
+
         }
 
         response.sendRedirect(request.getContextPath() + "/staff/ap_login.jsp");
