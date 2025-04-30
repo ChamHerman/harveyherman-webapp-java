@@ -146,7 +146,7 @@
                             </td>
                         </tr>
                         <% }
-                    } %>
+                            } %>
                     </tbody>
                 </table>
 
@@ -173,7 +173,7 @@
 
             </div>
         </div>
-        
+
         <!-- View User Modal -->
         <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -217,7 +217,7 @@
                                 <div class="col-sm-4 text-end fw-bold">Created Date:</div>
                                 <div class="col-sm-8" id="viewCreatedDate"></div>
                             </div>
-                            
+
                             <h4 class="mb-4 mt-4 text-center">Login Information</h4>
                             <div class="row mb-2">
                                 <div class="col-sm-4 text-end fw-bold">Login ID:</div>
@@ -232,6 +232,10 @@
                                 <div class="col-sm-8" id="viewChallengeQuestion"></div>
                             </div>
                             <div class="row mb-2">
+                                <div class="col-sm-4 text-end fw-bold">Answer:</div>
+                                <div class="col-sm-8" id="viewAnswer"></div>
+                            </div>
+                            <div class="row mb-2">
                                 <div class="col-sm-4 text-end fw-bold">Last Login:</div>
                                 <div class="col-sm-8" id="viewLastLogin"></div>
                             </div>
@@ -243,7 +247,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Result Message Modal -->
         <div class="modal fade" id="userResultMessageModal" tabindex="-1" aria-labelledby="userResultMessageModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -261,7 +265,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Loading Modal -->
         <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -275,9 +279,9 @@
                 </div>
             </div>
         </div>
-        
+
         <script>
-            var contextPath = '<%= request.getContextPath() %>';
+            var contextPath = '<%= request.getContextPath()%>';
         </script>
         <script src="<%= request.getContextPath()%>/assets/js/bootstrap.bundle.min.js"></script>
         <script src="<%= request.getContextPath()%>/assets/js/ap_user.js"></script>
