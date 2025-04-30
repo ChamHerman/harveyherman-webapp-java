@@ -7,7 +7,7 @@
 <!-- Start Header/Navigation -->
 <nav id="main-header" class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
     <div class="container">
-        <a class="navbar-brand" href="index.jsp">
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/user/index.jsp">
             <img src="<%=request.getContextPath()%>/assets/images/logo.png" alt="HarveyHerman Logo" style="height:100px; width:auto; vertical-align:middle;">
         </a>
 
@@ -18,19 +18,19 @@
 
         <div class="collapse navbar-collapse" id="navbarsFurni">
             <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                <li class="nav-item"><a class="nav-link" id="index-link" href="index.jsp">Home</a></li>
-                <li class="nav-item"><a class="nav-link" id="shop-link" href="items">Shop</a></li>
-                <li class="nav-item"><a class="nav-link" id="about-link" href="about.jsp">About us</a></li>
-                <li class="nav-item"><a class="nav-link" id="services-link" href="services.jsp">Services</a></li>
-                <li class="nav-item"><a class="nav-link" id="contact-link" href="contact.jsp">Contact us</a></li>
+                <li class="nav-item"><a class="nav-link" id="index-link" href="<%=request.getContextPath()%>/user/index.jsp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" id="shop-link" href="<%=request.getContextPath()%>/user/items">Shop</a></li>
+                <li class="nav-item"><a class="nav-link" id="about-link" href="<%=request.getContextPath()%>/user/about.jsp">About us</a></li>
+                <li class="nav-item"><a class="nav-link" id="services-link" href="<%=request.getContextPath()%>/user/services.jsp">Services</a></li>
+                <li class="nav-item"><a class="nav-link" id="contact-link" href="<%=request.getContextPath()%>/user/contact.jsp">Contact us</a></li>
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <% if (session.getAttribute("loggedInUser") != null) {%>
                 <li class="user-dropdown-container">
-                    <a class="nav-link" href="profile.jsp"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
+                    <a class="nav-link" href="<%=request.getContextPath()%>/user/profile.jsp"><img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="User"></a>
                     <div class="user-dropdown">
-                        <a href="profile.jsp">View User Details</a>
+                        <a href="<%=request.getContextPath()%>/user/profile.jsp">View User Details</a>
                         <a href="UserLogoutServlet">Log Out</a>
                     </div>
                 </li>
@@ -55,11 +55,11 @@
                 </li>
                 <% } else {%>
                 <li>
-                    <a class="nav-link" href="login.jsp">
+                    <a class="nav-link" href="<%=request.getContextPath()%>/user/login.jsp">
                         <img src="<%=request.getContextPath()%>/assets/images/user.svg" alt="Login">
                     </a>
                 </li>
-                <li><a class="nav-link" href="cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
+                <li><a class="nav-link" href="<%=request.getContextPath()%>/user/cart.jsp"><img src="<%=request.getContextPath()%>/assets/images/cart.svg" alt="Cart"></a></li>
                         <% }%>
 
             </ul>
