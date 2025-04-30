@@ -41,8 +41,8 @@ public class VerifyChallengeServlet extends HttpServlet {
 
             if (userLogin == null) {
                 UserData userData = userDataDAO.findByEmail(identifier);
-                if (userData != null && userData.getUserLogin() != null) {
-                    userLogin = userData.getUserLogin();
+                if (userData != null && userLoginDAO.findByUserId(userData.getUserId()) != null) {
+                    userLogin = userLoginDAO.findByUserId(userData.getUserId());
                 }
             }
             
