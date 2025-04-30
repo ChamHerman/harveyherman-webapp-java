@@ -1,2 +1,0 @@
-assets/ -> <%=request.getContextPath()%>/assets/
-<%=item.getImageUrl()%> -> <%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>
