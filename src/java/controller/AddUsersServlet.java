@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import javax.ejb.EJB;
 import model.UserData;
@@ -20,18 +21,23 @@ import model.UserLoginDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import model.Cart;
+import model.CartDAO;
 
 @WebServlet(name = "AddUsersServlet", urlPatterns = "/manager/AddUsersServlet")
 public class AddUsersServlet extends HttpServlet {
 
     @EJB
     private UserDataDAO userDataDAO;
-    
+
     @EJB
     private UserLoginDAO userLoginDAO;
-    
+
+    @EJB
+    private CartDAO cartDAO;
+
     private static final long serialVersionUID = 1L;
-    
+
     private static final String DEFAULT_PASSWORD = "password";
 
     // Helper method to send JSON-formatted response via redirect.
@@ -54,7 +60,7 @@ public class AddUsersServlet extends HttpServlet {
 
         String encodedMessage = URLEncoder.encode(json, "UTF-8");
         response.sendRedirect(contextPath + "/manager/ap_user.jsp?message=" + encodedMessage);
-        
+
     }
 
     @Override
@@ -62,7 +68,7 @@ public class AddUsersServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
-            
+
             String fullname = request.getParameter("fullname");
             if (fullname == null || fullname.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Full name is required.");
@@ -72,7 +78,7 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Full name must be less than 255 characters.");
                 return;
             }
-            
+
             String username = request.getParameter("username");
             if (username == null || username.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Username is required.");
@@ -87,7 +93,7 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Username is already taken. Please check on the record and try again.");
                 return;
             }
-            
+
             String email = request.getParameter("email");
             if (email == null || email.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Email is required.");
@@ -134,7 +140,7 @@ public class AddUsersServlet extends HttpServlet {
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     birthDate = dateFormat.parse(birthDateStr);
-                   
+
                     if (birthDate.after(new Date())) {
                         sendJsonResponse(request, response, false, "Birth date cannot be in the future.");
                         return;
@@ -150,13 +156,13 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Gender is required.");
                 return;
             }
-            
+
             String securityQuestion = request.getParameter("securityQuestion");
             if (securityQuestion == null || securityQuestion.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Security question is required.");
                 return;
             }
-            
+
             String securityAnswer = request.getParameter("securityAnswer");
             if (securityAnswer == null || securityAnswer.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Security answer is required.");
@@ -166,7 +172,7 @@ public class AddUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Security answer must be less than 255 characters.");
                 return;
             }
-            
+
             // Create the UserData object
             UserData userData = new UserData();
             userData.setFullname(fullname);
@@ -179,7 +185,7 @@ public class AddUsersServlet extends HttpServlet {
             userData.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
 
             userDataDAO.create(userData);
-            
+
             // Create UserLogin object
             UserLogin userLogin = new UserLogin();
             userLogin.setLoginId(null);
@@ -191,7 +197,18 @@ public class AddUsersServlet extends HttpServlet {
             userLogin.setDbstatus("active");
 
             userLoginDAO.create(userLogin);
+
+            // Create Cart object
+            Cart cart = new Cart();
+            cart.setCartId(null);
+            cart.setUserId(userData);
+            cart.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
+            cart.setUpdatedDate(null);
+            cart.setDbstatus("active");
+            cart.setTotal(new BigDecimal("0.0"));
             
+            cartDAO.create(cart);
+
             sendJsonResponse(request, response, true, "User created successfully. Default password is: " + DEFAULT_PASSWORD);
         } catch (Exception ex) {
             ex.printStackTrace();
