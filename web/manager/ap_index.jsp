@@ -189,7 +189,7 @@
                         <canvas id="paymentMethodChart" style="max-width: 320px; max-height: 320px;"></canvas>
                     </div>
                     <%}%>
-                    <%if (topSales != null) {%>
+                    <%if (topSales != null && !topSales.isEmpty()) {%>
                     <!-- Bar Chart -->
                     <div class="col-md-6 mb-4 d-flex flex-column align-items-center">
                         <h5 class="fw-bold mb-2 text-center" style="text-decoration: underline;" data-bs-toggle="tooltip" data-bs-placement="top"
