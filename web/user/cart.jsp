@@ -269,6 +269,19 @@
                                 </div>
 
                                 <div class="row">
+                                     <!--show user need refresh page-->
+                                    <%
+                                        String checkoutError = (String) session.getAttribute("checkoutError");
+                                        if (checkoutError != null) {
+                                    %>
+                                    <span style="color: red;">
+                                        <h6><%=checkoutError%></h6>
+                                    </span>
+                                    <%
+                                            // Remove the error message from the session after displaying it
+                                            session.removeAttribute("checkoutError");
+                                        }
+                                    %>
                                     <form action="CheckOutServlet" method="post" onsubmit="return validateCheckout();">
                                         <div id="checkoutError" class="text-danger mb-2"></div>
                                         <button class="btn btn-black btn-lg py-3 btn-block" id="checkoutBtn" type="submit">Proceed To Checkout</button>
@@ -281,43 +294,6 @@
             </div>
         </div>
 
-        <!-- Modal to show Promotion Error -->
-        <div class="modal fade" id="promoModal" tabindex="-1" aria-labelledby="promoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="promoModalLabel">Promotion</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="promoModalBody">
-                        <!-- Message will be set by JS -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--        modal to show stock not enough-->
-        <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="stockModalLabel">Stock Limit</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        You cannot add more than the available stock.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </body>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />

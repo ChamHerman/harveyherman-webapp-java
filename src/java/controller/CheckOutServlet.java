@@ -6,6 +6,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,11 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Cart;
 import model.CartItem;
+import model.ItemDAO;
 import model.UserData;
 
 @WebServlet(name = "CheckOutServlet", urlPatterns = {"/user/CheckOutServlet"})
 public class CheckOutServlet extends HttpServlet {
 
+    @EJB
+    ItemDAO itemDAO;
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,6 +42,18 @@ public class CheckOutServlet extends HttpServlet {
         Double deliveryFee = (Double) session.getAttribute("deliveryFee");
         Double discount = (Double) session.getAttribute("discount");
         Double cartTotal = (Double) session.getAttribute("cartTotal");
+        
+                  // Refresh cart items from the database
+          for (CartItem cartItem : cartItems) {
+                String itemId = cartItem.getItemId().getItemId();
+                int quantity = cartItem.getQuantity();
+
+                if (!itemDAO.isStockAvailable(itemId, quantity)) {
+                    session.setAttribute("checkoutError", "Item stock changed. Please back to Item Page Refresh!");
+                    response.sendRedirect("cart.jsp");
+                    return;
+                }
+            }
 
         // Set as session attributes for checkout.jsp
         session.setAttribute("userData", userData);

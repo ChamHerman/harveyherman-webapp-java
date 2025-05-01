@@ -161,5 +161,13 @@ public class ItemDAO {
                 .setMaxResults(limit)
                 .getResultList();
     }
+    
+        public boolean isStockAvailable(String itemId, int requiredQuantity) {
+        TypedQuery<Item> query = em.createNamedQuery("Item.findByItemId", Item.class);
+        query.setParameter("itemId", itemId);
+        Item item = query.getSingleResult();
+        
+        return item.getStockQuantity() >= requiredQuantity;
+    }
 
 }
