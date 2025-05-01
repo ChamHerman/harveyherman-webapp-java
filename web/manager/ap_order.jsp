@@ -46,12 +46,8 @@
                             }
                         });
                     }
-                    if (ordersList == null && orderDAO != null) {
-                        ordersList = orderDAO.getAllOrders();
-                    }
 
                     long totalOrders = orderDAO != null ? orderDAO.countAllOrders() : 0;
-
                     long packagingCount = orderDAO.countOrdersByStatus("packaging");
                     long shippingCount = orderDAO.countOrdersByStatus("shipping");
                     long deliveryCount = orderDAO.countOrdersByStatus("delivery");
@@ -117,11 +113,6 @@
                     <tbody>
                         <tr>
                             <%
-                                if (ordersList == null && orderDAO != null) {
-                                    ordersList = orderDAO.getAllOrders();
-                                }
-                            %>
-                            <%
                                 if (ordersList != null && !ordersList.isEmpty()) {
                                     int rowNum = 1;
                                     for (Orders order : ordersList) {
@@ -162,7 +153,7 @@
                                         <option value="delivery" <%= "delivery".equalsIgnoreCase(order.getStatus()) ? "selected" : ""%>>Delivery</option>
                                         <% } %>
                                     </select>
-                                    <% if (!"delivered".equalsIgnoreCase(order.getStatus())) { %>
+                                    <% if (!"delivered".equalsIgnoreCase(order.getStatus())) {%>
                                     <button type="submit" class="btn btn-save btn-sm">Save</button>
                                     <input type="hidden" name="oldStatus" value="<%= order.getStatus()%>">
                                     <% } %>
