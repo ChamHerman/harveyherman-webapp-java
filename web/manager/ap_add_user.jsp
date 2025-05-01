@@ -84,8 +84,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="20" pattern="^[a-zA-Z0-9_-]{3,20}$" autocomplete="off">
-                                    <div class="form-text">Username must be 3-20 characters and can only contain letters, numbers, underscores, and hyphens.</div>
+                                    <input type="text" class="form-control" id="username" name="username" required autocomplete="off">
                                 </div>
                             </div>
 

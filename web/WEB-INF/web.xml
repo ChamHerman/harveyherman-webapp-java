@@ -21,7 +21,7 @@
         <param-value>Copyright © 2025 HarveyHerman. All rights reserved.</param-value>
     </context-param>
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>60</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>user/index.jsp</welcome-file>
