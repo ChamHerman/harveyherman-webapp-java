@@ -146,7 +146,7 @@
                         %>
                         <tr>
                             <td style="display: flex; align-items: center;">
-                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Item Image" style="max-width: 20%; max-height: 20%; object-fit: cover; margin-right: 1rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.2); ">
+                                <img src="<%=request.getContextPath()%>/assets/<%=item.getImageUrl()%>" onclick="window.location.href = 'details?itemId=<%=item.getItemId()%>'" alt="Deleted Image" style="max-width: 20%; max-height: 20%; object-fit: cover; margin-right: 1rem; cursor: pointer; box-shadow: 0 4px 16px rgba(56,161,105,0.2); ">
                                 <div class="item-link-wrapper">
                                     <a class="item-link" href="details?itemId=<%=item.getItemId()%>">
                                         <%= item.getName()%>

@@ -52,24 +52,7 @@ public class DeleteItemsServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Item ID not provided.");
                 return;
             }
-
-            Item item = itemDAO.getItemById(itemId);
-            if (item != null && item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
-                // Extract filename from the stored imageUrl (assumes format: images/filename)
-                String fileName = item.getImageUrl().substring("images/".length());
-                // Get the deployed path (e.g., C:\NetBeans\HarveyHerman\build\web)
-                String deployedPath = getServletContext().getRealPath("");
-                File deployedDir = new File(deployedPath);
-                // Navigate back two directories to reach the project root (e.g., C:\NetBeans\HarveyHerman)
-                File projectRoot = deployedDir.getParentFile().getParentFile();
-                // Build the path to \web\assets\images
-                File targetImageDir = new File(projectRoot, "web/assets/images");
-                // Construct the file reference
-                File imageFile = new File(targetImageDir, fileName);
-                if (imageFile.exists() && !imageFile.delete()) {
-                    throw new ServletException("Failed to delete image file. Path: " + imageFile.getAbsolutePath());
-                }
-            }
+            
             // Soft delete item
             itemDAO.delete(itemId);
             sendJsonResponse(request, response, true, "Item deleted successfully.");
