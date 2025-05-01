@@ -278,7 +278,6 @@
                                         <h6><%=checkoutError%></h6>
                                     </span>
                                     <%
-                                            // Remove the error message from the session after displaying it
                                             session.removeAttribute("checkoutError");
                                         }
                                     %>

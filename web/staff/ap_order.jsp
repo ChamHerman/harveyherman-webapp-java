@@ -42,13 +42,17 @@
 
                     String sessionStatus = (String) session.getAttribute("orderStatusFilter");
                     List<Orders> ordersList = (List<Orders>) session.getAttribute("filteredOrders");
-                    if (ordersList == null && orderDAO != null) {
-                        ordersList = orderDAO.getAllOrders();
+                    
+                    //sort the order from new to old
+                    if (ordersList != null) {
+                        java.util.Collections.sort(ordersList, new java.util.Comparator<Orders>() {
+                            public int compare(Orders o1, Orders o2) {
+                                return o2.getCreatedDate().compareTo(o1.getCreatedDate());
+                            }
+                        });
                     }
 
                     long totalOrders = orderDAO != null ? orderDAO.countAllOrders() : 0;
-                %>
-                <%
                     long packagingCount = orderDAO.countOrdersByStatus("packaging");
                     long shippingCount = orderDAO.countOrdersByStatus("shipping");
                     long deliveryCount = orderDAO.countOrdersByStatus("delivery");
@@ -113,12 +117,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <%
-                                List<Orders> orders = (List<Orders>) session.getAttribute("filteredOrders");
-                                if (orders == null) {
-
-                                }
-                            %>
                             <%
                                 if (ordersList != null) {
                                     int rowNum = 1;
