@@ -269,10 +269,10 @@
                             </div>
                         </div>
                     </div>
-                        <hr class="mb-4">
-                        <div class="mt-auto d-flex justify-content-end mb-5">
-                            <button type="submit" class="btn btn-primary btn-lg">Place Order</button>
-                        </div>
+                    <hr class="mb-4">
+                    <div class="mt-auto d-flex justify-content-end mb-5">
+                        <button type="submit" class="btn btn-primary btn-lg" disabled>Place Order</button>
+                    </div>
                 </form>
 
 

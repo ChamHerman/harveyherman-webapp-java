@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
     // Length validation for address (less than 100 characters)
     var addressInput = document.getElementById('address');
     if (addressInput) {
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const cardError = document.getElementById('cardError');
 
     // Add event listeners to payment method radio buttons
-    paymentMethods.forEach(function(radio) {
-        radio.addEventListener('change', function() {
+    paymentMethods.forEach(function (radio) {
+        radio.addEventListener('change', function () {
             // Clear any previous error messages
             if (paymentErrorDiv) {
                 paymentErrorDiv.style.display = 'none';
@@ -68,13 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Show/hide card form based on selection
             if (this.value === 'debit_card' || this.value === 'credit_card') {
-                if (cardInfo) cardInfo.style.display = 'block';
+                if (cardInfo)
+                    cardInfo.style.display = 'block';
             } else {
-                if (cardInfo) cardInfo.style.display = 'none';
+                if (cardInfo)
+                    cardInfo.style.display = 'none';
             }
         });
     });
-    
+
     // Card Number formatting
     const cardNumberInput = document.getElementById('cardNumber');
     if (cardNumberInput) {
@@ -131,7 +133,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const paymentMethods = checkoutForm.querySelectorAll('input[name="paymentMethod"]');
             let paymentSelected = false;
             paymentMethods.forEach(function (pm) {
-                if (pm.checked) paymentSelected = true;
+                if (pm.checked)
+                    paymentSelected = true;
             });
             const paymentErrorDiv = document.getElementById('paymentError');
             if (!paymentSelected) {
@@ -204,4 +207,61 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-}); 
+
+    // Attach validateForm to relevant events
+    if (contactInput) {
+        contactInput.addEventListener('input', validateForm);
+    }
+
+    if (addressInput) {
+        addressInput.addEventListener('input', validateForm);
+    }
+
+    // Payment method change
+    paymentMethods.forEach(function (radio) {
+        radio.addEventListener('change', validateForm);
+    });
+    
+    validateForm();
+});
+
+// Reference to the submit button
+const checkoutForm = document.getElementById('checkoutForm');
+const submitButton = checkoutForm.querySelector('button[type="submit"]');
+
+// Function to validate the entire form
+function validateForm() {
+    const contactInput = document.getElementById('contactNumber');
+    const addressInput = document.getElementById('address');
+    const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+    const cardInfo = document.getElementById('cardInfo');
+
+    let isValid = true;
+
+    // Validate contact number
+    const contactPattern = /^60\d{9,10}$/;
+    if (!contactPattern.test(contactInput.value)) {
+        isValid = false;
+    }
+
+    // Validate address length
+    if (addressInput.value.length >= 100) {
+        isValid = false;
+    }
+
+    // Validate payment method is selected
+    let paymentSelected = false;
+    let selectedPayment = '';
+    paymentMethods.forEach(pm => {
+        if (pm.checked) {
+            paymentSelected = true;
+            selectedPayment = pm.value;
+        }
+    });
+    if (!paymentSelected) {
+        isValid = false;
+    }
+
+    // Update button state
+    submitButton.disabled = !isValid;
+}
