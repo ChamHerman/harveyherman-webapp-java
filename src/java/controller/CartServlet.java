@@ -72,12 +72,11 @@ public class CartServlet extends HttpServlet {
         }
         session.setAttribute("discountPercent", discountPercentStr);
 
-        String itemId = (String) session.getAttribute("itemId");
+        String itemId = request.getParameter("itemId");
         if (itemId == null || itemId.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/user/cart.jsp");
         } else {
-            session.setAttribute("addToCartSuccess", Boolean.TRUE);
-            response.sendRedirect(request.getContextPath() + "/user/details?itemId=" + itemId);
+            response.sendRedirect(request.getContextPath() + "/user/details?itemId=" + itemId + "&addToCartSuccess=true");
         }
 
     }
@@ -137,8 +136,7 @@ public class CartServlet extends HttpServlet {
             cartItemDAO.update(cartItem);
         }
         updateCartTotal(cart, cartItemDAO);
-        session.setAttribute("itemId", itemId);
-        response.sendRedirect(request.getContextPath() + "/user/CartServlet");
+        response.sendRedirect(request.getContextPath() + "/user/CartServlet?itemId=" + itemId);
     }
 
     private void updateCartTotal(Cart cart, CartItemDAO cartItemDAO) {
