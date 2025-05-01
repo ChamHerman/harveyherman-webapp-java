@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="model.Item"%>
 <%@ page import="java.util.List"%>
-
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -135,7 +139,7 @@
     </body>
     <!-- Notification Popup -->
     <%
-        Boolean addToCartSuccess = (Boolean) session.getAttribute("addToCartSuccess");
+        Boolean addToCartSuccess = (Boolean) request.getAttribute("addToCartSuccess");
         if (addToCartSuccess != null && addToCartSuccess) {
     %>
     <div id="details-popup">
@@ -143,8 +147,6 @@
     </div>
     <%
         }
-        session.removeAttribute("addToCartSuccess");
-        session.removeAttribute("itemId");
     %>
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
@@ -172,6 +174,13 @@
                     popup.parentNode.removeChild(popup);
                 }
             }, 3700);
+        }
+
+        // Check if the URL contains the success parameter
+        if (window.location.search.includes('addToCartSuccess=true')) {
+            // Replace the current history entry with the URL without the parameter
+            const newUrl = window.location.pathname + window.location.search.replace('&addToCartSuccess=true', '');
+            history.replaceState(null, '', newUrl);
         }
     </script>
 </html>

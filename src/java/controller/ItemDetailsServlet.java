@@ -32,6 +32,7 @@ public class ItemDetailsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String itemId = request.getParameter("itemId");
+        String addToCartSuccessParam = request.getParameter("addToCartSuccess");
 
         if (itemId == null || itemId.trim().isEmpty()) {
             response.sendRedirect("errorPage.jsp");
@@ -44,6 +45,11 @@ public class ItemDetailsServlet extends HttpServlet {
             request.setAttribute("error", "Item not found.");
         } else {
             request.setAttribute("item", item);
+        }
+
+        // Set the addToCartSuccess request attribute if present
+        if ("true".equals(addToCartSuccessParam)) {
+            request.setAttribute("addToCartSuccess", Boolean.TRUE);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user/itemDetails.jsp");

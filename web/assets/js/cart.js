@@ -158,7 +158,7 @@ function validateCheckout() {
         if (quantity > stockLimit) {
             hasError = true;
             let itemName = item.querySelector('td:nth-child(3)').textContent.trim();
-            errorMessage += `Not enough stock for ${itemName}. Available: ${stockLimit}\n`;
+            errorMessage += `Not enough stock for ${itemName}. Available: ${stockLimit} <br>`;
         }
     });
 

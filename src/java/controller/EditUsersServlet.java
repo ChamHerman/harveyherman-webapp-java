@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.UserData;
 import model.UserDataDAO;
 import model.UserLogin;
@@ -158,7 +159,7 @@ public class EditUsersServlet extends HttpServlet {
                 sendJsonResponse(request, response, false, "Gender is required.");
                 return;
             }
-            
+
             String username = request.getParameter("username");
             if (username == null || username.trim().isEmpty()) {
                 sendJsonResponse(request, response, false, "Username is required.");
@@ -196,6 +197,15 @@ public class EditUsersServlet extends HttpServlet {
 
             userLogin.setUsername(username);
             userLoginDAO.update(userLogin);
+            
+            // Update session if edited account is currently logged in
+            HttpSession session = request.getSession();
+            if ((session.getAttribute("loggedInUser") != null)) {
+                UserData currentLoginUser = (UserData) session.getAttribute("loggedInUser");
+                if (currentLoginUser.getUserId().equals(userData.getUserId())) {
+                    session.setAttribute("loggedInUser", userData);
+                }
+            }
 
             sendJsonResponse(request, response, true, "User updated successfully.");
 
