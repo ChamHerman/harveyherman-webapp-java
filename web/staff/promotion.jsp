@@ -38,7 +38,6 @@
         <!-- Default Head -->
         <jsp:include page="/user/head.jsp" />
         <title>Promotion Management - Staff</title>
-        
         <!-- Bootstrap CSS -->
         <link href="<%= request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -52,7 +51,7 @@
         <!-- Side Bar -->
         <%@ include file="ap_sidebar.jsp" %>
         <div class="main-content">
-            <h2 style="text-align: center; margin-bottom: 1rem;">Manage Promotions</h2>
+            <h2 style="text-align: center; margin-bottom: 2rem;">Manage Promotions</h2>
             <%                
                 String successMessage = (String) request.getAttribute("successMessage");
                 String errorMessage = (String) request.getAttribute("errorMessage");
@@ -118,34 +117,8 @@
                     Edit Promotion
                 </button>
                 <%}%>
-                
-                <%--<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePromotionModal">
-                    Delete Promotion
-                </button>--%>
                 <a href="ap_index.jsp" class="btn btn-secondary">Back to Dashboard</a>
             </div>
-
-            <!-- Delete Promotion -->
-            <%--<div class="modal fade" id="deletePromotionModal" tabindex="-1" aria-labelledby="deletePromotionModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deletePromotionModalLabel">Delete Promotion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="DeletePromotionServlet" method="post">
-                                <div class="mb-3">
-                                    <label for="deletePromotionId" class="form-label">Promotion ID</label>
-                                    <input type="text" class="form-control" id="deletePromotionId" name="promotionId" required>
-                                    <small class="text-danger" id="deleteError" style="display: none;">Promotion ID is required.</small>
-                                </div>
-                                <button type="submit" name="deletePromotionBtn" id="deletePromotionBtn" class="btn btn-danger w-100">Delete Promotion</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>--%>
             
             <%--edit promotion--%>
             <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
@@ -317,21 +290,31 @@
                 // delete error msg
                 errorMessage.innerText = "";
                 endDateInput.classList.remove("is-invalid");
+                startDateInput.classList.remove("is-invalid");
 
-                if (endDate && endDate < today) {
+                if (startDate && startDate < today) {
+                    errorMessage.innerText = "Start date cannot be in the past.";
+                    startDateInput.classList.add("is-invalid");
+                    saveButton.disabled = true;
+                } else if (endDate && endDate < today) {
                     errorMessage.innerText = "End date cannot be in the past.";
                     endDateInput.classList.add("is-invalid");
+                    saveButton.disabled = true;
                 } else if (startDate && endDate && endDate < startDate) {
                     errorMessage.innerText = "End date cannot be before the start date.";
                     endDateInput.classList.add("is-invalid");
+                    saveButton.disabled = true;
+                } else {
+                    saveButton.disabled = false;
                 }
 
                 // Append error msg
                 if (errorMessage.innerText) {
-                    endDateInput.parentNode.appendChild(errorMessage);
-                    saveButton.disabled = true;
-                } else {
-                    saveButton.disabled = false;
+                    if (startDateInput.classList.contains("is-invalid")) {
+                        startDateInput.parentNode.appendChild(errorMessage);
+                    } else {
+                        endDateInput.parentNode.appendChild(errorMessage);
+                    }
                 }
             }
 
@@ -393,6 +376,7 @@
             startDateInput.addEventListener("change", validateDates);
             endDateInput.addEventListener("change", validateDates);
             validateForm();
+            validateDates(); // Add initial date validation
         });
 
         document.addEventListener("DOMContentLoaded", function () {
