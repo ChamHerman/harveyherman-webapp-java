@@ -25,7 +25,7 @@ function updateQuantity(cartItemId, change) {
                     document.getElementById('cartSubtotal').innerText = data.cartSubtotal.toFixed(2);
                     document.getElementById('deliveryFee').innerText = data.deliveryFee.toFixed(2);
                     document.getElementById('cartTotal').innerText = data.cartTotal.toFixed(2);
-                    
+
                     // Check if there's an applied promotion
                     var promoCode = document.getElementById('promoCode').value;
                     if (promoCode) {
@@ -35,20 +35,20 @@ function updateQuantity(cartItemId, change) {
                             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                             body: 'action=applyPromotion&promoCode=' + encodeURIComponent(promoCode)
                         })
-                        .then(response => response.json())
-                        .then(promoData => {
-                            if (!promoData.success) {
-                                // If promotion is no longer valid, clear the promo code and message
-                                document.getElementById('promoCode').value = '';
-                                document.getElementById('promoMsg').innerText = promoData.message;
-                                document.getElementById('promoMsg').className = 'text-danger';
-                            }
-                            // Update the discount amount regardless
-                            document.getElementById('discount').innerText = Number(promoData.discount).toFixed(2);
-                            document.getElementById('cartTotal').innerText = Number(promoData.cartTotal).toFixed(2);
-                        });
+                                .then(response => response.json())
+                                .then(promoData => {
+                                    if (!promoData.success) {
+                                        // If promotion is no longer valid, clear the promo code and message
+                                        document.getElementById('promoCode').value = '';
+                                        document.getElementById('promoMsg').innerText = promoData.message;
+                                        document.getElementById('promoMsg').className = 'text-danger';
+                                    }
+                                    // Update the discount amount regardless
+                                    document.getElementById('discount').innerText = Number(promoData.discount).toFixed(2);
+                                    document.getElementById('cartTotal').innerText = Number(promoData.cartTotal).toFixed(2);
+                                });
                     }
-                    
+
                     // Validate checkout after quantity update
                     validateCheckout();
                 } else {
@@ -68,9 +68,9 @@ function removeCartItem(cartItemId) {
             .then(data => {
                 if (data.success) {
                     document.getElementById('cartItem_' + cartItemId).remove();
-                    document.getElementById('cartSubtotal').innerText = data.cartSubtotal;
-                    document.getElementById('deliveryFee').innerText = data.deliveryFee;
-                    document.getElementById('cartTotal').innerText = data.cartTotal;
+                    document.getElementById('cartSubtotal').innerText = data.cartSubtotal.toFixed(2);
+                    document.getElementById('deliveryFee').innerText = data.deliveryFee.toFixed(2);
+                    document.getElementById('cartTotal').innerText = data.cartTotal.toFixed(2);
 
                     // Check if there are any cart items left
                     var cartTableBody = document.querySelector('.site-blocks-table tbody');
@@ -80,8 +80,14 @@ function removeCartItem(cartItemId) {
                         document.getElementById('deliveryFee').innerText = '0.00';
                         document.getElementById('cartTotal').innerText = '0.00';
                         document.getElementById('discount').innerText = '0.00';
+                    } else {
+                        // Apply again Promo Code
+                        var promoCode = document.getElementById('promoCode').value;
+                        if (promoCode) {
+                            applyPromotion();
+                        }
                     }
-                    
+
                     // Validate checkout after removing item
                     validateCheckout();
                 } else {
@@ -110,6 +116,7 @@ function applyPromotion() {
                     document.getElementById('promoMsg').innerText = data.message;
                     document.getElementById('promoMsg').className = 'text-danger';
                     document.getElementById('discount').innerText = '0.00';
+                    document.getElementById('cartTotal').innerText = Number(data.cartSubtotal + data.deliveryFee).toFixed(2);
                 }
             });
 }
@@ -154,7 +161,7 @@ function validateCheckout() {
         let cartItemId = item.id.split('_')[1];
         let quantity = parseInt(document.getElementById('qty_' + cartItemId).textContent);
         let stockLimit = parseInt(item.getAttribute('data-stock'));
-        
+
         if (quantity > stockLimit) {
             hasError = true;
             let itemName = item.querySelector('td:nth-child(3)').textContent.trim();
