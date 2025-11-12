@@ -1,4 +1,3 @@
-```markdown
 # HarveyHerman - AMIT3083 Assignment Setup Guide
 
 **Homepage**: http://localhost:8080/HarveyHerman/user/index.jsp  
@@ -122,4 +121,4 @@
 3. Clean and build (to clear all caches)  
 4. Deploy  
 5. Run
-```
+
