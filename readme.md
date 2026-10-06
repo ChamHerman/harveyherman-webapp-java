@@ -19,7 +19,6 @@
     <a href="https://www.mysql.com/"><img src="https://img.shields.io/badge/MySQL-8.4-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL 8.4" /></a>
     <a href="https://netbeans.apache.org/"><img src="https://img.shields.io/badge/NetBeans-20%2B-1B6AC6?style=for-the-badge&logo=apache-netbeans-ide&logoColor=white" alt="Apache NetBeans 20+" /></a>
     <a href="https://getbootstrap.com/"><img src="https://img.shields.io/badge/Bootstrap-5-7952CE?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap 5" /></a>
-    <img src="https://img.shields.io/badge/Course-AMIT3083-2E7D32?style=for-the-badge" alt="AMIT3083 Enterprise Application Development" />
   </p>
 
 </div>
