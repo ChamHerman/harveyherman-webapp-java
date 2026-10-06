@@ -27,7 +27,7 @@
 
 ## 📖 Executive Summary
 
-**HarveyHerman** is an enterprise-grade Java EE e-commerce web application engineered for contemporary home living, furniture, and household appliances. Developed under the **AMIT3083 Enterprise Application Development** curriculum, the platform delivers a complete retail lifecycle spanning customer storefront self-service to administrative back-office operations.
+**HarveyHerman** is an enterprise-grade Java EE e-commerce web application engineered for contemporary home living, furniture, and household appliances. The platform delivers a complete retail lifecycle spanning customer storefront self-service to administrative back-office operations.
 
 The platform is designed around four fundamental architecture pillars:
 
@@ -276,9 +276,6 @@ The database scripts initialize default administrative and testing accounts:
 ---
 
 ## 👥 Project Team & Contributions
-
-Developed under the **AMIT3083 Enterprise Application Development** programme at **Tunku Abdul Rahman University of Management and Technology (TAR UMT)**.
-
 | No. | Team Member | GitHub Profile | Task(s) Completed & Responsibilities | Overall Contribution |
 |:---:|---|:---:|---|:---:|
 | **1.** | **CHAM HERMAN** | [@ChamHerman](https://github.com/ChamHerman) | **Overall Project Lead & Architecture**<br>• Handled whole project setup, technical management, and module distribution<br>• **Item Module**: End-to-end Item Management (CRUD)<br>• **Member Storefront**: Product Catalog page, Home page, item search, category filtering, product listing, and Add-to-Cart functionality<br>• **Order Module**: View Orders page (Member side)<br>• **Web Configuration**: Centralized `web.xml` (application-wide initialization parameters, context config, and error page routing) | **25%** |
@@ -290,5 +287,4 @@ Developed under the **AMIT3083 Enterprise Application Development** programme at
 
 ## 📄 License
 
-This project is open-source software licensed under the **[MIT License](./LICENSE)**.  
-Copyright © 2026 **ChamHerman**. All rights reserved.
+This project is open-source software licensed under the **[MIT License](./LICENSE)**.
